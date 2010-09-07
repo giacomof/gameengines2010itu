@@ -23,9 +23,28 @@ int main(int argc, char **argv)
 
 		matrix * testMatrix = new matrix(&matrix_array[0][0]);
 
+		/*
 		float *primo = testMatrix->getMatrix();		
 		for (int i = 0; i < 12; i++)
 			cout << (*primo++) << endl;
+		*/
+
+		
+		for(int row=1; row<5; row++) {
+			for(int column=1; column<4; column++) {
+				cout << (*testMatrix->getElement(row, column)) << endl;
+				
+			}
+		
+		}
+
+		system("PAUSE");
+
+		vector * textVector = new vector(testMatrix->getRowVector(1));
+		for(unsigned short i=0; i<4; i++) {
+			cout << (*textVector->getElement(i)) << " ";
+		}
+
 
 		system("PAUSE");
     return 0;
