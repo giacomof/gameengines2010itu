@@ -33,9 +33,11 @@ int main(int argc, char **argv)
 		for(int row=1; row<5; row++) {
 			for(int column=1; column<4; column++) {
 				cout << (*testMatrix->getElement(row, column)) << endl;
-				
-			}
-		
+			}	
+			
+			// draw and end line each row to view the matrix
+			// in a more common way
+			cout << endl;
 		}
 
 		system("PAUSE");
