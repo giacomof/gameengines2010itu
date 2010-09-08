@@ -8,10 +8,10 @@ int main()
 {
 
 	Vector testVector(7,8,9);
-	Point testPoint(3,3,3);
-	cout << "12 * testVector = " << testVector * 12 << endl;
+	Point testPoint(7,8,9);
 
-    cout << "-------------------------------------" << endl;
+	
+	
     Matrix m(1, 0, 0, 1,
              0, 1, 0, 2,
              0, 0, 1, 3,
@@ -22,7 +22,12 @@ int main()
              0, 0, 1, 0,
              0, 0, 0, 1);
 
-	cout << "Multiplication of matrix and vector m * testVector = " << m * testVector << endl; 
+	Matrix prova = Matrix::generateXRotationMatrix(89.99);
+
+	cout << " prova  = " << prova << endl; 
+    cout << "-------------------------------------" << endl;
+	cout << " provaT  = " << prova.getTranspose() << endl; 
+
 
     system("Pause");
     return 0;
