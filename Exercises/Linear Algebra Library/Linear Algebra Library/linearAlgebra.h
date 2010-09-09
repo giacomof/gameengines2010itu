@@ -93,12 +93,19 @@ class Matrix
 
 		// Matrix multiplication
         Matrix operator*(Matrix &other); 
+		// Matrix * scalar multiplication
+		Matrix operator*(float other);
 		// Matrix * vector multiplication
 		// can also be used for points
         Vector operator*(Vector &other);
 
 		// Function for transpose matrix
 		Matrix getTranspose();
+		// Function for matrix inverse
+		Matrix getInverse();
+
+		//Function for the determinant of the matrix
+		float getDeterminant();
 
         // Functions and operator to access 
 		// individual matrix elements
