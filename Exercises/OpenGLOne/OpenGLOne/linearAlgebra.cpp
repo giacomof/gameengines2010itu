@@ -32,8 +32,14 @@ float Vector::getMagnitude(void)
 {
      float magnitude = *this * *this;
      magnitude = sqrt(magnitude);
-     // I return the result.
+     // I return the result
      return magnitude;
+}
+
+// Returns the quadratic magnitude
+float Vector::getQuadraticMagnitude(void) 
+{	
+	return *this * *this;
 }
 
 // Function to normalize the vector
@@ -107,7 +113,7 @@ Vector Vector::operator*(float s)
 }
 
 // Operator overload for the [] symbols (example, Vector[0] returns the content of data[0])
-float  Vector::operator[](int i)
+float  Vector::operator[](unsigned short i)
 {
      // I access the internal stl vector in the same place as the class vector was accessed and return the content
      return data[i];
@@ -332,6 +338,30 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 	return result;
 }
 
+static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
+{
+	Matrix result;
+
+	result.set(0,0,1);
+	result.set(0,1,Sxy);
+	result.set(0,2,Sxz);
+	result.set(0,3,0);
+	result.set(1,0,Syx);
+	result.set(1,1,1);
+	result.set(1,2,Syz);
+	result.set(1,3,0);
+	result.set(2,0,SZx);
+	result.set(2,1,Szy);
+	result.set(2,2,1);
+	result.set(2,3,0);
+	result.set(3,0,0);
+	result.set(3,1,0);
+	result.set(3,2,0);
+	result.set(3,3,1);
+
+	return result;
+}
+
 // Operator overload for the * sign between two matrices
 Matrix Matrix::operator*(Matrix &other)
 {
@@ -339,11 +369,11 @@ Matrix Matrix::operator*(Matrix &other)
 
      // This set of loops will go though each field in the result matrix, then calculate using another loop to resuse code for each multiplication between elements
      // r is row, c is column, i is row for one element of a multiplication and column for the other element of the same multiplication
-     for (int c = 0; c < 4; c++)
-         for (int r = 0; r < 4; r++) {
+     for (unsigned int c = 0; c < 4; c++)
+         for (unsigned int r = 0; r < 4; r++) {
              float temp = 0;
              
-             for (int i = 0; i < 4; i++) {
+             for (unsigned int i = 0; i < 4; i++) {
                  temp = temp + this->get(r,i) * other.get(i,c);
              }
              
@@ -359,10 +389,10 @@ Vector Matrix::operator*(Vector &other)
      Vector result;
      
      // This reuses the code from the matrix * matrix overload. Here I have removed the column loop since a vector only has one
-     for (int r = 0; r < 4; r++) {
+     for (unsigned int r = 0; r < 4; r++) {
          float temp = 0;
 
-         for (int i = 0; i < 4; i++) {
+         for (unsigned int i = 0; i < 4; i++) {
              temp = temp + this->get(r,i) * other.get(i);
          }
 
@@ -372,7 +402,7 @@ Vector Matrix::operator*(Vector &other)
      // Checking that I am not about to divide by zero...
      if (result.get(3) != 0) {
         // ...if i isn't, I go ahead with homogeneous divide. I use a loop to reuse code
-        for (int i = 0; i < 4; i++) {
+        for (unsigned int i = 0; i < 4; i++) {
             result.set(i, result.get(i) / result.get(3));
         }
      }
@@ -387,8 +417,8 @@ Matrix Matrix::getTranspose()
 	Matrix result;
 
 	// Inversion of row and columns
-	for (int r = 0; r < 4; r++) {
-		for (int c = 0; c < 4; c++) {
+	for (unsigned int r = 0; r < 4; r++) {
+		for (unsigned int c = 0; c < 4; c++) {
 			result.set(c,r,this->get(r,c));
 		}
 	}
@@ -396,6 +426,29 @@ Matrix Matrix::getTranspose()
 	return result;
 }
 
+// Return the specified row as vector
+Vector Matrix::getRowAsVector(unsigned short row)
+{
+	 Vector result;
+
+	 for (unsigned int i = 0; i < 4; i++){
+		 result.set(i,this->get(row,i));
+	 }
+
+	 return result;
+}
+
+// Return the specified column as vector
+Vector Matrix::getColumnAsVector(unsigned short column)
+{
+	 Vector result;
+
+	for (unsigned int i = 0; i < 4; i++){
+		 result.set(i,this->get(i,column));
+	 }
+
+	return result;
+}
 
 // Operator overload for << for sending a matrix to the output stream
 std::ostream & operator<< (std::ostream &os, const Matrix &m)
