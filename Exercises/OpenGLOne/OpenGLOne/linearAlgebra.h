@@ -32,13 +32,14 @@ class Vector
 		// Vector scalar product
         float operator*(Vector &other);
 
-        // Functions for magnitude and normalization
+        // Functions for magnitude, quadratic magnitude and normalization
 		float getMagnitude(void);
+		float getQuadraticMagnitude(void);
         Vector normalize(void);
 
         // Functions and operator to access 
 		// individual vector elements
-		float operator[](int i);
+		float operator[](unsigned short i);
         float get(int i) const { return data[i]; }
         void set(int i, float val) { data[i] = val; }
 
@@ -87,6 +88,9 @@ class Matrix
 		// Generate a rotation matrix about z-axis, from a  float value
 		static Matrix generateZRotationMatrix(float degree);
 
+		//Generate a shearing matrix
+		static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy);
+
 		// Matrix multiplication
         Matrix operator*(Matrix &other); 
 		// Matrix * vector multiplication
@@ -98,8 +102,12 @@ class Matrix
 
         // Functions and operator to access 
 		// individual matrix elements
-        float get(int row, int col) const { return data[4*row + col]; }
-        void set(int row, int col, float val) { data[4*row + col] = val; }
+        float get(unsigned short row, unsigned short col) const { return data[4*row + col]; }
+        void set(unsigned short row, unsigned short col, float val) { data[4*row + col] = val; }
+
+		//Function to get Vector from matrix
+		Vector getRowAsVector(unsigned short row);
+		Vector getColumnAsVector(unsigned short column);
 
         // Print to stream operator
         // This operator needs to return the original stream
