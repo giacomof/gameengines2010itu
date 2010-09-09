@@ -1,8 +1,6 @@
 class Camera {
 public:
 	void camera() { builLoopUpTables(); };
-	
-private:
 	void builLoopUpTables();
 	void position(	float positionX, float positionY, float positionZ,
 					float viewX,	 float viewY,	  float viewZ,
