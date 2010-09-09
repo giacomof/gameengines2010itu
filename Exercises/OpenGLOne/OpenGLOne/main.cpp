@@ -98,20 +98,6 @@ void updateRotationSpeeds()
 	yrot+=yspeed;
 }
 
-void setupPlayerStats()
-{
-	GLfloat xtrans = -xpos;							// Used For Player Translation On The X Axis
-	GLfloat ztrans = -zpos;							// Used For Player Translation On The Z Axis
-	GLfloat ytrans = -walkbias-0.25f;				// Used For Bouncing Motion Up And Down
-	GLfloat sceneroty = 360.0f - yProt;				// 360 Degree Angle For Player Direction
-}
-
-void updatePlayerMovements()
-{
-	//glRotatef(lookupdown,1.0f,0,0);					// Rotate Up And Down To Look Up And Down
-	//glRotatef(sceneroty,0,1.0f,0);					// Rotate Depending On Direction Player Is Facing
-}
-
 /* ************************************************************************* */
 /* ************** I have changed the way NeHe loades the BMP *************** */
 /* ************** ...because I couldn't get Glaux to work... *************** */
@@ -235,13 +221,10 @@ int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	camera.doViewTransform();							// move the camera
 	
 	
-	glTranslatef(0.0f,0.0f,z);							// this brings the object a little bit far away from the camera
+	//glTranslatef(0.0f,0.0f,z);							// this brings the object a little bit far away from the camera
 
 	// update rotations
 	updateRotations();
-
-	// load player position, direction, etc...
-	setupPlayerStats();
 
 	// create the cube
 	loadObjects();
