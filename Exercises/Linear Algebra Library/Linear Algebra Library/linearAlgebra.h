@@ -7,6 +7,8 @@
 namespace linearAlgebra
 {
 
+static const double PI = 4.0 * atan(1.0);
+
 // Exception used to signal divisions by zero
 class DivisionByZeroException {};
 

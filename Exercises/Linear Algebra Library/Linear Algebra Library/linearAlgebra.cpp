@@ -3,8 +3,6 @@
 
 #include "linearAlgebra.h"
 
-#define PI 3.14159265
-
 using namespace std;
 
 namespace linearAlgebra
@@ -255,7 +253,6 @@ Matrix Matrix::generateUniformScalingMatrix(float S)
 Matrix Matrix::generateXRotationMatrix(float degree)
 {
 	Matrix result;
-
 	float cosine = cos(degree*PI/180);
 	float sine = sin(degree*PI/180);
 
