@@ -101,7 +101,7 @@ class Matrix
 
 		// Function for transpose matrix
 		Matrix getTranspose();
-		// Function for matrix inverse
+		// Function for inverse matrix
 		Matrix getInverse();
 
 		//Function for the determinant of the matrix

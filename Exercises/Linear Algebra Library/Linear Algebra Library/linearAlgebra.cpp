@@ -504,7 +504,7 @@ Matrix Matrix::getTranspose()
 	return result;
 }
 
-// Calculate the inverse of a 4x4 matrix with laplace expansion algorithm
+// Calculate the inverse of a 4x4 matrix with Laplace expansion algorithm
 Matrix Matrix::getInverse()
 {
 	Matrix result;
@@ -551,7 +551,7 @@ Matrix Matrix::getInverse()
 
 
 
-// Calculate the determinant of a 4x4 matrix with laplace expansion algorithm
+// Calculate the determinant of a 4x4 matrix with Laplace expansion algorithm
 float Matrix::getDeterminant()
 {
 	/*float determinant =
