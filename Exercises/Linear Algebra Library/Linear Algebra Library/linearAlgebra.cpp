@@ -259,8 +259,30 @@ Matrix Matrix::generateUniformScalingMatrix(float S)
 Matrix Matrix::generateXRotationMatrix(float degree)
 {
 	Matrix result;
-	float cosine = cos(degree*PI/180);
-	float sine = sin(degree*PI/180);
+	float sine;
+	float cosine;
+
+	int intDegree = int(degree);
+	int rotations = intDegree/360;
+
+	degree -= 360*rotations;
+
+	if(degree==0) {
+		sine=0;
+		cosine=1;
+	}else if(degree==90) {
+		sine=1;
+		cosine=0;
+	}else if(degree==180) {
+		sine=0;
+		cosine=-1;
+	}else if(degree==270) {
+		sine=-1;
+		cosine=0;
+	} else {
+		cosine = cos(degree*PI/180);
+		sine = sin(degree*PI/180);
+	}
 
 	result.set(0,0,1);
 	result.set(0,1,0);
@@ -286,9 +308,30 @@ Matrix Matrix::generateXRotationMatrix(float degree)
 Matrix Matrix::generateYRotationMatrix(float degree)
 {
 	Matrix result;
-	double cosine = cos(degree*PI/180);
-	double sine = sin(degree*PI/180);
-	double mSine = -sin(degree*PI/180);
+	float sine;
+	float cosine;
+
+	int intDegree = int(degree);
+	int rotations = intDegree/360;
+
+	degree -= 360*rotations;
+
+	if(degree==0) {
+		sine=0;
+		cosine=1;
+	}else if(degree==90) {
+		sine=1;
+		cosine=0;
+	}else if(degree==180) {
+		sine=0;
+		cosine=-1;
+	}else if(degree==270) {
+		sine=-1;
+		cosine=0;
+	} else {
+		cosine = cos(degree*PI/180);
+		sine = sin(degree*PI/180);
+	}
 
 	result.set(0,0,cosine);
 	result.set(0,1,0);
@@ -298,7 +341,7 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 	result.set(1,1,1);
 	result.set(1,2,0);
 	result.set(1,3,0);
-	result.set(2,0,mSine);
+	result.set(2,0,-sine);
 	result.set(2,1,0);
 	result.set(2,2,cosine);
 	result.set(2,3,0);
@@ -314,12 +357,33 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 Matrix Matrix::generateZRotationMatrix(float degree)
 {
 	Matrix result;
-	double cosine = cos(degree*PI/180);
-	double sine = sin(degree*PI/180);
-	double mSine = -sin(degree*PI/180);
+	float sine;
+	float cosine;
+
+	int intDegree = int(degree);
+	int rotations = intDegree/360;
+
+	degree -= 360*rotations;
+
+	if(degree==0) {
+		sine=0;
+		cosine=1;
+	}else if(degree==90) {
+		sine=1;
+		cosine=0;
+	}else if(degree==180) {
+		sine=0;
+		cosine=-1;
+	}else if(degree==270) {
+		sine=-1;
+		cosine=0;
+	} else {
+		cosine = cos(degree*PI/180);
+		sine = sin(degree*PI/180);
+	}
 
 	result.set(0,0,cosine);
-	result.set(0,1,mSine);
+	result.set(0,1,-sine);
 	result.set(0,2,0);
 	result.set(0,3,0);
 	result.set(1,0,sine);
