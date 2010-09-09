@@ -34,7 +34,7 @@ GLfloat LightPosition[]=	{ 0.0f, 0.0f, 2.0f, 1.0f };
 GLuint	filter;				// Which Filter To Use
 GLuint	texture[3];			// Storage For 3 Textures
 
-float xpos, zpos, walkbias, yProt, lookupdown, sceneroty, walkbiasangle, heading, piover180, cameraSpeed = 0.1f;
+float xpos, zpos, walkbias, yProt, lookupdown, sceneroty, walkbiasangle, heading, piover180, cameraSpeed = 0.05f;
 
 Camera camera;
 

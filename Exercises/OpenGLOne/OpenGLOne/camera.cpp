@@ -65,19 +65,19 @@ using namespace linearAlgebra;
 	{
 		Vector distance = vView - vPosition; // vector that contains the information about the direction of the vector that starts in vPosition and ends in vView
 		
-		if(rotX) {
+		if(rotX!=0) {
 			vView.set(2, vPosition.get(2) + sin_table[rotX]*distance.get(1) + cos_table[rotX]*distance.get(2));
-			vView.set(1, vPosition.get(1) + sin_table[rotX]*distance.get(1) + cos_table[rotX]*distance.get(2));
+			vView.set(1, vPosition.get(1) + cos_table[rotX]*distance.get(1) - sin_table[rotX]*distance.get(2));
 		}
 
-		if(rotY) {
+		if(rotY!=0) {
 			vView.set(2, vPosition.get(2) + sin_table[rotY]*distance.get(0) + cos_table[rotY]*distance.get(2));
-			vView.set(0, vPosition.get(0) + sin_table[rotY]*distance.get(0) + cos_table[rotY]*distance.get(2));
+			vView.set(0, vPosition.get(0) + cos_table[rotY]*distance.get(0) - sin_table[rotY]*distance.get(2));
 		}
 	
-		if(rotZ) {
+		if(rotZ!=0) {
 			vView.set(0, vPosition.get(0) + sin_table[rotZ]*distance.get(1) + cos_table[rotZ]*distance.get(0));
-			vView.set(1, vPosition.get(1) + sin_table[rotZ]*distance.get(1) + cos_table[rotZ]*distance.get(0));
+			vView.set(1, vPosition.get(1) + cos_table[rotZ]*distance.get(1) - sin_table[rotZ]*distance.get(0));
 		}
 
 	}
