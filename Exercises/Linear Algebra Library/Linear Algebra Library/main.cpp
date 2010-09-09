@@ -12,10 +12,10 @@ int main()
 
 	
 	
-    Matrix m(1, 0, 0, 1,
-             0, 1, 0, 2,
-             0, 0, 1, 3,
-             0, 0, 0, 1);
+    Matrix m(2, 3, 4, 5,
+             0, -1, 2, 1,
+             0, 0, 2, 4,
+             0, 3, -6, 0);
 
     Matrix t(1, 0, 0, 0,
              0, 1, 0, 0,
@@ -24,9 +24,15 @@ int main()
 
 	Matrix prova = Matrix::generateXRotationMatrix(90);
 
-	cout << " prova  = " << prova << endl; 
+	cout << " m  = " << m << endl; 
     cout << "-------------------------------------" << endl;
-	cout << " provaT  = " << prova.getTranspose() << endl; 
+	cout << " Det(m)  = " << m.getDeterminant() << endl; 
+	cout << "-------------------------------------" << endl;
+	cout << " mT  = " << m.getTranspose() << endl; 
+	cout << "-------------------------------------" << endl;
+	cout << " m-1  = " << m.getInverse() << endl;
+	cout << "-------------------------------------" << endl;
+	cout << " m*m-1  = " << m.getInverse()*m << endl;
 
 
     system("Pause");

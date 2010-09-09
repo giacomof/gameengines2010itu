@@ -447,6 +447,20 @@ Matrix Matrix::operator*(Matrix &other)
      return result;
 }
 
+// Operator overload for the * sign between a matrix and a scalar
+Matrix Matrix::operator*(float other)
+{
+	Matrix result;
+
+	for (unsigned int r = 0; r < 4; r++)
+         for (unsigned int c = 0; c < 4; c++) {             
+             
+             result.set(r,c, data[4*r + c]*other);
+         }
+
+     return result;
+}
+
 // Operator overload for the * sign between a matrix and a vector
 Vector Matrix::operator*(Vector &other)
 {
@@ -489,6 +503,91 @@ Matrix Matrix::getTranspose()
 
 	return result;
 }
+
+// Calculate the inverse of a 4x4 matrix with laplace expansion algorithm
+Matrix Matrix::getInverse()
+{
+	Matrix result;
+
+	float temp0 = data[0]*data[5] - data[1]*data[4];
+	float temp1 = data[0]*data[6] - data[2]*data[4];
+	float temp2 = data[0]*data[7] - data[3]*data[4];
+	float temp3 = data[1]*data[6] - data[2]*data[5];
+	float temp4 = data[1]*data[7] - data[3]*data[5];
+	float temp5 = data[2]*data[7] - data[3]*data[6];
+	float temp6 = data[8]*data[13] - data[9]*data[12];
+	float temp7 = data[8]*data[14] - data[10]*data[12];
+	float temp8 = data[8]*data[15] - data[11]*data[12];
+	float temp9 = data[9]*data[14] - data[10]*data[13];
+	float temp10 = data[9]*data[15] - data[11]*data[13];
+	float temp11 = data[10]*data[15] - data[11]*data[14];
+
+	float determinant = temp0*temp11 - temp1*temp10 + temp2*temp9 + 
+						temp3*temp8 - temp4*temp7 + temp5*temp6;
+
+	if (determinant != 0) {
+		result.set(0,0,data[5]*temp11-data[6]*temp10+data[7]*temp9);
+		result.set(0,1,-data[1]*temp11+data[2]*temp10-data[3]*temp9);
+		result.set(0,2,data[13]*temp5-data[14]*temp4+data[15]*temp3);
+		result.set(0,3,-data[9]*temp5+data[10]*temp4-data[11]*temp3);
+		result.set(1,0,-data[4]*temp11+data[6]*temp8-data[7]*temp7);
+		result.set(1,1,data[0]*temp11-data[2]*temp8+data[3]*temp7);
+		result.set(1,2,-data[12]*temp5+data[14]*temp2-data[15]*temp1);
+		result.set(1,3,data[8]*temp5-data[10]*temp2+data[11]*temp1);
+		result.set(2,0,data[4]*temp10-data[5]*temp8+data[7]*temp6);
+		result.set(2,1,-data[0]*temp10+data[1]*temp8-data[3]*temp6);
+		result.set(2,2,data[12]*temp4-data[13]*temp2+data[15]*temp0);
+		result.set(2,3,-data[8]*temp4+data[9]*temp2-data[11]*temp0);
+		result.set(3,0,-data[4]*temp9+data[5]*temp7-data[6]*temp6);
+		result.set(3,1,data[0]*temp9-data[1]*temp7+data[2]*temp6);
+		result.set(3,2,-data[12]*temp3+data[13]*temp1-data[14]*temp0);
+		result.set(3,3,data[8]*temp3-data[9]*temp1+data[10]*temp0);
+	} else {
+		return result;
+	}
+
+	return result*(1/determinant);
+}
+
+
+
+// Calculate the determinant of a 4x4 matrix with laplace expansion algorithm
+float Matrix::getDeterminant()
+{
+	/*float determinant =
+		data[0]*data[5]*data[10]*data[15] + data[0]*data[6]*data[11]*data[13] + 
+		data[0]*data[7]*data[9]*data[14] - data[0]*data[5]*data[11]*data[14] -
+		data[0]*data[6]*data[9]*data[15] - data[0]*data[7]*data[10]*data[13] +
+		data[1]*data[4]*data[11]*data[14] + data[1]*data[6]*data[8]*data[15] +
+		data[1]*data[7]*data[10]*data[12] - data[1]*data[4]*data[10]*data[15] -
+		data[1]*data[6]*data[11]*data[12] - data[1]*data[7]*data[8]*data[14] +
+		data[2]*data[4]*data[9]*data[15] + data[2]*data[5]*data[11]*data[12] + 
+		data[2]*data[7]*data[8]*data[13] - data[2]*data[4]*data[11]*data[13] -
+		data[2]*data[5]*data[8]*data[15] - data[2]*data[7]*data[9]*data[12] +
+		data[3]*data[4]*data[10]*data[13] + data[3]*data[5]*data[8]*data[14] +
+		data[3]*data[6]*data[8]*data[13] - data[3]*data[4]*data[9]*data[14] -
+		data[3]*data[5]*data[10]*data[12] - data[3]*data[6]*data[8]*data[13];
+
+	return determinant;
+	*/
+
+	float temp0 = data[0]*data[5] - data[1]*data[4];
+	float temp1 = data[0]*data[6] - data[2]*data[4];
+	float temp2 = data[0]*data[7] - data[3]*data[4];
+	float temp3 = data[1]*data[6] - data[2]*data[5];
+	float temp4 = data[1]*data[7] - data[3]*data[5];
+	float temp5 = data[2]*data[7] - data[3]*data[6];
+	float temp6 = data[8]*data[13] - data[9]*data[12];
+	float temp7 = data[8]*data[14] - data[10]*data[12];
+	float temp8 = data[8]*data[15] - data[11]*data[12];
+	float temp9 = data[9]*data[14] - data[10]*data[13];
+	float temp10 = data[9]*data[15] - data[11]*data[13];
+	float temp11 = data[10]*data[15] - data[11]*data[14];
+
+	return temp0*temp11 - temp1*temp10 + temp2*temp9 + 
+			temp3*temp8 - temp4*temp7 + temp5*temp6;
+}
+
 
 // Return the specified row as vector
 Vector Matrix::getRowAsVector(unsigned short row)
