@@ -6,7 +6,7 @@ public:
 					float viewX,	 float viewY,	  float viewZ,
 					float upX,		 float upY,		  float upZ );
 	void move(float speed);
-	void rotate(int rotX, int rotY, int rotZ);
+	void rotate(float angle);
 	void doViewTransform();
 
 };

@@ -21,6 +21,12 @@ bool	light;				// Lighting ON/OFF (with L button)
 bool	lp;					// L button Pressed? 
 bool	fp;					// F button Pressed? 
 
+bool	f4p=false;
+bool	f1p=false;
+
+int		f4timer=0;
+int		f1timer=0;
+
 GLfloat	xrot;				// X Rotation
 GLfloat	yrot;				// Y Rotation
 GLfloat xspeed;				// X Rotation Speed
@@ -34,7 +40,7 @@ GLfloat LightPosition[]=	{ 0.0f, 0.0f, 2.0f, 1.0f };
 GLuint	filter;				// Which Filter To Use
 GLuint	texture[3];			// Storage For 3 Textures
 
-float xpos, zpos, walkbias, yProt, lookupdown, sceneroty, walkbiasangle, heading, piover180, cameraSpeed = 0.05f;
+float cameraSpeed = 0.01f, rotatingAngle = 0.0f;
 
 Camera camera;
 
@@ -218,11 +224,8 @@ int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
 	
 	glLoadIdentity();									// Reset The View
-	camera.doViewTransform();							// move the camera
+	camera.doViewTransform();							// update the camera
 	
-	
-	//glTranslatef(0.0f,0.0f,z);							// this brings the object a little bit far away from the camera
-
 	// update rotations
 	updateRotations();
 
@@ -615,12 +618,32 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 
 				if (keys[VK_F4])												// Is The Right Arrow Being Pressed?
 				{
-					camera.rotate(0, 1, 0);
+					if(f4p) {
+					rotatingAngle += 0.0001f;
+					camera.rotate(rotatingAngle);
+					f4p = false;
+					} else {
+						if(f4timer<15) f4timer++;
+						else {
+							f4timer = 0;
+							f4p = true;
+						}
+					}
 				}
 
 				if (keys[VK_F1])												// Is The Left Arrow Being Pressed?
 				{
-					camera.rotate(0, 359, 0); 	
+					if(f1p) {
+					rotatingAngle -= 0.0001f;
+					camera.rotate(rotatingAngle);
+					f1p = false;
+					} else {
+						if(f1timer<15) f1timer++;
+						else {
+							f1timer = 0;
+							f1p = true;
+						}
+					}
 				}
 
 				if (keys[VK_F6]) {

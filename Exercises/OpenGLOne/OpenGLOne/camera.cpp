@@ -61,29 +61,24 @@ using namespace linearAlgebra;
 	
 	}
 
-	void Camera::rotate(int rotX, int rotY, int rotZ) 
+	void Camera::rotate(float angle) 
 	{
-		Vector distance = vView - vPosition; // vector that contains the information about the direction of the vector that starts in vPosition and ends in vView
 		
-		if(rotX!=0) {
-			vView.set(2, vPosition.get(2) + sin_table[rotX]*distance.get(1) + cos_table[rotX]*distance.get(2));
-			vView.set(1, vPosition.get(1) + cos_table[rotX]*distance.get(1) - sin_table[rotX]*distance.get(2));
-		}
+		// create the rotation matrix
+		Matrix rotYmatrix = Matrix::generateYRotationMatrix(angle);
+		Vector tempVector = rotYmatrix*vView;
+		vView.set( 0, tempVector.get(0));
+		vView.set( 1, tempVector.get(1));
+		vView.set( 2, tempVector.get(2));
 
-		if(rotY!=0) {
-			vView.set(2, vPosition.get(2) + sin_table[rotY]*distance.get(0) + cos_table[rotY]*distance.get(2));
-			vView.set(0, vPosition.get(0) + cos_table[rotY]*distance.get(0) - sin_table[rotY]*distance.get(2));
-		}
+		// make it smooth
+
 	
-		if(rotZ!=0) {
-			vView.set(0, vPosition.get(0) + sin_table[rotZ]*distance.get(1) + cos_table[rotZ]*distance.get(0));
-			vView.set(1, vPosition.get(1) + cos_table[rotZ]*distance.get(1) - sin_table[rotZ]*distance.get(0));
-		}
-
 	}
 
 	void Camera::doViewTransform()
 	{
+		glLoadIdentity();
 		gluLookAt(  vPosition.get(0), vPosition.get(1), vPosition.get(2),
 					vView.get(0),	  vView.get(1),	    vView.get(2),
 					vUp.get(0),		  vUp.get(1),		vUp.get(2));
