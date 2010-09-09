@@ -522,7 +522,7 @@ Matrix Matrix::getInverse()
 	float temp10 = data[9]*data[15] - data[11]*data[13];
 	float temp11 = data[10]*data[15] - data[11]*data[14];
 
-	float determinant = temp0*temp11 - temp1*temp10 + temp2*temp9 + 
+	double determinant = temp0*temp11 - temp1*temp10 + temp2*temp9 + 
 						temp3*temp8 - temp4*temp7 + temp5*temp6;
 
 	if (determinant != 0) {
