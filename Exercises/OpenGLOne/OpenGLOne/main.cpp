@@ -527,7 +527,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 
 
 	// Create Our OpenGL Window
-	if (!CreateGLWindow("NeHe's Textures, Lighting & Keyboard Tutorial",640,480,16,fullscreen))
+	if (!CreateGLWindow("OpenGL Playground",640,480,16,fullscreen))
 	{
 		return 0;									// Quit If Window Was Not Created
 	}
@@ -620,19 +620,19 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 
 				// PLAYER MOVEMENTS MANAGEMENT
 
-				if (keys[VK_NUMPAD6])												// Is The Right Arrow Being Pressed?
+				if (keys[VK_F4])												// Is The Right Arrow Being Pressed?
 				{
 					yProt -= 1.5f;													// Rotate The Scene To The Left
 				}
 
-				if (keys[VK_NUMPAD4])												// Is The Left Arrow Being Pressed?
+				if (keys[VK_F1])												// Is The Left Arrow Being Pressed?
 				{
 					yProt += 1.5f;													// Rotate The Scene To The Right	
 				}
 
 				
 
-				if (keys[VK_NUMPAD8])												// Is The Up Arrow Being Pressed?
+				if (keys[VK_F2])												// Is The Up Arrow Being Pressed?
 				{
 					xpos -= (float)sin(heading*piover180) * 0.05f;					// Move On The X-Plane Based On Player Direction
 					zpos -= (float)cos(heading*piover180) * 0.05f;					// Move On The Z-Plane Based On Player Direction
@@ -647,7 +647,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 					walkbias = (float)sin(walkbiasangle * piover180)/20.0f;			// Causes The Player To Bounce
 				}
 
-				if (keys[VK_NUMPAD5])												// Is The Down Arrow Being Pressed?
+				if (keys[VK_F3])												// Is The Down Arrow Being Pressed?
 				{
 					xpos += (float)sin(heading*piover180) * 0.05f;					// Move On The X-Plane Based On Player Direction
 					zpos += (float)cos(heading*piover180) * 0.05f;					// Move On The Z-Plane Based On Player Direction
