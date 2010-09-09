@@ -2,11 +2,12 @@
 #include <stdio.h>			// Header File For Standard Input/Output
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library
+#include <math.h>
+#include <iostream>
 
 #include "bmp.h";			// Header File for the glaux replacement library
 #include "linearAlgebra.h"; // Header File for our math library
-
-#include <math.h>
+#include "camera.h";		// Header File for our camera implementation	
 
 HDC			hDC=NULL;		// Private GDI Device Context
 HGLRC		hRC=NULL;		// Permanent Rendering Context
@@ -33,7 +34,9 @@ GLfloat LightPosition[]=	{ 0.0f, 0.0f, 2.0f, 1.0f };
 GLuint	filter;				// Which Filter To Use
 GLuint	texture[3];			// Storage For 3 Textures
 
-float xpos, zpos, walkbias, yProt, lookupdown, sceneroty, walkbiasangle, heading, piover180;
+float xpos, zpos, walkbias, yProt, lookupdown, sceneroty, walkbiasangle, heading, piover180, cameraSpeed = 0.1f;
+
+Camera camera;
 
 LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
 
@@ -105,8 +108,8 @@ void setupPlayerStats()
 
 void updatePlayerMovements()
 {
-	glRotatef(lookupdown,1.0f,0,0);					// Rotate Up And Down To Look Up And Down
-	glRotatef(sceneroty,0,1.0f,0);					// Rotate Depending On Direction Player Is Facing
+	//glRotatef(lookupdown,1.0f,0,0);					// Rotate Up And Down To Look Up And Down
+	//glRotatef(sceneroty,0,1.0f,0);					// Rotate Depending On Direction Player Is Facing
 }
 
 /* ************************************************************************* */
@@ -216,13 +219,21 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);		// Setup The Diffuse Light
 	glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);	// Position The Light
 	glEnable(GL_LIGHT1);								// Enable Light One
+
+	camera.position( 0.0, 0.0, 5.0,						// positioning the camera
+					 0.0, 0.0, 4.0,						// lookAt vector
+					 0.0, 1.0, 0.0);					// up vetor
+
 	return TRUE;										// Initialization Went OK
 }
 
 int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	
 	glLoadIdentity();									// Reset The View
+	camera.doViewTransform();							// move the camera
+	
 	
 	glTranslatef(0.0f,0.0f,z);							// this brings the object a little bit far away from the camera
 
@@ -525,7 +536,6 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 
 	fullscreen=FALSE;								// Windowed Mode
 
-
 	// Create Our OpenGL Window
 	if (!CreateGLWindow("OpenGL Playground",640,480,16,fullscreen))
 	{
@@ -622,44 +632,30 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 
 				if (keys[VK_F4])												// Is The Right Arrow Being Pressed?
 				{
-					yProt -= 1.5f;													// Rotate The Scene To The Left
+					camera.rotate(0, 1, 0);
 				}
 
 				if (keys[VK_F1])												// Is The Left Arrow Being Pressed?
 				{
-					yProt += 1.5f;													// Rotate The Scene To The Right	
+					camera.rotate(0, 359, 0); 	
 				}
 
-				
+				if (keys[VK_F6]) {
+					//camera.m_vView.y -= cameraSpeed; 
+				}
+
+				if (keys[VK_F5]) {
+					//camera.m_vView.y += cameraSpeed; 
+				}
 
 				if (keys[VK_F2])												// Is The Up Arrow Being Pressed?
 				{
-					xpos -= (float)sin(heading*piover180) * 0.05f;					// Move On The X-Plane Based On Player Direction
-					zpos -= (float)cos(heading*piover180) * 0.05f;					// Move On The Z-Plane Based On Player Direction
-					if (walkbiasangle >= 359.0f)									// Is walkbiasangle>=359?
-					{
-						walkbiasangle = 0.0f;										// Make walkbiasangle Equal 0
-					}
-					else															// Otherwise
-					{
-						 walkbiasangle+= 10;										// If walkbiasangle < 359 Increase It By 10
-					}
-					walkbias = (float)sin(walkbiasangle * piover180)/20.0f;			// Causes The Player To Bounce
+					camera.move(cameraSpeed);
 				}
 
 				if (keys[VK_F3])												// Is The Down Arrow Being Pressed?
 				{
-					xpos += (float)sin(heading*piover180) * 0.05f;					// Move On The X-Plane Based On Player Direction
-					zpos += (float)cos(heading*piover180) * 0.05f;					// Move On The Z-Plane Based On Player Direction
-					if (walkbiasangle <= 1.0f)										// Is walkbiasangle<=1?
-					{
-						walkbiasangle = 359.0f;										// Make walkbiasangle Equal 359
-					}
-					else															// Otherwise
-					{
-						walkbiasangle-= 10;											// If walkbiasangle > 1 Decrease It By 10
-					}
-					walkbias = (float)sin(walkbiasangle * piover180)/20.0f;			// Causes The Player To Bounce
+					camera.move(-cameraSpeed); 
 				}
 
 			}
