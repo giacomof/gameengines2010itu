@@ -22,7 +22,7 @@ int main()
              0, 0, 1, 0,
              0, 0, 0, 1);
 
-	Matrix prova = Matrix::generateXRotationMatrix(89.99);
+	Matrix prova = Matrix::generateXRotationMatrix(360);
 
 	cout << " prova  = " << prova << endl; 
     cout << "-------------------------------------" << endl;
