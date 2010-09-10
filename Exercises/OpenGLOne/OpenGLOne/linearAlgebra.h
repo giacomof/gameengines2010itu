@@ -1,7 +1,6 @@
 #ifndef __LINEARALGEBRA_H
 #define __LINEARALGEBRA_H
 
-#include <vector>
 #include <ostream>
 
 namespace linearAlgebra
@@ -17,7 +16,8 @@ class DivisionByZeroException {};
 class Vector
 {
     protected:
-        std::vector<float> data;
+		// Float array that will contain the vector
+        float data[4];
 
     public:
 		// Constructors
@@ -63,7 +63,11 @@ class Point: public Vector
 class Matrix
 {
 	protected:
-        std::vector<float> data;
+		// Float array that will contain the matrix
+        float data[16];
+
+		// Function for correct floating point calculation for sine and cosine
+		static void floatingPointSinCos(float* sincos, float* degree);
 
     public:
 		// Generic constructors

@@ -12,7 +12,6 @@ namespace linearAlgebra
 Vector::Vector(void)
 {
      // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
-     data.resize(4);
      data[3] = 0;
 }
 
@@ -20,7 +19,6 @@ Vector::Vector(void)
 Vector::Vector(float x, float y, float z)
 {
      // Here I also fill in the parameters
-     data.resize(4);
      data[0] = x;
      data[1] = y;
      data[2] = z;
@@ -132,7 +130,6 @@ std::ostream & operator<< (std::ostream &os, const Vector &v)
 Point::Point(void)
 {
      // This constructor is called identically to the vector constructor. The fourth coordinate is 1 because we're dealing with a point
-     data.resize(4);
      data[3] = 1;
 }
 
@@ -140,7 +137,6 @@ Point::Point(void)
 Point::Point(float x, float y, float z)
 {
      // We're doing the same here, only also filling in the parameters now
-     data.resize(4);
      data[0] = x;
      data[1] = y;
      data[2] = z;
@@ -151,7 +147,6 @@ Point::Point(float x, float y, float z)
 // Constructor for matrices without parameters
 Matrix::Matrix(void)
 {
-     data.resize(16);
 }
 
 // Constructor for matrices with parameters
@@ -160,8 +155,6 @@ Matrix::Matrix(float a00, float a01, float a02, float a03,
                float a20, float a21, float a22, float a23,
                float a30, float a31, float a32, float a33)
 {
-     data.resize(16);
-
      data[0]  = a00;
      data[1]  = a01;
      data[2]  = a02;
@@ -259,42 +252,21 @@ Matrix Matrix::generateUniformScalingMatrix(float S)
 Matrix Matrix::generateXRotationMatrix(float degree)
 {
 	Matrix result;
-	float sine;
-	float cosine;
+	float sincos[2];
 
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
-
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-		cosine=1;
-	}else if(degree==90) {
-		sine=1;
-		cosine=0;
-	}else if(degree==180) {
-		sine=0;
-		cosine=-1;
-	}else if(degree==270) {
-		sine=-1;
-		cosine=0;
-	} else {
-		cosine = cos(degree*PI/180);
-		sine = sin(degree*PI/180);
-	}
+	Matrix::floatingPointSinCos(&sincos[0],&degree);
 
 	result.set(0,0,1);
 	result.set(0,1,0);
 	result.set(0,2,0);
 	result.set(0,3,0);
 	result.set(1,0,0);
-	result.set(1,1,cosine);
-	result.set(1,2,-sine);
+	result.set(1,1,sincos[1]);
+	result.set(1,2,-sincos[0]);
 	result.set(1,3,0);
 	result.set(2,0,0);
-	result.set(2,1,sine);
-	result.set(2,2,cosine);
+	result.set(2,1,sincos[0]);
+	result.set(2,2,sincos[1]);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);
@@ -308,42 +280,21 @@ Matrix Matrix::generateXRotationMatrix(float degree)
 Matrix Matrix::generateYRotationMatrix(float degree)
 {
 	Matrix result;
-	float sine;
-	float cosine;
+	float sincos[2];
 
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
+	Matrix::floatingPointSinCos(&sincos[0],&degree);
 
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-		cosine=1;
-	}else if(degree==90) {
-		sine=1;
-		cosine=0;
-	}else if(degree==180) {
-		sine=0;
-		cosine=-1;
-	}else if(degree==270) {
-		sine=-1;
-		cosine=0;
-	} else {
-		cosine = cos(degree*PI/180);
-		sine = sin(degree*PI/180);
-	}
-
-	result.set(0,0,cosine);
+	result.set(0,0,sincos[1]);
 	result.set(0,1,0);
-	result.set(0,2,sine);
+	result.set(0,2,sincos[0]);
 	result.set(0,3,0);
 	result.set(1,0,0);
 	result.set(1,1,1);
 	result.set(1,2,0);
 	result.set(1,3,0);
-	result.set(2,0,-sine);
+	result.set(2,0,-sincos[0]);
 	result.set(2,1,0);
-	result.set(2,2,cosine);
+	result.set(2,2,sincos[1]);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);
@@ -357,37 +308,16 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 Matrix Matrix::generateZRotationMatrix(float degree)
 {
 	Matrix result;
-	float sine;
-	float cosine;
+	float sincos[2];
 
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
+	Matrix::floatingPointSinCos(&sincos[0],&degree);
 
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-		cosine=1;
-	}else if(degree==90) {
-		sine=1;
-		cosine=0;
-	}else if(degree==180) {
-		sine=0;
-		cosine=-1;
-	}else if(degree==270) {
-		sine=-1;
-		cosine=0;
-	} else {
-		cosine = cos(degree*PI/180);
-		sine = sin(degree*PI/180);
-	}
-
-	result.set(0,0,cosine);
-	result.set(0,1,-sine);
+	result.set(0,0,sincos[1]);
+	result.set(0,1,-sincos[0]);
 	result.set(0,2,0);
 	result.set(0,3,0);
-	result.set(1,0,sine);
-	result.set(1,1,cosine);
+	result.set(1,0,sincos[0]);
+	result.set(1,1,sincos[1]);
 	result.set(1,2,0);
 	result.set(1,3,0);
 	result.set(2,0,0);
@@ -402,6 +332,7 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 	return result;
 }
 
+// Generate a shearing matrix from six float values 
 static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
 {
 	Matrix result;
@@ -630,4 +561,33 @@ std::ostream & operator<< (std::ostream &os, const Matrix &m)
      return os;
 }
 
+// Function for correct floating point calculation for sine and cosine
+void Matrix::floatingPointSinCos(float* sincos, float* degree)
+{
+	// Function to reduce the angle in one between 0 and 360 degree
+	int intDegree = int(*degree);
+	int rotations = intDegree/360;
+
+	*degree -= 360*rotations;
+
+	// Check for 0 sine or cosine
+	if(degree==0) {
+		sincos[0]=0;
+		sincos[1]=1;
+	}else if(*degree==90) {
+		sincos[0]=1;
+		sincos[1]=0;
+	}else if(*degree==180) {
+		sincos[0]=0;
+		sincos[1]=-1;
+	}else if(*degree==270) {
+		sincos[0]=-1;
+		sincos[1]=0;
+	} else {
+		// Otherwise calculate them with the cmath functions
+		sincos[0] = sin(*degree*PI/180);
+		sincos[1] = cos(*degree*PI/180);
+	}
+
+}
 }
