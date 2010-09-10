@@ -102,12 +102,25 @@ float  Vector::operator*(Vector &other)
 // Operator overload for the * sign between a vector and a float
 Vector Vector::operator*(float s)
 {
-     Vector result;
-     // I scale the the vector.
-     result.set(0, data[0] * s);
-     result.set(1, data[1] * s);
-     result.set(2, data[2] * s);
-     return result;
+	Vector result;
+	// I scale the the vector.
+	result.set(0, data[0] * s);
+	result.set(1, data[1] * s);
+	result.set(2, data[2] * s);
+	return result;
+}
+
+// Vector cross product
+Vector Vector::operator%(Vector &other)
+{
+	Vector result;
+
+	// I scale the the vector.
+	result.set(0, data[1] * other.data[2] - data[2] * other.data[1]);
+	result.set(1, -data[0] * other.data[2] - data[2] * other.data[0]);
+	result.set(2, data[0] * other.data[1] - data[1] * other.data[0]);
+
+	return result;
 }
 
 // Operator overload for the [] symbols (example, Vector[0] returns the content of data[0])
