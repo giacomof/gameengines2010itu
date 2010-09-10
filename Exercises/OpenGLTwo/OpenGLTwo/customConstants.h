@@ -2,9 +2,9 @@
 #define _CUSTOMCONSTANTS_H
 
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
-#define SCREEN_BPP 16
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+#define SCREEN_BPP 32
 
 
 #define TICK_INTERVAL 30

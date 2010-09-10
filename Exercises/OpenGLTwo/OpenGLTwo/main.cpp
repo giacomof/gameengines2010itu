@@ -1,5 +1,5 @@
-#include <windows.h>		// Header File For Windows
-#include <stdio.h>			// Header File For Standard Input/Output
+#include <windows.h>					// Header File For Windows
+#include <stdio.h>						// Header File For Standard Input/Output
 
 #include <math.h>
 #include <iostream>
@@ -9,13 +9,11 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#include "bmp.h"			// Header File for the glaux replacement library
-#include "linearAlgebra.h" // Header File for our math library
+#include "bmp.h"						// Header File for the glaux replacement library
+#include "linearAlgebra.h"				// Header File for our math library
 #include "customConstants.h"
 
 using namespace std;
-
-
 
 SDL_Surface *surface;
 
@@ -31,7 +29,7 @@ GLfloat Position2[] = {-10.0f, 190.0f, -10.0f, 1.0f};
 GLfloat Position3[] = {0.0f, 190.0f, 0.0f, 10.0f}; 
 
 
-float ANGLE_SENSITIVITY = 0.04f;
+float ANGLE_SENSITIVITY = 0.1f;
 float camYaw; 
 float camPitch; 
 int mouseStateX, mouseStateY, centerX=0, centerY=0, dX, dY, temp;
@@ -40,7 +38,6 @@ float camSpeed = 0.1f;
 int wKeyTyped = 0, sKeyTyped = 0, aKeyTyped = 0, dKeyTyped = 0;
 
 GLuint image;
-
 
 int initGL(void);
 void drawGL(void);
@@ -58,8 +55,6 @@ GLuint	texture[3];			// Storage For 3 Textures
 
 int main(int argc, char **argv)
 {
-    cout<<"Program ehellee\n";
-
     int videoFlags;
     int done = FALSE;
     SDL_Event event;
@@ -68,14 +63,12 @@ int main(int argc, char **argv)
 
     if (SDL_Init(SDL_INIT_VIDEO)<0)
     {
-        cout<<"video amjiltgui"<<endl;
         Quit(1);
     }
 
     videoInfo = SDL_GetVideoInfo();
     if (!videoInfo)
     {
-        cout<<"amjiltgui"<<endl;
         Quit(1);
     }
 
@@ -100,14 +93,12 @@ int main(int argc, char **argv)
                                 videoFlags);
     if (!surface)
     {
-        cout<<"surface amjiltgui"<<endl;
         Quit(1);
     }
 
     
     if (initGL()==FALSE)
     {
-        cout<<"amjiltgui"<<endl;
         Quit(1);
     }
     resizeWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -136,7 +127,6 @@ int main(int argc, char **argv)
                     videoFlags);
                 if (!surface)
                 {
-                    cout<<"Amjiltgui"<<endl;
                     Quit(1);
                 }
                 resizeWindow(
@@ -185,12 +175,10 @@ int main(int argc, char **argv)
                 break;
             case SDL_MOUSEMOTION:
                 
-                SDL_GetMouseState(&mouseStateX, &mouseStateY);            
-                cout<<mouseStateX<<" "<<mouseStateY<<endl;
+                SDL_GetMouseState(&mouseStateX, &mouseStateY);
                 dX = (int)mouseStateX - centerX;
                 dY = (int)mouseStateY - centerY;
                
-                cout<<dX<<" "<<dY<<endl;
                 camYaw -= ANGLE_SENSITIVITY * dX;
                 camPitch -= ANGLE_SENSITIVITY * dY;
                 clampCamera();
@@ -234,7 +222,7 @@ void drawGL(void)
     glPushMatrix();
     {
 
-    glColor3f(0.0f,1.0f,1.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
     for(float i = -50; i <= 50; i += 1)
     {
         glBegin(GL_LINES);
@@ -330,7 +318,7 @@ int initGL(void)
                 -0.5f*(float)(SCREEN_HEIGHT/SCREEN_WIDTH),
                 0.5f*(float)(SCREEN_HEIGHT/SCREEN_WIDTH),
                 1.0f,
-                500.0f);
+                1000.0f);
     glMatrixMode(GL_MODELVIEW);
 
     
@@ -370,7 +358,6 @@ void handleKeyPress(SDL_keysym *keysym)
         Quit(0);
         break;
     case SDLK_F1:
-        cout<<"Shiljuullee"<<endl;
         SDL_WM_ToggleFullScreen(surface);
         break;    
     default:
