@@ -16,6 +16,7 @@ class DivisionByZeroException {};
 class Vector
 {
     protected:
+		// Float array that will contain the vector
         float data[4];
 
     public:
@@ -62,8 +63,10 @@ class Point: public Vector
 class Matrix
 {
 	protected:
+		// Float array that will contain the matrix
         float data[16];
 
+		// Function for correct floating point calculation for sine and cosine
 		static void floatingPointSinCos(float* sincos, float* degree);
 
     public:
