@@ -681,34 +681,14 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
 
 				// PLAYER MOVEMENTS MANAGEMENT
 
-				if (keys[0x44])												// Is The Right Arrow Being Pressed?
+				if (keys[0x41])												// Is The Right Arrow Being Pressed?
 				{
-					if(f4p) {
-					rotatingAngle = 0.5f;
-					camera.rotate(rotatingAngle);
-					f4p = false;
-					} else {
-						if(f4timer<15) f4timer++;
-						else {
-							f4timer = 0;
-							f4p = true;
-						}
-					}
+					camera.strafe(cameraSpeed);
 				}
 
-				if (keys[0x41])												// Is The Left Arrow Being Pressed?
+				if (keys[0x44])												// Is The Left Arrow Being Pressed?
 				{
-					if(f1p) {
-					rotatingAngle = -0.5f;
-					camera.rotate(rotatingAngle);
-					f1p = false;
-					} else {
-						if(f1timer<15) f1timer++;
-						else {
-							f1timer = 0;
-							f1p = true;
-						}
-					}
+					camera.strafe(-cameraSpeed);
 				}
 
 				if (keys[VK_F6]) {
