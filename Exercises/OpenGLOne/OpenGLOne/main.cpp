@@ -40,7 +40,7 @@ GLfloat LightPosition[]=	{ 0.0f, 0.0f, 2.0f, 1.0f };
 GLuint	filter;				// Which Filter To Use
 GLuint	texture[3];			// Storage For 3 Textures
 
-float cameraSpeed = 0.01f, rotatingAngle = 0.0f;
+float cameraSpeed = 0.01f, rotatingAngle = 0.005f;
 
 Camera camera;
 

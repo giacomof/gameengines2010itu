@@ -63,19 +63,21 @@ using namespace linearAlgebra;
 
 	void Camera::rotate(float angle) 
 	{
-		
+
 		// computate the distance vector starting from the origin
 		// to the camera position vector
 
 		Vector origin = Vector(0.0f, 0.0f, 0.0f); 
-		Vector distance = origin - vPosition;
+		Vector distance = origin - vView;
 		Vector yAxes = Vector (0.0f, 1.0f, 0.0f);
 
 		Matrix yAxesTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
 
 		yAxes = yAxesTranslationMatrix * yAxes;
 
+		Matrix ultimateRotationmatrix = Matrix::generateAxesRotationMatrix(yAxes, angle);
 
+		vView = ultimateRotationmatrix * vView;
 
 
 
