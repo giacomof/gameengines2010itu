@@ -29,8 +29,10 @@ class Vector
         Vector operator-(Vector &other);
 		// Vector dot product
 		Vector operator*(float s);
-		// Vector scalar product
+		// Vector * scalar product
         float operator*(Vector &other);
+		// Vector cross product
+		Vector operator%(Vector &other);
 
         // Functions for magnitude, quadratic magnitude and normalization
 		float getMagnitude(void);
