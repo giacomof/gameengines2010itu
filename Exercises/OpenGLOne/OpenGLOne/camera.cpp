@@ -66,12 +66,14 @@ using namespace linearAlgebra;
 		
 		// create the rotation matrix
 		Matrix rotYmatrix = Matrix::generateYRotationMatrix(angle);
+		// create the rotated vector
 		Vector tempVector = rotYmatrix*vView;
+		// set the rotated vector as the view vector
 		vView.set( 0, tempVector.get(0));
 		vView.set( 1, tempVector.get(1));
 		vView.set( 2, tempVector.get(2));
 
-		// make it smooth
+		
 
 	
 	}
