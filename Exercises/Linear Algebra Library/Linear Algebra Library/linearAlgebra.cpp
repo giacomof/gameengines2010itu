@@ -259,21 +259,21 @@ Matrix Matrix::generateUniformScalingMatrix(float S)
 Matrix Matrix::generateXRotationMatrix(float degree)
 {
 	Matrix result;
-	float* sincos[2];
+	float sincos[2];
 
-	Matrix::floatingPointSinCos(sincos[0],&degree);
+	Matrix::floatingPointSinCos(&sincos[0],&degree);
 
 	result.set(0,0,1);
 	result.set(0,1,0);
 	result.set(0,2,0);
 	result.set(0,3,0);
 	result.set(1,0,0);
-	result.set(1,1,*sincos[1]);
-	result.set(1,2,-*sincos[0]);
+	result.set(1,1,sincos[1]);
+	result.set(1,2,-sincos[0]);
 	result.set(1,3,0);
 	result.set(2,0,0);
-	result.set(2,1,*sincos[0]);
-	result.set(2,2,*sincos[1]);
+	result.set(2,1,sincos[0]);
+	result.set(2,2,sincos[1]);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);

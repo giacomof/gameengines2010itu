@@ -36,7 +36,7 @@ int main()
 	cout << "-------------------------------------" << endl;
 	cout << "-------------------------------------" << endl;
 	cout << "-------------------------------------" << endl;
-	cout << " rotationMatrix X  = " << Matrix::generateXRotationMatrix(90) << endl; 
+	cout << " rotationMatrix X  = " << Matrix::generateXRotationMatrix(30) << endl; 
 
     system("Pause");
     return 0;
