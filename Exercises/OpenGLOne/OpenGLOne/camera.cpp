@@ -73,9 +73,6 @@ using namespace linearAlgebra;
 		vView.set( 1, tempVector.get(1));
 		vView.set( 2, tempVector.get(2));
 
-		
-
-	
 	}
 
 	void Camera::doViewTransform()
@@ -97,74 +94,3 @@ using namespace linearAlgebra;
 		cos_table[angle] = (float) cos((double)angle*PI/180);
 		}
 	}
-
-
-
-
-
-
-/* ************************************************* */
-/* ************ THIS IS OLD CODE ******************* */
-/* ************************************************* */
-
-/*	void Camera :: rotateY(float amount)
-	{
-		Vector target = m_target;
-		Vector right = m_right;
-
-		amount /= 57.2957795f;
-
-		m_target.m_xyzw[0] = (cos(1.5708f + amount) * target.m_xyzw[0]) + (cos(amount) * right.m_xyzw[0]);
-
-		m_target.m_xyzw[1] = (cos(1.5708f + amount) * target.m_xyzw[1]) + (cos(amount) * right.m_xyzw[1]);
-
-		m_target.m_xyzw[2] = (cos(1.5708f + amount) * target.m_xyzw[2]) + (cos(amount) * right.m_xyzw[2]);
-
-		m_right.m_xyzw[0]  = (cos(amount) * target.m_xyzw[0]) + (cos(1.5708f - amount) * right.m_xyzw[0]);
-
-		m_right.m_xyzw[1]  = (cos(amount) * target.m_xyzw[1]) + (cos(1.5708f - amount) * right.m_xyzw[1]);
-
-		m_right.m_xyzw[2]  = (cos(amount) * target.m_xyzw[2]) + (cos(1.5708f - amount) * right.m_xyzw[2]);
-
-		m_target.normalize();
-		m_right.normalize();
-	}
-
-	void Camera :: lookAt(Vector target)
-	{
-		Vector projectedTarget;
-	
-		target = target - m_position;
-		projectedTarget = target;
-        
-		if(fabs(target.m_xyzw[0]) < 0.00001f && fabs(target.m_xyzw[2]) < 0.00001f) {	// YZ plane
-    
-			projectedTarget.m_xyzw[0] = 0.0f;
-			projectedTarget.normalize();
-        
-			m_right = Vector(1.0f, 0.0f, 0.0f);
-			m_up = cross(projectedTarget, m_right);
-            
-			m_target = target;
-			m_right = -cross(m_target, m_up);
-		}
-        
-		else {										// XZ plane
-            
-			projectedTarget.m_xyzw[1] = 0.0f;
-			projectedTarget.normalize();
-        
-			m_up = Vector(0.0f, 1.0f, 0.0f);
-			m_right = -cross(projectedTarget, m_up);
-	
-			m_target = target;
-			m_up = cross(m_target, m_right);
-		}
-	
-		m_target.normalize();
-		m_right.normalize();
-		m_up.normalize();
-	}
-*/
-
-

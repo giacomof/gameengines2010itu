@@ -89,50 +89,72 @@ void loadObjects()
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
 	glEnd();
 
-	glLoadIdentity();	
+	//glLoadIdentity();	
 	
-	glTranslatef(2.0f, 1.0f, 2.0f);
+	glTranslatef(-1.5f,0.0f,-6.0f);						// Move Left 1.5 Units And Into The Screen 6.0
+	glBegin(GL_TRIANGLES);								// Start Drawing A Triangle
+		glColor3f(1.0f,0.0f,0.0f);						// Red
+		glVertex3f( 0.0f, 1.0f, 0.0f);					// Top Of Triangle (Front)
+		glColor3f(0.0f,1.0f,0.0f);						// Green
+		glVertex3f(-1.0f,-1.0f, 1.0f);					// Left Of Triangle (Front)
+		glColor3f(0.0f,0.0f,1.0f);						// Blue
+		glVertex3f( 1.0f,-1.0f, 1.0f);					// Right Of Triangle (Front)
+		glColor3f(1.0f,0.0f,0.0f);						// Red
+		glVertex3f( 0.0f, 1.0f, 0.0f);					// Top Of Triangle (Right)
+		glColor3f(0.0f,0.0f,1.0f);						// Blue
+		glVertex3f( 1.0f,-1.0f, 1.0f);					// Left Of Triangle (Right)
+		glColor3f(0.0f,1.0f,0.0f);						// Green
+		glVertex3f( 1.0f,-1.0f, -1.0f);					// Right Of Triangle (Right)
+		glColor3f(1.0f,0.0f,0.0f);						// Red
+		glVertex3f( 0.0f, 1.0f, 0.0f);					// Top Of Triangle (Back)
+		glColor3f(0.0f,1.0f,0.0f);						// Green
+		glVertex3f( 1.0f,-1.0f, -1.0f);					// Left Of Triangle (Back)
+		glColor3f(0.0f,0.0f,1.0f);						// Blue
+		glVertex3f(-1.0f,-1.0f, -1.0f);					// Right Of Triangle (Back)
+		glColor3f(1.0f,0.0f,0.0f);						// Red
+		glVertex3f( 0.0f, 1.0f, 0.0f);					// Top Of Triangle (Left)
+		glColor3f(0.0f,0.0f,1.0f);						// Blue
+		glVertex3f(-1.0f,-1.0f,-1.0f);					// Left Of Triangle (Left)
+		glColor3f(0.0f,1.0f,0.0f);						// Green
+		glVertex3f(-1.0f,-1.0f, 1.0f);					// Right Of Triangle (Left)
+	glEnd();											// Done Drawing The Pyramid
 
-	glBegin(GL_QUADS);
-		// Front Face
-		glNormal3f( 0.0f, 0.0f, 1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
-		// Back Face
-		glNormal3f( 0.0f, 0.0f,-1.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
-		// Top Face
-		glNormal3f( 0.0f, 1.0f, 0.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
-		// Bottom Face
-		glNormal3f( 0.0f,-1.0f, 0.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
-		// Right face
-		glNormal3f( 1.0f, 0.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
-		// Left Face
-		glNormal3f(-1.0f, 0.0f, 0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
-	glEnd();
+	glTranslatef(1.5f,0.0f,-7.0f);						// Move Right 1.5 Units And Into The Screen 7.0
+	glBegin(GL_QUADS);									// Draw A Quad
+		glColor3f(0.0f,1.0f,0.0f);						// Set The Color To Green
+		glVertex3f( 1.0f, 1.0f,-1.0f);					// Top Right Of The Quad (Top)
+		glVertex3f(-1.0f, 1.0f,-1.0f);					// Top Left Of The Quad (Top)
+		glVertex3f(-1.0f, 1.0f, 1.0f);					// Bottom Left Of The Quad (Top)
+		glVertex3f( 1.0f, 1.0f, 1.0f);					// Bottom Right Of The Quad (Top)
+		glColor3f(1.0f,0.5f,0.0f);						// Set The Color To Orange
+		glVertex3f( 1.0f,-1.0f, 1.0f);					// Top Right Of The Quad (Bottom)
+		glVertex3f(-1.0f,-1.0f, 1.0f);					// Top Left Of The Quad (Bottom)
+		glVertex3f(-1.0f,-1.0f,-1.0f);					// Bottom Left Of The Quad (Bottom)
+		glVertex3f( 1.0f,-1.0f,-1.0f);					// Bottom Right Of The Quad (Bottom)
+		glColor3f(1.0f,0.0f,0.0f);						// Set The Color To Red
+		glVertex3f( 1.0f, 1.0f, 1.0f);					// Top Right Of The Quad (Front)
+		glVertex3f(-1.0f, 1.0f, 1.0f);					// Top Left Of The Quad (Front)
+		glVertex3f(-1.0f,-1.0f, 1.0f);					// Bottom Left Of The Quad (Front)
+		glVertex3f( 1.0f,-1.0f, 1.0f);					// Bottom Right Of The Quad (Front)
+		glColor3f(1.0f,1.0f,0.0f);						// Set The Color To Yellow
+		glVertex3f( 1.0f,-1.0f,-1.0f);					// Top Right Of The Quad (Back)
+		glVertex3f(-1.0f,-1.0f,-1.0f);					// Top Left Of The Quad (Back)
+		glVertex3f(-1.0f, 1.0f,-1.0f);					// Bottom Left Of The Quad (Back)
+		glVertex3f( 1.0f, 1.0f,-1.0f);					// Bottom Right Of The Quad (Back)
+		glColor3f(0.0f,0.0f,1.0f);						// Set The Color To Blue
+		glVertex3f(-1.0f, 1.0f, 1.0f);					// Top Right Of The Quad (Left)
+		glVertex3f(-1.0f, 1.0f,-1.0f);					// Top Left Of The Quad (Left)
+		glVertex3f(-1.0f,-1.0f,-1.0f);					// Bottom Left Of The Quad (Left)
+		glVertex3f(-1.0f,-1.0f, 1.0f);					// Bottom Right Of The Quad (Left)
+		glColor3f(1.0f,0.0f,1.0f);						// Set The Color To Violet
+		glVertex3f( 1.0f, 1.0f,-1.0f);					// Top Right Of The Quad (Right)
+		glVertex3f( 1.0f, 1.0f, 1.0f);					// Top Left Of The Quad (Right)
+		glVertex3f( 1.0f,-1.0f, 1.0f);					// Bottom Left Of The Quad (Right)
+		glVertex3f( 1.0f,-1.0f,-1.0f);					// Bottom Right Of The Quad (Right)
+	glEnd();											// Done Drawing The Quad
 
-	glLoadIdentity();
+
+	//glLoadIdentity();
 }
 
 void updateRotations() 
