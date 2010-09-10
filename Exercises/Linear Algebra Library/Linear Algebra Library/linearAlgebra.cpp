@@ -287,42 +287,21 @@ Matrix Matrix::generateXRotationMatrix(float degree)
 Matrix Matrix::generateYRotationMatrix(float degree)
 {
 	Matrix result;
-	float sine;
-	float cosine;
+	float sincos[2];
 
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
+	Matrix::floatingPointSinCos(&sincos[0],&degree);
 
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-		cosine=1;
-	}else if(degree==90) {
-		sine=1;
-		cosine=0;
-	}else if(degree==180) {
-		sine=0;
-		cosine=-1;
-	}else if(degree==270) {
-		sine=-1;
-		cosine=0;
-	} else {
-		cosine = cos(degree*PI/180);
-		sine = sin(degree*PI/180);
-	}
-
-	result.set(0,0,cosine);
+	result.set(0,0,sincos[1]);
 	result.set(0,1,0);
-	result.set(0,2,sine);
+	result.set(0,2,sincos[0]);
 	result.set(0,3,0);
 	result.set(1,0,0);
 	result.set(1,1,1);
 	result.set(1,2,0);
 	result.set(1,3,0);
-	result.set(2,0,-sine);
+	result.set(2,0,-sincos[0]);
 	result.set(2,1,0);
-	result.set(2,2,cosine);
+	result.set(2,2,sincos[1]);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);
@@ -336,37 +315,16 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 Matrix Matrix::generateZRotationMatrix(float degree)
 {
 	Matrix result;
-	float sine;
-	float cosine;
+	float sincos[2];
 
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
+	Matrix::floatingPointSinCos(&sincos[0],&degree);
 
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-		cosine=1;
-	}else if(degree==90) {
-		sine=1;
-		cosine=0;
-	}else if(degree==180) {
-		sine=0;
-		cosine=-1;
-	}else if(degree==270) {
-		sine=-1;
-		cosine=0;
-	} else {
-		cosine = cos(degree*PI/180);
-		sine = sin(degree*PI/180);
-	}
-
-	result.set(0,0,cosine);
-	result.set(0,1,-sine);
+	result.set(0,0,sincos[1]);
+	result.set(0,1,-sincos[0]);
 	result.set(0,2,0);
 	result.set(0,3,0);
-	result.set(1,0,sine);
-	result.set(1,1,cosine);
+	result.set(1,0,sincos[0]);
+	result.set(1,1,sincos[1]);
 	result.set(1,2,0);
 	result.set(1,3,0);
 	result.set(2,0,0);
