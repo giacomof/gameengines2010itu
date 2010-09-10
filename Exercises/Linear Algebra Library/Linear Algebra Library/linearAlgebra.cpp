@@ -12,7 +12,6 @@ namespace linearAlgebra
 Vector::Vector(void)
 {
      // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
-     data.resize(4);
      data[3] = 0;
 }
 
@@ -20,7 +19,6 @@ Vector::Vector(void)
 Vector::Vector(float x, float y, float z)
 {
      // Here I also fill in the parameters
-     data.resize(4);
      data[0] = x;
      data[1] = y;
      data[2] = z;
@@ -132,7 +130,6 @@ std::ostream & operator<< (std::ostream &os, const Vector &v)
 Point::Point(void)
 {
      // This constructor is called identically to the vector constructor. The fourth coordinate is 1 because we're dealing with a point
-     data.resize(4);
      data[3] = 1;
 }
 
@@ -140,7 +137,6 @@ Point::Point(void)
 Point::Point(float x, float y, float z)
 {
      // We're doing the same here, only also filling in the parameters now
-     data.resize(4);
      data[0] = x;
      data[1] = y;
      data[2] = z;
@@ -151,7 +147,6 @@ Point::Point(float x, float y, float z)
 // Constructor for matrices without parameters
 Matrix::Matrix(void)
 {
-     data.resize(16);
 }
 
 // Constructor for matrices with parameters
@@ -160,8 +155,6 @@ Matrix::Matrix(float a00, float a01, float a02, float a03,
                float a20, float a21, float a22, float a23,
                float a30, float a31, float a32, float a33)
 {
-     data.resize(16);
-
      data[0]  = a00;
      data[1]  = a01;
      data[2]  = a02;
