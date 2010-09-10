@@ -64,20 +64,71 @@ using namespace linearAlgebra;
 	void Camera::rotate(float angle) 
 	{
 		
-		// create the rotation matrix
-		Matrix rotYmatrix = Matrix::generateYRotationMatrix(angle);
-		// create the rotated vector
-		Vector rotatedViewVector = rotYmatrix*vView;
-		// set the rotated vector as the view vector
-		vView.set( 0, rotatedViewVector.get(0));
-		vView.set( 1, rotatedViewVector.get(1));
-		vView.set( 2, rotatedViewVector.get(2));
+		// computate the distance vector starting from the origin
+		// to the camera position vector
 
-		Vector rotatedPositionVector = rotYmatrix*vPosition;
-		// set the rotated vector as the position vector
-		vPosition.set( 0, rotatedPositionVector.get(0));
-		vPosition.set( 1, rotatedPositionVector.get(1));
-		vPosition.set( 2, rotatedPositionVector.get(2));
+		Vector origin = Vector(0.0f, 0.0f, 0.0f); 
+		Vector distance = origin - vPosition;
+		Vector yAxes = Vector (0.0f, 1.0f, 0.0f);
+
+		Matrix yAxesTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
+
+		yAxes = yAxesTranslationMatrix * yAxes;
+
+
+
+
+
+		// *******************************************
+		// ************* TEST METHOD *****************
+		// ******* DON'T TRY THIS AT HOME, KIDS ******
+		// *******************************************
+
+		//// creating the origin vector
+		//Vector origin = Vector(0.0f, 0.0f, 0.0f); 
+		//// compute the distance between the origin and my view vector
+		//Vector distance = vView - origin;
+		//// traslating my view vector to the origin
+		//// creating the traslation matrix
+		//Matrix cameraTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
+		//// make it happen
+		//Vector originCamera = cameraTranslationMatrix * vView;
+		//// create the rotation matrix
+		//Matrix rotYmatrix = Matrix::generateYRotationMatrix(angle);
+		//// create the rotated vector
+		//Vector rotatedViewVector = rotYmatrix*originCamera;
+		//// traslate the rotated vector back to the position
+		//distance =  origin - vView;
+		//// creating the traslation matrix
+		//cameraTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
+		//// make it happen
+		//Vector rotatedTraslatedViewVector = cameraTranslationMatrix * rotatedViewVector;
+
+		//// set the rotated vector as the view vector
+		//vView.set( 0, rotatedTraslatedViewVector.get(0));
+		//vView.set( 1, rotatedTraslatedViewVector.get(1));
+		//vView.set( 2, rotatedTraslatedViewVector.get(2));
+		
+
+
+		// *******************************************
+		// **************** OLD CODE *****************
+		// *******************************************
+
+		//// create the rotation matrix
+		//Matrix rotYmatrix = Matrix::generateYRotationMatrix(angle);
+		//// create the rotated vector
+		//Vector rotatedViewVector = rotYmatrix*vView;
+		//// set the rotated vector as the view vector
+		//vView.set( 0, rotatedViewVector.get(0));
+		//vView.set( 1, rotatedViewVector.get(1));
+		//vView.set( 2, rotatedViewVector.get(2));
+
+		//Vector rotatedPositionVector = rotYmatrix*vPosition;
+		//// set the rotated vector as the position vector
+		//vPosition.set( 0, rotatedPositionVector.get(0));
+		//vPosition.set( 1, rotatedPositionVector.get(1));
+		//vPosition.set( 2, rotatedPositionVector.get(2));
 
 	}
 
