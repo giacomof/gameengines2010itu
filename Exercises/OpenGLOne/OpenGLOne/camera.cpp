@@ -63,21 +63,24 @@ using namespace linearAlgebra;
 
 	void Camera::rotate(float angle) 
 	{
+		Vector right(1.0f, 0.0f, 0.0f);
+		vView = vView * cos_table[(int)angle] - right * sin_table[(int)angle];
+		vView.normalize();
 
 		// computate the distance vector starting from the origin
 		// to the camera position vector
 
-		Vector origin = Vector(0.0f, 0.0f, 0.0f); 
-		Vector distance = origin - vView;
-		Vector yAxes = Vector (0.0f, 1.0f, 0.0f);
+		//Vector origin = Vector(0.0f, 0.0f, 0.0f); 
+		//Vector distance = origin - vView;
+		//Vector yAxes = Vector (0.0f, 1.0f, 0.0f);
 
-		Matrix yAxesTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
+		//Matrix yAxesTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
 
-		yAxes = yAxesTranslationMatrix * yAxes;
+		//yAxes = yAxesTranslationMatrix * yAxes;
 
-		Matrix ultimateRotationmatrix = Matrix::generateAxesRotationMatrix(yAxes, angle);
+		//Matrix ultimateRotationmatrix = Matrix::generateAxesRotationMatrix(yAxes, angle);
 
-		vView = ultimateRotationmatrix * vView;
+		//vView = ultimateRotationmatrix * vView;
 
 
 
@@ -136,9 +139,10 @@ using namespace linearAlgebra;
 
 	void Camera::doViewTransform()
 	{
+		Vector viewPoint = vPosition + vView;
 		glLoadIdentity();
 		gluLookAt(  vPosition.get(0), vPosition.get(1), vPosition.get(2),
-					vView.get(0),	  vView.get(1),	    vView.get(2),
+					viewPoint.get(0), viewPoint.get(1), viewPoint.get(2),
 					vUp.get(0),		  vUp.get(1),		vUp.get(2));
 	}
 
