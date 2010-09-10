@@ -248,7 +248,7 @@ Matrix Matrix::generateUniformScalingMatrix(float S)
 	return result;
 }
 
-// Generate a rotation matrix about x-axis, from a  float value
+// Generate a rotation matrix about x-axes, from a  float value
 Matrix Matrix::generateXRotationMatrix(float degree)
 {
 	Matrix result;
@@ -276,7 +276,7 @@ Matrix Matrix::generateXRotationMatrix(float degree)
 	return result;
 }
 
-// Generate a rotation matrix about y-axis, from a  float value
+// Generate a rotation matrix about y-axes, from a  float value
 Matrix Matrix::generateYRotationMatrix(float degree)
 {
 	Matrix result;
@@ -304,7 +304,7 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 	return result;
 }
 
-// Generate a rotation matrix about z-axis, from a  float value
+// Generate a rotation matrix about z-axes, from a  float value
 Matrix Matrix::generateZRotationMatrix(float degree)
 {
 	Matrix result;
@@ -331,6 +331,37 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 
 	return result;
 }
+
+// Generate a rotation matrix about an arbitrary axes, from a Vector and a float
+Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
+{
+	Matrix result;
+	float sincos[2];
+	float k;
+
+	Matrix::floatingPointSinCos(&sincos[0],&degree);
+	k = 1-sincos[1];
+
+	result.set(0,0,(axes.get(0)*axes.get(0)*k)+sincos[1]);
+	result.set(0,1,(axes.get(0)*axes.get(1)*k)-(axes.get(2)*sincos[0]));
+	result.set(0,2,(axes.get(0)*axes.get(2)*k)+(axes.get(1)*sincos[0]));
+	result.set(0,3,0);
+	result.set(1,0,(axes.get(0)*axes.get(1)*k)+(axes.get(2)*sincos[0]));
+	result.set(1,1,(axes.get(1)*axes.get(1)*k)+sincos[1]);
+	result.set(1,2,(axes.get(1)*axes.get(2)*k)-(axes.get(0)*sincos[0]));
+	result.set(1,3,0);
+	result.set(2,0,(axes.get(0)*axes.get(1)*k)-(axes.get(1)*sincos[0]));
+	result.set(2,1,(axes.get(1)*axes.get(2)*k)+(axes.get(0)*sincos[0]));
+	result.set(2,2,(axes.get(2)*axes.get(2)*k)+sincos[1]);
+	result.set(2,3,0);
+	result.set(3,0,0);
+	result.set(3,1,0);
+	result.set(3,2,0);
+	result.set(3,3,1);
+
+	return result;
+}
+
 
 // Generate a shearing matrix from six float values 
 static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
