@@ -67,11 +67,17 @@ using namespace linearAlgebra;
 		// create the rotation matrix
 		Matrix rotYmatrix = Matrix::generateYRotationMatrix(angle);
 		// create the rotated vector
-		Vector tempVector = rotYmatrix*vView;
+		Vector rotatedViewVector = rotYmatrix*vView;
 		// set the rotated vector as the view vector
-		vView.set( 0, tempVector.get(0));
-		vView.set( 1, tempVector.get(1));
-		vView.set( 2, tempVector.get(2));
+		vView.set( 0, rotatedViewVector.get(0));
+		vView.set( 1, rotatedViewVector.get(1));
+		vView.set( 2, rotatedViewVector.get(2));
+
+		Vector rotatedPositionVector = rotYmatrix*vPosition;
+		// set the rotated vector as the position vector
+		vPosition.set( 0, rotatedPositionVector.get(0));
+		vPosition.set( 1, rotatedPositionVector.get(1));
+		vPosition.set( 2, rotatedPositionVector.get(2));
 
 	}
 
@@ -81,7 +87,6 @@ using namespace linearAlgebra;
 		gluLookAt(  vPosition.get(0), vPosition.get(1), vPosition.get(2),
 					vView.get(0),	  vView.get(1),	    vView.get(2),
 					vUp.get(0),		  vUp.get(1),		vUp.get(2));
-
 	}
 
 	// Build the sin and cos look up tables to get 

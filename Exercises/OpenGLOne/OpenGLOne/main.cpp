@@ -33,7 +33,7 @@ GLfloat xspeed;				// X Rotation Speed
 GLfloat yspeed;				// Y Rotation Speed
 GLfloat	z=-5.0f;			// Depth Into The Screen
 
-GLfloat LightAmbient[]=		{ 0.5f, 0.5f, 0.5f, 1.0f };
+GLfloat LightAmbient[]=		{ 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat LightDiffuse[]=		{ 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat LightPosition[]=	{ 0.0f, 0.0f, 2.0f, 1.0f };
 
