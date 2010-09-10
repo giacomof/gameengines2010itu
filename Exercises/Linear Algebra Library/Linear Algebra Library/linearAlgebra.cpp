@@ -561,13 +561,16 @@ std::ostream & operator<< (std::ostream &os, const Matrix &m)
      return os;
 }
 
+// Function for correct floating point calculation for sine and cosine
 void Matrix::floatingPointSinCos(float* sincos, float* degree)
 {
+	// Function to reduce the angle in one between 0 and 360 degree
 	int intDegree = int(*degree);
 	int rotations = intDegree/360;
 
 	*degree -= 360*rotations;
 
+	// Check for 0 sine or cosine
 	if(degree==0) {
 		sincos[0]=0;
 		sincos[1]=1;
@@ -581,6 +584,7 @@ void Matrix::floatingPointSinCos(float* sincos, float* degree)
 		sincos[0]=-1;
 		sincos[1]=0;
 	} else {
+		// Otherwise calculate them with the cmath functions
 		sincos[0] = sin(*degree*PI/180);
 		sincos[1] = cos(*degree*PI/180);
 	}
