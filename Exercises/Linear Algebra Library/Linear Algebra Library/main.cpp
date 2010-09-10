@@ -7,8 +7,8 @@ using namespace linearAlgebra;
 int main()
 {
 
-	Vector testVector(7,8,9);
-	Point testPoint(7,8,9);
+	Vector testVector(0,1,0);
+	Vector testVector2(1,0,0);
 
 	
 	
@@ -23,7 +23,7 @@ int main()
              0, 0, 0, 1);
 
 	Matrix prova = Matrix::generateXRotationMatrix(90);
-
+	/*
 	cout << " m  = " << m << endl; 
     cout << "-------------------------------------" << endl;
 	cout << " Det(m)  = " << m.getDeterminant() << endl; 
@@ -36,8 +36,14 @@ int main()
 	cout << "-------------------------------------" << endl;
 	cout << "-------------------------------------" << endl;
 	cout << "-------------------------------------" << endl;
-	cout << " rotationMatrix X  = " << Matrix::generateXRotationMatrix(30) << endl; 
-
+	cout << " rotationMatrix X  = " << Matrix::generateXRotationMatrix(90) << endl; 
+	*/
+	cout << " testVector  = " << testVector << endl; 
+	cout << "-------------------------------------" << endl;
+	cout << " testVector2  = " << testVector2 << endl; 
+	cout << "-------------------------------------" << endl;
+	cout << " testVector%testVector2  = " << testVector%testVector2 << endl; 
+	cout << " testVector2%testVector  = " << testVector2%testVector << endl; 
     system("Pause");
     return 0;
 }
