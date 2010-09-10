@@ -65,6 +65,8 @@ class Matrix
 	protected:
         std::vector<float> data;
 
+		static void floatingPointSinCos(float* sincos, float* degree);
+
     public:
 		// Generic constructors
         Matrix(void); 

@@ -33,7 +33,10 @@ int main()
 	cout << " m-1  = " << m.getInverse() << endl;
 	cout << "-------------------------------------" << endl;
 	cout << " m*m-1  = " << m.getInverse()*m << endl;
-
+	cout << "-------------------------------------" << endl;
+	cout << "-------------------------------------" << endl;
+	cout << "-------------------------------------" << endl;
+	cout << " rotationMatrix X  = " << Matrix::generateXRotationMatrix(90) << endl; 
 
     system("Pause");
     return 0;
