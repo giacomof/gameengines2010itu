@@ -259,42 +259,21 @@ Matrix Matrix::generateUniformScalingMatrix(float S)
 Matrix Matrix::generateXRotationMatrix(float degree)
 {
 	Matrix result;
-	float sine;
-	float cosine;
+	float* sincos[2];
 
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
-
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-		cosine=1;
-	}else if(degree==90) {
-		sine=1;
-		cosine=0;
-	}else if(degree==180) {
-		sine=0;
-		cosine=-1;
-	}else if(degree==270) {
-		sine=-1;
-		cosine=0;
-	} else {
-		cosine = cos(degree*PI/180);
-		sine = sin(degree*PI/180);
-	}
+	Matrix::floatingPointSinCos(sincos[0],&degree);
 
 	result.set(0,0,1);
 	result.set(0,1,0);
 	result.set(0,2,0);
 	result.set(0,3,0);
 	result.set(1,0,0);
-	result.set(1,1,cosine);
-	result.set(1,2,-sine);
+	result.set(1,1,*sincos[1]);
+	result.set(1,2,-*sincos[0]);
 	result.set(1,3,0);
 	result.set(2,0,0);
-	result.set(2,1,sine);
-	result.set(2,2,cosine);
+	result.set(2,1,*sincos[0]);
+	result.set(2,2,*sincos[1]);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);
@@ -402,6 +381,7 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 	return result;
 }
 
+// Generate a shearing matrix from six float values 
 static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
 {
 	Matrix result;
@@ -630,4 +610,29 @@ std::ostream & operator<< (std::ostream &os, const Matrix &m)
      return os;
 }
 
+void Matrix::floatingPointSinCos(float* sincos, float* degree)
+{
+	int intDegree = int(*degree);
+	int rotations = intDegree/360;
+
+	*degree -= 360*rotations;
+
+	if(degree==0) {
+		sincos[0]=0;
+		sincos[1]=1;
+	}else if(*degree==90) {
+		sincos[0]=1;
+		sincos[1]=0;
+	}else if(*degree==180) {
+		sincos[0]=0;
+		sincos[1]=-1;
+	}else if(*degree==270) {
+		sincos[0]=-1;
+		sincos[1]=0;
+	} else {
+		sincos[0] = sin(*degree*PI/180);
+		sincos[1] = cos(*degree*PI/180);
+	}
+
+}
 }
