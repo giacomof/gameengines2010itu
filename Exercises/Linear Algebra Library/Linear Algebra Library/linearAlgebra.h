@@ -85,12 +85,14 @@ class Matrix
 		// Generate a uniform scaling matrix from a float value
 		static Matrix generateUniformScalingMatrix(float S);
 
-		// Generate a rotation matrix about x-axis, from a  float value
+		// Generate a rotation matrix about x-axes, from a  float value
 		static Matrix generateXRotationMatrix(float degree);
-		// Generate a rotation matrix about y-axis, from a  float value
+		// Generate a rotation matrix about y-axes, from a  float value
 		static Matrix generateYRotationMatrix(float degree);
-		// Generate a rotation matrix about z-axis, from a  float value
+		// Generate a rotation matrix about z-axes, from a  float value
 		static Matrix generateZRotationMatrix(float degree);
+		// Generate a rotation matrix about an arbitrary axes
+		static Matrix generateAxesRotationMatrix(Vector axes, float degree);
 
 		//Generate a shearing matrix
 		static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy);
