@@ -6,6 +6,7 @@ public:
 					float viewX,	 float viewY,	  float viewZ,
 					float upX,		 float upY,		  float upZ );
 	void move(float speed);
+	void strafe(float speed);
 	void rotate(float angle);
 	void doViewTransform();
 

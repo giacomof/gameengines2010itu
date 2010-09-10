@@ -61,28 +61,41 @@ using namespace linearAlgebra;
 	
 	}
 
-	void Camera::rotate(float angle) 
+	void Camera::strafe(float speed) 
 	{
 		Vector right(1.0f, 0.0f, 0.0f);
-		vView = vView * cos_table[(int)angle] - right * sin_table[(int)angle];
-		vView.normalize();
+		Vector distance = right - vPosition;
+
+		float vPosSpeed = vPosition.get(0);
+		vPosSpeed += distance.get(0) * speed;
+		vPosition.set(0, vPosSpeed);
+
+		vPosSpeed = vPosition.get(2);
+		vPosSpeed += distance.get(2) * speed;
+		vPosition.set(2, vPosSpeed);
+
+
+	}
+
+	void Camera::rotate(float angle) 
+	{
 
 		// computate the distance vector starting from the origin
 		// to the camera position vector
 
-		//Vector origin = Vector(0.0f, 0.0f, 0.0f); 
-		//Vector distance = origin - vView;
-		//Vector yAxes = Vector (0.0f, 1.0f, 0.0f);
+		Vector origin = Vector(0.0f, 0.0f, 0.0f); 
+		Vector distance = origin - vView;
+		Vector yAxes = Vector (0.0f, 1.0f, 0.0f);
 
-		//Matrix yAxesTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
+		Matrix yAxesTranslationMatrix = Matrix::generateTranslationMatrix(distance.get(0), distance.get(1), distance.get(2)); 
 
-		//yAxes = yAxesTranslationMatrix * yAxes;
+		yAxes = yAxesTranslationMatrix * yAxes;
 
-		//Matrix ultimateRotationmatrix = Matrix::generateAxesRotationMatrix(yAxes, angle);
+		Matrix ultimateRotationmatrix = Matrix::generateAxesRotationMatrix(yAxes, angle);
 
-		//vView = ultimateRotationmatrix * vView;
+		vView = ultimateRotationmatrix * vView;
 
-
+		vView.normalize();
 
 		// *******************************************
 		// ************* TEST METHOD *****************
