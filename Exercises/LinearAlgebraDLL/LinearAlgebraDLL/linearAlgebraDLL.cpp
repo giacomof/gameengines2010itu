@@ -38,6 +38,56 @@ void MathFunctions::floatingPointSinCos(float* sincos, float* degree)
 
 }
 
+float MathFunctions::floatingPointSin(float degree)
+{
+	// Function to reduce the angle in one between 0 and 360 degree
+	float sine;
+	int intDegree = int(degree);
+	int rotations = intDegree/360;
+
+	degree -= 360*rotations;
+
+	if(degree==0) {
+		sine=0;
+	}else if(degree==90) {
+		sine=1;
+	}else if(degree==180) {
+		sine=0;
+	}else if(degree==270) {
+		sine=-1;
+	} else {
+		// Otherwise calculate with the cmath function
+		sine = sin(degree*PI/180);
+	}
+
+	return sine;
+}
+
+float MathFunctions::floatingPointCos(float degree)
+{
+	// Function to reduce the angle in one between 0 and 360 degree
+	float cosine;
+	int intDegree = int(degree);
+	int rotations = intDegree/360;
+
+	degree -= 360*rotations;
+
+	if(degree==0) {
+		cosine=1;
+	}else if(degree==90) {
+		cosine=0;
+	}else if(degree==180) {
+		cosine=-1;
+	}else if(degree==270) {
+		cosine=0;
+	} else {
+		// Otherwise calculate with the cmath function
+		cosine = cos(degree*PI/180);
+	}
+
+	return cosine;
+}
+
 // Constructor for vectors without parameter
 Vector::Vector(void)
 {
