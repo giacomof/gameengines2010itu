@@ -336,69 +336,26 @@ void keyUp(SDL_keysym *keysym)
 
 void applyCamera()
 {    
-	/*glMatrixMode(GL_MODELVIEW_MATRIX);
+	
+	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	
-	Matrix translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ);
+	Matrix translationMatrix = Matrix::generateXRotationMatrix(-camPitch).getTranspose();
+	
 
 	float tranM[16];
 	translationMatrix.getMatrix(&tranM[0]);
 
 	glMultMatrixf(&tranM[0]);
 	
-	glPopMatrix();
-	glLoadIdentity();
+	translationMatrix = Matrix::generateYRotationMatrix(-camYaw).getTranspose();
+	translationMatrix.getMatrix(&tranM[0]);
+	glMultMatrixf(&tranM[0]);
 
-	//glMatrixMode(GL_MODELVIEW);
+	translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
+	translationMatrix.getMatrix(&tranM[0]);
+	glMultMatrixf(&tranM[0]);
 
-	//glPushMatrix();
-	*/
-
-	/* ************ OLD CODE ************ */
-	/* ************ OLD CODE ************ */
-	/* ************ OLD CODE ************ */
-	
-	/*glPushMatrix();
-	
-	glMatrixMode(GL_MODELVIEW);
-	
-	float projection[16];
-	// Retrieve The Projection Matrix
-	glGetFloatv(GL_MODELVIEW, projection);		
-
-	Matrix projectionMatrix (	projection[0],	projection[1],	projection[2],	projection[3], 
-								projection[4],	projection[5],	projection[6],	projection[7], 
-								projection[8],	projection[9],	projection[10], projection[11], 
-								projection[12], projection[13], projection[14], projection[15] );
-	
-	Matrix trasformationMatrix = Matrix::generateXRotationMatrix(-camPitch).getTranspose(); 
-	trasformationMatrix = trasformationMatrix * Matrix::generateYRotationMatrix(-camYaw).getTranspose();
-	trasformationMatrix = trasformationMatrix * Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose(); 
-	trasformationMatrix = trasformationMatrix * projectionMatrix;
-	
-	float finalTransformationMatrix[16];
-
-	for(unsigned short r = 0; r < 4; r++) {
-		for(unsigned short c = 0; c < 4; c++) {
-			finalTransformationMatrix[4*r+c] = trasformationMatrix.get(c,r);
-		}
-	}
-
-	glLoadMatrixf(finalTransformationMatrix);
-
-	//glPopMatrix();
-
-	glMatrixMode(GL_MODELVIEW);
-
-	//glLoadIdentity();
-	
-	
-	
-	*/
-
-	glRotatef(-camPitch, 1.0f, 0.0f, 0.0f);
-	glRotatef(-camYaw, 0.0f, 1.0f, 0.0f);
-	glTranslatef(camPosX, camPosY, camPosZ);
 }
 
 void clampCamera()
