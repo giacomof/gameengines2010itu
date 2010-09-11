@@ -17,8 +17,8 @@ static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// check timer between frames
 
 
-SDL_Surface *surface;					// *********** INSERT HERE *************
-GLuint image;							// *********** INSERT HERE *************
+SDL_Surface *surface;					
+GLuint image;							
 
 // Define Lights Attributes
 // *************************************
