@@ -21,9 +21,6 @@
     <ClInclude Include="linearAlgebra.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="customConstants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\begin_code.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -150,6 +147,9 @@
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\linearAlgebraDLL.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="linearAlgebra.cpp">
@@ -169,12 +169,18 @@
     <None Include="SDL.dll">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="LinearAlgebraDLL.dll">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\SDL.lib">
       <Filter>Resource Files</Filter>
     </Library>
     <Library Include="include\SDLmain.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="include\LinearAlgebraDLL.lib">
       <Filter>Resource Files</Filter>
     </Library>
   </ItemGroup>
