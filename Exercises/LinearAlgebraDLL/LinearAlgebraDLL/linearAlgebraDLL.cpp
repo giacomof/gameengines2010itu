@@ -216,6 +216,7 @@ Matrix::Matrix(float a00, float a01, float a02, float a03,
      data[15] = a33;
 }
 
+// Constructor for matrices from an array of float
 Matrix::Matrix(float * values) 
 {
 	for(unsigned short i=0; i<16; i++) {
