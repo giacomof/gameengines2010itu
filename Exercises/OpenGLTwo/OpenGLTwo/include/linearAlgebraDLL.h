@@ -78,6 +78,7 @@ class Matrix
                float a10, float a11, float a12, float a13,
                float a20, float a21, float a22, float a23,
                float a30, float a31, float a32, float a33);
+		__declspec(dllexport) Matrix(float values[16]);
 
 		// Generate a translation matrix from three float values
 		__declspec(dllexport) static Matrix generateTranslationMatrix(float Tx, float Ty, float Tz);
@@ -119,6 +120,7 @@ class Matrix
 		// individual matrix elements
         __declspec(dllexport) float get(unsigned short row, unsigned short col) const { return data[4*row + col]; }
         __declspec(dllexport) void set(unsigned short row, unsigned short col, float val) { data[4*row + col] = val; }
+		__declspec(dllexport) void getMatrix(float* matrix);
 
 		//Function to get Vector from matrix
 		__declspec(dllexport) Vector getRowAsVector(unsigned short row);

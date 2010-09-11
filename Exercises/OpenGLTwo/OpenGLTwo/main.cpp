@@ -339,13 +339,13 @@ void applyCamera()
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	
-	float projection[16];
-	glGetFloatv(GL_MODELVIEW, projection);
+	Matrix translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ);
 
-	Matrix projectionMatrix (	projection[0],	projection[1],	projection[2],	projection[3], 
-								projection[4],	projection[5],	projection[6],	projection[7], 
-								projection[8],	projection[9],	projection[10], projection[11], 
-								projection[12], projection[13], projection[14], projection[15] );
+	float tranM[16];
+	translationMatrix.getMatrix(&tranM[0]);
+
+
+
 
 	/* ************ OLD CODE ************ */
 	/* ************ OLD CODE ************ */
