@@ -144,7 +144,7 @@
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Linear Algebra Final\include\LinearAlgebraDLL.h">
+    <ClInclude Include="include\linearAlgebraDLL.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -163,7 +163,7 @@
     <None Include="SDL.dll">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Linear Algebra Final\LinearAlgebraDLL.dll">
+    <None Include="LinearAlgebraDLL.dll">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -174,7 +174,7 @@
     <Library Include="include\SDLmain.lib">
       <Filter>Resource Files</Filter>
     </Library>
-    <Library Include="..\Linear Algebra Final\include\LinearAlgebraDLL.lib">
+    <Library Include="include\LinearAlgebraDLL.lib">
       <Filter>Resource Files</Filter>
     </Library>
   </ItemGroup>

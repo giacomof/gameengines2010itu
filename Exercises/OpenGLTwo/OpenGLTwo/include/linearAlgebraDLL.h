@@ -8,9 +8,16 @@ namespace linearAlgebraDLL
 
 static const double PI = 4.0 * atan(1.0);
 
+
 // Exception used to signal divisions by zero
 class DivisionByZeroException {};
 
+class MathFunctions
+{
+	public:
+		// Function for correct floating point calculation for sine and cosine
+		__declspec(dllexport) static void floatingPointSinCos(float* sincos, float* degree);
+};
 
 // Describe a vector and its standard operations
 class Vector
@@ -68,9 +75,6 @@ class Matrix
 		// Float array that will contain the matrix
         float data[16];
 
-		// Function for correct floating point calculation for sine and cosine
-		__declspec(dllexport) static void floatingPointSinCos(float* sincos, float* degree);
-
     public:
 		// Generic constructors
         __declspec(dllexport) Matrix(void); 
@@ -78,7 +82,10 @@ class Matrix
                float a10, float a11, float a12, float a13,
                float a20, float a21, float a22, float a23,
                float a30, float a31, float a32, float a33);
-		__declspec(dllexport) Matrix(float values[16]);
+		__declspec(dllexport) Matrix(float * values);
+
+		// Generate the identity matrix
+		__declspec(dllexport) static Matrix generateIdentityMatrix(void);
 
 		// Generate a translation matrix from three float values
 		__declspec(dllexport) static Matrix generateTranslationMatrix(float Tx, float Ty, float Tz);
