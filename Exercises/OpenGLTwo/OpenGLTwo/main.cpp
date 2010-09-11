@@ -336,7 +336,7 @@ void keyUp(SDL_keysym *keysym)
 
 void applyCamera()
 {    
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW_MATRIX);
 	glPushMatrix();
 	
 	Matrix translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ);
@@ -344,8 +344,10 @@ void applyCamera()
 	float tranM[16];
 	translationMatrix.getMatrix(&tranM[0]);
 
-
-
+	glMultMatrixf(&tranM[0]);
+	
+	//glPushMatrix();
+	//glPopMatrix();
 
 	/* ************ OLD CODE ************ */
 	/* ************ OLD CODE ************ */
