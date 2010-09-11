@@ -187,7 +187,7 @@ void drawGL(void)
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
     glLoadIdentity();
-
+	applyCamera();
 	glPushMatrix();
     {
 		glColor3f(0.0f, 1.0f, 0.0f);
@@ -207,7 +207,7 @@ void drawGL(void)
     glBindTexture(GL_TEXTURE_2D, image);
 	// Swaps the buffers
 	glLoadIdentity();
-	applyCamera();
+	
 
     SDL_GL_SwapBuffers();
 }
@@ -336,7 +336,7 @@ void keyUp(SDL_keysym *keysym)
 
 void applyCamera()
 {    
-	glMatrixMode(GL_MODELVIEW_MATRIX);
+	/*glMatrixMode(GL_MODELVIEW_MATRIX);
 	glPushMatrix();
 	
 	Matrix translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ);
@@ -346,55 +346,59 @@ void applyCamera()
 
 	glMultMatrixf(&tranM[0]);
 	
+	glPopMatrix();
+	glLoadIdentity();
+
+	//glMatrixMode(GL_MODELVIEW);
+
 	//glPushMatrix();
-	//glPopMatrix();
+	*/
 
 	/* ************ OLD CODE ************ */
 	/* ************ OLD CODE ************ */
 	/* ************ OLD CODE ************ */
 	
-	/*
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glPushMatrix();
+	/*glPushMatrix();
 	
-	glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_MODELVIEW);
 	
 	float projection[16];
 	// Retrieve The Projection Matrix
-	glGetFloatv(GL_PROJECTION_MATRIX, projection);		
+	glGetFloatv(GL_MODELVIEW, projection);		
 
 	Matrix projectionMatrix (	projection[0],	projection[1],	projection[2],	projection[3], 
 								projection[4],	projection[5],	projection[6],	projection[7], 
 								projection[8],	projection[9],	projection[10], projection[11], 
 								projection[12], projection[13], projection[14], projection[15] );
-
-
-
-	Matrix trasformationMatrix = Matrix::generateXRotationMatrix(camPitch*0.005f); 
-	trasformationMatrix = trasformationMatrix * Matrix::generateYRotationMatrix(camYaw*0.005f);
-	Matrix trasformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ); 
+	
+	Matrix trasformationMatrix = Matrix::generateXRotationMatrix(-camPitch).getTranspose(); 
+	trasformationMatrix = trasformationMatrix * Matrix::generateYRotationMatrix(-camYaw).getTranspose();
+	trasformationMatrix = trasformationMatrix * Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose(); 
 	trasformationMatrix = trasformationMatrix * projectionMatrix;
 	
 	float finalTransformationMatrix[16];
 
 	for(unsigned short r = 0; r < 4; r++) {
 		for(unsigned short c = 0; c < 4; c++) {
-			finalTransformationMatrix[4*r+c] = trasformationMatrix.get(r,c);
+			finalTransformationMatrix[4*r+c] = trasformationMatrix.get(c,r);
 		}
 	}
 
 	glLoadMatrixf(finalTransformationMatrix);
 
-	glPopMatrix();
+	//glPopMatrix();
+
 	glMatrixMode(GL_MODELVIEW);
+
+	//glLoadIdentity();
+	
+	
 	
 	*/
 
-
-	//glRotatef(-camPitch, 1.0f, 0.0f, 0.0f);
-	//glRotatef(-camYaw, 0.0f, 1.0f, 0.0f);
-	//glTranslatef(camPosX, camPosY, camPosZ);
+	glRotatef(-camPitch, 1.0f, 0.0f, 0.0f);
+	glRotatef(-camYaw, 0.0f, 1.0f, 0.0f);
+	glTranslatef(camPosX, camPosY, camPosZ);
 }
 
 void clampCamera()
