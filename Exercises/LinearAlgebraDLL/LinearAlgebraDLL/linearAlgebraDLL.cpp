@@ -224,6 +224,31 @@ Matrix::Matrix(float * values)
 
 }
 
+// Generate the identity matrix
+Matrix Matrix::generateIdentityMatrix(void)
+{
+	Matrix result;
+
+	result.set(0,0,1);
+	result.set(0,1,0);
+	result.set(0,2,0);
+	result.set(0,3,0);
+	result.set(1,0,0);
+	result.set(1,1,1);
+	result.set(1,2,0);
+	result.set(1,3,0);
+	result.set(2,0,0);
+	result.set(2,1,0);
+	result.set(2,2,1);
+	result.set(2,3,0);
+	result.set(3,0,0);
+	result.set(3,1,0);
+	result.set(3,2,0);
+	result.set(3,3,1);
+
+	return result;
+}
+
 // Generate a translation matrix from three float values
 Matrix Matrix::generateTranslationMatrix(float Tx, float Ty, float Tz) 
  {
@@ -556,7 +581,7 @@ Matrix Matrix::getInverse()
 		result.set(3,2,-data[12]*temp3+data[13]*temp1-data[14]*temp0);
 		result.set(3,3,data[8]*temp3-data[9]*temp1+data[10]*temp0);
 	} else {
-		return result;
+		return Matrix::get;
 	}
 
 	return result*(1/determinant);
