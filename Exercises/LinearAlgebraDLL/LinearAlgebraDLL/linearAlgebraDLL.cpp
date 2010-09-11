@@ -186,6 +186,14 @@ Matrix::Matrix(float a00, float a01, float a02, float a03,
      data[15] = a33;
 }
 
+Matrix::Matrix(float values[16]) 
+{
+	for(unsigned short i=0; i<16; i++) {
+		data[i]=values[i];
+	}
+
+}
+
 // Generate a translation matrix from three float values
 Matrix Matrix::generateTranslationMatrix(float Tx, float Ty, float Tz) 
  {
@@ -562,6 +570,14 @@ float Matrix::getDeterminant()
 	return temp0*temp11 - temp1*temp10 + temp2*temp9 + 
 			temp3*temp8 - temp4*temp7 + temp5*temp6;
 }
+
+void Matrix::getMatrix(float * matrix) {
+
+	for(unsigned short i=0; i<16; i++) {
+		matrix[i]=data[i];
+	}
+}
+
 
 
 // Return the specified row as vector
