@@ -84,6 +84,9 @@ class Matrix
                float a30, float a31, float a32, float a33);
 		__declspec(dllexport) Matrix(float * values);
 
+		// Generate the identity matrix
+		__declspec(dllexport) static Matrix generateIdentityMatrix(void);
+
 		// Generate a translation matrix from three float values
 		__declspec(dllexport) static Matrix generateTranslationMatrix(float Tx, float Ty, float Tz);
 
