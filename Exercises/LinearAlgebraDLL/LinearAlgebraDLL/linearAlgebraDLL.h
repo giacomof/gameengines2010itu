@@ -17,6 +17,9 @@ class MathFunctions
 	public:
 		// Function for correct floating point calculation for sine and cosine
 		__declspec(dllexport) static void floatingPointSinCos(float* sincos, float* degree);
+
+		__declspec(dllexport) static float MathFunctions::floatingPointSin(float degree);
+		__declspec(dllexport) static float MathFunctions::floatingPointCos(float degree);
 };
 
 // Describe a vector and its standard operations
