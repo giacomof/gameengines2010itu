@@ -544,6 +544,7 @@ Matrix Matrix::getTranspose()
 }
 
 // Calculate the inverse of a 4x4 matrix with Laplace expansion algorithm
+// if the determinant is != 0, otherwise return the identity matrix
 Matrix Matrix::getInverse()
 {
 	Matrix result;
@@ -582,7 +583,8 @@ Matrix Matrix::getInverse()
 		result.set(3,2,-data[12]*temp3+data[13]*temp1-data[14]*temp0);
 		result.set(3,3,data[8]*temp3-data[9]*temp1+data[10]*temp0);
 	} else {
-		return Matrix::get;
+		result = Matrix::generateIdentityMatrix();
+		return result;
 	}
 
 	return result*(1/determinant);
