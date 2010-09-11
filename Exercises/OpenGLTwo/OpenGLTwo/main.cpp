@@ -16,6 +16,7 @@ static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// check timer between frames
 
+int oldPosX, oldPosY, oldPosZ;
 
 SDL_Surface *surface;					
 GLuint image;							
@@ -212,19 +213,29 @@ void drawGL(void)
 
 void update()
 {
+	oldPosX = camPosX;
+	oldPosY = camPosY;
+	oldPosZ = camPosZ;
 
 	if (wKeyPressed==1)
     {
+		/*
 		camPosX += MathFunctions::floatingPointSin(camYaw)*camSpeed;
         camPosZ += MathFunctions::floatingPointCos(camYaw)*camSpeed;
         camPosY -= MathFunctions::floatingPointSin(camPitch)*camSpeed;
+		*/
+
+		camPosX += MathFunctions::floatingPointSin(camYaw)*camSpeed;
+        camPosZ += MathFunctions::floatingPointCos(camYaw)*camSpeed;
+        camPosY += MathFunctions::floatingPointSin(-camPitch)*camSpeed;
+
     }
     
     if (sKeyPressed==1)
     {
+		camPosY += MathFunctions::floatingPointSin(camPitch)*camSpeed;
 		camPosX -= MathFunctions::floatingPointSin(camYaw)*camSpeed;
-        camPosZ -= MathFunctions::floatingPointCos(camYaw)*camSpeed;
-        camPosY += MathFunctions::floatingPointSin(camPitch)*camSpeed;
+		camPosZ -= MathFunctions::floatingPointCos(camYaw)*camSpeed;
     }
     
     if (aKeyPressed==1)
@@ -329,17 +340,17 @@ void applyCamera()
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	
-	Matrix translationMatrix = Matrix::generateXRotationMatrix(-camPitch).getTranspose();
-
 	float tranM[16];
+	Matrix translationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
 	translationMatrix.getMatrix(&tranM[0]);
-
 	glMultMatrixf(&tranM[0]);
 	
-	translationMatrix = Matrix::generateYRotationMatrix(-camYaw).getTranspose();
+	translationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose();
 	translationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
 
+	//if(camPitch>=90||camPitch<=-90) translationMatrix = Matrix::generateTranslationMatrix(oldPosX, oldPosY, oldPosZ).getTranspose();
+	//else 
 	translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
 	translationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
@@ -355,7 +366,8 @@ void clampCamera()
         camPitch = -90.0f;
 
     
-	/*while(camYaw<=0.0f)
+	/*
+	while(camYaw<=0.0f)
         camYaw += 360.0f;
     while(camYaw>=360.0f)
         camYaw -= 360.0f;
