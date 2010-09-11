@@ -8,6 +8,36 @@ using namespace std;
 namespace linearAlgebraDLL
 {
 
+// Function for correct floating point calculation for sine and cosine
+void MathFunctions::floatingPointSinCos(float* sincos, float* degree)
+{
+	// Function to reduce the angle in one between 0 and 360 degree
+	int intDegree = int(*degree);
+	int rotations = intDegree/360;
+
+	*degree -= 360*rotations;
+
+	// Check for 0 sine or cosine
+	if(degree==0) {
+		sincos[0]=0;
+		sincos[1]=1;
+	}else if(*degree==90) {
+		sincos[0]=1;
+		sincos[1]=0;
+	}else if(*degree==180) {
+		sincos[0]=0;
+		sincos[1]=-1;
+	}else if(*degree==270) {
+		sincos[0]=-1;
+		sincos[1]=0;
+	} else {
+		// Otherwise calculate them with the cmath functions
+		sincos[0] = sin(*degree*PI/180);
+		sincos[1] = cos(*degree*PI/180);
+	}
+
+}
+
 // Constructor for vectors without parameter
 Vector::Vector(void)
 {
@@ -186,7 +216,7 @@ Matrix::Matrix(float a00, float a01, float a02, float a03,
      data[15] = a33;
 }
 
-Matrix::Matrix(float values[16]) 
+Matrix::Matrix(float * values) 
 {
 	for(unsigned short i=0; i<16; i++) {
 		data[i]=values[i];
@@ -275,7 +305,7 @@ Matrix Matrix::generateXRotationMatrix(float degree)
 	Matrix result;
 	float sincos[2];
 
-	Matrix::floatingPointSinCos(&sincos[0],&degree);
+	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
 
 	result.set(0,0,1);
 	result.set(0,1,0);
@@ -303,7 +333,7 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 	Matrix result;
 	float sincos[2];
 
-	Matrix::floatingPointSinCos(&sincos[0],&degree);
+	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
 
 	result.set(0,0,sincos[1]);
 	result.set(0,1,0);
@@ -331,7 +361,7 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 	Matrix result;
 	float sincos[2];
 
-	Matrix::floatingPointSinCos(&sincos[0],&degree);
+	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
 
 	result.set(0,0,sincos[1]);
 	result.set(0,1,-sincos[0]);
@@ -360,7 +390,7 @@ Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
 	float sincos[2];
 	float k;
 
-	Matrix::floatingPointSinCos(&sincos[0],&degree);
+	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
 	k = 1-sincos[1];
 
 	result.set(0,0,(axes.get(0)*axes.get(0)*k)+sincos[1]);
@@ -621,33 +651,4 @@ std::ostream & operator<< (std::ostream &os, const Matrix &m)
      return os;
 }
 
-// Function for correct floating point calculation for sine and cosine
-void Matrix::floatingPointSinCos(float* sincos, float* degree)
-{
-	// Function to reduce the angle in one between 0 and 360 degree
-	int intDegree = int(*degree);
-	int rotations = intDegree/360;
-
-	*degree -= 360*rotations;
-
-	// Check for 0 sine or cosine
-	if(degree==0) {
-		sincos[0]=0;
-		sincos[1]=1;
-	}else if(*degree==90) {
-		sincos[0]=1;
-		sincos[1]=0;
-	}else if(*degree==180) {
-		sincos[0]=0;
-		sincos[1]=-1;
-	}else if(*degree==270) {
-		sincos[0]=-1;
-		sincos[1]=0;
-	} else {
-		// Otherwise calculate them with the cmath functions
-		sincos[0] = sin(*degree*PI/180);
-		sincos[1] = cos(*degree*PI/180);
-	}
-
-}
 }
