@@ -234,38 +234,18 @@ void update()
 		camPosX -= MathFunctions::floatingPointSin(camYaw)*camSpeed;
         camPosZ -= MathFunctions::floatingPointCos(camYaw)*camSpeed;
         camPosY += MathFunctions::floatingPointSin(camPitch)*camSpeed;
-		/*
-        float xRotRad, yRotRad;
-        yRotRad = (camYaw/180*PI);
-        xRotRad = (camPitch/180*PI);
-        camPosX -= float(sin(yRotRad))*camSpeed;
-        camPosZ -= float(cos(yRotRad))*camSpeed;
-        camPosY += float(sin(xRotRad))*camSpeed;
-		*/
     }
     
     if (aKeyPressed==1)
     {
 		camPosX -= MathFunctions::floatingPointSin(camYaw-90)*camSpeed;
         camPosZ -= MathFunctions::floatingPointCos(camYaw-90)*camSpeed;
-		/*
-        float yRotRad;
-        yRotRad = (camYaw/180*PI-PI/2);        
-        camPosX -= float(sin(yRotRad))*camSpeed;
-        camPosZ -= float(cos(yRotRad))*camSpeed;        
-		*/
     }
    
     if (dKeyPressed==1)
     {
 		camPosX -= MathFunctions::floatingPointSin(camYaw+90)*camSpeed;
         camPosZ -= MathFunctions::floatingPointCos(camYaw+90)*camSpeed;
-		/*
-        float yRotRad;
-        yRotRad = (camYaw/180*PI+PI/2);        
-        camPosX -= float(sin(yRotRad))*camSpeed;
-        camPosZ -= float(cos(yRotRad))*camSpeed;        
-		*/
     }
 }
 
