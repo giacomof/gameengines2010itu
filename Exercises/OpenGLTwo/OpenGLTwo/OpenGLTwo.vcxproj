@@ -47,7 +47,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)/include</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -67,9 +67,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h" />
-    <ClInclude Include="customConstants.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
+    <ClInclude Include="include\linearAlgebraDLL.h" />
     <ClInclude Include="include\SDL.h" />
     <ClInclude Include="include\SDL_active.h" />
     <ClInclude Include="include\SDL_audio.h" />
@@ -119,9 +119,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Crate.bmp" />
+    <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="include\LinearAlgebraDLL.lib" />
     <Library Include="include\SDL.lib" />
     <Library Include="include\SDLmain.lib" />
   </ItemGroup>
