@@ -14,12 +14,10 @@ using namespace linearAlgebraDLL;
 static int const screenWidth		= 800;			// Window Width
 static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
-static int const tick				= 16;			// *********** INSERT HERE *************
-static int const frameD				= 50;			// *********** INSERT HERE *************
-static int const textureC			= 32;			// *********** INSERT HERE *************
+static int const tick				= 16;			// check timer between frames
+
 
 SDL_Surface *surface;					// *********** INSERT HERE *************
-GLuint textures[textureC];				// *********** INSERT HERE *************
 GLuint image;							// *********** INSERT HERE *************
 
 // Define Lights Attributes
@@ -214,6 +212,7 @@ void drawGL(void)
 
 void update()
 {
+
 	if (wKeyPressed==1)
     {
         float xRotRad, yRotRad;
@@ -341,7 +340,6 @@ void applyCamera()
 	glPushMatrix();
 	
 	Matrix translationMatrix = Matrix::generateXRotationMatrix(-camPitch).getTranspose();
-	
 
 	float tranM[16];
 	translationMatrix.getMatrix(&tranM[0]);
