@@ -6,7 +6,7 @@ using namespace std;
 class Transformation 
 {
 	public:
-		Transformation();
+		Transformation(void);
 		virtual ~Transformation();
 
 		virtual void applyTransformation();
@@ -22,7 +22,7 @@ class Transformation
 class TraslationTransformation : public Transformation
 {
 	public:
-		TraslationTransformation();
+		TraslationTransformation(void);
 		~TraslationTransformation();
 
 		void applyTransformation();
@@ -40,7 +40,7 @@ class TraslationTransformation : public Transformation
 class RotationTransformation : public Transformation
 {
 	public:
-		RotationTransformation();
+		RotationTransformation(void);
 		~RotationTransformation();
 
 		void applyTransformation();
@@ -58,7 +58,7 @@ class RotationTransformation : public Transformation
 class ScalingTransformation : public Transformation
 {
 	public:
-		ScalingTransformation();
+		ScalingTransformation(void);
 		~ScalingTransformation();
 
 		void applyTransformation();
@@ -72,3 +72,22 @@ class ScalingTransformation : public Transformation
 		list<Transformation> transformationStack;
 
 }
+
+class ShearingTransformation : public Transformation
+{
+	public:
+		ShearingTransformation(void);
+		~ShearingTransformation();
+
+		void applyTransformation();
+		void addTransformation();
+		void removeTransformation();
+		ShearingTransformation* retrieveTransformation();
+		virtual list<Transformation*> retrieveTransformationStack();
+		virtual void setTransformationStack(list<Transformation*>);
+
+	private:
+		list<Transformation> transformationStack;
+
+}
+
