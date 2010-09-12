@@ -107,7 +107,7 @@
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
     <ClInclude Include="SceneNode.h" />
-    <ClInclude Include="transformation.h" />
+    <ClInclude Include="Transformation.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\LinearAlgebraDLL.lib" />
@@ -118,7 +118,7 @@
     <ClCompile Include="bmp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SceneNode.cpp" />
-    <ClCompile Include="transformation.cpp" />
+    <ClCompile Include="Transformation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

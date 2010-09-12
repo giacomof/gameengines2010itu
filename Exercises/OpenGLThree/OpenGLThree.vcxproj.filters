@@ -128,10 +128,10 @@
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="transformation.h">
+    <ClInclude Include="SceneNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneNode.h">
+    <ClInclude Include="Transformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -156,7 +156,7 @@
     <ClCompile Include="SceneNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="transformation.cpp">
+    <ClCompile Include="Transformation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
