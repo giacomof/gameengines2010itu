@@ -7,7 +7,7 @@ class SceneNode
 {
 	public:
 		// constructor
-		SceneNode() {}
+		SceneNode() { nodeCount++; }
 		// destructor
 		virtual ~SceneNode() { destroy(); }
 		// delete object
@@ -20,4 +20,11 @@ class SceneNode
 		void addChild( SceneNode* pNode );
 		// detach a child
 		void detachChild( SceneNode* cNode );
+		// set parent node
+		void setParent ( SceneNode* pNode );
+		// get parent node
+		SceneNode* getParent ();
+
+		
+		static int nodeCount;
 }
