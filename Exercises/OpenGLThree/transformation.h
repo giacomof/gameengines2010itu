@@ -7,14 +7,14 @@ class Transformation
 {
 	public:
 		Transformation(void);
-		virtual ~Transformation();
+		virtual ~Transformation(void);
 
-		virtual void applyTransformation();
-		virtual void addTransformation();
-		virtual void removeTransformation();
-		virtual void setTransformationStack(list<Transformation*>);
-		virtual Transformation* retrieveTransformation();
-		virtual list<Transformation*> retrieveTransformationStack();
+		virtual void applyTransformation(void);
+		virtual void addTransformation(Transformation t);
+		virtual void removeTransformation(void);
+		virtual void setTransformationStack(list<Transformation>);
+		virtual Transformation retrieveTransformation(void);
+		virtual list<Transformation> retrieveTransformationStack(void);
 	private:
 		list<Transformation> transformationStack;
 }
@@ -23,14 +23,14 @@ class TraslationTransformation : public Transformation
 {
 	public:
 		TraslationTransformation(void);
-		~TraslationTransformation();
+		~TraslationTransformation(void);
 
-		void applyTransformation();
-		void addTransformation();
-		void removeTransformation();
-		TraslationTransformation* retrieveTransformation();
-		virtual list<Transformation*> retrieveTransformationStack();
-		virtual void setTransformationStack(list<Transformation*>);
+		void applyTransformation(void);
+		void addTransformation(void);
+		void removeTransformation(void);
+		Transformation retrieveTransformation(void);
+		virtual list<Transformation> retrieveTransformationStack(void);
+		virtual void setTransformationStack(list<Transformation>);
 
 	private:
 		list<Transformation> transformationStack;
@@ -41,13 +41,13 @@ class RotationTransformation : public Transformation
 {
 	public:
 		RotationTransformation(void);
-		~RotationTransformation();
+		~RotationTransformation(void);
 
-		void applyTransformation();
-		void addTransformation();
-		void removeTransformation();
-		RotationTransformation* retrieveTransformation();
-		virtual list<Transformation*> retrieveTransformationStack();
+		void applyTransformation(void);
+		void addTransformation(void);
+		void removeTransformation(void);
+		Transformation retrieveTransformation(void);
+		virtual list<Transformation> retrieveTransformationStack(void);
 		virtual void setTransformationStack(list<Transformation*>);
 
 	private:
@@ -59,14 +59,14 @@ class ScalingTransformation : public Transformation
 {
 	public:
 		ScalingTransformation(void);
-		~ScalingTransformation();
+		~ScalingTransformation(void);
 
-		void applyTransformation();
-		void addTransformation();
-		void removeTransformation();
-		ScalingTransformation* retrieveTransformation();
-		virtual list<Transformation*> retrieveTransformationStack();
-		virtual void setTransformationStack(list<Transformation*>);
+		void applyTransformation(void);
+		void addTransformation(void);
+		void removeTransformation(void);
+		Transformation retrieveTransformation(void);
+		virtual list<Transformation> retrieveTransformationStack(void);
+		virtual void setTransformationStack(list<Transformation>);
 
 	private:
 		list<Transformation> transformationStack;
@@ -77,14 +77,14 @@ class ShearingTransformation : public Transformation
 {
 	public:
 		ShearingTransformation(void);
-		~ShearingTransformation();
+		~ShearingTransformation(void);
 
-		void applyTransformation();
-		void addTransformation();
-		void removeTransformation();
-		ShearingTransformation* retrieveTransformation();
-		virtual list<Transformation*> retrieveTransformationStack();
-		virtual void setTransformationStack(list<Transformation*>);
+		void applyTransformation(void);
+		void addTransformation(void);
+		void removeTransformation(void);
+		Transformation retrieveTransformation(void);
+		virtual list<Transformation> retrieveTransformationStack(void);
+		virtual void setTransformationStack(list<Transformation>);
 
 	private:
 		list<Transformation> transformationStack;
