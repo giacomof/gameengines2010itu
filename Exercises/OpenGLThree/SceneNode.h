@@ -1,5 +1,5 @@
 #include <string>
-
+#include <list>
 using namespace std;
 
 class SceneNode 
@@ -16,7 +16,7 @@ class SceneNode
 		virtual void destroy(void);
 
 		// add a child
-		void addChild( SceneNode* pNode );
+		void addChild( SceneNode pNode );
 		// detach a child
 		void detachChild( SceneNode* cNode );
 		// set parent node
@@ -28,14 +28,12 @@ class SceneNode
 		// get the node name
 		string getName(void);
 
-		static int nodeCount;
+
 	
-	protected:
-		
 	private:
 		int id;
 		string nodeName;
 		SceneNode * parentNode;
-		list<SceneNode*> childList;
+		list<SceneNode> childList;
 		
-}
+};

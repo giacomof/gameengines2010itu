@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <list>
 
+	static int nodeCount=0;
+
 	SceneNode::SceneNode( SceneNode* pNode, string str ) 
 	{
 		nodeName	= str;
@@ -34,9 +36,9 @@
 	}
 
 	
-	void SceneNode::addChild( SceneNode* pNode ) 
+	void SceneNode::addChild( SceneNode pNode ) 
 	{
-		pNode->setParent(this);
+		pNode.setParent(this);
 		childList.push_back(pNode);
 	}
 		
