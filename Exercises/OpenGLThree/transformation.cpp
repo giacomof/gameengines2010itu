@@ -1,5 +1,8 @@
 #include "transformation.h";
 
+//~Transformation() {}
+
+
 void Transformation::applyTransformation(void)
 {
 
