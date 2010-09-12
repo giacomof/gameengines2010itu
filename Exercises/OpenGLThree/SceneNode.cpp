@@ -21,3 +21,13 @@
 	{
 
 	}
+
+	void setParent( SceneNode* cNode ) 
+	{
+
+	}
+
+	SceneNode* getParent ()
+	{
+
+	}
