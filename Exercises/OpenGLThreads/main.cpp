@@ -16,6 +16,7 @@ static int const screenWidth		= 800;			// Window Width
 static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// check timer between frames
+static int const thread_delay		= 3;			// check timer between frames
 
 static float const PI = 3.14159f;
 
@@ -195,7 +196,7 @@ int openGlRenderer (void *data)
 		//release the lock 
 		SDL_mutexV ( value_mutex );
 
-		SDL_Delay(3);
+		SDL_Delay(thread_delay);
     }
     ShowCursor(TRUE);
     Quit(0);
@@ -211,7 +212,7 @@ int updater (void *data)
 
 	while ( !quit ) {
 		update();
-		SDL_Delay(3);
+		SDL_Delay(thread_delay);
 	}
 	return 0;
 }
