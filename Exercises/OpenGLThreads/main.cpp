@@ -26,8 +26,8 @@ GLuint image;
 // *************************************
 // ********** GREEN LIGHTS *************
 // *************************************
-GLfloat Ambient[] = { 0.0f, 255.0f, 0.0f, 1.0f};  
-GLfloat Diffuse[] = {0.0f, 255.0f, 0.0f, 1.0f};  
+GLfloat Ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f};  
+GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
 GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
 
 // Camera and Movements Definitions
@@ -240,6 +240,7 @@ void drawGL(void)
 	applyCamera();
 	glPushMatrix();
     {
+		/*
 		glColor3f(0.0f, 1.0f, 0.0f);
 		for(float i = -50; i <= 50; i += 1)
 		{
@@ -250,11 +251,28 @@ void drawGL(void)
 				glVertex3f(i, -5.0f, 50);
 			glEnd();
 		}
+		*/
+		float y = -10.0f;
+		glColor3f(0.0f, 1.0f, 0.0f);
+		float red, green, blue = 0;
+		float oldRed, oldGreen, oldBlue = 0;
+		for(float z = -50; z <= 50; z += 1) {
+			green = 0.01 * (50-z);
+			for(float x = -50; x <= 50; x += 1) {
+				blue = red = 0.01 * (50-x);
+				glColor3f(red, green, blue);
+				glBegin(GL_TRIANGLES);
+					glVertex3f(x+1, y, z);
+					glVertex3f(x, y, z+1);
+					glVertex3f(x+1, y, z+1);
+				glEnd();
+			}
+		}
     }
     glPopMatrix();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
-    glBindTexture(GL_TEXTURE_2D, image);
+    //glBindTexture(GL_TEXTURE_2D, image);
 	// Swaps the buffers
 	glLoadIdentity();
 	
@@ -318,6 +336,8 @@ int initGL(void)
     glShadeModel(GL_SMOOTH);
     // enables lighting
     glEnable(GL_LIGHTING);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
 	// enable light0
     glEnable(GL_LIGHT0);   
 	// sets ambient and diffuse components of light0
