@@ -83,7 +83,6 @@
   <ItemGroup>
     <ClCompile Include="bmp.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainOLD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h" />

@@ -119,6 +119,9 @@ int openGlRenderer (void *data)
 	// Binds mouse and keyboard input to the OpenGL window
     SDL_WM_GrabInput(SDL_GRAB_ON); 
 
+	Uint32 tickFrame = 0;
+
+	//SDL_GetTicks();
 
     while(!done)
     {
@@ -181,17 +184,16 @@ int openGlRenderer (void *data)
             }
         }
 		
-        if (isActive)
+        if (isActive && SDL_GetTicks() > (tickFrame + tick) )
         {
-			
-			
+			tickFrame = SDL_GetTicks();
             drawGL();
-			SDL_Delay(timeLeft());
-            
+			//SDL_Delay(timeLeft());
         }
 		//release the lock 
 		SDL_mutexV ( value_mutex );
-		
+
+		SDL_Delay(3);
     }
     ShowCursor(TRUE);
     Quit(0);
@@ -207,8 +209,9 @@ int updater (void *data)
 
 	while ( !quit ) {
 		update();
-  }
-  return 0;
+		SDL_Delay(3);
+	}
+	return 0;
 }
 
 
