@@ -408,7 +408,7 @@ void applyCamera()
 	
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	
+	/*
 	float tranM[16];
 	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
 	transformationMatrix.getMatrix(&tranM[0]);
@@ -421,6 +421,15 @@ void applyCamera()
 
 	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
 	transformationMatrix.getMatrix(&tranM[0]);
+	glMultMatrixf(&tranM[0]);
+	*/
+
+	float tranM[16];
+	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
+	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * transformationMatrix;
+	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose() * transformationMatrix;
+	transformationMatrix.getMatrix(&tranM[0]);
+
 	glMultMatrixf(&tranM[0]);
 
 }
@@ -455,6 +464,7 @@ int resizeWindow(int width, int height)
 	// sets the Field of View, pixel ratio, Frustum
     gluPerspective(60.0f, ratio, 0.1f, 1000.0f);		
 	glMatrixMode(GL_MODELVIEW);
+
     glLoadIdentity();
 
     return TRUE;
