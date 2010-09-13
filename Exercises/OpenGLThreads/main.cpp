@@ -26,7 +26,7 @@ GLuint image;
 // *************************************
 // ********** GREEN LIGHTS *************
 // *************************************
-GLfloat Ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f};  
+GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
 GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
 GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
 
@@ -272,11 +272,11 @@ void drawGL(void)
     glPopMatrix();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
-    //glBindTexture(GL_TEXTURE_2D, image);
-	// Swaps the buffers
+    glBindTexture(GL_TEXTURE_2D, image);
+	
 	glLoadIdentity();
 	
-
+	// Swaps the buffers
     SDL_GL_SwapBuffers();
 }
 
