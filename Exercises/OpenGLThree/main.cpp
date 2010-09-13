@@ -189,16 +189,17 @@ void drawGL(void)
 	applyCamera();
 	glPushMatrix();
     {
-		glColor3f(0.0f, 1.0f, 0.0f);
-		for(float i = -50; i <= 50; i += 1)
-		{
-			glBegin(GL_LINES);
-				glVertex3f(-50, -5.0f, i);
-				glVertex3f(50, -5.0f, i);
-				glVertex3f(i, -5.0f, -50);
-				glVertex3f(i, -5.0f, 50);
-			glEnd();
-		}
+        glColor3f(0.0f, 1.0f, 0.0f);
+        for(float i = -50; i <= 50; i += 1)
+                {
+                        glBegin(GL_LINES);
+                                glVertex3f(-50, -5.0f, i);
+                                glVertex3f(50, -5.0f, i);
+                                glVertex3f(i, -5.0f, -50);
+                                glVertex3f(i, -5.0f, 50);
+                        glEnd();
+        }
+
     }
     glPopMatrix();
 
@@ -254,8 +255,8 @@ void update()
 int initGL(void)
 {
 	// Clears color buffer
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    
+    glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+    glClearDepth(1.0f);
 	// sets the matrix stack as the projection matrix stack
     glMatrixMode(GL_PROJECTION);
 	// creates the viewport
@@ -270,14 +271,15 @@ int initGL(void)
     glEnable(GL_TEXTURE_2D);
     // enables smooth shading (garaud)
     glShadeModel(GL_SMOOTH);
+	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     // enables lighting
     glEnable(GL_LIGHTING);
-	// enable light0
-    glEnable(GL_LIGHT0);   
 	// sets ambient and diffuse components of light0
-    glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
-    
+    glLightfv(GL_LIGHT1, GL_AMBIENT, Ambient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, Diffuse);
+	glLightfv(GL_LIGHT1, GL_POSITION, Position);
+	// enable light0
+    glEnable(GL_LIGHT1);     
 	// defines the center of the screen
 	centerX = screenWidth/2;
     centerY = screenHeight/2;
