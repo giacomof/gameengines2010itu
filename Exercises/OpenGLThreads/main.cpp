@@ -17,8 +17,6 @@ static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// check timer between frames
 
-int oldPosX, oldPosY, oldPosZ;
-
 SDL_Surface *surface;					
 GLuint image;							
 
@@ -409,17 +407,17 @@ void applyCamera()
 	glPushMatrix();
 	
 	float tranM[16];
-	Matrix translationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-	translationMatrix.getMatrix(&tranM[0]);
+	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
+	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
 	
-	translationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose();
-	translationMatrix.getMatrix(&tranM[0]);
+	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose();
+	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
 
 
-	translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
-	translationMatrix.getMatrix(&tranM[0]);
+	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
+	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
 
 }
