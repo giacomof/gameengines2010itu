@@ -186,8 +186,10 @@ int openGlRenderer (void *data)
         if (isActive)
         {
 			
+			
             drawGL();
-            SDL_Delay(timeLeft());
+			SDL_Delay(timeLeft());
+            
         }
 		//release the lock 
 		SDL_mutexV ( value_mutex );
@@ -465,9 +467,9 @@ Uint32 timeLeft(void)
     if (next_time<=now)
     {
         next_time = now + tick;
-        return 0;
+        return 6;
     }
-    return (Uint32)(next_time-now);
+    return 6;
 }
 
 void Quit(int retCode)
