@@ -17,6 +17,8 @@ static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// check timer between frames
 
+static float const PI = 3.14159f;
+
 SDL_Surface *surface;					
 GLuint image;							
 
@@ -30,7 +32,7 @@ GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f};
 
 // Camera and Movements Definitions
 float rotationSpeed = 0.1f;
-float camYaw, camPitch; 
+float camYaw, camPitch, camYawRad, camPitchRad;
 int mouseStateX, mouseStateY, centerX=0, centerY=0, dX, dY, temp;
 float camPosX, camPosY, camPosZ;
 float camSpeed = 0.1f;
@@ -258,7 +260,6 @@ void drawGL(void)
 		float y = -10.0f;
 		glColor3f(0.0f, 1.0f, 0.0f);
 		float red, green, blue = 0;
-		float oldRed, oldGreen, oldBlue = 0;
 		for(float z = -50; z <= 50; z += 1) {
 			green = 0.01 * (50-z);
 			for(float x = -50; x <= 50; x += 1) {
@@ -288,30 +289,36 @@ void update()
 	//lock
 	SDL_mutexP ( value_mutex ); 
 
-	if (wKeyPressed==1)
-    {
-		camPosX += MathFunctions::floatingPointSin(camYaw)*camSpeed;
-        camPosZ += MathFunctions::floatingPointCos(camYaw)*camSpeed;
-        camPosY -= MathFunctions::floatingPointSin(camPitch)*camSpeed;
+	if (wKeyPressed==1) {
+		camYawRad = (camYaw/180*PI);
+        camPitchRad = (camPitch/180*PI);
+
+		camPosX += sin(camYawRad)*camSpeed;
+        camPosZ += cos(camYawRad)*camSpeed;
+        camPosY -= sin(camPitchRad)*camSpeed;
     }
     
-    if (sKeyPressed==1)
-    {
-		camPosY += MathFunctions::floatingPointSin(camPitch)*camSpeed;
-		camPosX -= MathFunctions::floatingPointSin(camYaw)*camSpeed;
-		camPosZ -= MathFunctions::floatingPointCos(camYaw)*camSpeed;
+    if (sKeyPressed==1) {
+		camYawRad = (camYaw/180*PI);
+        camPitchRad = (camPitch/180*PI);
+
+		camPosY += sin(camPitchRad)*camSpeed;
+		camPosX -= sin(camYawRad)*camSpeed;
+		camPosZ -= cos(camYawRad)*camSpeed;
     }
     
-    if (aKeyPressed==1)
-    {
-		camPosX -= MathFunctions::floatingPointSin(camYaw-90)*camSpeed;
-        camPosZ -= MathFunctions::floatingPointCos(camYaw-90)*camSpeed;
+    if (aKeyPressed==1) {
+		camYawRad = (camYaw/180*PI - PI/2);
+
+		camPosX -= sin(camYawRad)*camSpeed;
+        camPosZ -= cos(camYawRad)*camSpeed;
     }
    
-    if (dKeyPressed==1)
-    {
-		camPosX -= MathFunctions::floatingPointSin(camYaw+90)*camSpeed;
-        camPosZ -= MathFunctions::floatingPointCos(camYaw+90)*camSpeed;
+    if (dKeyPressed==1) {
+		camYawRad = (camYaw/180*PI + PI/2);
+
+		camPosX -= sin(camYawRad)*camSpeed;
+        camPosZ -= cos(camYawRad)*camSpeed;
     }
 
 	//release the lock 
