@@ -1,13 +1,17 @@
 #include <iostream>
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 #include "LinearAlgebraDLL.h"
 
 using namespace std;
 
+static const float PI = 3.14159f;
+
 namespace linearAlgebraDLL
 {
 
+/*
 // Function for correct floating point calculation for sine and cosine
 void MathFunctions::floatingPointSinCos(float* sincos, float* degree)
 {
@@ -18,6 +22,7 @@ void MathFunctions::floatingPointSinCos(float* sincos, float* degree)
 	*degree -= 360*rotations;
 
 	// Check for 0 sine or cosine
+
 	if(degree==0) {
 		sincos[0]=0;
 		sincos[1]=1;
@@ -87,6 +92,7 @@ float MathFunctions::floatingPointCos(float degree)
 
 	return cosine;
 }
+*/
 
 // Constructor for vectors without parameter
 Vector::Vector(void)
@@ -380,8 +386,8 @@ Matrix Matrix::generateXRotationMatrix(float degree)
 {
 	Matrix result;
 	float sincos[2];
-
-	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
+	sincos[0] = sin(degree*PI/180);
+	sincos[1] = cos(degree*PI/180);
 
 	result.set(0,0,1);
 	result.set(0,1,0);
@@ -408,8 +414,8 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 {
 	Matrix result;
 	float sincos[2];
-
-	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
+	sincos[0] = sin(degree*PI/180);
+	sincos[1] = cos(degree*PI/180);
 
 	result.set(0,0,sincos[1]);
 	result.set(0,1,0);
@@ -436,8 +442,8 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 {
 	Matrix result;
 	float sincos[2];
-
-	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
+	sincos[0] = sin(degree*PI/180);
+	sincos[1] = cos(degree*PI/180);
 
 	result.set(0,0,sincos[1]);
 	result.set(0,1,-sincos[0]);
@@ -465,8 +471,9 @@ Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
 	Matrix result;
 	float sincos[2];
 	float k;
+	sincos[0] = sin(degree*PI/180);
+	sincos[1] = cos(degree*PI/180);
 
-	MathFunctions::floatingPointSinCos(&sincos[0],&degree);
 	k = 1-sincos[1];
 
 	result.set(0,0,(axes.get(0)*axes.get(0)*k)+sincos[1]);
@@ -612,7 +619,7 @@ Matrix Matrix::getInverse()
 	float temp10 = data[9]*data[15] - data[11]*data[13];
 	float temp11 = data[10]*data[15] - data[11]*data[14];
 
-	double determinant = temp0*temp11 - temp1*temp10 + temp2*temp9 + 
+	float determinant = temp0*temp11 - temp1*temp10 + temp2*temp9 + 
 						temp3*temp8 - temp4*temp7 + temp5*temp6;
 
 	if (determinant != 0) {
