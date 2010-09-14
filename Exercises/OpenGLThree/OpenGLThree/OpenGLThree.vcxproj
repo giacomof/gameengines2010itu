@@ -108,14 +108,14 @@
     <ClInclude Include="include\SDL_types.h" />
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
-    <ClInclude Include="SceneNode.h" />
+    <ClInclude Include="sceneNode.h" />
     <ClInclude Include="transformation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bmp.cpp" />
     <ClCompile Include="include\linearAlgebraDLL.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="sceneNode.cpp" />
     <ClCompile Include="transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
