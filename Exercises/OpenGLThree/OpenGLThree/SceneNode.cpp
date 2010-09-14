@@ -69,8 +69,13 @@ string SceneNode::getName(void)
 	return nodeName;
 }
 
+
+
 root::root(void)
 {
+	nodeName = "root";
+	id = nodeCount;
+	nodeCount++;
 
 }
 
@@ -80,3 +85,10 @@ root::~root(void)
 }
 
 
+root * root::get_instance() 
+{
+	if (instance_ptr == 0) {
+		instance_ptr = new root;
+	}
+	return instance_ptr;
+}
