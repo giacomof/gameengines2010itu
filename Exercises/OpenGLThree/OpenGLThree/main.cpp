@@ -15,7 +15,7 @@ using namespace linearAlgebraDLL;
 static int const screenWidth		= 800;			// Window Width
 static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
-static int const tick				= 30;			// check timer between frames
+static int const tick				= 16;			// check timer between frames
 static int const thread_delay		= 3;			// check timer between frames
 
 static float const PI = 3.14159f;
