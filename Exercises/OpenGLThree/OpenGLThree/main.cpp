@@ -15,7 +15,7 @@ using namespace linearAlgebraDLL;
 static int const screenWidth		= 800;			// Window Width
 static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
-static int const tick				= 16;			// check timer between frames
+static int const tick				= 30;			// check timer between frames
 static int const thread_delay		= 3;			// check timer between frames
 
 static float const PI = 3.14159f;
@@ -128,8 +128,8 @@ int openGlRenderer (void *data)
 
     while(!done)
     {
-		//lock before updating 
-		SDL_mutexP ( value_mutex ); 
+		//lock
+		//SDL_mutexP ( value_mutex ); 
         while(SDL_PollEvent(&event))
         {
 			
@@ -194,7 +194,7 @@ int openGlRenderer (void *data)
 			//SDL_Delay(timeLeft());
         }
 		//release the lock 
-		SDL_mutexV ( value_mutex );
+		//SDL_mutexV ( value_mutex );
 
 		SDL_Delay(thread_delay);
     }
@@ -288,7 +288,7 @@ void drawGL(void)
 void update()
 {
 	//lock
-	SDL_mutexP ( value_mutex ); 
+	//SDL_mutexP ( value_mutex ); 
 
 	if (wKeyPressed==1) {
 		camYawRad = (camYaw/180*PI);
@@ -323,7 +323,7 @@ void update()
     }
 
 	//release the lock 
-	SDL_mutexV ( value_mutex );
+	//SDL_mutexV ( value_mutex );
 }
 
 int initGL(void)
