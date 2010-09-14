@@ -3,69 +3,80 @@
 #include <stdlib.h>
 #include <list>
 
-	static int nodeCount=0;
+static int nodeCount=0;
 
-	SceneNode::SceneNode( SceneNode* pNode, string str ) 
-	{
-		nodeName	= str;
-		parentNode	= pNode;
-		// sets the unique id of the sceneNode
-		id = nodeCount;
-		nodeCount++;
+SceneNode::SceneNode( SceneNode* pNode, string str ) 
+{
+	nodeName	= str;
+	parentNode	= pNode;
+	// sets the unique id of the sceneNode
+	id = nodeCount;
+	nodeCount++;
 		
-	}
+}
 
-	void SceneNode::update(void) 
-	{
+void SceneNode::update(void) 
+{
 
 
 
-	}
+}
 
-	void SceneNode::destroy(void) 
-	{
+void SceneNode::destroy(void) 
+{
 		
-		list<SceneNode>::iterator i;
-		for(i=childList.begin(); i != childList.end(); ++i) 
-		{ 
-			i->destroy(); 
-		}
-		
-		this->release();
-
+	list<SceneNode>::iterator i;
+	for(i=childList.begin(); i != childList.end(); ++i) 
+	{ 
+		i->destroy(); 
 	}
+		
+	this->release();
+
+}
 
 	
-	void SceneNode::addChild( SceneNode pNode ) 
-	{
-		pNode.setParent(this);
-		childList.push_back(pNode);
-	}
+void SceneNode::addChild( SceneNode pNode ) 
+{
+	pNode.setParent(this);
+	childList.push_back(pNode);
+}
 		
 	
-	void SceneNode::detachChild( SceneNode* cNode ) 
-	{
-		// setParent root
-		// delete the SceneNode from the childList
-	}
+void SceneNode::detachChild( SceneNode* cNode ) 
+{
+	// setParent root
+	// delete the SceneNode from the childList
+}
 
-	void SceneNode::setParent( SceneNode* cNode ) 
-	{
-		parentNode = cNode;
-	}
+void SceneNode::setParent( SceneNode* cNode ) 
+{
+	parentNode = cNode;
+}
 
-	SceneNode* SceneNode::getParent(void)
-	{
-		return parentNode;
-	}
+SceneNode* SceneNode::getParent(void)
+{
+	return parentNode;
+}
 
-	void SceneNode::setName(string name) 
-	{
-		nodeName = name;
-	}
+void SceneNode::setName(string name) 
+{
+	nodeName = name;
+}
 
-	string SceneNode::getName(void) 
-	{
-		return nodeName;
-	}
+string SceneNode::getName(void) 
+{
+	return nodeName;
+}
+
+root::root(void)
+{
+
+}
+
+
+root::~root(void)
+{
+}
+
 
