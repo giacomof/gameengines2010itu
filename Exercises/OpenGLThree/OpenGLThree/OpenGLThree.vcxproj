@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bmp.cpp" />
+    <ClCompile Include="include\linearAlgebraDLL.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="transformation.cpp" />
