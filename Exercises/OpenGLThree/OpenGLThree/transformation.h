@@ -1,4 +1,7 @@
 #include <list>
+#define X_AXES = 0;
+#define Y_AXES = 1;
+#define Z_AXES = 2;
 
 using namespace std;
 
@@ -35,6 +38,8 @@ class TraslationTransformation : public Transformation
 	private:
 		list<Transformation> tempTransformationStack;
 
+		float tX, tY, tZ;
+
 };
 
 class RotationTransformation : public Transformation
@@ -52,6 +57,9 @@ class RotationTransformation : public Transformation
 
 	private:
 		list<Transformation> tempTransformationStack;
+
+		float angle;
+		short axes;
 
 };
 
@@ -71,6 +79,8 @@ class ScalingTransformation : public Transformation
 	private:
 		list<Transformation> tempTransformationStack;
 
+		float sX, sY, sZ;
+
 };
 
 class ShearingTransformation : public Transformation
@@ -88,6 +98,8 @@ class ShearingTransformation : public Transformation
 
 	private:
 		list<Transformation> tempTransformationStack;
+
+		float shX, shY, shZ;
 
 };
 
