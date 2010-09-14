@@ -6,12 +6,10 @@
 namespace linearAlgebraDLL
 {
 
-static const double PI = 4.0 * atan(1.0);
-
-
 // Exception used to signal divisions by zero
 class DivisionByZeroException {};
 
+/*
 class MathFunctions
 {
 	public:
@@ -21,6 +19,7 @@ class MathFunctions
 		__declspec(dllexport) static float MathFunctions::floatingPointSin(float degree);
 		__declspec(dllexport) static float MathFunctions::floatingPointCos(float degree);
 };
+*/
 
 // Describe a vector and its standard operations
 class Vector

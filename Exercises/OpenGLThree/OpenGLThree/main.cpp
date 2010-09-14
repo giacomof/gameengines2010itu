@@ -4,6 +4,7 @@
 #include <stdlib.h>						// Header File For the STD library
 #include <SDL.h>						// Header File for the SDL library
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
+#include <SDL_thread.h>
 
 #include "bmp.h"						// Header File for the glaux replacement library
 #include "linearAlgebraDLL.h"			// Header File for our math library
@@ -15,8 +16,9 @@ static int const screenWidth		= 800;			// Window Width
 static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// check timer between frames
+static int const thread_delay		= 3;			// check timer between frames
 
-int oldPosX, oldPosY, oldPosZ;
+static float const PI = 3.14159f;
 
 SDL_Surface *surface;					
 GLuint image;							
@@ -31,7 +33,7 @@ GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f};
 
 // Camera and Movements Definitions
 float rotationSpeed = 0.1f;
-float camYaw, camPitch; 
+float camYaw, camPitch, camYawRad, camPitchRad;
 int mouseStateX, mouseStateY, centerX=0, centerY=0, dX, dY, temp;
 float camPosX, camPosY, camPosZ;
 float camSpeed = 0.1f;
@@ -56,9 +58,16 @@ void clampCamera();
 GLuint	filter;				
 GLuint	texture[3];
 
-int main(int argc, char **argv)
+
+SDL_mutex *value_mutex;		//mutex to lock variables
+bool quit = false;
+
+// This thread sets up the openGL renderer and renders the scene
+int openGlRenderer (void *data)
 {
-    int videoFlags;
+	char *tname = ( char * )data;
+
+	int videoFlags;
     int done = FALSE;
     SDL_Event event;
     const SDL_VideoInfo *videoInfo;
@@ -112,11 +121,18 @@ int main(int argc, char **argv)
     ShowCursor(SDL_DISABLE); 
 	// Binds mouse and keyboard input to the OpenGL window
     SDL_WM_GrabInput(SDL_GRAB_ON); 
-     
+
+	Uint32 tickFrame = 0;
+
+	//SDL_GetTicks();
+
     while(!done)
     {
+		//lock before updating 
+		SDL_mutexP ( value_mutex ); 
         while(SDL_PollEvent(&event))
         {
+			
             switch(event.type)
             {
             case SDL_ACTIVEEVENT:
@@ -152,9 +168,11 @@ int main(int argc, char **argv)
                 SDL_GetMouseState(&mouseStateX, &mouseStateY);
                 dX = (int)mouseStateX - centerX;
                 dY = (int)mouseStateY - centerY;
-               
+
+				
                 camYaw -= rotationSpeed * dX;
                 camPitch -= rotationSpeed * dY;
+				
                 clampCamera();
                 
                 SDL_WarpMouse((short)centerX, (short)centerY);
@@ -168,19 +186,58 @@ int main(int argc, char **argv)
                 break;
             }
         }
-        if (isActive)
+		
+        if (isActive && SDL_GetTicks() > (tickFrame + tick) )
         {
+			tickFrame = SDL_GetTicks();
             drawGL();
-            update();
-            SDL_Delay(timeLeft());
+			//SDL_Delay(timeLeft());
         }
+		//release the lock 
+		SDL_mutexV ( value_mutex );
+
+		SDL_Delay(thread_delay);
     }
     ShowCursor(TRUE);
     Quit(0);
     return 0;
 }
 
-//***************************************************
+
+//This thread update the scene
+int updater (void *data)
+{
+	  
+	char *tname = ( char * )data;
+
+	while ( !quit ) {
+		update();
+		SDL_Delay(thread_delay);
+	}
+	return 0;
+}
+
+
+int main (int argc, char *argv[])
+{
+  SDL_Thread *id1, *id2;			//thread identifiers
+  char *tnames[2] = { "Renderer", "Updater" };	//names of threads
+  
+  value_mutex = SDL_CreateMutex();
+  //create the threads
+  id1 = SDL_CreateThread ( openGlRenderer, tnames[0] );
+  id2 = SDL_CreateThread ( updater, tnames[1] );
+
+  
+  //wait for the threads to exit
+  SDL_WaitThread ( id1, NULL );
+  SDL_WaitThread ( id2, NULL );
+
+  SDL_DestroyMutex ( value_mutex );	//release the resources
+  return 0;  
+} 
+
+
 void drawGL(void)
 {
 
@@ -189,74 +246,91 @@ void drawGL(void)
 	applyCamera();
 	glPushMatrix();
     {
-        glColor3f(0.0f, 1.0f, 0.0f);
-        for(float i = -50; i <= 50; i += 1)
-                {
-                        glBegin(GL_LINES);
-                                glVertex3f(-50, -5.0f, i);
-                                glVertex3f(50, -5.0f, i);
-                                glVertex3f(i, -5.0f, -50);
-                                glVertex3f(i, -5.0f, 50);
-                        glEnd();
-        }
-
+		/*
+		glColor3f(0.0f, 1.0f, 0.0f);
+		for(float i = -50; i <= 50; i += 1)
+		{
+			glBegin(GL_LINES);
+				glVertex3f(-50, -5.0f, i);
+				glVertex3f(50, -5.0f, i);
+				glVertex3f(i, -5.0f, -50);
+				glVertex3f(i, -5.0f, 50);
+			glEnd();
+		}
+		*/
+		float y = -10.0f;
+		glColor3f(0.0f, 1.0f, 0.0f);
+		float red, green, blue = 0;
+		for(float z = -50; z <= 50; z += 1) {
+			green = 0.01 * (50-z);
+			for(float x = -50; x <= 50; x += 1) {
+				blue = red = 0.01 * (50-x);
+				glColor3f(red, green, blue);
+				glBegin(GL_TRIANGLES);
+					glVertex3f(x+1, y, z);
+					glVertex3f(x, y, z+1);
+					glVertex3f(x+1, y, z+1);
+				glEnd();
+			}
+		}
     }
     glPopMatrix();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
     glBindTexture(GL_TEXTURE_2D, image);
-	// Swaps the buffers
+	
 	glLoadIdentity();
 	
-
+	// Swaps the buffers
     SDL_GL_SwapBuffers();
 }
 
 void update()
 {
-	oldPosX = camPosX;
-	oldPosY = camPosY;
-	oldPosZ = camPosZ;
+	//lock
+	SDL_mutexP ( value_mutex ); 
 
-	if (wKeyPressed==1)
-    {
-		/*
-		camPosX += MathFunctions::floatingPointSin(camYaw)*camSpeed;
-        camPosZ += MathFunctions::floatingPointCos(camYaw)*camSpeed;
-        camPosY -= MathFunctions::floatingPointSin(camPitch)*camSpeed;
-		*/
+	if (wKeyPressed==1) {
+		camYawRad = (camYaw/180*PI);
+        camPitchRad = (camPitch/180*PI);
 
-		camPosX += MathFunctions::floatingPointSin(camYaw)*camSpeed;
-        camPosZ += MathFunctions::floatingPointCos(camYaw)*camSpeed;
-        camPosY += MathFunctions::floatingPointSin(-camPitch)*camSpeed;
-
+		camPosX += sin(camYawRad)*camSpeed;
+        camPosZ += cos(camYawRad)*camSpeed;
+        camPosY -= sin(camPitchRad)*camSpeed;
     }
     
-    if (sKeyPressed==1)
-    {
-		camPosY += MathFunctions::floatingPointSin(camPitch)*camSpeed;
-		camPosX -= MathFunctions::floatingPointSin(camYaw)*camSpeed;
-		camPosZ -= MathFunctions::floatingPointCos(camYaw)*camSpeed;
+    if (sKeyPressed==1) {
+		camYawRad = (camYaw/180*PI);
+        camPitchRad = (camPitch/180*PI);
+
+		camPosY += sin(camPitchRad)*camSpeed;
+		camPosX -= sin(camYawRad)*camSpeed;
+		camPosZ -= cos(camYawRad)*camSpeed;
     }
     
-    if (aKeyPressed==1)
-    {
-		camPosX -= MathFunctions::floatingPointSin(camYaw-90)*camSpeed;
-        camPosZ -= MathFunctions::floatingPointCos(camYaw-90)*camSpeed;
+    if (aKeyPressed==1) {
+		camYawRad = (camYaw/180*PI - PI/2);
+
+		camPosX -= sin(camYawRad)*camSpeed;
+        camPosZ -= cos(camYawRad)*camSpeed;
     }
    
-    if (dKeyPressed==1)
-    {
-		camPosX -= MathFunctions::floatingPointSin(camYaw+90)*camSpeed;
-        camPosZ -= MathFunctions::floatingPointCos(camYaw+90)*camSpeed;
+    if (dKeyPressed==1) {
+		camYawRad = (camYaw/180*PI + PI/2);
+
+		camPosX -= sin(camYawRad)*camSpeed;
+        camPosZ -= cos(camYawRad)*camSpeed;
     }
+
+	//release the lock 
+	SDL_mutexV ( value_mutex );
 }
 
 int initGL(void)
 {
 	// Clears color buffer
-    glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-    glClearDepth(1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    
 	// sets the matrix stack as the projection matrix stack
     glMatrixMode(GL_PROJECTION);
 	// creates the viewport
@@ -271,17 +345,16 @@ int initGL(void)
     glEnable(GL_TEXTURE_2D);
     // enables smooth shading (garaud)
     glShadeModel(GL_SMOOTH);
-	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     // enables lighting
     glEnable(GL_LIGHTING);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
-	// sets ambient and diffuse components of light0
-    glLightfv(GL_LIGHT1, GL_AMBIENT, Ambient);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, Diffuse);
-	glLightfv(GL_LIGHT1, GL_POSITION, Position);
 	// enable light0
-    glEnable(GL_LIGHT1);     
+    glEnable(GL_LIGHT0);   
+	// sets ambient and diffuse components of light0
+    glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
+    
 	// defines the center of the screen
 	centerX = screenWidth/2;
     centerY = screenHeight/2;
@@ -343,20 +416,28 @@ void applyCamera()
 	
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	
+	/*
 	float tranM[16];
-	Matrix translationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-	translationMatrix.getMatrix(&tranM[0]);
+	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
+	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
 	
-	translationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose();
-	translationMatrix.getMatrix(&tranM[0]);
+	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose();
+	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
 
-	//if(camPitch>=90||camPitch<=-90) translationMatrix = Matrix::generateTranslationMatrix(oldPosX, oldPosY, oldPosZ).getTranspose();
-	//else 
-	translationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
-	translationMatrix.getMatrix(&tranM[0]);
+
+	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
+	transformationMatrix.getMatrix(&tranM[0]);
+	glMultMatrixf(&tranM[0]);
+	*/
+
+	float tranM[16];
+	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
+	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * transformationMatrix;
+	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose() * transformationMatrix;
+	transformationMatrix.getMatrix(&tranM[0]);
+
 	glMultMatrixf(&tranM[0]);
 
 }
@@ -391,6 +472,7 @@ int resizeWindow(int width, int height)
 	// sets the Field of View, pixel ratio, Frustum
     gluPerspective(60.0f, ratio, 0.1f, 1000.0f);		
 	glMatrixMode(GL_MODELVIEW);
+
     glLoadIdentity();
 
     return TRUE;
@@ -404,14 +486,15 @@ Uint32 timeLeft(void)
     if (next_time<=now)
     {
         next_time = now + tick;
-        return 0;
+        return 6;
     }
-    return (Uint32)(next_time-now);
+    return 6;
 }
 
 void Quit(int retCode)
 {
     SDL_Quit();
+	quit = true;
     exit(retCode);
 }
 
