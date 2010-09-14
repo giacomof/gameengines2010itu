@@ -125,6 +125,7 @@ int openGlRenderer (void *data)
 	Uint32 tickFrame = 0;
 
 	//SDL_GetTicks();
+	SDL_WarpMouse((short)centerX, (short)centerY);
 
     while(!done)
     {
