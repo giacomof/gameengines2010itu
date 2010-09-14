@@ -109,6 +109,7 @@
     <ClInclude Include="include\SDL_types.h" />
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
+    <ClInclude Include="messagePump.h" />
     <ClInclude Include="sceneNode.h" />
     <ClInclude Include="transformation.h" />
   </ItemGroup>
@@ -117,6 +118,7 @@
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="include\linearAlgebraDLL.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="messagePump.cpp" />
     <ClCompile Include="sceneNode.cpp" />
     <ClCompile Include="transformation.cpp" />
   </ItemGroup>
