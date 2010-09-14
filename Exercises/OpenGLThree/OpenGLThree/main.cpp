@@ -277,11 +277,14 @@ void update()
 		CamForward = CamMatrix * CamForward;
 		CamSideways = CamMatrix * CamSideways;
 		CamUp = CamMatrix * CamUp;
-
+		
+		// Prints to debug camera movement
+		/*
 		printf("\n");
 		printf("Forward : [%f, %f, %f]\n",CamForward[0],CamForward[1],CamForward[2]);
 		printf("Sideways: [%f, %f, %f]\n",CamSideways[0],CamSideways[1],CamSideways[2]);
 		printf("Up      : [%f, %f, %f]\n",CamUp[0],CamUp[1],CamUp[2]);
+		*/
 	}
 
 	// Forward
