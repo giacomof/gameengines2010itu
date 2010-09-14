@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <list>
 
+
+#include <SDL.h>						// Header File for the SDL library
+#include <SDL_opengl.h>					// Header File for OpenGL through SDL
+#include <SDL_thread.h>
+
 static int nodeCount=0;
 root* root::instance_ptr = 0;
 
@@ -71,6 +76,10 @@ string SceneNode::getName(void)
 	return nodeName;
 }
 
+void SceneNode::drawGeometry()
+{
+}
+
 
 
 root::root(void)
@@ -93,4 +102,27 @@ root * root::get_instance()
 		instance_ptr = new root;
 	}
 	return instance_ptr;
+}
+
+void root::drawGeometry()
+{
+	glPushMatrix();
+    {
+		float y = -10.0f;
+		glColor3f(0.0f, 1.0f, 0.0f);
+		float red, green, blue = 0;
+		for(float z = -50; z <= 50; z += 1) {
+			green = 0.01 * (50-z);
+			for(float x = -50; x <= 50; x += 1) {
+				blue = red = 0.01 * (50-x);
+				glColor3f(red, green, blue);
+				glBegin(GL_TRIANGLES);
+					glVertex3f(x+1, y, z);
+					glVertex3f(x, y, z+1);
+					glVertex3f(x+1, y, z+1);
+				glEnd();
+			}
+		}
+    }
+    glPopMatrix();
 }

@@ -34,6 +34,8 @@ class SceneNode
 		// get the node name
 		string getName(void);
 
+		void drawGeometry();
+
 
 	
 	protected:
@@ -62,6 +64,8 @@ class root: public SceneNode
 		void setParent ( SceneNode* pNode );
 		// get parent node
 		SceneNode* getParent(void);
+
+		static void drawGeometry();
 
 };
 

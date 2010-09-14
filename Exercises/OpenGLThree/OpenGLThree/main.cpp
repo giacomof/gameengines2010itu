@@ -9,6 +9,8 @@
 #include "bmp.h"						// Header File for the glaux replacement library
 #include "linearAlgebraDLL.h"			// Header File for our math library
 
+#include "SceneNode.h"
+
 using namespace std;
 using namespace linearAlgebraDLL;
 
@@ -126,6 +128,8 @@ int openGlRenderer (void *data)
 
 	//SDL_GetTicks();
 	SDL_WarpMouse((short)centerX, (short)centerY);
+
+	root * rootPtr = root::get_instance();
 
     while(!done)
     {
@@ -245,37 +249,8 @@ void drawGL(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
     glLoadIdentity();
 	applyCamera();
-	glPushMatrix();
-    {
-		/*
-		glColor3f(0.0f, 1.0f, 0.0f);
-		for(float i = -50; i <= 50; i += 1)
-		{
-			glBegin(GL_LINES);
-				glVertex3f(-50, -5.0f, i);
-				glVertex3f(50, -5.0f, i);
-				glVertex3f(i, -5.0f, -50);
-				glVertex3f(i, -5.0f, 50);
-			glEnd();
-		}
-		*/
-		float y = -10.0f;
-		glColor3f(0.0f, 1.0f, 0.0f);
-		float red, green, blue = 0;
-		for(float z = -50; z <= 50; z += 1) {
-			green = 0.01 * (50-z);
-			for(float x = -50; x <= 50; x += 1) {
-				blue = red = 0.01 * (50-x);
-				glColor3f(red, green, blue);
-				glBegin(GL_TRIANGLES);
-					glVertex3f(x+1, y, z);
-					glVertex3f(x, y, z+1);
-					glVertex3f(x+1, y, z+1);
-				glEnd();
-			}
-		}
-    }
-    glPopMatrix();
+	
+	root::drawGeometry();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
     glBindTexture(GL_TEXTURE_2D, image);
