@@ -9,7 +9,7 @@
 #include <SDL_thread.h>
 
 static int nodeCount=0;
-root* root::instance_ptr = 0;
+Root* Root::instance_ptr = 0;
 
 
 SceneNode::SceneNode( SceneNode* pNode, string str ) 
@@ -52,7 +52,7 @@ void SceneNode::addChild( SceneNode pNode )
 	
 void SceneNode::detachChild( SceneNode* cNode ) 
 {
-	// setParent root
+	// setParent Root
 	// delete the SceneNode from the childList
 }
 
@@ -82,29 +82,29 @@ void SceneNode::drawGeometry()
 
 
 
-root::root(void)
+Root::Root(void)
 {
-	nodeName = "root";
+	nodeName = "Root";
 	id = nodeCount;
 	nodeCount++;
 
 }
 
 
-root::~root(void)
+Root::~Root(void)
 {
 }
 
 
-root * root::get_instance() 
+Root * Root::get_instance() 
 {
 	if (instance_ptr == 0) {
-		instance_ptr = new root;
+		instance_ptr = new Root;
 	}
 	return instance_ptr;
 }
 
-void root::drawGeometry()
+void Root::drawGeometry()
 {
 	glPushMatrix();
     {

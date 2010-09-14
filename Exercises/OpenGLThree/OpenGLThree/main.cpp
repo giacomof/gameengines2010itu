@@ -23,7 +23,8 @@ static int const thread_delay		= 3;			// check timer between frames
 static float const PI = 3.14159f;
 
 SDL_Surface *surface;					
-GLuint image;							
+GLuint image;		
+Root * rootPtr;
 
 // Define Lights Attributes
 // *************************************
@@ -129,7 +130,7 @@ int openGlRenderer (void *data)
 	//SDL_GetTicks();
 	SDL_WarpMouse((short)centerX, (short)centerY);
 
-	root * rootPtr = root::get_instance();
+	Root * rootPtr = Root::get_instance();
 
     while(!done)
     {
@@ -250,7 +251,8 @@ void drawGL(void)
     glLoadIdentity();
 	applyCamera();
 	
-	root::drawGeometry();
+	//Root::drawGeometry();
+	rootPtr->drawGeometry();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
     glBindTexture(GL_TEXTURE_2D, image);
