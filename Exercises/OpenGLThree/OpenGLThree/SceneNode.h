@@ -1,11 +1,17 @@
 #include <string>
 #include <list>
+
+#include "transformation.h"
+
+
 using namespace std;
+
 
 class SceneNode 
 {
 	public:
 		// constructor
+		SceneNode(void){};
 		SceneNode( SceneNode* pNode, string uff );
 		// destructor
 		virtual ~SceneNode() { destroy(); }
@@ -34,6 +40,24 @@ class SceneNode
 		int id;
 		string nodeName;
 		SceneNode * parentNode;
+		shared_ptr<Transformation> spObj;
 		list<SceneNode> childList;
 		
 };
+
+
+class root: public SceneNode
+{
+public:
+	root(void);
+	~root(void);
+
+	SceneNode * getChildByName(string name);
+	SceneNode * getChildByID(int id);
+
+
+
+private:
+
+};
+
