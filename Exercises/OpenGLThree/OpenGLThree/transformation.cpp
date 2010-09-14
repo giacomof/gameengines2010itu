@@ -1,6 +1,9 @@
 #include "transformation.h";
 
-//~Transformation() {}
+Transformation::~Transformation() 
+{
+	delete this;
+}
 
 
 void Transformation::applyTransformation(void)
