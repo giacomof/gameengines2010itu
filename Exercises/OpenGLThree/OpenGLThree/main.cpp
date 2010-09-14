@@ -56,6 +56,7 @@ void drawGL(void);
 void keyDown(SDL_keysym *keysym);
 void keyUp(SDL_keysym *keysym);
 void update();
+
 float* getCamera();
 void clampCamera();
 
@@ -245,12 +246,6 @@ void drawGL(void)
 	// Set the camera
 	float *CamTransform = getCamera();
 	
-	/*
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glMultMatrixf(CamTransform);
-	*/
-
 	//Root::drawGeometry();
 	rootPtr->drawGeometry();
 
@@ -415,22 +410,7 @@ void keyUp(SDL_keysym *keysym)
 
 /* Apply camera matrices */
 float* getCamera()
-{	
-	/*
-	float tranM[16];
-	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-	transformationMatrix.getMatrix(&tranM[0]);
-	glMultMatrixf(&tranM[0]);
-	
-	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose();
-	transformationMatrix.getMatrix(&tranM[0]);
-	glMultMatrixf(&tranM[0]);
-	
-	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
-	transformationMatrix.getMatrix(&tranM[0]);
-	glMultMatrixf(&tranM[0]);
-	*/
-	
+{		
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
