@@ -18,8 +18,8 @@ class SceneNode
 		// delete object
 		void release() { delete this; }
 
-		virtual void update(void);
-		virtual void destroy(void);
+		void update(void);
+		void destroy(void);
 
 		// add a child
 		void addChild( SceneNode pNode );
@@ -36,7 +36,7 @@ class SceneNode
 
 
 	
-	private:
+	protected:
 		int id;
 		string nodeName;
 		SceneNode * parentNode;
@@ -48,16 +48,20 @@ class SceneNode
 
 class root: public SceneNode
 {
-public:
-	root(void);
-	~root(void);
 
-	SceneNode * getChildByName(string name);
-	SceneNode * getChildByID(int id);
+	private:
+		static root* instance_ptr;
 
+	public:
+		root(void);
+		~root(void);
 
+		static root* get_instance();
 
-private:
+		// set parent node
+		void setParent ( SceneNode* pNode );
+		// get parent node
+		SceneNode* getParent(void);
 
 };
 
