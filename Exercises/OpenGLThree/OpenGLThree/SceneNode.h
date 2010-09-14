@@ -44,21 +44,22 @@ class SceneNode
 		SceneNode * parentNode;
 		shared_ptr<Transformation> spObj;
 		list<SceneNode> childList;
+
 		
 };
 
 
-class root: public SceneNode
+class Root: public SceneNode
 {
 
 	private:
-		static root* instance_ptr;
+		static Root* instance_ptr;
 
 	public:
-		root(void);
-		~root(void);
+		Root(void);
+		~Root(void);
 
-		static root* get_instance();
+		static Root* get_instance();
 
 		// set parent node
 		void setParent ( SceneNode* pNode );

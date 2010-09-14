@@ -65,6 +65,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h" />
+    <ClInclude Include="geometry.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
     <ClInclude Include="include\linearAlgebraDLL.h" />
@@ -113,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bmp.cpp" />
+    <ClCompile Include="geometry.cpp" />
     <ClCompile Include="include\linearAlgebraDLL.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sceneNode.cpp" />
