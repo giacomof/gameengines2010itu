@@ -18,9 +18,6 @@
     <ClInclude Include="bmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="transformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -153,6 +150,9 @@
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="sceneNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bmp.cpp">
@@ -161,14 +161,14 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SceneNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="transformation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\linearAlgebraDLL.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneNode.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
