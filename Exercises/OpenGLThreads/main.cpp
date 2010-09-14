@@ -52,7 +52,7 @@ void drawGL(void);
 void keyDown(SDL_keysym *keysym);
 void keyUp(SDL_keysym *keysym);
 void update();
-void applyCamera();
+float* getCamera();
 void clampCamera();
 
 GLuint	filter;
@@ -123,6 +123,8 @@ int openGlRenderer (void *data)
 	SDL_WM_GrabInput(SDL_GRAB_ON); 
 	
 	Uint32 tickFrame = 0;
+
+	SDL_WarpMouse((short)centerX, (short)centerY);
 
 	while(!done)
 	{
@@ -235,7 +237,16 @@ void drawGL(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
 	glLoadIdentity();
-	applyCamera();
+
+	// Set the camera
+	float *CamTransform = getCamera();
+	
+	/*
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glMultMatrixf(CamTransform);
+	*/
+
 	glPushMatrix();
 	{
 		/*
@@ -281,33 +292,54 @@ void update()
 {
 	//lock variables
 	SDL_mutexP ( value_mutex );
-	
-	if (wKeyPressed==1) {
-		camYawRad = (camYaw/180*PI);
-		camPitchRad = (camPitch/180*PI);
-		camPosX += sin(camYawRad)*camSpeed;
-		camPosZ += cos(camYawRad)*camSpeed;
-		camPosY -= sin(camPitchRad)*camSpeed;
+
+	// The initial orientation, to be modified by pitch and yaw
+	Vector CamForward	(0.0, 0.0, -1.0	);
+	Vector CamSideways	(1.0, 0.0, 0.0	);
+	Vector CamUp		(0.0, 1.0, 0.0	);
+
+	// If we need to move, find the actual forward and sideway vectors
+	if ( (wKeyPressed+sKeyPressed+aKeyPressed+dKeyPressed) > 0 ) {
+		Matrix CamMatrix;
+		CamMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
+		CamMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * CamMatrix;
+		
+		CamForward = CamMatrix * CamForward;
+		CamSideways = CamMatrix * CamSideways;
+		CamUp = CamMatrix * CamUp;
+
+		printf("\n");
+		printf("Forward : [%f, %f, %f]\n",CamForward[0],CamForward[1],CamForward[2]);
+		printf("Sideways: [%f, %f, %f]\n",CamSideways[0],CamSideways[1],CamSideways[2]);
+		printf("Up      : [%f, %f, %f]\n",CamUp[0],CamUp[1],CamUp[2]);
+	}
+
+	// Forward
+	if (wKeyPressed && !sKeyPressed) {
+		camPosX -= CamForward[0] * camSpeed;
+		camPosY -= CamForward[1] * camSpeed;
+		camPosZ -= CamForward[2] * camSpeed;
 	}
 	
-	if (sKeyPressed==1) {
-		camYawRad = (camYaw/180*PI);
-		camPitchRad = (camPitch/180*PI);
-		camPosY += sin(camPitchRad)*camSpeed;
-		camPosX -= sin(camYawRad)*camSpeed;
-		camPosZ -= cos(camYawRad)*camSpeed;
+	// Backwards
+	if (sKeyPressed && !wKeyPressed) {
+		camPosX += CamForward[0] * camSpeed;
+		camPosY += CamForward[1] * camSpeed;
+		camPosZ += CamForward[2] * camSpeed;
 	}
 	
-	if (aKeyPressed==1) {
-		camYawRad = (camYaw/180*PI - PI/2);
-		camPosX -= sin(camYawRad)*camSpeed;
-		camPosZ -= cos(camYawRad)*camSpeed;
+	// Left
+	if (aKeyPressed && !dKeyPressed) {
+		camPosX += CamSideways[0] * camSpeed;
+		camPosY += CamSideways[1] * camSpeed;
+		camPosZ += CamSideways[2] * camSpeed;
 	}
 	
-	if (dKeyPressed==1) {
-		camYawRad = (camYaw/180*PI + PI/2);
-		camPosX -= sin(camYawRad)*camSpeed;
-		camPosZ -= cos(camYawRad)*camSpeed;
+	// Right
+	if (dKeyPressed && !aKeyPressed) {
+		camPosX -= CamSideways[0] * camSpeed;
+		camPosY -= CamSideways[1] * camSpeed;
+		camPosZ -= CamSideways[2] * camSpeed;
 	}
 
 	//release the lock 
@@ -407,11 +439,8 @@ void keyUp(SDL_keysym *keysym)
 }
 
 /* Apply camera matrices */
-void applyCamera()
-{
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	
+float* getCamera()
+{	
 	/*
 	float tranM[16];
 	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
@@ -427,6 +456,9 @@ void applyCamera()
 	glMultMatrixf(&tranM[0]);
 	*/
 	
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
 	float tranM[16];
 	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
 	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * transformationMatrix;
@@ -434,6 +466,7 @@ void applyCamera()
 	transformationMatrix.getMatrix(&tranM[0]);
 
 	glMultMatrixf(&tranM[0]);
+	return &tranM[0];
 }
 
 /* Clamps the camera to a specific pitch and constrains yaw */
