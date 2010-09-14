@@ -4,6 +4,8 @@
 #include <list>
 
 static int nodeCount=0;
+root* root::instance_ptr = 0;
+
 
 SceneNode::SceneNode( SceneNode* pNode, string str ) 
 {
