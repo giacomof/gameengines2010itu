@@ -5,8 +5,8 @@ private:
  
   MessagePump() {}
   ~MessagePump() {} 
-  MessagePump(const MessagePump &);             // intentionally undefined
-  MessagePump & operator=(const MessagePump &); // intentionally undefined
+  MessagePump(const MessagePump &);             
+  MessagePump & operator=(const MessagePump &);
  
  
 public:
