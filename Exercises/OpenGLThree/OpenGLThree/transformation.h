@@ -6,7 +6,7 @@ class Transformation
 {
 	public:
 		Transformation();
-		//~Transformation();
+		~Transformation();
 
 		void applyTransformation(void);
 		void addTransformation(Transformation t);
@@ -33,7 +33,7 @@ class TraslationTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> transformationStack;
+		list<Transformation> tempTransformationStack;
 
 };
 
@@ -51,7 +51,7 @@ class RotationTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> transformationStack;
+		list<Transformation> tempTransformationStack;
 
 };
 
@@ -69,7 +69,7 @@ class ScalingTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> transformationStack;
+		list<Transformation> tempTransformationStack;
 
 };
 
@@ -87,7 +87,7 @@ class ShearingTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> transformationStack;
+		list<Transformation> tempTransformationStack;
 
 };
 
