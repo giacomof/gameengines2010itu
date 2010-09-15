@@ -82,8 +82,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bmp.cpp" />
-    <ClCompile Include="include\linearAlgebraDLL.cpp" />
+    <ClCompile Include="engine.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="messagePump.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h" />
@@ -123,6 +124,7 @@
     <ClInclude Include="include\SDL_types.h" />
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
+    <ClInclude Include="messagePump.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LinearAlgebraDLL.dll" />
