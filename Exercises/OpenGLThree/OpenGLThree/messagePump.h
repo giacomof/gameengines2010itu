@@ -11,10 +11,11 @@ public:
 	
 	static MessagePump _instance;
  
-	MessagePump() { getInstance(); }
+	MessagePump() { }
 	~MessagePump() { delete this; } 
+	//MessagePump(const MessagePump &);   
 	
-	MessagePump & operator=(const MessagePump &);
+	MessagePump & operator=(MessagePump &getInstance());
 	static MessagePump &getInstance();
 	static void sendMessage(SDL_Event msg);
 	static void sendPriorityMessage(SDL_Event msg);
@@ -29,5 +30,5 @@ public:
 	static list<SDL_Event> messageList;
 	//static list<string> recipientList;
 
-	MessagePump(const MessagePump &);   
+	
 };
