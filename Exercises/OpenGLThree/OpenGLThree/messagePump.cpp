@@ -32,6 +32,16 @@ SDL_Event MessagePump::receiveMessage()
 
 }
 
+SDL_Event MessagePump::readMessage()
+{
+	return messageList.front();
+}
+
+SDL_Event MessagePump::readLastMessage()
+{
+	return messageList.back();
+}
+
 SDL_Event MessagePump::receiveLastMessage()
 {
 	SDL_Event temp = messageList.back();
