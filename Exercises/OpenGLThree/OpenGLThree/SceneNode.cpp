@@ -12,12 +12,12 @@ static int nodeCount=0;
 //Root* Root::instance_ptr = 0;
 
 
-SceneNode::SceneNode(	SceneNode * pNode, string str, 
+SceneNode::SceneNode(	SceneNode * parentNode, string str, 
 						float p_tX,		float p_tY,		float p_tZ,
 						float p_angleX, float p_angleY, float p_angleZ ) 
 {
 	nodeName	= str;
-	parentNode	= pNode;
+	parentNode	= parentNode;
 	parentNode->addChild(*this);
 	// sets the unique id of the sceneNode
 	id = nodeCount;
@@ -129,19 +129,10 @@ void SceneNode::applyTransformation()
 {
 	glPushMatrix();
 	float tranM[16];
-	Matrix transformationMatrix;
-	list<Transformation>::iterator itT;
+	Matrix transformationMatrix = nodeTransformation->getTransformation();
 	list<SceneNode>::iterator itS;
 	
-	/*
-	for(itT = transformationList.begin(); itT != transformationList.end(); ++itT) {
-		if ( itT == transformationList.begin() ) {
-			transformationMatrix = itT->getTransformation();
-		} else {
-			transformationMatrix = itT->getTransformation() * transformationMatrix;
-		}
-	}
-
+	
 	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
 	glPopMatrix();
@@ -150,12 +141,9 @@ void SceneNode::applyTransformation()
 			itS->drawGeometry();
 	}
 
-	*/
+	
 
 }
-
-
-
 
 
 Root::Root(void)
@@ -177,4 +165,9 @@ Root::~Root(void)
 
 void Root::drawGeometry()
 {
+	list<SceneNode>::iterator itS;
+
+	for(itS = childList.begin(); itS != childList.end(); ++ itS) {
+			itS->drawGeometry();
+	}
 }
