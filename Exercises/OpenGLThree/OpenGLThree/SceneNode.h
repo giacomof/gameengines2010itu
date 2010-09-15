@@ -46,8 +46,8 @@ class SceneNode
 		int id;
 		string nodeName;
 		SceneNode * parentNode;
-		list<Transformation> transformationList;
 		list<SceneNode> childList;
+		Transformation transformationList;
 
 		
 };
