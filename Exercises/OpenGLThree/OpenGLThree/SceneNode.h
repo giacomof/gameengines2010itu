@@ -11,8 +11,10 @@ class SceneNode
 {
 	public:
 		// constructor
-		SceneNode(void){};
-		SceneNode( SceneNode * pNode, string uff );
+		
+		SceneNode( SceneNode * pNode, string str, 
+						float p_tX,		float p_tY,		float p_tZ,
+						float p_angleX, float p_angleY, float p_angleZ );
 		// destructor
 		virtual ~SceneNode() { destroy(); }
 		// delete object
