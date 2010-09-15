@@ -18,7 +18,6 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 Matrix Transformation::getTransformation(void)
 {
 	return transformationMatrix.getTranspose();
-
 }
 
 void Transformation::addRotation(float p_angleX, float p_angleY, float p_angleZ)

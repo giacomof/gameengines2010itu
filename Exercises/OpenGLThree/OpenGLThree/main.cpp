@@ -135,7 +135,7 @@ int openGlRenderer (void *data)
 
 	rootNodePtr = new Root();
 
-	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, -500.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 	while(!done)
 	{
@@ -188,7 +188,8 @@ int openGlRenderer (void *data)
 			}
 		}
 		
-		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
+		//if (isActive && SDL_GetTicks() > (tickFrame + tick) )
+		if(true)
 		{
 			tickFrame = SDL_GetTicks();
 			drawGL();
