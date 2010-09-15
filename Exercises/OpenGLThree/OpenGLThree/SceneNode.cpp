@@ -113,6 +113,7 @@ void SceneNode::applyTransformation()
 	list<Transformation>::iterator itT;
 	list<SceneNode>::iterator itS;
 	
+	/*
 	for(itT = transformationList.begin(); itT != transformationList.end(); ++itT) {
 		if ( itT == transformationList.begin() ) {
 			transformationMatrix = itT->getTransformation();
@@ -129,7 +130,7 @@ void SceneNode::applyTransformation()
 			itS->drawGeometry();
 	}
 
-	
+	*/
 
 }
 
@@ -154,5 +155,4 @@ Root::~Root(void)
 
 void Root::drawGeometry()
 {
-	applyTransformation();
 }
