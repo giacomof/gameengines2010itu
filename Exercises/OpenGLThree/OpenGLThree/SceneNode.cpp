@@ -12,7 +12,9 @@ static int nodeCount=0;
 //Root* Root::instance_ptr = 0;
 
 
-SceneNode::SceneNode( SceneNode * pNode, string str ) 
+SceneNode::SceneNode(	SceneNode * pNode, string str, 
+						float p_tX,		float p_tY,		float p_tZ,
+						float p_angleX, float p_angleY, float p_angleZ ) 
 {
 	nodeName	= str;
 	parentNode	= pNode;
@@ -79,7 +81,7 @@ string SceneNode::getName(void)
 
 void SceneNode::addTransformation(Transformation & t)
 {
-	transformationList.push_back(t);
+	transformationList.add(t);
 }
 
 void SceneNode::drawGeometry()
