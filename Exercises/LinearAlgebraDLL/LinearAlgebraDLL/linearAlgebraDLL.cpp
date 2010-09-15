@@ -498,7 +498,7 @@ Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
 
 
 // Generate a shearing matrix from six float values 
-static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
+Matrix Matrix::generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
 {
 	Matrix result;
 
