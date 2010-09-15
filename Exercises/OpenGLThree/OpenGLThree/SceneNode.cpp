@@ -18,11 +18,14 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 	nodeName	= str;
 	parentNode	= parentNode;
 	parentNode->addChild(*this);
+
+	Transformation nodeTransformation(p_tX, p_tY, p_tZ, p_angleX, p_angleY, p_angleZ);
+
 	// sets the unique id of the sceneNode
 	id = nodeCount;
 	nodeCount++;
 
-	Transformation nodeTransformation = Transformation(p_tX, p_tY, p_tZ, p_angleX, p_angleY, p_angleZ);
+	
 		
 }
 
@@ -128,9 +131,9 @@ void SceneNode::applyTransformation()
 {
 	glPushMatrix();
 	float tranM[16];
-	Matrix transformationMatrix = nodeTransformation.getTransformation();
 	list<SceneNode>::iterator itS;
-	
+
+	Matrix transformationMatrix = nodeTransformation.getTransformation();
 	
 	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
