@@ -11,8 +11,8 @@ class SceneNode
 {
 	public:
 		// constructor
-		
-		SceneNode( SceneNode * pNode, string str, 
+		SceneNode(){};
+		SceneNode( SceneNode * parentNode, string str, 
 						float p_tX,		float p_tY,		float p_tZ,
 						float p_angleX, float p_angleY, float p_angleZ );
 		// destructor
