@@ -12,7 +12,7 @@ class SceneNode
 	public:
 		// constructor
 		SceneNode(void){};
-		SceneNode( SceneNode* pNode, string uff );
+		SceneNode( SceneNode * pNode, string uff );
 		// destructor
 		virtual ~SceneNode() { destroy(); }
 		// delete object
@@ -22,17 +22,21 @@ class SceneNode
 		void destroy(void);
 
 		// add a child
-		void addChild( SceneNode pNode );
+		void addChild( SceneNode & pNode );
 		// detach a child
-		void detachChild( SceneNode* cNode );
+		void detachChild( SceneNode & cNode );
 		// set parent node
-		void setParent ( SceneNode* pNode );
+		void setParent ( SceneNode & pNode );
 		// get parent node
 		SceneNode* getParent(void);
 		// set the node name
 		void setName(string name);
 		// get the node name
 		string getName(void);
+
+		void applyTransformation();
+
+		void addTransformation(Transformation & t);
 
 		void drawGeometry();
 
@@ -42,7 +46,7 @@ class SceneNode
 		int id;
 		string nodeName;
 		SceneNode * parentNode;
-		shared_ptr<Transformation> spObj;
+		list<Transformation> transformationList;
 		list<SceneNode> childList;
 
 		
@@ -51,22 +55,16 @@ class SceneNode
 
 class Root: public SceneNode
 {
-
-	private:
-		static Root* instance_ptr;
-
 	public:
 		Root(void);
 		~Root(void);
-
-		static Root* get_instance();
 
 		// set parent node
 		void setParent ( SceneNode* pNode );
 		// get parent node
 		SceneNode* getParent(void);
 
-		static void drawGeometry();
+		void drawGeometry();
 
 };
 

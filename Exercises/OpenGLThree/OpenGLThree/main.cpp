@@ -26,9 +26,8 @@ MessagePump inputPump;
 
 SDL_Surface *surface;					
 GLuint image;	
+Root * rootNodePtr;
 
-//Pointer to the scene Root
-Root * rootPtr;
 
 // Define Lights Attributes
 // *************************************
@@ -133,6 +132,12 @@ int openGlRenderer (void *data)
 	Uint32 tickFrame = 0;
 
 	SDL_WarpMouse((short)centerX, (short)centerY);
+
+	rootNodePtr = new Root();
+
+	SceneNode plane(rootNodePtr, "TrianglePlane");
+
+	plane.addTransformation(ScalingTransformation(50.0f, 50.0f, 50.0f));
 
 	while(!done)
 	{
@@ -252,7 +257,7 @@ void drawGL(void)
 	float *CamTransform = getCamera();
 	
 	//Root::drawGeometry();
-	rootPtr->drawGeometry();
+	rootNodePtr->drawGeometry();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
 	glBindTexture(GL_TEXTURE_2D, image);
