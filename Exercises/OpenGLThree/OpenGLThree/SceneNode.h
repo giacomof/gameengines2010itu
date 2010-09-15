@@ -52,7 +52,7 @@ class SceneNode
 		string nodeName;
 		SceneNode * parentNode;
 		list<SceneNode> childList;
-		Transformation * nodeTransformation;
+		Transformation nodeTransformation;
 
 		
 };

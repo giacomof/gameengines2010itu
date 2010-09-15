@@ -9,7 +9,6 @@
 #include <SDL_thread.h>
 
 static int nodeCount=0;
-//Root* Root::instance_ptr = 0;
 
 
 SceneNode::SceneNode(	SceneNode * parentNode, string str, 
@@ -23,7 +22,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 	id = nodeCount;
 	nodeCount++;
 
-	nodeTransformation = new Transformation(p_tX, p_tY, p_tZ, p_angleX, p_angleY, p_angleZ);
+	Transformation nodeTransformation = Transformation(p_tX, p_tY, p_tZ, p_angleX, p_angleY, p_angleZ);
 		
 }
 
@@ -83,22 +82,22 @@ string SceneNode::getName(void)
 
 void SceneNode::rotate(float p_angleX, float p_angleY, float p_angleZ)
 {
-	nodeTransformation->addRotation(p_angleX, p_angleY, p_angleZ);
+	nodeTransformation.addRotation(p_angleX, p_angleY, p_angleZ);
 }
 
 void SceneNode::translate(float p_tX, float p_tY, float p_tZ) 
 {
-	nodeTransformation->addTranslation(p_tX, p_tY, p_tZ);
+	nodeTransformation.addTranslation(p_tX, p_tY, p_tZ);
 }
 
 void SceneNode::scale(float p_sX, float p_sY, float p_sZ)
 {
-	nodeTransformation->addScaling(p_sX, p_sY, p_sZ);
+	nodeTransformation.addScaling(p_sX, p_sY, p_sZ);
 }
 
 void SceneNode::shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy)
 {
-	nodeTransformation->addShearing(p_sxy, p_sxz, p_syx, p_syz, p_szx, p_szy);
+	nodeTransformation.addShearing(p_sxy, p_sxz, p_syx, p_syz, p_szx, p_szy);
 }
 
 
@@ -129,7 +128,7 @@ void SceneNode::applyTransformation()
 {
 	glPushMatrix();
 	float tranM[16];
-	Matrix transformationMatrix = nodeTransformation->getTransformation();
+	Matrix transformationMatrix = nodeTransformation.getTransformation();
 	list<SceneNode>::iterator itS;
 	
 	

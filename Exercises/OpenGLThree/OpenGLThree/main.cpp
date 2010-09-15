@@ -137,8 +137,6 @@ int openGlRenderer (void *data)
 
 	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
-	//plane.addTransformation(ScalingTransformation(50.0f, 50.0f, 50.0f));
-
 	while(!done)
 	{
 		//lock 
