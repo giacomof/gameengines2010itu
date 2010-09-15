@@ -1,4 +1,8 @@
 #include <list>
+#include "linearAlgebraDLL.h"			// Header File for our math library
+
+using namespace linearAlgebraDLL;
+
 #define X_AXES = 0;
 #define Y_AXES = 1;
 #define Z_AXES = 2;
@@ -8,10 +12,10 @@ using namespace std;
 class Transformation 
 {
 	public:
-		Transformation();
+		Transformation(){};
 		~Transformation();
 
-		void applyTransformation(void);
+		Matrix getTransformation(void);
 		void addTransformation(Transformation t);
 		void removeTransformation(void);
 		void setTransformationStack(list<Transformation>);
@@ -28,7 +32,7 @@ class TraslationTransformation : public Transformation
 		TraslationTransformation();
 		~TraslationTransformation();
 
-		void applyTransformation(void) { Transformation::applyTransformation(); }
+		Matrix getTransformation(void);
 		void addTransformation(TraslationTransformation t) { Transformation::addTransformation(t); }
 		void removeTransformation(void) { Transformation::removeTransformation(); }
 		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }
@@ -48,7 +52,7 @@ class RotationTransformation : public Transformation
 		RotationTransformation();
 		~RotationTransformation(void);
 
-		void applyTransformation(void) { Transformation::applyTransformation(); }
+		void applyTransformation(void);
 		void addTransformation(RotationTransformation t) { Transformation::addTransformation(t); }
 		void removeTransformation(void) { Transformation::removeTransformation(); }
 		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }
@@ -66,10 +70,10 @@ class RotationTransformation : public Transformation
 class ScalingTransformation : public Transformation
 {
 	public:
-		ScalingTransformation(void);
-		~ScalingTransformation(void);
+		ScalingTransformation(float x, float y, float z);
+		//~ScalingTransformation(void);
 
-		void applyTransformation(void) { Transformation::applyTransformation(); }
+		Matrix getTransformation(void);
 		void addTransformation(ScalingTransformation t) { Transformation::addTransformation(t); }
 		void removeTransformation(void) { Transformation::removeTransformation(); }
 		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }
@@ -89,7 +93,7 @@ class ShearingTransformation : public Transformation
 		ShearingTransformation(void);
 		~ShearingTransformation(void);
 
-		void applyTransformation(void) { Transformation::applyTransformation(); }
+		void applyTransformation(void);
 		void addTransformation(ShearingTransformation t) { Transformation::addTransformation(t); }
 		void removeTransformation(void) { Transformation::removeTransformation(); }
 		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }

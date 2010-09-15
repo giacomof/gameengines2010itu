@@ -2,16 +2,16 @@
 
 Transformation::~Transformation() 
 {
-	delete this;
 }
 
 
-void Transformation::applyTransformation(void)
+Matrix Transformation::getTransformation(void)
 {
-
+	Matrix result;
 	// ****************************************
 	// *************** TO DO ******************
 	// ****************************************
+	return result;
 
 }
 
@@ -45,4 +45,23 @@ Transformation Transformation::retrieveTransformation(void)
 list<Transformation> Transformation::retrieveTransformationStack(void)
 {
 	return transformationStack;
+}
+
+
+Matrix TraslationTransformation::getTransformation(void) 
+{
+	return Matrix::generateTranslationMatrix(tX, tY, tZ).getTranspose();
+}
+
+
+ScalingTransformation::ScalingTransformation(float x, float y, float z)
+{
+	sX = x;
+	sY = y;
+	sZ = z;
+}
+
+Matrix ScalingTransformation::getTransformation(void) 
+{
+	return Matrix::generateScalingMatrix(sX, sY, sZ).getTranspose();
 }
