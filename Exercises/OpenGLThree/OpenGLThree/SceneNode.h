@@ -36,9 +36,12 @@ class SceneNode
 		// get the node name
 		string getName(void);
 
-		void applyTransformation();
+		void rotate(float p_angleX, float p_angleY, float p_angleZ);
+		void translate(float p_tX, float p_tY, float p_tZ);
+		void scale(float p_sX, float p_sY, float p_sZ);
+		void shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
-		void addTransformation(Transformation & t);
+		void applyTransformation();
 
 		void drawGeometry();
 
@@ -49,7 +52,7 @@ class SceneNode
 		string nodeName;
 		SceneNode * parentNode;
 		list<SceneNode> childList;
-		Transformation transformationList;
+		Transformation * nodeTransformation;
 
 		
 };
