@@ -9,6 +9,7 @@
 #include "bmp.h"						// Header File for the glaux replacement library
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "SceneNode.h"					// Header File for the SceneNode/Scenegraph
+#include "messagePump.h"				// Header File for the input messahe pump system
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -20,6 +21,8 @@ static int const tick				= 16;			// Minimum time between screen frames
 static int const thread_delay		= 3;			// Minimum time between loops
 
 static float const PI = 3.14159f;
+
+MessagePump inputPump;
 
 SDL_Surface *surface;					
 GLuint image;	
@@ -234,6 +237,8 @@ int main(int argc, char *argv[])
 	// Release the mutex
 	SDL_DestroyMutex ( value_mutex );
 
+	delete &inputPump;
+	
 	exit(0);  
 }
 
