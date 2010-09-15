@@ -1,67 +1,65 @@
 #include "transformation.h"
 
-Transformation::~Transformation() 
+
+
+Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
+								float p_angleX, float p_angleY, float p_angleZ) 
 {
+	angleX = angleY = angleZ = 0;
+	tX = tY = tZ = 0;
+	sX = sY = sZ = 0;
+	sxy = sxz = syx = syz = szx = szy = 0;
+
+	addTranslation(p_tX, p_tY, p_tZ);
+	addRotation(p_angleX, p_angleY, p_angleZ);
 }
 
 
 Matrix Transformation::getTransformation(void)
 {
-	Matrix result;
-	// ****************************************
-	// *************** TO DO ******************
-	// ****************************************
-	return result;
+	return transformationMatrix.getTranspose();
 
 }
 
-void Transformation::addTransformation(Transformation t)
+void Transformation::addRotation(float p_angleX, float p_angleY, float p_angleZ)
 {
-	transformationStack = retrieveTransformationStack();
-	transformationStack.push_back(t);
-	this->setTransformationStack(transformationStack);
-}
-
-void Transformation::removeTransformation(void)
-{
-	transformationStack = retrieveTransformationStack();
-	transformationStack.pop_back();
-}
-
-void Transformation::setTransformationStack(list<Transformation> tStack)
-{
-	transformationStack = tStack;
-}
-
-Transformation Transformation::retrieveTransformation(void)
-{
-	transformationStack = retrieveTransformationStack();
-	Transformation temp = transformationStack.back();
-	transformationStack.pop_back();
-	return temp;
 	
+	angleX += p_angleX;
+	angleY += p_angleY;
+	angleZ += p_angleZ;
+	
+	transformationMatrix = Matrix::generateXRotationMatrix(angleX) * transformationMatrix;
+	transformationMatrix = Matrix::generateYRotationMatrix(angleY) * transformationMatrix;
+	transformationMatrix = Matrix::generateZRotationMatrix(angleZ) * transformationMatrix;
+
 }
 
-list<Transformation> Transformation::retrieveTransformationStack(void)
+void Transformation::addTranslation(float p_tX, float p_tY, float p_tZ)
 {
-	return transformationStack;
+	
+	tX += p_tX;
+	tY += p_tY;
+	tZ += p_tZ;
+
+	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ) * transformationMatrix;
+}
+void Transformation::addScaling(float p_sX, float p_sY, float p_sZ)
+{
+	sX += p_sX;
+	sY += p_sY;
+	sZ += p_sZ;
+
+	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 }
 
-
-Matrix TraslationTransformation::getTransformation(void) 
+void Transformation::addShearing(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy)
 {
-	return Matrix::generateTranslationMatrix(tX, tY, tZ).getTranspose();
-}
+	sxy += p_sxy;
+	sxz += p_sxz;
+	syx += p_syx;
+	syz += p_syz;
+	szx += p_szx;
+	szy += p_szy;
 
-
-ScalingTransformation::ScalingTransformation(float x, float y, float z)
-{
-	sX = x;
-	sY = y;
-	sZ = z;
-}
-
-Matrix ScalingTransformation::getTransformation(void) 
-{
-	return Matrix::generateScalingMatrix(sX, sY, sZ).getTranspose();
+	transformationMatrix = Matrix::generateShearingMatrix(sxy, sxz, syx, syz, szx, szy) * transformationMatrix;
 }

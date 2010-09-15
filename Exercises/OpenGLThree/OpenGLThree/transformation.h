@@ -3,99 +3,28 @@
 
 using namespace linearAlgebraDLL;
 
-#define X_AXES = 0;
-#define Y_AXES = 1;
-#define Z_AXES = 2;
 
 using namespace std;
 
 class Transformation 
 {
 	public:
-		Transformation(){};
+		Transformation(	float p_tX, float p_tY, float p_tZ,
+						float p_angleX, float p_angleY, float p_angleZ);
 		~Transformation();
 
 		Matrix getTransformation(void);
-		void addTransformation(Transformation t);
-		void removeTransformation(void);
-		void setTransformationStack(list<Transformation>);
-		Transformation retrieveTransformation(void);
-		list<Transformation> retrieveTransformationStack(void);
+		void addRotation(float p_angleX, float p_angleY, float p_angleZ);
+		void addTranslation(float p_tX, float p_tY, float p_tZ);
+		void addScaling(float p_sX, float p_sY, float p_sZ);
+		void addShearing(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
 	private:
-		list<Transformation> transformationStack;
-};
-
-class TraslationTransformation : public Transformation
-{
-	public:
-		TraslationTransformation();
-		~TraslationTransformation();
-
-		Matrix getTransformation(void);
-		void addTransformation(TraslationTransformation t) { Transformation::addTransformation(t); }
-		void removeTransformation(void) { Transformation::removeTransformation(); }
-		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }
-		list<Transformation> retrieveTransformationStack(void) { Transformation::retrieveTransformationStack(); }
-		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
-
-	private:
+		Matrix transformationMatrix;
+		float angleX, angleY, angleZ;
 		float tX, tY, tZ;
-
-};
-
-class RotationTransformation : public Transformation
-{
-	public:
-		RotationTransformation();
-		~RotationTransformation(void);
-
-		void applyTransformation(void);
-		void addTransformation(RotationTransformation t) { Transformation::addTransformation(t); }
-		void removeTransformation(void) { Transformation::removeTransformation(); }
-		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }
-		list<Transformation> retrieveTransformationStack(void) { Transformation::retrieveTransformationStack(); }
-		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
-
-	private:
-		float angle;
-		short axes;
-
-};
-
-class ScalingTransformation : public Transformation
-{
-	public:
-		ScalingTransformation(float x, float y, float z);
-		//~ScalingTransformation(void);
-
-		Matrix getTransformation(void);
-		void addTransformation(ScalingTransformation t) { Transformation::addTransformation(t); }
-		void removeTransformation(void) { Transformation::removeTransformation(); }
-		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }
-		list<Transformation> retrieveTransformationStack(void) { Transformation::retrieveTransformationStack(); }
-		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
-
-	private:
 		float sX, sY, sZ;
-
-};
-
-class ShearingTransformation : public Transformation
-{
-	public:
-		ShearingTransformation(void);
-		~ShearingTransformation(void);
-
-		void applyTransformation(void);
-		void addTransformation(ShearingTransformation t) { Transformation::addTransformation(t); }
-		void removeTransformation(void) { Transformation::removeTransformation(); }
-		Transformation retrieveTransformation(void) { Transformation::retrieveTransformation(); }
-		list<Transformation> retrieveTransformationStack(void) { Transformation::retrieveTransformationStack(); }
-		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
-
-	private:
-		float shX, shY, shZ;
+		float sxy, sxz, syx, syz, szx, szy;
 
 };
 
