@@ -21,8 +21,11 @@
     <ClCompile Include="bmp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\linearAlgebraDLL.cpp">
-      <Filter>Resource Files</Filter>
+    <ClCompile Include="engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagePump.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="messagePump.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,234 +6,40 @@
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
 #include <SDL_thread.h>
 
+#include "messagePump.h"				// Header file for the message pump library
 #include "bmp.h"						// Header File for the glaux replacement library
 #include "linearAlgebraDLL.h"			// Header File for our math library
 
+// Namespaces in use
 using namespace std;
 using namespace linearAlgebraDLL;
 
-static int const screenWidth		= 800;			// Window Width
-static int const screenHeight		= 600;			// Window Height
-static int const screenColorDepth	= 32;			// Color Depth
-static int const tick				= 16;			// Minimum time between screen frames
-static int const thread_delay		= 3;			// Minimum time between loops
+// Constants
+static int const	CONSTANT_SCREEN_WIDTH	= 800;		// Window Width
+static int const	CONSTANT_SCREEN_HEIGHT	= 600;		// Window Height
+static int const	CONSTANT_SCREEN_DEPTH	= 32;		// Color Depth
+static int const	CONSTANT_DELAY_FRAME	= 16;		// Minimum time between screen frames
+static int const	CONSTANT_DELAY_LOOP		= 3;		// Minimum time between loops
+static float const	CONSTANT_PI				= 3.14159f;	// Pi
 
-static float const PI = 3.14159f;
+// Event pump singleton
+MessagePump eventPump;
 
-SDL_Surface *surface;					
-GLuint image;							
+// The sceen and image
+SDL_Surface *surface;
+GLuint image;
 
-// Define Lights Attributes
-// *************************************
-// ********** GREEN LIGHTS *************
-// *************************************
-GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
-GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
-GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
+// Mutex list
+SDL_mutex *mutex_event;
+SDL_mutex *mutex_render;
+SDL_mutex *mutex_scene;
+SDL_mutex *mutex_camera;
 
-// Camera and Movements Definitions
-float camYaw, camPitch, camYawRad, camPitchRad;
-float camPosX, camPosY, camPosZ;
-float camSpeed = 0.1f;
-float rotationSpeed = 0.1f;
-
-// Camera input states
-int mouseStateX, mouseStateY, centerX=0, centerY=0, dX, dY, temp;
-int wKeyPressed = 0, sKeyPressed = 0, aKeyPressed = 0, dKeyPressed = 0;
-
-// OpenGL Attributes
-Uint32 timeLeft(void);
-GLuint loadTexture(char* texName);
-int resizeWindow(int width, int height);
-int initGL(void);
-
-// STD/OpenGL Methods
-void drawGL(void);
-void keyDown(SDL_keysym *keysym);
-void keyUp(SDL_keysym *keysym);
-void update();
-float* getCamera();
-void clampCamera();
-
-GLuint	filter;
-GLuint	texture[3];
-
-//mutex to lock variables
-SDL_mutex *value_mutex;
-
+// Global variable to inform the threads when to quit
 bool quit = false;
 
-/* Thread for rendering the scene */
-int openGlRenderer (void *data)
-{
-	char *tname = ( char * )data;
-	int videoFlags;
-	int done = FALSE;
-	SDL_Event event;
-	const SDL_VideoInfo *videoInfo;
-	int isActive = TRUE;
-	
-	if (SDL_Init(SDL_INIT_VIDEO)<0)
-	{
-		exit(1);
-	}
-	
-	videoInfo = SDL_GetVideoInfo();
-	if (!videoInfo)
-	{
-		exit(1);
-	}
-	
-	// Video Flags
-	videoFlags = SDL_OPENGL;
-	videoFlags |= SDL_GL_DOUBLEBUFFER;
-	videoFlags |= SDL_HWPALETTE;
-	videoFlags |= SDL_RESIZABLE;
-	
-	if (videoInfo->hw_available)
-		videoFlags |= SDL_HWSURFACE;
-	else
-		videoFlags |= SDL_SWSURFACE;
-	
-	if (videoInfo->blit_hw)
-		videoFlags |= SDL_HWACCEL;
-	
-	// Apply Video Flags and Settings
-	surface = SDL_SetVideoMode(	screenWidth,
-								screenHeight,
-								screenColorDepth,
-								videoFlags);
-	if (!surface)
-	{
-		exit(1);
-	}
-	
-	if (initGL()==FALSE)
-	{
-		exit(1);
-	}
-	
-	// resizes OpenGL window
-	resizeWindow(screenWidth, screenHeight);
-	
-	// Disable the Windows Cursor
-	ShowCursor(SDL_DISABLE); 
-	
-	// Binds mouse and keyboard input to the OpenGL window
-	SDL_WM_GrabInput(SDL_GRAB_ON); 
-	
-	Uint32 tickFrame = 0;
-
-	SDL_WarpMouse((short)centerX, (short)centerY);
-
-	while(!done)
-	{
-		//lock before updating 
-		SDL_mutexP ( value_mutex ); 
-		
-		while(SDL_PollEvent(&event))
-		{
-			switch(event.type)
-			{
-			case SDL_ACTIVEEVENT:
-				if (event.active.gain==0)
-					isActive = FALSE;
-				else
-					isActive = TRUE;
-				break;
-			case SDL_VIDEORESIZE:
-				surface = SDL_SetVideoMode(	event.resize.w,
-											event.resize.h,
-											screenColorDepth,
-											videoFlags);
-				if (!surface)
-				{
-					exit(1);
-				}
-
-				resizeWindow( event.resize.w, event.resize.h);
-				break;
-			case SDL_KEYDOWN:
-				keyDown(&event.key.keysym);
-				break;
-			case SDL_KEYUP:
-				keyUp(&event.key.keysym);
-				break;
-			case SDL_MOUSEMOTION:
-				SDL_GetMouseState(&mouseStateX, &mouseStateY);
-				dX = (int)mouseStateX - centerX;
-				dY = (int)mouseStateY - centerY;
-				camYaw -= rotationSpeed * dX;
-				camPitch -= rotationSpeed * dY;
-				clampCamera();
-				SDL_WarpMouse((short)centerX, (short)centerY);
-				break;
-
-			case SDL_QUIT:
-				done = TRUE;
-				break;
-			default:
-				break;
-			}
-		}
-		
-		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
-		{
-			tickFrame = SDL_GetTicks();
-			drawGL();
-		}
-
-		//release the lock 
-		SDL_mutexV ( value_mutex );
-		
-		SDL_Delay(thread_delay);
-	}
-	ShowCursor(TRUE);
-	
-	exit(0);
-}
-
-/* This thread updates the scene */
-int updater(void *data)
-{
-	char *tname = ( char * )data;
-
-	while ( !quit ) {
-		update();
-		SDL_Delay(thread_delay);
-	}
-
-	exit(0);
-}
-
-/* Application entry point */
-int main(int argc, char *argv[])
-{
-	// The main threads
-	SDL_Thread *id1, *id2;
-	char *tnames[2] = { "Renderer", "Updater" };
-
-	atexit(SDL_Quit);
-
-	// Create the mutex
-	value_mutex = SDL_CreateMutex();
-
-	//create the threads
-	id1 = SDL_CreateThread ( openGlRenderer, tnames[0] );
-	id2 = SDL_CreateThread ( updater, tnames[1] );
-
-	//wait for the threads to exit
-	SDL_WaitThread ( id1, NULL );
-	SDL_WaitThread ( id2, NULL );
-
-	// Release the mutex
-	SDL_DestroyMutex ( value_mutex );
-
-	exit(0);  
-}
-
 /* Draw the scene */
-void drawGL(void)
+void renderFrame (void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
 	glLoadIdentity();
@@ -287,67 +93,8 @@ void drawGL(void)
 	SDL_GL_SwapBuffers();
 }
 
-/* Update gamestate */
-void update()
-{
-	//lock variables
-	SDL_mutexP ( value_mutex );
-
-	// The initial orientation, to be modified by pitch and yaw
-	Vector CamForward	(0.0, 0.0, -1.0	);
-	Vector CamSideways	(1.0, 0.0, 0.0	);
-	Vector CamUp		(0.0, 1.0, 0.0	);
-
-	// If we need to move, find the actual forward and sideway vectors
-	if ( (wKeyPressed+sKeyPressed+aKeyPressed+dKeyPressed) > 0 ) {
-		Matrix CamMatrix;
-		CamMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-		CamMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * CamMatrix;
-		
-		CamForward = CamMatrix * CamForward;
-		CamSideways = CamMatrix * CamSideways;
-		CamUp = CamMatrix * CamUp;
-
-		printf("\n");
-		printf("Forward : [%f, %f, %f]\n",CamForward[0],CamForward[1],CamForward[2]);
-		printf("Sideways: [%f, %f, %f]\n",CamSideways[0],CamSideways[1],CamSideways[2]);
-		printf("Up      : [%f, %f, %f]\n",CamUp[0],CamUp[1],CamUp[2]);
-	}
-
-	// Forward
-	if (wKeyPressed && !sKeyPressed) {
-		camPosX -= CamForward[0] * camSpeed;
-		camPosY -= CamForward[1] * camSpeed;
-		camPosZ -= CamForward[2] * camSpeed;
-	}
-	
-	// Backwards
-	if (sKeyPressed && !wKeyPressed) {
-		camPosX += CamForward[0] * camSpeed;
-		camPosY += CamForward[1] * camSpeed;
-		camPosZ += CamForward[2] * camSpeed;
-	}
-	
-	// Left
-	if (aKeyPressed && !dKeyPressed) {
-		camPosX += CamSideways[0] * camSpeed;
-		camPosY += CamSideways[1] * camSpeed;
-		camPosZ += CamSideways[2] * camSpeed;
-	}
-	
-	// Right
-	if (dKeyPressed && !aKeyPressed) {
-		camPosX -= CamSideways[0] * camSpeed;
-		camPosY -= CamSideways[1] * camSpeed;
-		camPosZ -= CamSideways[2] * camSpeed;
-	}
-
-	//release the lock 
-	SDL_mutexV ( value_mutex );
-}
-
 /* Initialize OpenGL */
-int initGL(void)
+int renderInitGL (void)
 {
 	// Clears color buffer
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -387,106 +134,8 @@ int initGL(void)
 	return TRUE;
 }
 
-/* Check key press events */
-void keyDown(SDL_keysym *keysym)
-{
-	switch(keysym->sym)
-	{
-	case SDLK_ESCAPE:
-		exit(0);
-		break;
-	case SDLK_F1:
-		SDL_WM_ToggleFullScreen(surface);
-		break;
-	case SDLK_w:
-		wKeyPressed = 1;
-		break;
-	case SDLK_s:
-		sKeyPressed = 1;
-		break;
-	case SDLK_a:
-		aKeyPressed = 1;
-		break;
-	case SDLK_d:
-		dKeyPressed = 1;
-		break;
-	default:
-		break;
-	}
-	return;
-}
-
-/* Check key release events */ 
-void keyUp(SDL_keysym *keysym) 
-{
-	switch (keysym->sym)
-    {
-	case SDLK_w:
-		wKeyPressed = 0;
-		break;
-	case SDLK_s:
-		sKeyPressed = 0;
-		break;
-	case SDLK_a:
-		aKeyPressed = 0;
-		break;
-	case SDLK_d:
-		dKeyPressed = 0;
-		break;
-	default:
-		break;
-	}
-}
-
-/* Apply camera matrices */
-float* getCamera()
-{	
-	/*
-	float tranM[16];
-	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-	transformationMatrix.getMatrix(&tranM[0]);
-	glMultMatrixf(&tranM[0]);
-	
-	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose();
-	transformationMatrix.getMatrix(&tranM[0]);
-	glMultMatrixf(&tranM[0]);
-	
-	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose();
-	transformationMatrix.getMatrix(&tranM[0]);
-	glMultMatrixf(&tranM[0]);
-	*/
-	
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-
-	float tranM[16];
-	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * transformationMatrix;
-	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose() * transformationMatrix;
-	transformationMatrix.getMatrix(&tranM[0]);
-
-	glMultMatrixf(&tranM[0]);
-	return &tranM[0];
-}
-
-/* Clamps the camera to a specific pitch and constrains yaw */
-void clampCamera()
-{
-	// Limits camera pitch
-	if (camPitch>90.0f)
-		camPitch = 90.0f;
-	else if (camPitch<-90.0f)
-		camPitch = -90.0f;
-
-	// Rolls over yaw
-	while(camYaw<=0.0f)
-		camYaw += 360.0f;
-	while(camYaw>=360.0f)
-		camYaw -= 360.0f;
-}
-
 /* Resize the window */
-int resizeWindow(int width, int height)
+int renderSetWindow (int width, int height)
 {
 	GLfloat ratio;
 	if (height==0)
@@ -506,12 +155,154 @@ int resizeWindow(int width, int height)
 	return TRUE;
 }
 
-/* ************************************************************************* */
-/* ************** I have changed the way NeHe loades the BMP *************** */
-/* ************** ...because I couldn't get Glaux to work... *************** */
-/* ************************************************************************* */
+/* Thread for rendering the scene */
+int threadRender (void *data)
+{
+	// Info about the video modes available
+	const SDL_VideoInfo *videoInfo;
 
-/* Loads A Bitmap Image */
+	// Bit flags to set up SDL video modes to use
+	int videoFlags;
+
+	// Stores the current SDL event to read
+	SDL_Event event;
+
+	// Init the timestamp of the last rendered frame
+	Uint32 tickFrame = 0;
+
+	// Whether a screen frame should be rendered
+	bool shouldRender = true;
+	
+	if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
+		exit(1);
+	
+	videoInfo = SDL_GetVideoInfo();
+	if ( !videoInfo )
+		exit(1);
+	
+	// Video Flags
+	videoFlags = SDL_OPENGL;
+	videoFlags |= SDL_GL_DOUBLEBUFFER;
+	videoFlags |= SDL_HWPALETTE;
+	videoFlags |= SDL_RESIZABLE;
+	
+	// Check for and enable HW Surface acceleration if possible
+	if ( videoInfo->hw_available )
+		videoFlags |= SDL_HWSURFACE;
+	else
+		videoFlags |= SDL_SWSURFACE;
+	
+	// Check for and enable HW Blit acceleration if possible
+	if ( videoInfo->blit_hw )
+		videoFlags |= SDL_HWACCEL;
+	
+	// Apply Video Flags and Settings
+	surface = SDL_SetVideoMode(	CONSTANT_SCREEN_WIDTH, CONSTANT_SCREEN_HEIGHT, CONSTANT_SCREEN_DEPTH, videoFlags);
+	if ( !surface )
+		exit(1);
+	
+	// Try to initialise OpenGL
+	if ( !renderInitGL() )
+		exit(1);
+	
+	// resizes OpenGL window
+	renderSetWindow(CONSTANT_SCREEN_WIDTH, CONSTANT_SCREEN_HEIGHT);
+	
+	// Disable the Windows Cursor
+	ShowCursor( SDL_DISABLE ); 
+	
+	// Binds mouse and keyboard input to the OpenGL window
+	SDL_WM_GrabInput(SDL_GRAB_ON); 
+	
+	// Render loop
+	while(!quit)
+	{
+		while(SDL_PollEvent(&event))
+		{
+			// Lock the message pump mutex and determine whether to send as priority message
+			SDL_mutexP( mutex_event );
+			if ( false )
+				eventPump.sendPriorityMessage(event);
+			else
+				eventPump.sendMessage(event);
+			
+			// Handle locally relevant events
+			switch(event.type)
+			{
+			case SDL_VIDEORESIZE:
+				surface = SDL_SetVideoMode(	event.resize.w, event.resize.h, CONSTANT_SCREEN_DEPTH, videoFlags);
+				if (!surface)
+				{
+					exit(1);
+				}
+				renderSetWindow( event.resize.w, event.resize.h);
+				break;
+			default:
+				break;
+
+			// Unlock the message pump again
+			SDL_mutexV( mutex_event );
+			}
+		}
+		
+		// Render a frame if it is time and should be done
+		if (shouldRender && SDL_GetTicks() > (tickFrame + CONSTANT_DELAY_FRAME) )
+		{
+			tickFrame = SDL_GetTicks();
+			renderFrame();
+		}
+
+		// Minimum delay to allow other threads to run
+		SDL_Delay( CONSTANT_DELAY_LOOP );
+	}
+
+	// Show the cursor again
+	ShowCursor( SDL_ENABLE );
+	
+	exit(0);
+}
+
+/* This thread updates the scene */
+int threadUpdate (void *data)
+{
+	while ( !quit ) {
+		// Do stuff here
+		SDL_Delay( CONSTANT_DELAY_LOOP );
+	}
+
+	exit(0);
+}
+
+/* Application entry point */
+int main(int argc, char *argv[])
+{
+	// The main threads
+	SDL_Thread *thread1;
+	SDL_Thread *thread2;
+
+	// Set SDL to shut down when we quit
+	atexit(SDL_Quit);
+
+	// Create the necessary mutex
+	mutex_event = SDL_CreateMutex();
+
+	// Create thread(s) for the engine
+	thread1 = SDL_CreateThread ( threadRender, NULL );
+	thread2 = SDL_CreateThread ( threadUpdate, NULL );
+
+	//wait for the threads to exit
+	SDL_WaitThread ( thread1, NULL );
+	SDL_WaitThread ( thread2, NULL );
+
+	// Release all mutex
+	SDL_DestroyMutex ( mutex_event );
+
+	// Delete the event pump singleton and quit
+	delete &eventPump;
+	exit(0);  
+}
+
+/* Loads a bitmap image */
 AUX_RGBImageRec *LoadBMP(char *Filename)
 {
 	// File Handle
@@ -541,7 +332,7 @@ AUX_RGBImageRec *LoadBMP(char *Filename)
 	return NULL;
 }
 
-/* Load Bitmaps And Convert To Textures */
+/* Load bitmaps and convert to textures */
 int LoadGLTextures()
 {
 	// Status Indicator
