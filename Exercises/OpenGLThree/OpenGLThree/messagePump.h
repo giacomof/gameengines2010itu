@@ -11,9 +11,9 @@ public:
 	
 	static MessagePump _instance;
  
-	MessagePump() { }
-	~MessagePump() { delete this; } 
-	//MessagePump(const MessagePump &);   
+	MessagePump() { &getInstance(); }
+	~MessagePump() { } 
+	MessagePump(const MessagePump &getInstance());   
 	
 	MessagePump & operator=(MessagePump &getInstance());
 	static MessagePump &getInstance();
@@ -28,7 +28,5 @@ public:
 
 	// external declaration
 	static list<SDL_Event> messageList;
-	//static list<string> recipientList;
-
 	
 };
