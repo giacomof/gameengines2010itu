@@ -40,8 +40,6 @@ class TraslationTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> tempTransformationStack;
-
 		float tX, tY, tZ;
 
 };
@@ -60,8 +58,6 @@ class RotationTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> tempTransformationStack;
-
 		float angle;
 		short axes;
 
@@ -81,8 +77,6 @@ class ScalingTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> tempTransformationStack;
-
 		float sX, sY, sZ;
 
 };
@@ -101,8 +95,6 @@ class ShearingTransformation : public Transformation
 		void setTransformationStack(list<Transformation> stack) { Transformation::setTransformationStack(stack); }
 
 	private:
-		list<Transformation> tempTransformationStack;
-
 		float shX, shY, shZ;
 
 };
