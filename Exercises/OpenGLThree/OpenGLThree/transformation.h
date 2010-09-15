@@ -9,9 +9,10 @@ using namespace std;
 class Transformation 
 {
 	public:
+		Transformation(){};
 		Transformation(	float p_tX, float p_tY, float p_tZ,
 						float p_angleX, float p_angleY, float p_angleZ);
-		~Transformation();
+		//~Transformation();
 
 		Matrix getTransformation(void);
 		void addRotation(float p_angleX, float p_angleY, float p_angleZ);
