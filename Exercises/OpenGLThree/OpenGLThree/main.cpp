@@ -135,7 +135,9 @@ int openGlRenderer (void *data)
 
 	rootNodePtr = new Root();
 
-	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, -500.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+	plane.scale(1.0f, 1.0f, 0.1f);
 
 	while(!done)
 	{

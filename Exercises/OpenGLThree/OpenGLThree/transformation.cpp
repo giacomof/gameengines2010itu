@@ -10,6 +10,8 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 	sX = sY = sZ = 0;
 	sxy = sxz = syx = syz = szx = szy = 0;
 
+	transformationMatrix = Matrix::generateIdentityMatrix();
+
 	addTranslation(p_tX, p_tY, p_tZ);
 	addRotation(p_angleX, p_angleY, p_angleZ);
 }
