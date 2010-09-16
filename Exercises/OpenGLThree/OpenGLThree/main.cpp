@@ -70,6 +70,7 @@ SDL_mutex *value_mutex;
 
 bool quit = false;
 
+
 /* Thread for rendering the scene */
 int openGlRenderer (void *data)
 {
@@ -135,9 +136,7 @@ int openGlRenderer (void *data)
 
 	rootNodePtr = new Root();
 
-	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
-	plane.scale(1.0f, 1.0f, 0.1f);
+	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, -100.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 	while(!done)
 	{
@@ -190,8 +189,8 @@ int openGlRenderer (void *data)
 			}
 		}
 		
-		//if (isActive && SDL_GetTicks() > (tickFrame + tick) )
-		if(true)
+		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
+		//if(true)
 		{
 			tickFrame = SDL_GetTicks();
 			drawGL();

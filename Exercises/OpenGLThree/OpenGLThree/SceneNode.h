@@ -1,26 +1,28 @@
 #include <string>
 #include <list>
+#include "linearAlgebraDLL.h"			// Header File for our math library
 
-#include "transformation.h"
-
-
+using namespace linearAlgebraDLL;
 using namespace std;
 
 
 class SceneNode 
 {
 	public:
-		// constructor
-		SceneNode(){};
-		SceneNode( SceneNode * parentNode, string str, 
+		// default constructor
+		SceneNode() {};
+		// actual constructor
+		SceneNode(		SceneNode * parentNode, string str, 
 						float p_tX,		float p_tY,		float p_tZ,
 						float p_angleX, float p_angleY, float p_angleZ );
 		// destructor
-		virtual ~SceneNode() { destroy(); }
+		virtual ~SceneNode() { }
 		// delete object
 		void release() { delete this; }
 
-		void update(void);
+		void update(	SceneNode * parentNode, string str, 
+						float p_tX,		float p_tY,		float p_tZ,
+						float p_angleX, float p_angleY, float p_angleZ);
 		void destroy(void);
 
 		// add a child
@@ -36,29 +38,30 @@ class SceneNode
 		// get the node name
 		string getName(void);
 
+		Matrix getTransformation(void); 
+
 		void rotate(float p_angleX, float p_angleY, float p_angleZ);
 		void translate(float p_tX, float p_tY, float p_tZ);
 		void scale(float p_sX, float p_sY, float p_sZ);
 		void shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
 		void applyTransformation();
-
 		void drawGeometry();
 
-
-	
-	protected:
 		int id;
 		string nodeName;
 		SceneNode * parentNode;
 		list<SceneNode> childList;
-		Transformation nodeTransformation;
-
+		Matrix transformationMatrix;
+		float angleX, angleY, angleZ;
+		float tX, tY, tZ;
+		float sX, sY, sZ;
+		float sxy, sxz, syx, syz, szx, szy;
 		
 };
 
 
-class Root: public SceneNode
+class Root : public SceneNode
 {
 	public:
 		Root(void);
