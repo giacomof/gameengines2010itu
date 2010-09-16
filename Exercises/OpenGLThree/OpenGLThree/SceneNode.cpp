@@ -1,12 +1,12 @@
-#include "sceneNode.h"
 #include <string>
-#include <stdlib.h>
 #include <list>
 
-
+#include <stdlib.h>
 #include <SDL.h>						// Header File for the SDL library
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
 #include <SDL_thread.h>
+
+#include "sceneNode.h"
 
 static int nodeCount=0;
 
@@ -15,24 +15,50 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 						float p_tX,		float p_tY,		float p_tZ,
 						float p_angleX, float p_angleY, float p_angleZ ) 
 {
-	nodeName	= str;
-	parentNode	= parentNode;
+	// variables inizialization
+	nodeName = str;
+	parentNode = parentNode;
+	tX		= p_tX;
+	tY		= p_tY;
+	tZ		= p_tZ;
+	angleX	= p_angleX;
+	angleY	= p_angleY;
+	angleZ	= p_angleZ;
+	sX = sY = sZ = 0;
+	sxy = sxz = syx = syz = szx = szy = 0;
+
+	// ********************* TEST ************************
+	transformationMatrix = Matrix::generateIdentityMatrix();
+
+	// set parent node
 	parentNode->addChild(*this);
 
-	nodeTransformation = Transformation(p_tX, p_tY, p_tZ, p_angleX, p_angleY, p_angleZ);
+	// set the position of the SceneNnode
+	translate( tX, tY, tZ );
+	// and the orientation
+	//rotate( angleX, angleY, angleZ );
 
 	// sets the unique id of the sceneNode
 	id = nodeCount;
 	nodeCount++;
-
 	
-		
 }
 
-void SceneNode::update(void) 
+void SceneNode::update(SceneNode * parentNode, string str, 
+						float p_tX,		float p_tY,		float p_tZ,
+						float p_angleX, float p_angleY, float p_angleZ) 
 {
+	// set parent node
+	parentNode->addChild(*this);
 
+	// set the position of the SceneNnode
+	translate( tX, tY, tZ );
+	// and the orientation
+	rotate( angleX, angleY, angleZ );
 
+	// sets the unique id of the sceneNode
+	id = nodeCount;
+	nodeCount++;
 
 }
 
@@ -85,24 +111,49 @@ string SceneNode::getName(void)
 
 void SceneNode::rotate(float p_angleX, float p_angleY, float p_angleZ)
 {
-	nodeTransformation.addRotation(p_angleX, p_angleY, p_angleZ);
+	angleX += p_angleX;
+	angleY += p_angleY;
+	angleZ += p_angleZ;
+	
+	transformationMatrix = Matrix::generateXRotationMatrix(angleX) * transformationMatrix;
+	transformationMatrix = Matrix::generateYRotationMatrix(angleY) * transformationMatrix;
+	transformationMatrix = Matrix::generateZRotationMatrix(angleZ) * transformationMatrix;
 }
 
 void SceneNode::translate(float p_tX, float p_tY, float p_tZ) 
-{
-	nodeTransformation.addTranslation(p_tX, p_tY, p_tZ);
+{	
+	tX = p_tX;
+	tY = p_tY;
+	tZ = p_tZ;
+
+	transformationMatrix = transformationMatrix * Matrix::generateTranslationMatrix(tX, tY, tZ);
 }
 
 void SceneNode::scale(float p_sX, float p_sY, float p_sZ)
 {
-	nodeTransformation.addScaling(p_sX, p_sY, p_sZ);
+	sX += p_sX;
+	sY += p_sY;
+	sZ += p_sZ;
+
+	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 }
 
 void SceneNode::shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy)
 {
-	nodeTransformation.addShearing(p_sxy, p_sxz, p_syx, p_syz, p_szx, p_szy);
+	sxy += p_sxy;
+	sxz += p_sxz;
+	syx += p_syx;
+	syz += p_syz;
+	szx += p_szx;
+	szy += p_szy;
+
+	transformationMatrix = Matrix::generateShearingMatrix(sxy, sxz, syx, syz, szx, szy) * transformationMatrix;
 }
 
+Matrix SceneNode::getTransformation() 
+{
+	return transformationMatrix;
+}
 
 void SceneNode::drawGeometry()
 {
@@ -123,7 +174,7 @@ void SceneNode::drawGeometry()
 			glEnd();
 		}
     }
-
+	
 	glPopMatrix();
 }
 
@@ -134,7 +185,7 @@ void SceneNode::applyTransformation()
 	list<SceneNode>::iterator itS;
 
 	glLoadIdentity();
-	Matrix transformationMatrix = nodeTransformation.getTransformation();
+	//transformationMatrix = getTransformation();
 	
 	transformationMatrix.getMatrix(&tranM[0]);
 	glMultMatrixf(&tranM[0]);
@@ -144,12 +195,9 @@ void SceneNode::applyTransformation()
 			itS->drawGeometry();
 	}
 
-	
-
 }
 
-
-Root::Root(void)
+Root::Root()
 {
 	nodeName = "Root";
 	id = nodeCount;
@@ -161,10 +209,6 @@ Root::Root(void)
 Root::~Root(void)
 {
 }
-
-
-
-
 
 void Root::drawGeometry()
 {
