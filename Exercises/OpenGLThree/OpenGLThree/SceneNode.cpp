@@ -31,7 +31,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 	transformationMatrix = Matrix::generateIdentityMatrix();
 
 	// set parent node
-	parentNode->addChild(*this);
+	parentNode->addChild(this);
 
 	// set the position of the SceneNnode
 	translate( tX, tY, tZ );
@@ -49,7 +49,7 @@ void SceneNode::update(SceneNode * parentNode, string str,
 						float p_angleX, float p_angleY, float p_angleZ) 
 {
 	// set parent node
-	parentNode->addChild(*this);
+	parentNode->addChild(this);
 
 	// set the position of the SceneNnode
 	translate( tX, tY, tZ );
@@ -65,10 +65,10 @@ void SceneNode::update(SceneNode * parentNode, string str,
 void SceneNode::destroy(void) 
 {
 		
-	list<SceneNode>::iterator i;
+	list<SceneNode*>::iterator i;
 	for(i=childList.begin(); i != childList.end(); ++i) 
 	{ 
-		i->destroy(); 
+		(*i)->destroy(); 
 	}
 		
 	this->release();
@@ -76,9 +76,9 @@ void SceneNode::destroy(void)
 }
 
 	
-void SceneNode::addChild( SceneNode & cNode ) 
+void SceneNode::addChild( SceneNode * cNode ) 
 {
-	cNode.setParent(*this);
+	cNode->setParent(this);
 	childList.push_back(cNode);
 }
 		
@@ -89,9 +89,9 @@ void SceneNode::detachChild( SceneNode & cNode )
 	// delete the SceneNode from the childList
 }
 
-void SceneNode::setParent( SceneNode & cNode ) 
+void SceneNode::setParent( SceneNode * cNode ) 
 {
-	parentNode = &cNode;
+	parentNode = cNode;
 }
 
 SceneNode* SceneNode::getParent(void)
@@ -175,9 +175,9 @@ void SceneNode::drawGeometry()
 		}
     }
 
-	list<SceneNode>::iterator itS;
-	for(itS = childList.begin(); itS != childList.end(); ++ itS) {
-			itS->drawGeometry();
+	list<SceneNode*>::iterator itS;
+	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->drawGeometry();
 	}
 	
 	glPopMatrix();
@@ -236,9 +236,9 @@ Root::~Root(void)
 
 void Root::drawGeometry()
 {
-	list<SceneNode>::iterator itS;
+	list<SceneNode*>::iterator itS;
 
-	for(itS = childList.begin(); itS != childList.end(); ++ itS) {
-			itS->drawGeometry();
+	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->drawGeometry();
 	}
 }
