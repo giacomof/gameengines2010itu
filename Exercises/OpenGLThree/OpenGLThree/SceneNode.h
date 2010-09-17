@@ -26,11 +26,11 @@ class SceneNode
 		void destroy(void);
 
 		// add a child
-		void addChild( SceneNode & pNode );
+		void addChild( SceneNode * pNode );
 		// detach a child
 		void detachChild( SceneNode & cNode );
 		// set parent node
-		void setParent ( SceneNode & pNode );
+		void setParent ( SceneNode * pNode );
 		// get parent node
 		SceneNode* getParent(void);
 		// set the node name
@@ -51,7 +51,7 @@ class SceneNode
 		int id;
 		string nodeName;
 		SceneNode * parentNode;
-		list<SceneNode> childList;
+		list<SceneNode*> childList;
 		Matrix transformationMatrix;
 		float angleX, angleY, angleZ;
 		float tX, tY, tZ;
