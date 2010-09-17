@@ -12,8 +12,8 @@ static int nodeCount=0;
 
 
 SceneNode::SceneNode(	SceneNode * parentNode, string str, 
-						float p_tX,		float p_tY,		float p_tZ,
-						float p_angleX, float p_angleY, float p_angleZ ) 
+						float p_tX, float p_tY, float p_tZ,
+						Vector p_axis, float p_angle)
 {
 	// variables inizialization
 	nodeName = str;
@@ -23,8 +23,8 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 	parentNode->addChild(this);
 
 
-	nodeTransformation = Transformation(p_tX,		p_tY,		p_tZ,
-										p_angleX,	p_angleY,	p_angleZ);
+	nodeTransformation = Transformation(p_tX, p_tY, p_tZ,
+										p_axis, p_angle);
 	id = nodeCount;
 	nodeCount++;
 	

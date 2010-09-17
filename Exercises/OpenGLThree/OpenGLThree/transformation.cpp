@@ -1,17 +1,20 @@
 #include "transformation.h"
 
 Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
-								float p_angleX, float p_angleY, float p_angleZ)
+								Vector p_axis, float p_angle )
 {
 	transformationMatrix = Matrix::generateIdentityMatrix();
 	
 	angleX = angleY = angleZ = 0;
+	vector = Vector(0.0f, 0.0f, 0.0f);
+	angle = 0;
 	tX = tY = tZ = 0;
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
+	
 
 	addTranslation(p_tX, p_tY, p_tZ);
-	addRotation(p_angleX, p_angleY, p_angleZ);
+	addQuaternionRotation(p_axis, p_angle);
 }
 
 
@@ -33,10 +36,16 @@ void Transformation::addRotation(float p_angleX, float p_angleY, float p_angleZ)
 
 }
 
-void Transformation::addQuaternionRotation(Vector arbitraryAxis, float p_Angle) 
+void Transformation::addQuaternionRotation(Vector p_ArbitraryAxis, float p_Angle) 
 {
+	vector = vector + p_ArbitraryAxis;
+	float temp = vector.getQuadraticMagnitude();
+	if (temp != 1 && temp != 0) {
+		vector.normalize();
+	}
+	angle += p_Angle;
 
-	transformationMatrix = Matrix::generateAxesRotationMatrix(arbitraryAxis, p_Angle);
+	transformationMatrix = Matrix::generateAxesRotationMatrix(p_ArbitraryAxis, p_Angle);
 }
 
 void Transformation::addTranslation(float p_tX, float p_tY, float p_tZ)

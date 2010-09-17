@@ -15,7 +15,7 @@ class SceneNode
 		// actual constructor
 		SceneNode(		SceneNode * parentNode, string str, 
 						float p_tX,		float p_tY,		float p_tZ,
-						float p_angleX, float p_angleY, float p_angleZ );
+						Vector p_axis, float p_angle);
 		// destructor
 		virtual ~SceneNode() { }
 		// delete object
