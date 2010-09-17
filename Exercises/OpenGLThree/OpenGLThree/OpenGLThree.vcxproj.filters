@@ -156,6 +156,9 @@
     <ClInclude Include="messagePump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="transformation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bmp.cpp">
@@ -174,6 +177,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="messagePump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="transformation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

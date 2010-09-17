@@ -1,6 +1,7 @@
 #include <string>
 #include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
+#include "transformation.h"
 
 using namespace linearAlgebraDLL;
 using namespace std;
@@ -52,11 +53,7 @@ class SceneNode
 		string nodeName;
 		SceneNode * parentNode;
 		list<SceneNode*> childList;
-		Matrix transformationMatrix;
-		float angleX, angleY, angleZ;
-		float tX, tY, tZ;
-		float sX, sY, sZ;
-		float sxy, sxz, syx, syz, szx, szy;
+		Transformation nodeTransformation;
 		
 };
 
