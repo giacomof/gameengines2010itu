@@ -185,22 +185,7 @@ void SceneNode::drawGeometry()
 
 void SceneNode::applyTransformation()
 {
-	/*
-	glPushMatrix();
-	float tranM[16];
-	list<SceneNode>::iterator itS;
 
-	//glLoadIdentity();
-	//transformationMatrix = getTransformation();
-	
-	transformationMatrix.getMatrix(&tranM[0]);
-	glMultMatrixf(&tranM[0]);
-	glPopMatrix();
-
-	for(itS = childList.begin(); itS != childList.end(); ++ itS) {
-			itS->drawGeometry();
-	}
-	*/
 	float tranM[16];
 	Matrix transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ).getTranspose();
 	transformationMatrix = Matrix::generateXRotationMatrix(angleX).getTranspose() * transformationMatrix;
@@ -210,7 +195,7 @@ void SceneNode::applyTransformation()
 	transformationMatrix = Matrix::generateShearingMatrix(sxy, sxz, syx, syz, szx, szy).getTranspose() * transformationMatrix;
 
 	transformationMatrix.getMatrix(&tranM[0]);
-
+	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
 
 }
@@ -220,13 +205,6 @@ Root::Root()
 	nodeName = "Root";
 	id = nodeCount;
 	nodeCount++;
-	//transformationMatrix = Matrix::generateIdentityMatrix();
-	/*
-	tX, tY, tZ	= 0;
-	angleX, angleY, angleZ	= 0;
-	sX = sY = sZ = 1;
-	sxy = sxz = syx = syz = szx = szy = 0;
-	*/
 }
 
 
