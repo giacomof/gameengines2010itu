@@ -138,7 +138,7 @@ int openGlRenderer (void *data)
 
 	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 	plane.scale(0.5f, 1.0f, 1.5f);
-	plane.rotate(90.0f, 0.0f, 0.0f);
+	plane.rotateAboutVector(Vector(1,1,0), 45.0f);
 
 
 	while(!done)

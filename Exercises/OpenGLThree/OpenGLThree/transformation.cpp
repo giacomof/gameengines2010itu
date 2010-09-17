@@ -17,13 +17,6 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 
 Matrix Transformation::getTransformation(void)
 {
-	/*Matrix transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ).getTranspose();
-	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getTranspose() * transformationMatrix;
-    transformationMatrix = Matrix::generateXRotationMatrix(angleX).getTranspose() * transformationMatrix;
-    transformationMatrix = Matrix::generateYRotationMatrix(angleY).getTranspose() * transformationMatrix;
-    transformationMatrix = Matrix::generateZRotationMatrix(angleZ).getTranspose() * transformationMatrix;
-    transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getTranspose() * transformationMatrix;*/
-
 	return transformationMatrix.getTranspose();
 }
 
