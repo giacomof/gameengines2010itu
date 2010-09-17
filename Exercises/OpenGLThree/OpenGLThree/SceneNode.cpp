@@ -18,25 +18,17 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 	// variables inizialization
 	nodeName = str;
 	parentNode = parentNode;
-	tX		= p_tX;
-	tY		= p_tY;
-	tZ		= p_tZ;
-	angleX	= p_angleX;
-	angleY	= p_angleY;
-	angleZ	= p_angleZ;
-	sX = sY = sZ = 1;
-	sxy = sxz = syx = syz = szx = szy = 0;
-
-	// ********************* TEST ************************
-	transformationMatrix = Matrix::generateIdentityMatrix();
 
 	// set parent node
 	parentNode->addChild(this);
 
+
+	nodeTransformation = Transformation(p_tX,		p_tY,		p_tZ,
+										p_angleX,	p_angleY,	p_angleZ);
 	// set the position of the SceneNnode
-	translate( tX, tY, tZ );
+	//translate( p_tX, p_tY, p_tZ );
 	// and the orientation
-	rotate( angleX, angleY, angleZ );
+	//rotate( p_angleX, p_angleY, p_angleZ );
 
 	// sets the unique id of the sceneNode
 	id = nodeCount;
@@ -52,9 +44,9 @@ void SceneNode::update(SceneNode * parentNode, string str,
 	parentNode->addChild(this);
 
 	// set the position of the SceneNnode
-	translate( tX, tY, tZ );
+	translate( p_tX, p_tY, p_tZ );
 	// and the orientation
-	rotate( angleX, angleY, angleZ );
+	rotate( p_angleX, p_angleY, p_angleZ );
 
 	// sets the unique id of the sceneNode
 	id = nodeCount;
@@ -111,49 +103,26 @@ string SceneNode::getName(void)
 
 void SceneNode::rotate(float p_angleX, float p_angleY, float p_angleZ)
 {
-	angleX += p_angleX;
-	angleY += p_angleY;
-	angleZ += p_angleZ;
-	
-	//transformationMatrix = Matrix::generateXRotationMatrix(angleX) * transformationMatrix;
-	//transformationMatrix = Matrix::generateYRotationMatrix(angleY) * transformationMatrix;
-	//transformationMatrix = Matrix::generateZRotationMatrix(angleZ) * transformationMatrix;
+	nodeTransformation.addRotation(p_angleX, p_angleY, p_angleZ);
 }
+
+
 
 void SceneNode::translate(float p_tX, float p_tY, float p_tZ) 
 {	
-	tX += p_tX;
-	tY += p_tY;
-	tZ += p_tZ;
-
-	//transformationMatrix = transformationMatrix * Matrix::generateTranslationMatrix(tX, tY, tZ);
+	nodeTransformation.addTranslation(p_tX, p_tY, p_tZ);
 }
 
 void SceneNode::scale(float p_sX, float p_sY, float p_sZ)
 {
-	sX = p_sX;
-	sY = p_sY;
-	sZ = p_sZ;
-
-	//transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
+	nodeTransformation.addScaling(p_sX, p_sY, p_sZ);
 }
 
-void SceneNode::shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy)
+void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, float p_shZX, float p_shZY)
 {
-	sxy += p_sxy;
-	sxz += p_sxz;
-	syx += p_syx;
-	syz += p_syz;
-	szx += p_szx;
-	szy += p_szy;
-
-	//transformationMatrix = Matrix::generateShearingMatrix(sxy, sxz, syx, syz, szx, szy) * transformationMatrix;
+	nodeTransformation.addShearing(p_shXY, p_shXZ, p_shYX, p_shYZ, p_shZX, p_shZY);
 }
 
-Matrix SceneNode::getTransformation() 
-{
-	return transformationMatrix;
-}
 
 void SceneNode::drawGeometry()
 {
@@ -187,14 +156,9 @@ void SceneNode::applyTransformation()
 {
 
 	float tranM[16];
-	Matrix transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ).getTranspose();
-	transformationMatrix = Matrix::generateXRotationMatrix(angleX).getTranspose() * transformationMatrix;
-	transformationMatrix = Matrix::generateYRotationMatrix(angleY).getTranspose() * transformationMatrix;
-	transformationMatrix = Matrix::generateZRotationMatrix(angleZ).getTranspose() * transformationMatrix;
-	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getTranspose() * transformationMatrix;
-	transformationMatrix = Matrix::generateShearingMatrix(sxy, sxz, syx, syz, szx, szy).getTranspose() * transformationMatrix;
+	
 
-	transformationMatrix.getMatrix(&tranM[0]);
+	nodeTransformation.getTransformation().getMatrix(&tranM[0]);
 	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
 
