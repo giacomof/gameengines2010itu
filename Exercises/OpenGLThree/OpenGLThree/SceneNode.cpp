@@ -25,12 +25,6 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 
 	nodeTransformation = Transformation(p_tX,		p_tY,		p_tZ,
 										p_angleX,	p_angleY,	p_angleZ);
-	// set the position of the SceneNnode
-	//translate( p_tX, p_tY, p_tZ );
-	// and the orientation
-	//rotate( p_angleX, p_angleY, p_angleZ );
-
-	// sets the unique id of the sceneNode
 	id = nodeCount;
 	nodeCount++;
 	
@@ -106,6 +100,10 @@ void SceneNode::rotate(float p_angleX, float p_angleY, float p_angleZ)
 	nodeTransformation.addRotation(p_angleX, p_angleY, p_angleZ);
 }
 
+void SceneNode::rotateAboutVector(Vector p_Axis, float p_Degree)
+{
+	nodeTransformation.addQuaternionRotation(p_Axis, p_Degree);
+}
 
 
 void SceneNode::translate(float p_tX, float p_tY, float p_tZ) 
