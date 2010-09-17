@@ -24,7 +24,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 	angleX	= p_angleX;
 	angleY	= p_angleY;
 	angleZ	= p_angleZ;
-	sX = sY = sZ = 0;
+	sX = sY = sZ = 1;
 	sxy = sxz = syx = syz = szx = szy = 0;
 
 	// ********************* TEST ************************
@@ -122,9 +122,9 @@ void SceneNode::rotate(float p_angleX, float p_angleY, float p_angleZ)
 
 void SceneNode::translate(float p_tX, float p_tY, float p_tZ) 
 {	
-	tX = p_tX;
-	tY = p_tY;
-	tZ = p_tZ;
+	tX += p_tX;
+	tY += p_tY;
+	tZ += p_tZ;
 
 	transformationMatrix = transformationMatrix * Matrix::generateTranslationMatrix(tX, tY, tZ);
 }
@@ -174,17 +174,23 @@ void SceneNode::drawGeometry()
 			glEnd();
 		}
     }
+
+	list<SceneNode>::iterator itS;
+	for(itS = childList.begin(); itS != childList.end(); ++ itS) {
+			itS->drawGeometry();
+	}
 	
 	glPopMatrix();
 }
 
 void SceneNode::applyTransformation()
 {
+	/*
 	glPushMatrix();
 	float tranM[16];
 	list<SceneNode>::iterator itS;
 
-	glLoadIdentity();
+	//glLoadIdentity();
 	//transformationMatrix = getTransformation();
 	
 	transformationMatrix.getMatrix(&tranM[0]);
@@ -194,6 +200,18 @@ void SceneNode::applyTransformation()
 	for(itS = childList.begin(); itS != childList.end(); ++ itS) {
 			itS->drawGeometry();
 	}
+	*/
+	float tranM[16];
+	Matrix transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ).getTranspose();
+	transformationMatrix = Matrix::generateXRotationMatrix(angleX) * transformationMatrix;
+	transformationMatrix = Matrix::generateYRotationMatrix(angleY) * transformationMatrix;
+	transformationMatrix = Matrix::generateZRotationMatrix(angleZ) * transformationMatrix;
+	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
+	transformationMatrix = Matrix::generateShearingMatrix(sxy, sxz, syx, syz, szx, szy) * transformationMatrix;
+
+	transformationMatrix.getMatrix(&tranM[0]);
+
+	glMultMatrixf(&tranM[0]);
 
 }
 
@@ -202,7 +220,12 @@ Root::Root()
 	nodeName = "Root";
 	id = nodeCount;
 	nodeCount++;
+	transformationMatrix = Matrix::generateIdentityMatrix();
 
+	tX, tY, tZ	= 0;
+	angleX, angleY, angleZ	= 0;
+	sX = sY = sZ = 1;
+	sxy = sxz = syx = syz = szx = szy = 0;
 }
 
 
