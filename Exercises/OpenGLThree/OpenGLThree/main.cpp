@@ -150,7 +150,10 @@ int openGlRenderer (void *data)
 	plane.scale(0.5f, 1.0f, 1.5f);
 	//plane.rotateAboutVector(Vector(1,1,0), 90.0f);
 	plane.rotateAboutVector(Vector(1,0,0), 30.0f);
-	plane.rotateAboutVector(Vector(1,0,0), 60.0f);
+	//plane.rotateAboutVector(Vector(1,0,1), 60.0f);
+
+	//plane.rotateAboutVector(Vector(0.89442718f,0.0f,0.44721359f), -90);
+	plane.rotateAboutVector(Vector(1.0f,0.0f,0.0f), -30);
 
 
 	while(!quit)
