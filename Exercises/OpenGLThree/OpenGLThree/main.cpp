@@ -20,12 +20,15 @@ static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// Minimum time between screen frames
 static int const thread_delay		= 3;			// Minimum time between loops
 
-static float const PI = 3.14159f;
+static float const PI = 3.14159f;					// PI definition
 
-MessagePump inputPump;
+// Message pump used for passing Events between threads
+MessagePump inputPump;								
 
 SDL_Surface *surface;					
 GLuint image;	
+
+// Root node of the Scene Graph
 Root * rootNodePtr;
 
 
@@ -59,24 +62,29 @@ void keyDown(SDL_keysym *keysym);
 void keyUp(SDL_keysym *keysym);
 void update();
 
+// Pointer to the function that moves the camera
 float* getCamera();
+// Function that restricts camera movements
 void clampCamera();
 
 GLuint	filter;
 GLuint	texture[3];
 
-//mutex to lock variables
+// Mutex to lock variables
 SDL_mutex *value_mutex;
 
+// Defines when to stop looping
 bool quit = false;
 
 
 /* Thread for rendering the scene */
 int openGlRenderer (void *data)
 {
+	// Thread name
 	char *tname = ( char * )data;
+
+	// SDL/OpenGL data
 	int videoFlags;
-	int done = FALSE;
 	SDL_Event event;
 	const SDL_VideoInfo *videoInfo;
 	int isActive = TRUE;
@@ -132,8 +140,10 @@ int openGlRenderer (void *data)
 	
 	Uint32 tickFrame = 0;
 
+	// Move the mouse in the center of the windows before starting render
 	SDL_WarpMouse((short)centerX, (short)centerY);
 
+	// Create the root node
 	rootNodePtr = new Root();
 
 	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
@@ -143,7 +153,7 @@ int openGlRenderer (void *data)
 	plane.rotateAboutVector(Vector(1,0,0), 60.0f);
 
 
-	while(!done)
+	while(!quit)
 	{
 		//lock 
 		//SDL_mutexP ( value_mutex ); 
@@ -187,7 +197,7 @@ int openGlRenderer (void *data)
 				break;
 
 			case SDL_QUIT:
-				done = TRUE;
+				quit = TRUE;
 				break;
 			default:
 				break;
@@ -204,6 +214,7 @@ int openGlRenderer (void *data)
 		//release the lock 
 		//SDL_mutexV ( value_mutex );
 		
+		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
 	ShowCursor(TRUE);
@@ -214,10 +225,13 @@ int openGlRenderer (void *data)
 /* This thread updates the scene */
 int updater(void *data)
 {
+	// Thread name
 	char *tname = ( char * )data;
 
 	while ( !quit ) {
+		// Runs the update scene method
 		update();
+		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
 
@@ -231,6 +245,7 @@ int main(int argc, char *argv[])
 	SDL_Thread *id1, *id2;
 	char *tnames[2] = { "Renderer", "Updater" };
 
+	// Define the exit of the program in relation to SDL variables
 	atexit(SDL_Quit);
 
 	// Create the mutex
@@ -247,6 +262,7 @@ int main(int argc, char *argv[])
 	// Release the mutex
 	SDL_DestroyMutex ( value_mutex );
 
+	// Delete the message pump between threads
 	delete &inputPump;
 	
 	exit(0);  
@@ -266,7 +282,6 @@ void drawGL(void)
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
 	glBindTexture(GL_TEXTURE_2D, image);
-	glLoadIdentity();
 	
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
@@ -293,13 +308,6 @@ void update()
 		CamSideways = CamMatrix * CamSideways;
 		CamUp = CamMatrix * CamUp;
 		
-		// Prints to debug camera movement
-		/*
-		printf("\n");
-		printf("Forward : [%f, %f, %f]\n",CamForward[0],CamForward[1],CamForward[2]);
-		printf("Sideways: [%f, %f, %f]\n",CamSideways[0],CamSideways[1],CamSideways[2]);
-		printf("Up      : [%f, %f, %f]\n",CamUp[0],CamUp[1],CamUp[2]);
-		*/
 	}
 
 	// Forward
