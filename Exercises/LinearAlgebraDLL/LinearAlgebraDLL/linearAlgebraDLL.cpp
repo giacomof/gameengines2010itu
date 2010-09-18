@@ -11,89 +11,6 @@ static const float PI = 3.14159f;
 namespace linearAlgebraDLL
 {
 
-/*
-// Function for correct floating point calculation for sine and cosine
-void MathFunctions::floatingPointSinCos(float* sincos, float* degree)
-{
-	// Function to reduce the angle in one between 0 and 360 degree
-	int intDegree = int(*degree);
-	int rotations = intDegree/360;
-
-	*degree -= 360*rotations;
-
-	// Check for 0 sine or cosine
-
-	if(degree==0) {
-		sincos[0]=0;
-		sincos[1]=1;
-	}else if(*degree==90) {
-		sincos[0]=1;
-		sincos[1]=0;
-	}else if(*degree==180) {
-		sincos[0]=0;
-		sincos[1]=-1;
-	}else if(*degree==270) {
-		sincos[0]=-1;
-		sincos[1]=0;
-	} else {
-		// Otherwise calculate them with the cmath functions
-		sincos[0] = sin(*degree*PI/180);
-		sincos[1] = cos(*degree*PI/180);
-	}
-
-}
-
-float MathFunctions::floatingPointSin(float degree)
-{
-	// Function to reduce the angle in one between 0 and 360 degree
-	float sine;
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
-
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-	}else if(degree==90) {
-		sine=1;
-	}else if(degree==180) {
-		sine=0;
-	}else if(degree==270) {
-		sine=-1;
-	} else {
-		// Otherwise calculate with the cmath function
-		sine = sin(degree*PI/180);
-	}
-
-	return sine;
-}
-
-float MathFunctions::floatingPointCos(float degree)
-{
-	// Function to reduce the angle in one between 0 and 360 degree
-	float cosine;
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
-
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		cosine=1;
-	}else if(degree==90) {
-		cosine=0;
-	}else if(degree==180) {
-		cosine=-1;
-	}else if(degree==270) {
-		cosine=0;
-	} else {
-		// Otherwise calculate with the cmath function
-		cosine = cos(degree*PI/180);
-	}
-
-	return cosine;
-}
-*/
-
 // Constructor for vectors without parameter
 Vector::Vector(void)
 {
@@ -175,7 +92,7 @@ Vector Vector::operator-(Vector &other)
 }
 
 // Operator overload for the * sign between two vectors
-float  Vector::operator*(Vector &other)
+float Vector::operator*(Vector &other)
 {
      // I create a new float to store the result
      float result;
@@ -240,6 +157,51 @@ Point::Point(float x, float y, float z)
      data[1] = y;
      data[2] = z;
      data[3] = 1;
+}
+
+// Constructor for quaternions without parameter
+Quaternion::Quaternion(void)
+{
+     // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
+     vector = Vector();
+}
+
+// Constructor for quaternions with parameter
+Quaternion::Quaternion(Vector axis, float angle)
+{
+     // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
+     vector = axis;
+	 degree = angle;
+}
+
+// Operator overload for sum between quaternions
+Quaternion Quaternion::operator+(Quaternion &other)
+{
+	Quaternion result;
+
+	result.vector = vector + other.vector;
+	result.degree += other.degree;
+
+	return result;
+}
+
+//Function for getting members of quaternion
+Vector Quaternion::getVector(void)
+{
+	return vector;
+}
+
+float Quaternion::getDegree(void)
+{
+	return degree;
+}
+
+std::ostream & operator<< (std::ostream &os, const Quaternion &q)
+{
+	// I add to the output stream in the following format: "{x,y,z}"
+     os << "{(" << q.vector.get(0) << "," << q.vector.get(1) << "," << q.vector.get(2)<< ")," << q.degree << "}";
+    // I return the stream
+    return os;
 }
 
 
@@ -652,22 +614,6 @@ Matrix Matrix::getInverse()
 // Calculate the determinant of a 4x4 matrix with Laplace expansion algorithm
 float Matrix::getDeterminant()
 {
-	/*float determinant =
-		data[0]*data[5]*data[10]*data[15] + data[0]*data[6]*data[11]*data[13] + 
-		data[0]*data[7]*data[9]*data[14] - data[0]*data[5]*data[11]*data[14] -
-		data[0]*data[6]*data[9]*data[15] - data[0]*data[7]*data[10]*data[13] +
-		data[1]*data[4]*data[11]*data[14] + data[1]*data[6]*data[8]*data[15] +
-		data[1]*data[7]*data[10]*data[12] - data[1]*data[4]*data[10]*data[15] -
-		data[1]*data[6]*data[11]*data[12] - data[1]*data[7]*data[8]*data[14] +
-		data[2]*data[4]*data[9]*data[15] + data[2]*data[5]*data[11]*data[12] + 
-		data[2]*data[7]*data[8]*data[13] - data[2]*data[4]*data[11]*data[13] -
-		data[2]*data[5]*data[8]*data[15] - data[2]*data[7]*data[9]*data[12] +
-		data[3]*data[4]*data[10]*data[13] + data[3]*data[5]*data[8]*data[14] +
-		data[3]*data[6]*data[8]*data[13] - data[3]*data[4]*data[9]*data[14] -
-		data[3]*data[5]*data[10]*data[12] - data[3]*data[6]*data[8]*data[13];
-
-	return determinant;
-	*/
 
 	float temp0 = data[0]*data[5] - data[1]*data[4];
 	float temp1 = data[0]*data[6] - data[2]*data[4];
