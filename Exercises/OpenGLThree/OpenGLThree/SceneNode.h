@@ -29,7 +29,7 @@ class SceneNode
 		// add a child
 		void addChild( SceneNode * pNode );
 		// detach a child
-		void detachChild( SceneNode & cNode );
+		//void detachChild( SceneNode & cNode );
 		// set parent node
 		void setParent ( SceneNode * pNode );
 		// get parent node
@@ -39,7 +39,8 @@ class SceneNode
 		// get the node name
 		string getName(void);
 
-		Matrix getTransformation(void); 
+
+		//Matrix getTransformation(void); 
 
 		void rotate(float p_angleX, float p_angleY, float p_angleZ);
 		void rotateAboutVector(Vector p_Axis, float p_Degree);
@@ -50,11 +51,12 @@ class SceneNode
 		void applyTransformation();
 		void drawGeometry();
 
-		int id;
-		string nodeName;
-		SceneNode * parentNode;
-		list<SceneNode*> childList;
-		Transformation nodeTransformation;
+	protected:
+		int id;									// Unique id
+		string nodeName;						// Name
+		SceneNode * parentNode;					// Parent Node
+		list<SceneNode*> childList;				// List of child Nodes
+		Transformation nodeTransformation;		// Transformation of the Node
 		
 };
 
