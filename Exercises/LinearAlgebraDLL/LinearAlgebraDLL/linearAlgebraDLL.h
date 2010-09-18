@@ -70,6 +70,28 @@ class Point: public Vector
         __declspec(dllexport) Point(float x, float y, float z);
 };
 
+class Quaternion
+{
+	public:
+		// Constructors
+        __declspec(dllexport) Quaternion(void);
+        __declspec(dllexport) Quaternion(Vector axis, float angle);
+
+		// Operator overload
+		__declspec(dllexport) Quaternion operator+(Quaternion &other);
+
+		// Get functions
+		__declspec(dllexport) Vector getVector(void);
+		__declspec(dllexport) float getDegree(void);
+
+		// Print functions
+		__declspec(dllexport) friend std::ostream & operator<< (std::ostream &os, const Quaternion &q);
+
+	protected:
+		Vector vector;
+		float degree;
+};
+
 // Describe a matrix
 class Matrix
 {
