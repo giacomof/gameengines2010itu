@@ -154,6 +154,7 @@ int openGlRenderer (void *data)
 	SceneNode plane6(rootNodePtr, "Triangle Plane6", 0.0f, 0.0f, 0.0f, Vector(1.f,0.0f,0.0f), 90.0f);
 
 	//plane.scale(0.5f, 1.0f, 1.5f);
+	plane.rotateAboutAxis(Vector(0.0f, 1.0f, 1.0f), 90.0f);
 	//plane.rotateAboutAxis(Vector(0,1,0), 45.0f);
 	//plane.rotateAboutAxis(Vector(1,0,0), 30.0f);
 	//plane.rotateAboutAxis(Vector(1,0,1), 60.0f);
