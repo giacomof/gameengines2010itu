@@ -50,17 +50,27 @@ Vector Vector::normalize(void)
      Vector result;
      // Calculating the length using the the formula "square root of ( x^2 + y^2 + z^2 )", a short cut is multiplying the entire vector with itself
      float magnitude = this->getMagnitude();
+
      // Checking that I am not about to divide by zero...
-     if (magnitude != 0) {
+     if (magnitude == 0) {
+
+		result.set(0, 0);
+        result.set(1, 0);
+        result.set(2, 0);
+
+		 // ...if i is, I throw an exception to be handle by whoever is calling this function and are smart enough to use try and catch
+		 //throw DivisionByZeroException();
+
+     } else if (magnitude != 1) {
         // ...if magnitude isn't, I go ahead with normalization
         result.set(0, this->get(0) / magnitude);
         result.set(1, this->get(1) / magnitude);
         result.set(2, this->get(2) / magnitude);
      } else {
-        // ...if i is, I throw an exception to be handle by whoever is calling this function and are smart enough to use try and catch
-        throw DivisionByZeroException();
-     }
-
+		result.set(0, this->get(0));
+        result.set(1, this->get(1));
+        result.set(2, this->get(2));
+	 }
      // I return the result
      return result;
 }
@@ -163,26 +173,58 @@ Point::Point(float x, float y, float z)
 Quaternion::Quaternion(void)
 {
      // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
-     vector = Vector();
+	vector = Vector(0.0f, 0.0f, 0.0f);
+	d = 0;
 }
 
 // Constructor for quaternions with parameter
 Quaternion::Quaternion(Vector axis, float angle)
 {
-     // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
-     vector = axis;
-	 degree = angle;
+    // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
+	float sinAngle;
+	angle *= 0.5f;
+	Vector vn(axis);
+	vn = vn.normalize();
+ 
+	sinAngle = sin(angle*PI/180);
+ 
+	vn = vn * sinAngle;
+
+	for (unsigned short i = 0; i < 3; i++) {
+		vector.set(i, vn.get(i));
+	}
+	d = cos(angle*PI/180);
 }
 
 // Operator overload for sum between quaternions
 Quaternion Quaternion::operator+(Quaternion &other)
 {
-	Quaternion result;
+	Vector resultVector = Vector(this->getVector() + other.getVector());
 
-	result.vector = vector + other.vector;
-	result.degree += other.degree;
+	float resultDegree = this->getD() + other.getD();
 
-	return result;
+	Quaternion resultQuaternion = Quaternion();
+	resultQuaternion.vector = resultVector;
+	resultQuaternion.d = resultDegree;
+
+	return resultQuaternion;
+}
+
+// Operator overload for multiplication between quaternions
+Quaternion Quaternion::operator*(Quaternion &other)
+{
+	Vector resultVector = Vector();
+	resultVector.set(0, d * other.vector.get(0) + vector.get(0) * other.d + vector.get(1) * other.vector.get(2) - vector.get(2) * other.vector.get(1)); 
+	resultVector.set(1, d * other.vector.get(1) + vector.get(1) * other.d + vector.get(2) * other.vector.get(0) - vector.get(0) * other.vector.get(2)); 
+	resultVector.set(2, d * other.vector.get(2) + vector.get(2) * other.d + vector.get(0) * other.vector.get(1) - vector.get(1) * other.vector.get(0));
+
+	float resultD = d * other.d - vector.get(0) * other.vector.get(0) - vector.get(1) * other.vector.get(1) - vector.get(2) * other.vector.get(2);
+
+	Quaternion resultQuaternion = Quaternion();
+	resultQuaternion.vector = resultVector;
+	resultQuaternion.d = resultD;
+
+	return resultQuaternion;
 }
 
 //Function for getting members of quaternion
@@ -191,15 +233,24 @@ Vector Quaternion::getVector(void)
 	return vector;
 }
 
-float Quaternion::getDegree(void)
+float Quaternion::getD(void)
 {
-	return degree;
+	return d;
+}
+
+void Quaternion::getAxisAngle(Vector *axis, float *angle)
+{
+	float magnitude = vector.getMagnitude();
+	axis->set(0,  vector.get(0) / magnitude);
+	axis->set(1,  vector.get(1) / magnitude);
+	axis->set(2,  vector.get(2) / magnitude);
+	*angle = acos(d*PI/180) * 2.0f;
 }
 
 std::ostream & operator<< (std::ostream &os, const Quaternion &q)
 {
 	// I add to the output stream in the following format: "{x,y,z}"
-     os << "{(" << q.vector.get(0) << "," << q.vector.get(1) << "," << q.vector.get(2)<< ")," << q.degree << "}";
+     os << "{(" << q.vector.get(0) << "," << q.vector.get(1) << "," << q.vector.get(2)<< ")," << q.d << "}";
     // I return the stream
     return os;
 }
@@ -458,6 +509,41 @@ Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
 	return result;
 }
 
+// Generate a rotation matrix from a quaternion
+Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
+{
+	float x2 = q.getVector().get(0) * q.getVector().get(0);
+	float y2 = q.getVector().get(1) * q.getVector().get(1);
+	float z2 = q.getVector().get(2) * q.getVector().get(2);
+	float xy = q.getVector().get(0) * q.getVector().get(1);
+	float xz = q.getVector().get(0) * q.getVector().get(2);
+	float yz = q.getVector().get(1) * q.getVector().get(2);
+	float dx = q.getD() * q.getVector().get(0);
+	float dy = q.getD() * q.getVector().get(1);
+	float dz = q.getD() * q.getVector().get(2);
+ 
+	Matrix result;
+
+	result.set(0,0,(1.0f - 2.0f * (y2 + z2)));
+	result.set(0,1,(2.0f * (xy - dz)));
+	result.set(0,2,(2.0f * (xz + dy)));
+	result.set(0,3,0);
+	result.set(1,0,(2.0f * (xy + dz)));
+	result.set(1,1,(1.0f - 2.0f * (x2 + z2)));
+	result.set(1,2,(2.0f * (yz - dx)));
+	result.set(1,3,0);
+	result.set(2,0,(2.0f * (xz - dy)));
+	result.set(2,1,(2.0f * (yz + dx)));
+	result.set(2,2,(1.0f - 2.0f * (x2 + y2)));
+	result.set(2,3,0);
+	result.set(3,0,0);
+	result.set(3,1,0);
+	result.set(3,2,0);
+	result.set(3,3,1);
+
+	return result;
+
+}
 
 // Generate a shearing matrix from six float values 
 Matrix Matrix::generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
