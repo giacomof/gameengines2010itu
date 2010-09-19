@@ -157,15 +157,20 @@ int openGlRenderer (void *data)
 	bigTriangle.addVertex(&Point(0.0f, 0.0f, -100.0f));
 
 
-	SceneNode plane(rootNodePtr, "Triangle Plane", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
-	SceneNode plane2(&plane, "Triangle Plane2", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,1.0f), 90.0f);
-	SceneNode plane3(&plane, "Triangle Plane3", &bigTriangle, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,1.0f), 90.0f);
-
+	SceneNode plane(rootNodePtr, "Triangle Plane", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
+	SceneNode plane2(&plane, "Triangle Plane2", &bigTriangle, 100.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
+	plane2.scale(1,1,1);
+	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
+	plane3.scale(1,1,1);
 
 
 
 	while(!quit)
 	{
+		plane.rotateAboutAxis(Vector(0,1,0),0.2f);
+		plane2.rotateAboutAxis(Vector(0,1,0),0.3f);
+		plane3.rotateAboutAxis(Vector(0,1,0),0.4f);
+
 		//lock 
 		//SDL_mutexP ( value_mutex ); 
 		
