@@ -237,7 +237,6 @@ int main(int argc, char *argv[])
 	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
 	plane3.scale(1,1,1);*/
 
-	
 	Geometry sunG = Geometry(1);
 	sunG.setSphere(50, 30, 30);
 	SceneNode sun(rootNodePtr, "Sun", &sunG, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
@@ -249,6 +248,9 @@ int main(int argc, char *argv[])
 	Geometry moonG = Geometry(1);
 	moonG.setSphere(1, 30, 30);
 	SceneNode moon(&earth, "Moon", &moonG, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	Geometry doomDemon = Geometry(&md2istance);
+	SceneNode demon(rootNodePtr, "Doom Demon", &doomDemon, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 
@@ -345,13 +347,14 @@ void drawGL(void)
 	// Set the camera
 	float *CamTransform = getCamera();
 
-	
+	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
+	glBindTexture(GL_TEXTURE_2D, md2Texture);
+
 	//Root::drawGeometry();
 	rootNodePtr->drawGeometry();
 	//glPopMatrix();
 
-	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
-	glBindTexture(GL_TEXTURE_2D, md2Texture);
+
 
 	// ******************************
 	// ******** DEBUG INFO **********
@@ -359,9 +362,6 @@ void drawGL(void)
 	
 	// write memory usage
 	//std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
-
-	// render the md2 model
-	md2istance.Render();
 
 	// draw the animation
 	md2istance.Update(0.03);

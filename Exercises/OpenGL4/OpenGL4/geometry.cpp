@@ -18,6 +18,16 @@ Geometry::Geometry(int flag)
 	}
 }
 
+Geometry::Geometry(md2Loader * meshMD2) 
+{
+	shapeFlag = 2;
+	mesh = meshMD2;
+}
+
+void Geometry::render() 
+{
+	mesh->Render();
+}
 
 Geometry::~Geometry(void)
 {
