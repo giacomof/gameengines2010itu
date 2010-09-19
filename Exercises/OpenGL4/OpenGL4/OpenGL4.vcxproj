@@ -77,18 +77,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bmp.cpp" />
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="include\linearAlgebraDLL.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="md2File.cpp" />
     <ClCompile Include="md2Loader.cpp" />
     <ClCompile Include="messagePump.cpp" />
+    <ClCompile Include="pcxLoader.c" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bmp.h" />
     <ClInclude Include="geometry.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
@@ -137,11 +136,14 @@
     <ClInclude Include="md2File.h" />
     <ClInclude Include="md2Loader.h" />
     <ClInclude Include="messagePump.h" />
+    <ClInclude Include="pcxLoader.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="transformation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glut32.dll" />
+    <None Include="include\Cyber.md2" />
+    <None Include="include\cyber.pcx" />
     <None Include="include\glut.def" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
