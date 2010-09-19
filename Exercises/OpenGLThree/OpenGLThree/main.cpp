@@ -158,15 +158,9 @@ int openGlRenderer (void *data)
 	//SceneNode plane5(&plane, "Triangle Plane5", 0.0f, 0.0f, -100.0f, Vector(1.f,0.0f,0.0f), 90.0f);
 	//SceneNode plane6(&plane, "Triangle Plane6", 0.0f, 0.0f, 0.0f, Vector(1.f,0.0f,0.0f), 90.0f);
 
-	//plane.scale(0.5f, 1.0f, 1.5f);
-	//plane.rotateAboutAxis(Vector(0.0f, 1.0f, 0.0f), 45.0f);
+
 	plane4.rotateAboutAxis(Vector(0.0f, 1.0f, 0.0f), 45.0f);
 
-	//plane.rotateAboutAxis(Vector(0,1,0), 45.0f);
-	//plane.rotateAboutAxis(Vector(1,0,0), 30.0f);
-	//plane.rotateAboutAxis(Vector(1,0,1), 60.0f);
-
-	//plane.rotateAboutAxis(Vector(0.89442718f,0.0f,0.44721359f), -90);
 
 
 	while(!quit)

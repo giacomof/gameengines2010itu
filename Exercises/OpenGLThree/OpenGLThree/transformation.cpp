@@ -20,10 +20,6 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
 	
-	// Apply the firs translation and rotation
-	//addTranslation(p_tX, p_tY, p_tZ);
-	//addAxisRotation(p_axis, p_angle);
-	//addQuaternionRotation(Quaternion(p_axis, p_angle));
 }
 
 // Returns the transpose of the actual transformation matrix
@@ -60,21 +56,6 @@ Matrix Transformation::getInverseTransformation(void)
 void Transformation::addQuaternionRotation(Quaternion q) 
 {
 	rotation = q * rotation;
-
-	//transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation) * transformationMatrix;
-
-
-}
-
-void Transformation::addAxisRotation(Vector p_Axis, float p_Degree) 
-{
-	axis = axis + p_Axis;
-	axis = axis.normalize();
-
-	degree += p_Degree;
-
-	//transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree) * transformationMatrix;
-
 }
 
 // Apply a translation
@@ -84,8 +65,6 @@ void Transformation::addTranslation(float p_tX, float p_tY, float p_tZ)
 	tX += p_tX;
 	tY += p_tY;
 	tZ += p_tZ;
-
-	//transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ) * transformationMatrix;
 }
 
 // Apply a scale
@@ -94,8 +73,6 @@ void Transformation::addScaling(float p_sX, float p_sY, float p_sZ)
 	sX *= p_sX;
 	sY *= p_sY;
 	sZ *= p_sZ;
-
-	//transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 }
 
 // Apply a shear
@@ -107,8 +84,6 @@ void Transformation::addShearing(float p_shXY, float p_shXZ, float p_shYX, float
 	shYZ += p_shYZ;
 	shZX += p_shZX;
 	shZY += p_shZY;
-
-	//transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
 }
 
 /*
