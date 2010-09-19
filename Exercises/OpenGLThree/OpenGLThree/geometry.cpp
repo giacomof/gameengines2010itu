@@ -17,5 +17,5 @@ Geometry::~Geometry(void)
 
 void Geometry::addVertex(Point * p)
 {
-	vertexList.push_front(p);
+	vertexList.push_back(p);
 }

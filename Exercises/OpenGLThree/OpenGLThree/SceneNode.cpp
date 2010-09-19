@@ -13,13 +13,15 @@ static int nodeCount=0;
 // Constructor that take a pointer to the parant node, the name of the node
 // the initial position of the node
 // the initial orientation of the node
-SceneNode::SceneNode(	SceneNode * parentNode, string str, 
+SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 						float p_tX, float p_tY, float p_tZ,
 						Vector p_axis, float p_angle)
 {
 	// variables inizialization
 	nodeName = str;
 	parentNode = parentNode;
+
+	geometry = g;
 
 	// set parent node
 	parentNode->addChild(this);
@@ -127,33 +129,13 @@ void SceneNode::drawGeometry()
 {
 	applyTransformation();
 
-	/*
-	float y = -10.0f;
-	glColor3f(0.0f, 1.0f, 0.0f);
-	float red, green, blue = 0;
-	for(float z = -50; z <= 50; z += 1) {
-		green = 0.01 * (50-z);
-		for(float x = -50; x <= 50; x += 1) {
-			blue = red = 0.01 * (50-x);
-			glColor3f(red, green, blue);
-			glBegin(GL_TRIANGLES);
-				glVertex3f(x+1, y, z);
-				glVertex3f(x, y, z+1);
-				glVertex3f(x+1, y, z+1);
-			glEnd();
-		}
-    }
-	*/
-	glBegin(GL_TRIANGLES);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(0, 0, 0);
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(100, 0, 0);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(0, 0, -100);
-	glEnd();
-	
-	
+	for(int i = 0; i < geometry->vertexList.size(); i+=3) {
+		glBegin(GL_TRIANGLES);
+			glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
+			glVertex3f(geometry->vertexList[i+1]->get(0), geometry->vertexList[i+1]->get(1), geometry->vertexList[i+1]->get(2));
+			glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
+		glEnd();
+	}
 
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
