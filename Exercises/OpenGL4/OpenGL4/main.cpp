@@ -191,16 +191,16 @@ int main(int argc, char *argv[])
 	plane3.scale(1,1,1);*/
 	
 	Geometry sunG = Geometry(1);
-	sunG.setSphere(50, 50, 50);
+	sunG.setSphere(50, 30, 30);
 	SceneNode sun(rootNodePtr, "Sun", &sunG, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	Geometry earthG = Geometry(1);
-	earthG.setSphere(20, 50, 50);
-	SceneNode earth(&sun, "Earth", &sunG, 200.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	earthG.setSphere(20, 30, 30);
+	SceneNode earth(&sun, "Earth", &earthG, 200.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	Geometry moonG = Geometry(1);
-	moonG.setSphere(1, 50, 50);
-	SceneNode moon(&earth, "Moon", &sunG, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	moonG.setSphere(1, 30, 30);
+	SceneNode moon(&earth, "Moon", &moonG, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 
