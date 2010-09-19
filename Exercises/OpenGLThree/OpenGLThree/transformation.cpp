@@ -25,12 +25,25 @@ Matrix Transformation::getTransformation(void)
 {
 
 	float tranM[16];
-	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ);
-	
+	transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree);
+	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
-	transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree) * transformationMatrix;
 	
+	
+	transformationMatrix.getMatrix(&tranM[0]);
+	return transformationMatrix.getTranspose();
+}
+
+Matrix Transformation::getInverseTransformation(void)
+{
+	float tranM[16];
+	
+	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getInverse();
+	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
+	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ).getInverse() * transformationMatrix;
+	transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree).getInverse() * transformationMatrix;
+
 	transformationMatrix.getMatrix(&tranM[0]);
 	return transformationMatrix.getTranspose();
 }

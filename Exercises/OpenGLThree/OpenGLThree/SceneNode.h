@@ -46,6 +46,7 @@ class SceneNode
 		void shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
 		void applyTransformation();
+		void SceneNode::removeTransformation();
 		void drawGeometry();
 
 	protected:
