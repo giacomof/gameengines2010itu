@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 	//create the threads
 	id1 = SDL_CreateThread ( updater, tnames[0] );
 
-	Geometry bigTriangle = Geometry();
+	/*Geometry bigTriangle = Geometry(0);
 	bigTriangle.addVertex(&Point(0.0f, 0.0f, 0.0f));
 	bigTriangle.addVertex(&Point(100.0f, 0.0f, 0.0f));
 	bigTriangle.addVertex(&Point(0.0f, 0.0f, -100.0f));
@@ -188,15 +188,27 @@ int main(int argc, char *argv[])
 	SceneNode plane2(&plane, "Triangle Plane2", &bigTriangle, 100.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
 	plane2.scale(1,1,1);
 	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
-	plane3.scale(1,1,1);
+	plane3.scale(1,1,1);*/
+	
+	Geometry sunG = Geometry(1);
+	sunG.setSphere(50, 50, 50);
+	SceneNode sun(rootNodePtr, "Sun", &sunG, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	Geometry earthG = Geometry(1);
+	earthG.setSphere(20, 50, 50);
+	SceneNode earth(&sun, "Earth", &sunG, 200.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	Geometry moonG = Geometry(1);
+	moonG.setSphere(1, 50, 50);
+	SceneNode moon(&earth, "Moon", &sunG, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 
 	while(!quit)
 	{
-		plane.rotateAboutAxis(Vector(0,1,0),0.2f);
-		plane2.rotateAboutAxis(Vector(0,1,0),0.3f);
-		plane3.rotateAboutAxis(Vector(0,1,0),0.4f);
+		sun.rotateAboutAxis(Vector(0,1,0),0.2f);
+		earth.rotateAboutAxis(Vector(0,1,0),0.3f);
+		moon.rotateAboutAxis(Vector(0,1,0),0.4f);
 
 		//lock 
 		//SDL_mutexP ( value_mutex ); 
