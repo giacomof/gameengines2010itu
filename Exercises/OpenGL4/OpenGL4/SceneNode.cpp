@@ -130,16 +130,25 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 void SceneNode::drawGeometry()
 {
 	applyTransformation();
-	/*
-	for(int i = 0; i < geometry->vertexList.size(); i+=3) {
-		glBegin(GL_TRIANGLES);
-			glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
-			glVertex3f(geometry->vertexList[i+1]->get(0), geometry->vertexList[i+1]->get(1), geometry->vertexList[i+1]->get(2));
-			glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
-		glEnd();
+
+	switch (geometry->getShapeFlag()) {
+
+		case 0 : 
+			for(int i = 0; i < geometry->vertexList.size(); i+=3) {
+				glBegin(GL_TRIANGLES);
+					glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
+					glVertex3f(geometry->vertexList[i+1]->get(0), geometry->vertexList[i+1]->get(1), geometry->vertexList[i+1]->get(2));
+					glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
+				glEnd();
+			}
+			break;
+
+		case 1 :
+			glutSolidSphere(geometry->getSphereRadius(), geometry->getSphereSlices(), geometry->getSphereStacks());
+			break;
+		default:
+			break;
 	}
-	*/
-	glutWireSphere(20, 20, 20);
 
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
