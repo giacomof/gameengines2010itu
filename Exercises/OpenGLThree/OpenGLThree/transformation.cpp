@@ -8,16 +8,22 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 	transformationMatrix = Matrix::generateIdentityMatrix();
 	
 	// Initialise all the values
-	rotation = Quaternion();
+	rotation = Quaternion(p_axis, p_angle);
+
 	axis = Vector(0,0,0);
 	degree = 0;
-	tX = tY = tZ = 0;
+
+	tX = p_tX; 
+	tY = p_tY;
+	tZ = p_tZ;
+
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
 	
 	// Apply the firs translation and rotation
-	addTranslation(p_tX, p_tY, p_tZ);
-	addAxisRotation(p_axis, p_angle);
+	//addTranslation(p_tX, p_tY, p_tZ);
+	//addAxisRotation(p_axis, p_angle);
+	//addQuaternionRotation(Quaternion(p_axis, p_angle));
 }
 
 // Returns the transpose of the actual transformation matrix
@@ -25,7 +31,8 @@ Matrix Transformation::getTransformation(void)
 {
 
 	float tranM[16];
-	transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree);
+	//transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree);
+	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
 	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
@@ -52,7 +59,7 @@ Matrix Transformation::getInverseTransformation(void)
 // Apply a quaternion rotation
 void Transformation::addQuaternionRotation(Quaternion q) 
 {
-	rotation = rotation + q;
+	rotation = q * rotation;
 
 	//transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation) * transformationMatrix;
 

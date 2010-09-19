@@ -79,6 +79,7 @@ class Quaternion
 
 		// Operator overload
 		__declspec(dllexport) Quaternion operator+(Quaternion &other);
+		__declspec(dllexport) Quaternion operator*(Quaternion &other);
 
 		// Get functions
 		__declspec(dllexport) Vector getVector(void);
