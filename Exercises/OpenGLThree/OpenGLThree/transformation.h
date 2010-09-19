@@ -16,6 +16,7 @@ class Transformation
 
 		// Return the transpose of the transformation matrix
 		Matrix getTransformation(void);
+		Matrix getInverseTransformation(void);
 		//void addRotation(float p_angleX, float p_angleY, float p_angleZ);
 		void addQuaternionRotation(Quaternion q);
 		void addAxisRotation(Vector p_Axis, float p_Degree);

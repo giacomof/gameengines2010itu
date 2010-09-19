@@ -118,7 +118,6 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 // Apply the trasformation of the node and then draw it
 void SceneNode::drawGeometry()
 {
-	glPushMatrix();
 	applyTransformation();
 
 	/*
@@ -147,12 +146,15 @@ void SceneNode::drawGeometry()
 		glVertex3f(0, 0, -100);
 	glEnd();
 	
+	
 
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			removeTransformation();
 			(*itS)->drawGeometry();
-			glPopMatrix();
+			
 	}
+	glPopMatrix();
 	
 }
 
@@ -163,6 +165,17 @@ void SceneNode::applyTransformation()
 	
 
 	nodeTransformation.getTransformation().getMatrix(&tranM[0]);
+	glPushMatrix();
+	glMultMatrixf(&tranM[0]);
+
+}
+
+void SceneNode::removeTransformation()
+{
+	float tranM[16];
+	
+
+	nodeTransformation.getInverseTransformation().getMatrix(&tranM[0]);
 	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
 
@@ -188,8 +201,9 @@ void Root::drawGeometry()
 
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
 			(*itS)->drawGeometry();
-			glPopMatrix();
+			
 			
 	}
+	glPopMatrix();
 	
 }

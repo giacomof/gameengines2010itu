@@ -148,8 +148,11 @@ int openGlRenderer (void *data)
 
 	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 	SceneNode plane2(rootNodePtr, "Triangle Plane2", 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,1.0f), 90.0f);
-	SceneNode plane3(rootNodePtr, "Triangle Plane3", 0.0f, 0.0f, 0.0f, Vector(0.f,0.0f,1.0f), 180.0f);
-	//SceneNode plane4(rootNodePtr, "Triangle Plane4", 100.0f, 0.0f, 0.0f, Vector(0.f,0.0f,1.0f), 90.0f);
+	SceneNode plane3(rootNodePtr, "Triangle Plane3", 0.0f, 100.0f, 0.0f, Vector(0.0f,0.0f,0.0f), .0f);
+	SceneNode plane4(rootNodePtr, "Triangle Plane4", 100.0f, 0.0f, 0.0f, Vector(0.f,0.0f,1.0f), 90.0f);
+	SceneNode plane5(rootNodePtr, "Triangle Plane5", 0.0f, 0.0f, -100.0f, Vector(1.f,0.0f,0.0f), 90.0f);
+	SceneNode plane6(rootNodePtr, "Triangle Plane6", 0.0f, 0.0f, 0.0f, Vector(1.f,0.0f,0.0f), 90.0f);
+
 	//plane.scale(0.5f, 1.0f, 1.5f);
 	//plane.rotateAboutAxis(Vector(0,1,0), 45.0f);
 	//plane.rotateAboutAxis(Vector(1,0,0), 30.0f);
@@ -285,7 +288,7 @@ void drawGL(void)
 	
 	//Root::drawGeometry();
 	rootNodePtr->drawGeometry();
-	glPopMatrix();
+	//glPopMatrix();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
 	glBindTexture(GL_TEXTURE_2D, image);
@@ -445,7 +448,7 @@ void keyUp(SDL_keysym *keysym)
 float* getCamera()
 {		
 	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+	//glPushMatrix();
 
 	float tranM[16];
 	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
