@@ -82,11 +82,25 @@ SDL_mutex *value_mutex;
 bool quit = false;
 
 
-/* Thread for rendering the scene */
-int openGlRenderer (void *data)
+/* This thread updates the scene */
+int updater(void *data)
 {
 	// Thread name
 	char *tname = ( char * )data;
+
+	while ( !quit ) {
+		// Runs the update scene method
+		update();
+		// Delay the thread to make room for others on the CPU
+		SDL_Delay(thread_delay);
+	}
+
+	exit(0);
+}
+
+/* Application entry point */
+int main(int argc, char *argv[])
+{
 
 	// SDL/OpenGL data
 	int videoFlags;
@@ -150,6 +164,19 @@ int openGlRenderer (void *data)
 
 	// Create the root node
 	rootNodePtr = new Root();
+
+	// The updater thread
+	SDL_Thread *id1;
+	char *tnames[1] = { "Updater" };
+
+	// Define the exit of the program in relation to SDL variables
+	atexit(SDL_Quit);
+
+	// Create the mutex
+	value_mutex = SDL_CreateMutex();
+
+	//create the threads
+	id1 = SDL_CreateThread ( updater, tnames[0] );
 
 	Geometry bigTriangle = Geometry();
 	bigTriangle.addVertex(&Point(0.0f, 0.0f, 0.0f));
@@ -234,46 +261,11 @@ int openGlRenderer (void *data)
 		SDL_Delay(thread_delay);
 	}
 	ShowCursor(TRUE);
+
 	
-	exit(0);
-}
-
-/* This thread updates the scene */
-int updater(void *data)
-{
-	// Thread name
-	char *tname = ( char * )data;
-
-	while ( !quit ) {
-		// Runs the update scene method
-		update();
-		// Delay the thread to make room for others on the CPU
-		SDL_Delay(thread_delay);
-	}
-
-	exit(0);
-}
-
-/* Application entry point */
-int main(int argc, char *argv[])
-{
-	// The main threads
-	SDL_Thread *id1, *id2;
-	char *tnames[2] = { "Renderer", "Updater" };
-
-	// Define the exit of the program in relation to SDL variables
-	atexit(SDL_Quit);
-
-	// Create the mutex
-	value_mutex = SDL_CreateMutex();
-
-	//create the threads
-	id1 = SDL_CreateThread ( openGlRenderer, tnames[0] );
-	id2 = SDL_CreateThread ( updater, tnames[1] );
 
 	//wait for the threads to exit
 	SDL_WaitThread ( id1, NULL );
-	SDL_WaitThread ( id2, NULL );
 
 	// Release the mutex
 	SDL_DestroyMutex ( value_mutex );
