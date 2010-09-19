@@ -146,14 +146,15 @@ int openGlRenderer (void *data)
 	// Create the root node
 	rootNodePtr = new Root();
 
-	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,1.0f), 90.0f);
+	//SceneNode plane2(rootNodePtr, "Triangle Plane2", 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,1.0f), 90.0f);
+	//SceneNode plane3(rootNodePtr, "Triangle Plane3", 0.0f, 0.0f, 0.0f, Vector(0.1f,0.0f,0.0f), -45.0f);
 	plane.scale(0.5f, 1.0f, 1.5f);
-	//plane.rotateAboutVector(Vector(1,1,0), 90.0f);
-	plane.rotateAboutVector(Vector(1,0,0), 30.0f);
-	//plane.rotateAboutVector(Vector(1,0,1), 60.0f);
+	//plane.rotateAboutAxis(Vector(0,1,0), 45.0f);
+	//plane.rotateAboutAxis(Vector(1,0,0), 30.0f);
+	//plane.rotateAboutAxis(Vector(1,0,1), 60.0f);
 
-	//plane.rotateAboutVector(Vector(0.89442718f,0.0f,0.44721359f), -90);
-	plane.rotateAboutVector(Vector(1.0f,0.0f,0.0f), -30);
+	//plane.rotateAboutAxis(Vector(0.89442718f,0.0f,0.44721359f), -90);
 
 
 	while(!quit)
@@ -279,6 +280,7 @@ void drawGL(void)
 
 	// Set the camera
 	float *CamTransform = getCamera();
+
 	
 	//Root::drawGeometry();
 	rootNodePtr->drawGeometry();

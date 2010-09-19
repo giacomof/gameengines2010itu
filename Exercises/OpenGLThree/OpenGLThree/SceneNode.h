@@ -21,9 +21,7 @@ class SceneNode
 		// delete object
 		void release() { delete this; }
 
-		void update(	SceneNode * parentNode, string str, 
-						float p_tX,		float p_tY,		float p_tZ,
-						float p_angleX, float p_angleY, float p_angleZ);
+		void update(void);
 		void destroy(void);
 
 		// add a child
@@ -42,8 +40,7 @@ class SceneNode
 
 		//Matrix getTransformation(void); 
 
-		void rotate(float p_angleX, float p_angleY, float p_angleZ);
-		void rotateAboutVector(Vector p_Axis, float p_Degree);
+		void rotateAboutAxis(Vector p_Axis, float p_Degree);
 		void translate(float p_tX, float p_tY, float p_tZ);
 		void scale(float p_sX, float p_sY, float p_sZ);
 		void shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);

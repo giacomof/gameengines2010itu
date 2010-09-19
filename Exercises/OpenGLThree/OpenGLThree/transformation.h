@@ -16,19 +16,30 @@ class Transformation
 
 		// Return the transpose of the transformation matrix
 		Matrix getTransformation(void);
-		void addRotation(float p_angleX, float p_angleY, float p_angleZ);
-		void addQuaternionRotation(Vector p_ArbitraryAxis, float p_Angle);
+		//void addRotation(float p_angleX, float p_angleY, float p_angleZ);
+		void addQuaternionRotation(Quaternion q);
+		void addAxisRotation(Vector p_Axis, float p_Degree);
 		void addTranslation(float p_tX, float p_tY, float p_tZ);
 		void addScaling(float p_sX, float p_sY, float p_sZ);
 		void addShearing(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
+
+		/*
+		float getTranslation();
+		float getOrientationVector();
+		float getOrientationAngle();
+		float getScaling();
+		float getShearing();
+		*/
+		
 
 	private:
 		Matrix transformationMatrix;					// Cointains the actual transformation matrix
 
 		// Values of the transformation contained inside the transformation matrix
-		float angleX, angleY, angleZ;
-		Vector vector;
-		float angle;
+		//float angleX, angleY, angleZ;
+		Quaternion rotation;
+		Vector axis;
+		float degree;
 		float tX, tY, tZ;
 		float sX, sY, sZ;
 		float shXY, shXZ, shYX, shYZ, shZX, shZY;

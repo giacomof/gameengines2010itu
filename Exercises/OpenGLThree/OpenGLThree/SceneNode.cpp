@@ -33,21 +33,8 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str,
 	
 }
 
-void SceneNode::update(SceneNode * parentNode, string str, 
-						float p_tX,		float p_tY,		float p_tZ,
-						float p_angleX, float p_angleY, float p_angleZ) 
+void SceneNode::update(void) 
 {
-	// set parent node
-	parentNode->addChild(this);
-
-	// set the position of the SceneNnode
-	translate( p_tX, p_tY, p_tZ );
-	// and the orientation
-	rotate( p_angleX, p_angleY, p_angleZ );
-
-	// sets the unique id of the sceneNode
-	id = nodeCount;
-	nodeCount++;
 
 }
 
@@ -103,16 +90,10 @@ string SceneNode::getName(void)
 	return nodeName;
 }
 
-// Apply a rotation about standar axes to the node
-void SceneNode::rotate(float p_angleX, float p_angleY, float p_angleZ)
-{
-	nodeTransformation.addRotation(p_angleX, p_angleY, p_angleZ);
-}
-
 // Apply a rotation about an arbitrary axis to the node
-void SceneNode::rotateAboutVector(Vector p_Axis, float p_Degree)
+void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
-	nodeTransformation.addQuaternionRotation(p_Axis, p_Degree);
+	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
 }
 
 // Translate the node
@@ -137,6 +118,7 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 // Apply the trasformation of the node and then draw it
 void SceneNode::drawGeometry()
 {
+	glPushMatrix();
 	applyTransformation();
 
 	float y = -10.0f;
@@ -166,7 +148,6 @@ void SceneNode::drawGeometry()
 // Apply the transformation of the node
 void SceneNode::applyTransformation()
 {
-
 	float tranM[16];
 	
 

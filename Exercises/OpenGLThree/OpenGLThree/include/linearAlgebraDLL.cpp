@@ -11,89 +11,6 @@ static const float PI = 3.14159f;
 namespace linearAlgebraDLL
 {
 
-/*
-// Function for correct floating point calculation for sine and cosine
-void MathFunctions::floatingPointSinCos(float* sincos, float* degree)
-{
-	// Function to reduce the angle in one between 0 and 360 degree
-	int intDegree = int(*degree);
-	int rotations = intDegree/360;
-
-	*degree -= 360*rotations;
-
-	// Check for 0 sine or cosine
-
-	if(degree==0) {
-		sincos[0]=0;
-		sincos[1]=1;
-	}else if(*degree==90) {
-		sincos[0]=1;
-		sincos[1]=0;
-	}else if(*degree==180) {
-		sincos[0]=0;
-		sincos[1]=-1;
-	}else if(*degree==270) {
-		sincos[0]=-1;
-		sincos[1]=0;
-	} else {
-		// Otherwise calculate them with the cmath functions
-		sincos[0] = sin(*degree*PI/180);
-		sincos[1] = cos(*degree*PI/180);
-	}
-
-}
-
-float MathFunctions::floatingPointSin(float degree)
-{
-	// Function to reduce the angle in one between 0 and 360 degree
-	float sine;
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
-
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		sine=0;
-	}else if(degree==90) {
-		sine=1;
-	}else if(degree==180) {
-		sine=0;
-	}else if(degree==270) {
-		sine=-1;
-	} else {
-		// Otherwise calculate with the cmath function
-		sine = sin(degree*PI/180);
-	}
-
-	return sine;
-}
-
-float MathFunctions::floatingPointCos(float degree)
-{
-	// Function to reduce the angle in one between 0 and 360 degree
-	float cosine;
-	int intDegree = int(degree);
-	int rotations = intDegree/360;
-
-	degree -= 360*rotations;
-
-	if(degree==0) {
-		cosine=1;
-	}else if(degree==90) {
-		cosine=0;
-	}else if(degree==180) {
-		cosine=-1;
-	}else if(degree==270) {
-		cosine=0;
-	} else {
-		// Otherwise calculate with the cmath function
-		cosine = cos(degree*PI/180);
-	}
-
-	return cosine;
-}
-*/
-
 // Constructor for vectors without parameter
 Vector::Vector(void)
 {
@@ -133,17 +50,27 @@ Vector Vector::normalize(void)
      Vector result;
      // Calculating the length using the the formula "square root of ( x^2 + y^2 + z^2 )", a short cut is multiplying the entire vector with itself
      float magnitude = this->getMagnitude();
+
      // Checking that I am not about to divide by zero...
-     if (magnitude != 0) {
+     if (magnitude == 0) {
+
+		result.set(0, 0);
+        result.set(1, 0);
+        result.set(2, 0);
+
+		 // ...if i is, I throw an exception to be handle by whoever is calling this function and are smart enough to use try and catch
+		 //throw DivisionByZeroException();
+
+     } else if (magnitude != 1) {
         // ...if magnitude isn't, I go ahead with normalization
         result.set(0, this->get(0) / magnitude);
         result.set(1, this->get(1) / magnitude);
         result.set(2, this->get(2) / magnitude);
      } else {
-        // ...if i is, I throw an exception to be handle by whoever is calling this function and are smart enough to use try and catch
-        throw DivisionByZeroException();
-     }
-
+		result.set(0, this->get(0));
+        result.set(1, this->get(1));
+        result.set(2, this->get(2));
+	 }
      // I return the result
      return result;
 }
@@ -175,7 +102,7 @@ Vector Vector::operator-(Vector &other)
 }
 
 // Operator overload for the * sign between two vectors
-float  Vector::operator*(Vector &other)
+float Vector::operator*(Vector &other)
 {
      // I create a new float to store the result
      float result;
@@ -240,6 +167,75 @@ Point::Point(float x, float y, float z)
      data[1] = y;
      data[2] = z;
      data[3] = 1;
+}
+
+// Constructor for quaternions without parameter
+Quaternion::Quaternion(void)
+{
+     // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
+	vector = Vector(0.0f, 0.0f, 0.0f);
+	d = 0;
+}
+
+// Constructor for quaternions with parameter
+Quaternion::Quaternion(Vector axis, float angle)
+{
+    // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
+	float sinAngle;
+	angle *= 0.5f;
+	Vector vn(axis);
+	vn = vn.normalize();
+ 
+	sinAngle = sin(angle*PI/180);
+ 
+	vn = vn * sinAngle;
+
+	for (unsigned short i = 0; i < 3; i++) {
+		vector.set(i, vn.get(i));
+	}
+	d = cos(angle*PI/180);
+}
+
+// Operator overload for sum between quaternions
+Quaternion Quaternion::operator+(Quaternion &other)
+{
+	Vector resultVector = Vector(this->getVector() + other.getVector());
+
+	float resultDegree = this->getD() + other.getD();
+
+	Quaternion resultQuaternion = Quaternion();
+	resultQuaternion.vector = resultVector;
+	resultQuaternion.d = resultDegree;
+
+	return resultQuaternion;
+}
+
+//Function for getting members of quaternion
+Vector Quaternion::getVector(void)
+{
+	return vector;
+}
+
+float Quaternion::getD(void)
+{
+	return d;
+}
+
+void Quaternion::getAxisAngle(Vector *axis, float *angle)
+{
+	float magnitude = vector.getMagnitude();
+	axis->set(0,  vector.get(0) / magnitude);
+	axis->set(1,  vector.get(1) / magnitude);
+	axis->set(2,  vector.get(2) / magnitude);
+	*angle = acos(d*PI/180) * 2.0f;
+}
+
+std::ostream & operator<< (std::ostream &os, const Quaternion &q)
+{
+	// I add to the output stream in the following format: "{x,y,z}"
+     os << "{(" << q.vector.get(0) << "," << q.vector.get(1) << "," << q.vector.get(2)<< ")," << q.d << "}";
+    // I return the stream
+    return os;
 }
 
 
@@ -496,6 +492,41 @@ Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
 	return result;
 }
 
+// Generate a rotation matrix from a quaternion
+Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
+{
+	float x2 = q.getVector().get(0) * q.getVector().get(0);
+	float y2 = q.getVector().get(1) * q.getVector().get(1);
+	float z2 = q.getVector().get(2) * q.getVector().get(2);
+	float xy = q.getVector().get(0) * q.getVector().get(1);
+	float xz = q.getVector().get(0) * q.getVector().get(2);
+	float yz = q.getVector().get(1) * q.getVector().get(2);
+	float dx = q.getD() * q.getVector().get(0);
+	float dy = q.getD() * q.getVector().get(1);
+	float dz = q.getD() * q.getVector().get(2);
+ 
+	Matrix result;
+
+	result.set(0,0,(1.0f - 2.0f * (y2 + z2)));
+	result.set(0,1,(2.0f * (xy - dz)));
+	result.set(0,2,(2.0f * (xz - dy)));
+	result.set(0,3,0);
+	result.set(1,0,(2.0f * (xy + dz)));
+	result.set(1,1,(1.0f - 2.0f * (x2 + z2)));
+	result.set(1,2,(2.0f * (yz - dx)));
+	result.set(1,3,0);
+	result.set(2,0,(2.0f * (xz - dy)));
+	result.set(2,1,(2.0f * (yz + dx)));
+	result.set(2,2,(1.0f - 2.0f * (x2 + y2)));
+	result.set(2,3,0);
+	result.set(3,0,0);
+	result.set(3,1,0);
+	result.set(3,2,0);
+	result.set(3,3,1);
+
+	return result;
+
+}
 
 // Generate a shearing matrix from six float values 
 Matrix Matrix::generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
@@ -652,22 +683,6 @@ Matrix Matrix::getInverse()
 // Calculate the determinant of a 4x4 matrix with Laplace expansion algorithm
 float Matrix::getDeterminant()
 {
-	/*float determinant =
-		data[0]*data[5]*data[10]*data[15] + data[0]*data[6]*data[11]*data[13] + 
-		data[0]*data[7]*data[9]*data[14] - data[0]*data[5]*data[11]*data[14] -
-		data[0]*data[6]*data[9]*data[15] - data[0]*data[7]*data[10]*data[13] +
-		data[1]*data[4]*data[11]*data[14] + data[1]*data[6]*data[8]*data[15] +
-		data[1]*data[7]*data[10]*data[12] - data[1]*data[4]*data[10]*data[15] -
-		data[1]*data[6]*data[11]*data[12] - data[1]*data[7]*data[8]*data[14] +
-		data[2]*data[4]*data[9]*data[15] + data[2]*data[5]*data[11]*data[12] + 
-		data[2]*data[7]*data[8]*data[13] - data[2]*data[4]*data[11]*data[13] -
-		data[2]*data[5]*data[8]*data[15] - data[2]*data[7]*data[9]*data[12] +
-		data[3]*data[4]*data[10]*data[13] + data[3]*data[5]*data[8]*data[14] +
-		data[3]*data[6]*data[8]*data[13] - data[3]*data[4]*data[9]*data[14] -
-		data[3]*data[5]*data[10]*data[12] - data[3]*data[6]*data[8]*data[13];
-
-	return determinant;
-	*/
 
 	float temp0 = data[0]*data[5] - data[1]*data[4];
 	float temp1 = data[0]*data[6] - data[2]*data[4];
