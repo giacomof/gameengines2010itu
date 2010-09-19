@@ -224,8 +224,8 @@ void md2Loader::Render() const {
 				glCommandVertex* pEnd  = pStart + num;
 				for( ; pStart != pEnd; ++pStart )
 				{
-					glColor3f(0.0, 1.0f, 0.0f);
-					//glTexCoord2fv(pStart->data);
+					//glColor3f(0.0, 1.0f, 0.0f);
+					glTexCoord2fv(pStart->data);
 					glVertex3fv(m_Verts + 3*pStart->vertexIndex);
 					
 					// **************************
@@ -248,9 +248,9 @@ void md2Loader::Render() const {
 		float uv_scale_s = 1.0f / GetModel()->skinWidth;
 		float uv_scale_t = 1.0f / GetModel()->skinHeight;
 
-		//glMatrixMode(GL_TEXTURE);
-		//glPushMatrix();
-		//glScalef(uv_scale_s,uv_scale_t,1.0f);
+		glMatrixMode(GL_TEXTURE);
+		glPushMatrix();
+		glScalef(uv_scale_s,uv_scale_t,1.0f);
 		glMatrixMode(GL_MODELVIEW);
 
 		// draw each triangle

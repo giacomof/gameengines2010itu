@@ -130,7 +130,7 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 void SceneNode::drawGeometry()
 {
 	applyTransformation();
-
+	
 	switch (geometry->getShapeFlag()) {
 
 		case 0 : 

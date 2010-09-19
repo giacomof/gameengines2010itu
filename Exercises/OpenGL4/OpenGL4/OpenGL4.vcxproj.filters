@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bmp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="geometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,11 +39,11 @@
     <ClCompile Include="include\linearAlgebraDLL.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="pcxLoader.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bmp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="geometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -197,6 +194,9 @@
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="pcxLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL.dll">
@@ -209,6 +209,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="include\glut.def">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\Cyber.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\cyber.pcx">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
