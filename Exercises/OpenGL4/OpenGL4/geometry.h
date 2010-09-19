@@ -1,5 +1,6 @@
 #include <vector>
 #include "linearAlgebraDLL.h"
+#include "md2Loader.h"
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -11,7 +12,10 @@ class Geometry
 {
 	public:
 		Geometry(int flag);
+		Geometry(md2Loader * meshMD2);
 		~Geometry(void);
+
+		void render();
 
 		void addVertex(Point * p);
 
@@ -27,6 +31,8 @@ class Geometry
 		vector<Point*> vertexList;				// List of Vertex
 
 	private:
+		md2Loader * mesh;
+
 		int shapeFlag;
 
 		float radius;

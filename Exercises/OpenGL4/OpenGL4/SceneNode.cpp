@@ -146,6 +146,8 @@ void SceneNode::drawGeometry()
 		case 1 :
 			glutSolidSphere(geometry->getSphereRadius(), geometry->getSphereSlices(), geometry->getSphereStacks());
 			break;
+		case 2 :
+			geometry->render();
 		default:
 			break;
 	}
@@ -209,3 +211,14 @@ void Root::drawGeometry()
 	glPopMatrix();
 	
 }
+
+//void Root::update(float dt)
+//{
+//	list<SceneNode*>::iterator itS;
+//
+//	for(itS = childList.begin(); itS != childList.end(); itS++) {
+//			(*itS)->update(dt);
+//				
+//	}
+//	
+//}
