@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bmp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\begin_code.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -168,11 +165,11 @@
     <ClInclude Include="include\glut.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="pcxLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bmp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -197,6 +194,9 @@
     <ClCompile Include="md2File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pcxLoader.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="LinearAlgebraDLL.dll">
@@ -209,6 +209,24 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="glut32.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\bosscube.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\bosscube.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\bosscube.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\cyber.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\Cyber.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\cyber.pcx">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
