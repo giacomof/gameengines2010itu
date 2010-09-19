@@ -1,9 +1,11 @@
-#include <list>
+#include <vector>
 #include "linearAlgebraDLL.h"
 
 using namespace std;
 using namespace linearAlgebraDLL;
 
+#ifndef GEOMETRY
+#define GEOMETRY
 class Geometry
 {
 	public:
@@ -12,7 +14,7 @@ class Geometry
 
 		void addVertex(Point * p);
 
-	private:
-		list<Point*> vertexList;				// List of Vertex
+		vector<Point*> vertexList;				// List of Vertex
 };
 
+#endif 

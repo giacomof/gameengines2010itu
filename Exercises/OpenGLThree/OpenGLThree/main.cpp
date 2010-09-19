@@ -9,6 +9,7 @@
 #include "bmp.h"						// Header File for the glaux replacement library
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "SceneNode.h"					// Header File for the SceneNode/Scenegraph
+#include "Geometry.h"					// Header File for the Geometry container
 #include "messagePump.h"				// Header File for the input messahe pump system
 #include "md2Loader.h"					// Header File for our md2 loader
 
@@ -150,8 +151,14 @@ int openGlRenderer (void *data)
 	// Create the root node
 	rootNodePtr = new Root();
 
-	SceneNode plane(rootNodePtr, "Triangle Plane", 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
-	SceneNode plane2(&plane, "Triangle Plane2", 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,1.0f), 90.0f);
+	Geometry bigTriangle = Geometry();
+	bigTriangle.addVertex(&Point(0.0f, 0.0f, 0.0f));
+	bigTriangle.addVertex(&Point(100.0f, 0.0f, 0.0f));
+	bigTriangle.addVertex(&Point(0.0f, 0.0f, -100.0f));
+
+
+	SceneNode plane(rootNodePtr, "Triangle Plane", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode plane2(&plane, "Triangle Plane2", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,1.0f), 90.0f);
 
 
 

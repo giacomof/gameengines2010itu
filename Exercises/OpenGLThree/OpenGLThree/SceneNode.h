@@ -14,7 +14,7 @@ class SceneNode
 		// default constructor
 		SceneNode() {};
 		// actual constructor
-		SceneNode(		SceneNode * parentNode, string str, 
+		SceneNode(		SceneNode * parentNode, string str, Geometry * g,
 						float p_tX,		float p_tY,		float p_tZ,
 						Vector p_axis, float p_angle);
 		// destructor
@@ -58,7 +58,7 @@ class SceneNode
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
-		Geometry * mesh;						// Mesh to render
+		Geometry * geometry;					// Mesh to render
 		
 };
 
