@@ -2,6 +2,7 @@
 #include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "transformation.h"
+#include "geometry.h"
 
 using namespace linearAlgebraDLL;
 using namespace std;
@@ -37,6 +38,8 @@ class SceneNode
 		// get the node name
 		string getName(void);
 
+		void addGeometry(Geometry &g);
+
 
 		//Matrix getTransformation(void); 
 
@@ -55,6 +58,7 @@ class SceneNode
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
+		Geometry * mesh;						// Mesh to render
 		
 };
 

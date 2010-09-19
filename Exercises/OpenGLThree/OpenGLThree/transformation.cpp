@@ -10,9 +10,6 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 	// Initialise all the values
 	rotation = Quaternion(p_axis, p_angle);
 
-	axis = Vector(0,0,0);
-	degree = 0;
-
 	tX = p_tX; 
 	tY = p_tY;
 	tZ = p_tZ;
@@ -27,7 +24,6 @@ Matrix Transformation::getTransformation(void)
 {
 
 	float tranM[16];
-	//transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree);
 	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
 	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
@@ -45,7 +41,7 @@ Matrix Transformation::getInverseTransformation(void)
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getInverse();
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
 	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ).getInverse() * transformationMatrix;
-	transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree).getInverse() * transformationMatrix;
+	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation).getInverse() * transformationMatrix;
 
 	transformationMatrix.getMatrix(&tranM[0]);
 	return transformationMatrix.getTranspose();
