@@ -8,7 +8,6 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 	transformationMatrix = Matrix::generateIdentityMatrix();
 	
 	// Initialise all the values
-	//angleX = angleY = angleZ = 0;
 	rotation = Quaternion();
 	axis = Vector(0,0,0);
 	degree = 0;
@@ -18,7 +17,6 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 	
 	// Apply the firs translation and rotation
 	addTranslation(p_tX, p_tY, p_tZ);
-	//addQuaternionRotation(Quaternion(p_axis, p_angle));
 	addAxisRotation(p_axis, p_angle);
 }
 
@@ -28,10 +26,10 @@ Matrix Transformation::getTransformation(void)
 
 	float tranM[16];
 	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ);
-	//transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation) * transformationMatrix;
-	transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree) * transformationMatrix;
+	
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
+	transformationMatrix = Matrix::generateAxesRotationMatrix(axis, degree) * transformationMatrix;
 	
 	transformationMatrix.getMatrix(&tranM[0]);
 	return transformationMatrix.getTranspose();
