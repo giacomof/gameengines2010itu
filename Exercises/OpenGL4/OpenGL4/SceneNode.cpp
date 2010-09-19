@@ -6,6 +6,8 @@
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
 #include <SDL_thread.h>
 
+#include "glut.h"
+
 #include "sceneNode.h"
 
 static int nodeCount=0;
@@ -128,7 +130,7 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 void SceneNode::drawGeometry()
 {
 	applyTransformation();
-
+	/*
 	for(int i = 0; i < geometry->vertexList.size(); i+=3) {
 		glBegin(GL_TRIANGLES);
 			glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
@@ -136,6 +138,8 @@ void SceneNode::drawGeometry()
 			glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
 		glEnd();
 	}
+	*/
+	glutWireSphere(20, 20, 20);
 
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
