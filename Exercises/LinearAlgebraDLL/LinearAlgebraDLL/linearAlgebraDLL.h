@@ -79,17 +79,19 @@ class Quaternion
 
 		// Operator overload
 		__declspec(dllexport) Quaternion operator+(Quaternion &other);
+		__declspec(dllexport) Quaternion operator*(Quaternion &other);
 
 		// Get functions
 		__declspec(dllexport) Vector getVector(void);
-		__declspec(dllexport) float getDegree(void);
+		__declspec(dllexport) float getD(void);
+		__declspec(dllexport) void getAxisAngle(Vector *axis, float *angle);
 
 		// Print functions
 		__declspec(dllexport) friend std::ostream & operator<< (std::ostream &os, const Quaternion &q);
 
 	protected:
 		Vector vector;
-		float degree;
+		float d;
 };
 
 // Describe a matrix
@@ -127,6 +129,8 @@ class Matrix
 		__declspec(dllexport) static Matrix generateZRotationMatrix(float degree);
 		// Generate a rotation matrix about an arbitrary axes
 		__declspec(dllexport) static Matrix generateAxesRotationMatrix(Vector axes, float degree);
+		// Generate a rotation matrix from a quaternion
+		__declspec(dllexport) static Matrix generateQuaternionRotationMatrix(Quaternion q);
 
 		//Generate a shearing matrix
 		__declspec(dllexport) static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy);
