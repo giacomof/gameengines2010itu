@@ -494,6 +494,15 @@ void keyDown(SDL_keysym *keysym)
 	case SDLK_d:
 		dKeyPressed = 1;
 		break;
+	case SDLK_0:
+		md2istance.SetAnim(0);
+		break;
+	case SDLK_1:
+		md2istance.SetAnim(1);
+		break;
+	case SDLK_2:
+		md2istance.SetAnim(2);
+		break;
 	default:
 		break;
 	}
