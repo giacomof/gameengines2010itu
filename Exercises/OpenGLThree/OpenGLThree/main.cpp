@@ -6,12 +6,13 @@
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
 #include <SDL_thread.h>
 
-#include "bmp.h"						// Header File for the glaux replacement library
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "SceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "Geometry.h"					// Header File for the Geometry container
 #include "messagePump.h"				// Header File for the input messahe pump system
 #include "md2Loader.h"					// Header File for our md2 loader
+#include "pcxLoader.h"
+#include <glut.h>
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -48,7 +49,7 @@ GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f};
 // Camera and Movements Definitions
 float camYaw, camPitch, camYawRad, camPitchRad;
 float camPosX, camPosY, camPosZ;
-float camSpeed = 0.1f;
+float camSpeed = 0.5f;
 float rotationSpeed = 0.1f;
 
 // Camera input states
@@ -81,6 +82,52 @@ SDL_mutex *value_mutex;
 // Defines when to stop looping
 bool quit = false;
 
+// A function to load a bitmap file and return the texture object for that texture
+unsigned int MakeTexture(const char* filename) {
+
+	unsigned int w,h,bpp;
+	unsigned char* pixels;
+
+	if(!LoadPcxImage(filename,&pixels,&w,&h,&bpp)) {
+		return 0;
+	}
+
+	GLenum infmt,outfmt;
+	switch(bpp) {
+	case 3:
+		infmt = GL_RGB;
+		outfmt = GL_RGB;
+		break;
+	case 4:
+		infmt = GL_RGBA;
+		outfmt = GL_RGBA;
+		break;
+	case 1:
+		infmt = outfmt = GL_ALPHA;
+		break;
+	case 2:
+		infmt = outfmt = GL_RGB5_A1;
+		break;
+	default:
+		free(pixels);
+		return 0;
+	}
+	
+	unsigned int tex_obj=0;
+	glGenTextures(1,&tex_obj);
+
+	glBindTexture (GL_TEXTURE_2D, tex_obj);
+
+	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);	
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D,0,outfmt,w,h,0,infmt,GL_UNSIGNED_BYTE,pixels);
+
+	return tex_obj;
+}
 
 /* Thread for rendering the scene */
 int openGlRenderer (void *data)
@@ -151,6 +198,7 @@ int openGlRenderer (void *data)
 	// Create the root node
 	rootNodePtr = new Root();
 
+	/*
 	Geometry bigTriangle = Geometry();
 	bigTriangle.addVertex(&Point(0.0f, 0.0f, 0.0f));
 	bigTriangle.addVertex(&Point(100.0f, 0.0f, 0.0f));
@@ -159,6 +207,7 @@ int openGlRenderer (void *data)
 
 	SceneNode plane(rootNodePtr, "Triangle Plane", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 	SceneNode plane2(&plane, "Triangle Plane2", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,1.0f), 90.0f);
+	*/
 
 
 
@@ -293,7 +342,7 @@ void drawGL(void)
 	//glPopMatrix();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
-	glBindTexture(GL_TEXTURE_2D, image);
+	glBindTexture(GL_TEXTURE_2D, md2Texture);
 
 	// ******************************
 	// ******** DEBUG INFO **********
@@ -304,57 +353,13 @@ void drawGL(void)
 
 	// render the md2 model
 	md2istance.Render();
+
+	md2istance.Update(16);
 	
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
 }
-//
-//void RenderFrame (int n, const struct md2_model_t *mdl)
-//{
-//  int i, j;
-//  GLfloat s, t;
-//  vec3_t v;
-//  struct md2_frame_t *pframe;
-//  struct md2_vertex_t *pvert;
-//
-//  /* Check if n is in a valid range */
-//  if ((n < 0) || (n > mdl->header.num_frames - 1))
-//    return;
-//
-//  /* Enable model's texture */
-//  glBindTexture (GL_TEXTURE_2D, mdl->tex_id);
-//
-//  /* Draw the model */
-//  glBegin (GL_TRIANGLES);
-//    /* Draw each triangle */
-//    for (i = 0; i < mdl->header.num_tris; ++i)
-//      {
-//	/* Draw each vertex */
-//	for (j = 0; j < 3; ++j)
-//	  {
-//	    pframe = &mdl->frames[n];
-//	    pvert = &pframe->verts[mdl->triangles[i].vertex[j]];
-//
-//	    /* Compute texture coordinates */
-//	    s = (GLfloat)mdl->texcoords[mdl->triangles[i].st[j]].s / mdl->header.skinwidth;
-//	    t = (GLfloat)mdl->texcoords[mdl->triangles[i].st[j]].t / mdl->header.skinheight;
-//
-//	    /* Pass texture coordinates to OpenGL */
-//	    glTexCoord2f (s, t);
-//
-//	    /* Normal vector */
-//	    glNormal3fv (anorms_table[pvert->normalIndex]);
-//
-//	    /* Calculate vertex real position */
-//	    v[0] = (pframe->scale[0] * pvert->v[0]) + pframe->translate[0];
-//	    v[1] = (pframe->scale[1] * pvert->v[1]) + pframe->translate[1];
-//	    v[2] = (pframe->scale[2] * pvert->v[2]) + pframe->translate[2];
-//
-//	    glVertex3fv (v);
-//	  }
-//      }
-//  glEnd ();
-//}
+
 
 /* Update gamestate */
 void update()
@@ -425,24 +430,27 @@ int initGL(void)
 	// sets the matrix stack as the modelview matrix stack
 	glMatrixMode(GL_MODELVIEW);
 	
+	md2istance.Load("include/Cyber.md2");
+	md2Texture = MakeTexture("include/cyber.pcx");
+
 	// enables the Z-buffer
 	glEnable(GL_DEPTH_TEST);
 	// enables the texture rendering
 	glEnable(GL_TEXTURE_2D);
 	// enables smooth shading (garaud)
-	glShadeModel(GL_SMOOTH);
+	//glShadeModel(GL_SMOOTH);
 	
 	// enables lighting
-	glEnable(GL_LIGHTING);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
+	//glEnable(GL_LIGHTING);
+	//glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	//glEnable(GL_COLOR_MATERIAL);
 	
 	// enable light0
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHT0);
 
 	// sets ambient and diffuse components of light0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
+	//glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
+	//glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
 	
 	
 	// defines the center of the screen
@@ -450,14 +458,15 @@ int initGL(void)
 	centerY = screenHeight/2;
 	
 	//// loads the md2 file
-	md2istance.Load("excavator.md2");
+	md2istance.Load("include/Cyber.md2");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
 	//// ******************************
-	//
+	
 	//// write memory usage
-	//std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
+	glColor3f(1,1,1);
 
 	return TRUE;
 }
@@ -517,8 +526,7 @@ void keyUp(SDL_keysym *keysym)
 float* getCamera()
 {		
 	glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();
-
+	
 	float tranM[16];
 	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
 	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * transformationMatrix;
@@ -566,91 +574,3 @@ int resizeWindow(int width, int height)
 	return TRUE;
 }
 
-/* ************************************************************************* */
-/* ************** I have changed the way NeHe loades the BMP *************** */
-/* ************** ...because I couldn't get Glaux to work... *************** */
-/* ************************************************************************* */
-
-/* Loads A Bitmap Image */
-AUX_RGBImageRec *LoadBMP(char *Filename)
-{
-	// File Handle
-	FILE *File=NULL;
-
-	// Make Sure A Filename Was Given
-	if (!Filename)
-	{
-		// If Not Return NULL
-		return NULL;
-	}
-
-	// Check To See If The File Exists
-	File=fopen(Filename,"r");
-
-	// Does The File Exist?
-	if (File)
-	{
-		// Close The Handle
-		fclose(File);
-		
-		// Load The Bitmap And Return A Pointer
-		return auxDIBImageLoad(Filename);
-	}
-
-	// If Load Failed Return NULL
-	return NULL;
-}
-
-/* Load Bitmaps And Convert To Textures */
-int LoadGLTextures()
-{
-	// Status Indicator
-	int Status=FALSE;
-
-	// Create Storage Space For The Texture
-	AUX_RGBImageRec *TextureImage[1];
-
-	// Set The Pointer To NULL
-	memset(TextureImage,0,sizeof(void *)*1);
-	
-	// Load The Bitmap, Check For Errors, If Bitmap's Not Found Quit
-	if (TextureImage[0]=LoadBMP("Data/Crate.bmp"))
-	{
-		// Set The Status To TRUE
-		Status=TRUE;
-
-		// Create Three Textures
-		glGenTextures(3, &texture[0]);
-		
-		// Create Nearest Filtered Texture
-		glBindTexture(GL_TEXTURE_2D, texture[0]);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]->sizeX, TextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
-		
-		// Create Linear Filtered Texture
-		glBindTexture(GL_TEXTURE_2D, texture[1]);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]->sizeX, TextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
-		
-		// Create MipMapped / Trilinear Texture
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, TextureImage[0]->sizeX, TextureImage[0]->sizeY, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
-	}
-
-	// If Texture Exists
-	if (TextureImage[0])
-	{
-		// If Texture Image Exists Free The Texture Image Memory
-		if (TextureImage[0]->data) free(TextureImage[0]->data);
-		
-		// Free The Image Structure
-		free(TextureImage[0]);
-	}
-
-	// Return The Status
-	return Status;
-}
