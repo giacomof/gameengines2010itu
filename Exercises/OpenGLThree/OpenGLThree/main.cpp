@@ -10,6 +10,7 @@
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "SceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "messagePump.h"				// Header File for the input messahe pump system
+#include "md2Loader.h"					// Header File for our md2 loader
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -30,6 +31,9 @@ GLuint image;
 
 // Root node of the Scene Graph
 Root * rootNodePtr;
+
+md2Loader md2istance;
+unsigned int md2Texture;
 
 
 // Define Lights Attributes
@@ -293,10 +297,67 @@ void drawGL(void)
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
 	glBindTexture(GL_TEXTURE_2D, image);
+
+	// ******************************
+	// ******** DEBUG INFO **********
+	// ******************************
+	
+	// write memory usage
+	//std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
+
+	// render the md2 model
+	md2istance.Render();
 	
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
 }
+//
+//void RenderFrame (int n, const struct md2_model_t *mdl)
+//{
+//  int i, j;
+//  GLfloat s, t;
+//  vec3_t v;
+//  struct md2_frame_t *pframe;
+//  struct md2_vertex_t *pvert;
+//
+//  /* Check if n is in a valid range */
+//  if ((n < 0) || (n > mdl->header.num_frames - 1))
+//    return;
+//
+//  /* Enable model's texture */
+//  glBindTexture (GL_TEXTURE_2D, mdl->tex_id);
+//
+//  /* Draw the model */
+//  glBegin (GL_TRIANGLES);
+//    /* Draw each triangle */
+//    for (i = 0; i < mdl->header.num_tris; ++i)
+//      {
+//	/* Draw each vertex */
+//	for (j = 0; j < 3; ++j)
+//	  {
+//	    pframe = &mdl->frames[n];
+//	    pvert = &pframe->verts[mdl->triangles[i].vertex[j]];
+//
+//	    /* Compute texture coordinates */
+//	    s = (GLfloat)mdl->texcoords[mdl->triangles[i].st[j]].s / mdl->header.skinwidth;
+//	    t = (GLfloat)mdl->texcoords[mdl->triangles[i].st[j]].t / mdl->header.skinheight;
+//
+//	    /* Pass texture coordinates to OpenGL */
+//	    glTexCoord2f (s, t);
+//
+//	    /* Normal vector */
+//	    glNormal3fv (anorms_table[pvert->normalIndex]);
+//
+//	    /* Calculate vertex real position */
+//	    v[0] = (pframe->scale[0] * pvert->v[0]) + pframe->translate[0];
+//	    v[1] = (pframe->scale[1] * pvert->v[1]) + pframe->translate[1];
+//	    v[2] = (pframe->scale[2] * pvert->v[2]) + pframe->translate[2];
+//
+//	    glVertex3fv (v);
+//	  }
+//      }
+//  glEnd ();
+//}
 
 /* Update gamestate */
 void update()
@@ -391,6 +452,16 @@ int initGL(void)
 	centerX = screenWidth/2;
 	centerY = screenHeight/2;
 	
+	//// loads the md2 file
+	md2istance.Load("excavator.md2");
+
+	//// ******************************
+	//// ******** DEBUG INFO **********
+	//// ******************************
+	//
+	//// write memory usage
+	//std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
+
 	return TRUE;
 }
 
