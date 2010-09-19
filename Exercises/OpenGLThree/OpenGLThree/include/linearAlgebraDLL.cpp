@@ -210,6 +210,23 @@ Quaternion Quaternion::operator+(Quaternion &other)
 	return resultQuaternion;
 }
 
+// Operator overload for multiplication between quaternions
+Quaternion Quaternion::operator*(Quaternion &other)
+{
+	Vector resultVector = Vector();
+	resultVector.set(0, d * other.vector.get(0) + vector.get(0) * other.d + vector.get(1) * other.vector.get(2) - vector.get(2) * other.vector.get(1)); 
+	resultVector.set(1, d * other.vector.get(1) + vector.get(1) * other.d + vector.get(2) * other.vector.get(0) - vector.get(0) * other.vector.get(2)); 
+	resultVector.set(2, d * other.vector.get(2) + vector.get(2) * other.d + vector.get(0) * other.vector.get(1) - vector.get(1) * other.vector.get(0));
+
+	float resultD = d * other.d - vector.get(0) * other.vector.get(0) - vector.get(1) * other.vector.get(1) - vector.get(2) * other.vector.get(2);
+
+	Quaternion resultQuaternion = Quaternion();
+	resultQuaternion.vector = resultVector;
+	resultQuaternion.d = resultD;
+
+	return resultQuaternion;
+}
+
 //Function for getting members of quaternion
 Vector Quaternion::getVector(void)
 {
@@ -509,7 +526,7 @@ Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
 
 	result.set(0,0,(1.0f - 2.0f * (y2 + z2)));
 	result.set(0,1,(2.0f * (xy - dz)));
-	result.set(0,2,(2.0f * (xz - dy)));
+	result.set(0,2,(2.0f * (xz + dy)));
 	result.set(0,3,0);
 	result.set(1,0,(2.0f * (xy + dz)));
 	result.set(1,1,(1.0f - 2.0f * (x2 + z2)));

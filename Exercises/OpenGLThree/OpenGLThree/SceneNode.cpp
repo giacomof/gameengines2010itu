@@ -93,7 +93,7 @@ string SceneNode::getName(void)
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
-	nodeTransformation.addAxisRotation(p_Axis, p_Degree);
+	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
 }
 
 // Translate the node
@@ -150,7 +150,7 @@ void SceneNode::drawGeometry()
 
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			removeTransformation();
+			//removeTransformation();
 			(*itS)->drawGeometry();
 			
 	}
