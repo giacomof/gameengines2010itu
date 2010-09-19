@@ -55,7 +55,7 @@ void SceneNode::destroy(void)
 void SceneNode::addChild( SceneNode * cNode ) 
 {
 	cNode->setParent(this);
-	childList.push_back(cNode);
+	childList.push_front(cNode);
 }
 		
 /*	
@@ -89,6 +89,13 @@ string SceneNode::getName(void)
 {
 	return nodeName;
 }
+
+void SceneNode::addGeometry(Geometry &g) 
+{
+
+
+}
+
 
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
