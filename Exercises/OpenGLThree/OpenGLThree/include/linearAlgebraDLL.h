@@ -70,6 +70,29 @@ class Point: public Vector
         __declspec(dllexport) Point(float x, float y, float z);
 };
 
+class Quaternion
+{
+	public:
+		// Constructors
+        __declspec(dllexport) Quaternion(void);
+        __declspec(dllexport) Quaternion(Vector axis, float angle);
+
+		// Operator overload
+		__declspec(dllexport) Quaternion operator+(Quaternion &other);
+
+		// Get functions
+		__declspec(dllexport) Vector getVector(void);
+		__declspec(dllexport) float getD(void);
+		__declspec(dllexport) void getAxisAngle(Vector *axis, float *angle);
+
+		// Print functions
+		__declspec(dllexport) friend std::ostream & operator<< (std::ostream &os, const Quaternion &q);
+
+	protected:
+		Vector vector;
+		float d;
+};
+
 // Describe a matrix
 class Matrix
 {
@@ -105,6 +128,8 @@ class Matrix
 		__declspec(dllexport) static Matrix generateZRotationMatrix(float degree);
 		// Generate a rotation matrix about an arbitrary axes
 		__declspec(dllexport) static Matrix generateAxesRotationMatrix(Vector axes, float degree);
+		// Generate a rotation matrix from a quaternion
+		__declspec(dllexport) static Matrix generateQuaternionRotationMatrix(Quaternion q);
 
 		//Generate a shearing matrix
 		__declspec(dllexport) static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy);
