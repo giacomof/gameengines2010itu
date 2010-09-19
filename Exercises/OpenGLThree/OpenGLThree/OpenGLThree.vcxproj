@@ -46,7 +46,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\include</AdditionalLibraryDirectories>
-      <AdditionalDependencies>linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -68,6 +68,7 @@
     <ClInclude Include="geometry.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
+    <ClInclude Include="include\glut.h" />
     <ClInclude Include="include\linearAlgebraDLL.h" />
     <ClInclude Include="include\SDL.h" />
     <ClInclude Include="include\SDL_active.h" />
@@ -109,6 +110,8 @@
     <ClInclude Include="include\SDL_types.h" />
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
+    <ClInclude Include="md2File.h" />
+    <ClInclude Include="md2Loader.h" />
     <ClInclude Include="messagePump.h" />
     <ClInclude Include="sceneNode.h" />
     <ClInclude Include="transformation.h" />
@@ -118,15 +121,20 @@
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="include\linearAlgebraDLL.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="md2File.cpp" />
+    <ClCompile Include="md2Loader.cpp" />
     <ClCompile Include="messagePump.cpp" />
     <ClCompile Include="sceneNode.cpp" />
     <ClCompile Include="transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="glut32.dll" />
+    <None Include="include\glut.def" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="include\glut32.lib" />
     <Library Include="include\LinearAlgebraDLL.lib" />
     <Library Include="include\SDL.lib" />
     <Library Include="include\SDLmain.lib" />

@@ -159,6 +159,15 @@
     <ClInclude Include="transformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="md2Loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="md2File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\glut.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bmp.cpp">
@@ -182,12 +191,24 @@
     <ClCompile Include="transformation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="md2Loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="md2File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="LinearAlgebraDLL.dll">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="SDL.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\glut.def">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="glut32.dll">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -199,6 +220,9 @@
       <Filter>Resource Files</Filter>
     </Library>
     <Library Include="include\SDLmain.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="include\glut32.lib">
       <Filter>Resource Files</Filter>
     </Library>
   </ItemGroup>
