@@ -33,7 +33,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 										p_axis, p_angle);
 
 	isVisible = 1;
-
+	
 	// Define the unique identifier of the node
 	id = nodeCount;
 	nodeCount++;
@@ -147,10 +147,12 @@ void SceneNode::drawGeometry()
 	applyTransformation();
 	
 	if(isVisible) {
+
 		switch (geometry->getShapeFlag()) {
 
 			case 0 : 
 				glDisable(GL_TEXTURE_2D);
+
 				for(int i = 0; i < geometry->vertexList.size(); i+=3) {
 					glBegin(GL_TRIANGLES);
 						glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
@@ -167,7 +169,10 @@ void SceneNode::drawGeometry()
 				glEnable(GL_TEXTURE_2D);	
 				break;
 			case 2 :
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture (GL_TEXTURE_2D, geometry->md2Texture);
 				geometry->render();
+				glDisable(GL_TEXTURE_2D);	
 			default:
 				break;
 		}
