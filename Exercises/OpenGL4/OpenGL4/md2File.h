@@ -2,6 +2,7 @@
 #define MD2FILE__H__
 
 class md2File {
+
 protected:	
 
 	unsigned short GetNumVerts() const {
@@ -15,27 +16,30 @@ protected:
 
 	struct model
 	{ 
-		int magic; 
-		int version; 
-		int skinWidth; 
+		int magic;				// "Magic number" to check for valid MD2
+		int version;			// specifies the version of the MD2
+		int skinWidth;			// resolution of the texture (dimensions)
 		int skinHeight; 
-		int frameSize; 
-		int numSkins; 
-		int numVertices; 
-		int numTexCoords; 
-		int numTriangles; 
-		int numGlCommands; 
-		int numFrames; 
-		int offsetSkins; 
-		int offsetTexCoords; 
-		int offsetTriangles; 
-		int offsetFrames; 
-		int offsetGlCommands; 
-		int offsetEnd; 
+		int frameSize;			
+		int numSkins;	
+		int numVertices;		// total number of vertices 
+		int numTexCoords;		// total number of texture coordinates
+		int numTriangles;		// total number of triangles
+		int numGlCommands;		// total number of OpenGL commands
+		int numFrames;			// total number of animation frames
+		int offsetSkins;		// offset to reach the skins definition
+		int offsetTexCoords;	// offset to reach the texture coordinates
+		int offsetTriangles;	// offset to reach the triangles definition
+		int offsetFrames;		// offset to reach the frames definition
+		int offsetGlCommands;	// offset to reach the OpenGL commands
+		int offsetEnd;			// end of all offsets
 	};
 	
+	// *****************************************************
+	// ************* Custom Struct Definitions *************
+	// *****************************************************
 
-	// Custom Struct Definitions
+	// triangles
 	struct triangle
 	{
 		short vertexIndices[3];
@@ -54,12 +58,14 @@ protected:
 		};
 	};
 
+	// vertex
 	struct vertex
 	{
 		unsigned char vert[3];
 		unsigned char normalIndex;
 	};
 
+	// frame (single frame of an animation)
 	struct frame
 	{
 		float scale[3];
@@ -68,6 +74,7 @@ protected:
 		vertex vertices[1];
 	};
 
+	// embeded OpenGL command about vertexes
 	struct glCommandVertex
 	{
 		union {
@@ -80,6 +87,7 @@ protected:
 		int vertexIndex;
 	};
 
+	// embeded list of OpenGL commands
 	struct glCommandList
 	{
 		int num;
@@ -91,8 +99,7 @@ protected:
 	// loads a MD2 file
 	bool Load(const char* filename);
 
-	// funcs that use pointer offsets to return parts of the currently loaded MD2.
-
+	// functions that use pointer offsets to return parts of the currently loaded MD2.
 	const model*		 GetModel() const;
 	const frame*		 GetFrame(unsigned int num) const;
 	const char*			 GetSkin(unsigned int num) const;

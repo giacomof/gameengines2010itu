@@ -11,7 +11,7 @@
 	#include <glut.h>
 	#include "md2File.h"
 
-	// always use triangles to draw the md2 model
+	// 1 to force the renderer to use GL_TRIANGLES only, 0 otherwise
 	#define MD2_ALWAYS_GL_TRIANGLES 0
 
 	// sets the frames per second for the animations
