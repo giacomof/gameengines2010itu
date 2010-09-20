@@ -1,6 +1,7 @@
 #include <vector>
 #include "linearAlgebraDLL.h"
 #include "md2Loader.h"
+#include "pcxLoader.h"
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -12,7 +13,7 @@ class Geometry
 {
 	public:
 		Geometry(int flag);
-		Geometry(md2Loader * meshMD2);
+		Geometry(md2Loader * meshMD2, const char * filename);
 		~Geometry(void);
 
 		void render();
@@ -27,9 +28,13 @@ class Geometry
 		int getSphereSlices(void);
 		int getSphereStacks(void);
 
+		unsigned int MakeTexture();
+		unsigned int md2Texture;
+
 		md2Loader * mesh;
 		vector<Point*> vertexList;				// List of Vertex
 
+		const char * textureFile;
 		int shapeFlag;
 		float radius;
 		int slices, stacks;

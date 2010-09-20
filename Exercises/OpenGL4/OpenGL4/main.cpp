@@ -47,9 +47,11 @@ GLuint image;
 // Root node of the Scene Graph
 Root * rootNodePtr;
 SceneNode * demon;
-md2Loader md2istance;
-unsigned int md2Texture;
-
+md2Loader md2Demon;
+SceneNode * lostSoul;
+md2Loader md2LostSoul;
+SceneNode * bossCube;
+md2Loader md2BossCube;
 
 // Define Lights Attributes
 // *************************************
@@ -94,53 +96,6 @@ SDL_mutex *value_mutex;
 
 // Defines when to stop looping
 bool quit = false;
-
-// A function to load a bitmap file and return the texture object for that texture
-unsigned int MakeTexture(const char* filename) {
-
-	unsigned int w,h,bpp;
-	unsigned char* pixels;
-
-	if(!LoadPcxImage(filename,&pixels,&w,&h,&bpp)) {
-		return 0;
-	}
-
-	GLenum infmt,outfmt;
-	switch(bpp) {
-	case 3:
-		infmt = GL_RGB;
-		outfmt = GL_RGB;
-		break;
-	case 4:
-		infmt = GL_RGBA;
-		outfmt = GL_RGBA;
-		break;
-	case 1:
-		infmt = outfmt = GL_ALPHA;
-		break;
-	case 2:
-		infmt = outfmt = GL_RGB5_A1;
-		break;
-	default:
-		free(pixels);
-		return 0;
-	}
-	
-	unsigned int tex_obj=0;
-	glGenTextures(1,&tex_obj);
-
-	glBindTexture (GL_TEXTURE_2D, tex_obj);
-
-	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);	
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D,0,outfmt,w,h,0,infmt,GL_UNSIGNED_BYTE,pixels);
-
-	return tex_obj;
-}
 
 /* This thread updates the scene */
 int updater(void *data)
@@ -273,44 +228,36 @@ int main(int argc, char *argv[])
 	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
 	plane3.scale(1,1,1);*/
 
-	Geometry doomDemon = Geometry(&md2istance);
+	Geometry doomDemon = Geometry(&md2Demon, "include/cyber.pcx");
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
-	demon->scale(0.5, 0.5, 0.5);
-
+	demon->scale(0.8, 0.8, 0.8);
+	
 	Geometry sunG = Geometry(1);
 	sunG.setSphere(50, 30, 30);
 	SceneNode sun(demon, "Sun", &sunG, 0.0f, 100.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 	sun.setVisible(0);
-
-	Geometry earthG = Geometry(1);
-	earthG.setSphere(20, 30, 30);
-	SceneNode earth(&sun, "Earth", &earthG, 200.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
-
-	Geometry moonG = Geometry(1);
-	moonG.setSphere(1, 30, 30);
-	SceneNode moon(&earth, "Moon", &moonG, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
-
-
 	
+	Geometry lostSoul_g = Geometry(&md2LostSoul, "include/lostsoul.pcx");
+	lostSoul = new SceneNode(&sun, "LostSoul", &lostSoul_g, 200.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	lostSoul->scale(1, 1, 1);
+
+	Geometry bossCube_g = Geometry(&md2BossCube, "include/bosscube.pcx");
+	//moonG.setSphere(1, 30, 30);
+	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	bossCube->scale(0.8, 0.8, 0.8);
+
 	while(!quit)
 	{
-
-		//Show FPS in window title
+		
 		char title[80];
-		sprintf(title, "Name Here Engine");
+		sprintf_s(title, "Name Here Engine");
 		SDL_WM_SetCaption( title, NULL );
-
-<<<<<<< .mine
-=======
-	while(!quit)
-	{
->>>>>>> .r199
 		
 		sun.rotateAboutAxis(Vector(0,1,0),0.2f);
-		earth.rotateAboutAxis(Vector(0,1,0),0.3f);
-		moon.rotateAboutAxis(Vector(0,1,0),0.4f);
-		//demon.rotateAboutAxis(Vector(0,1,0),0.2f);
-		demon->translate(0.5, 0, 0);
+		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
+		bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
+
+
 		//lock 
 		//SDL_mutexP ( value_mutex ); 
 		
@@ -360,8 +307,8 @@ int main(int argc, char *argv[])
 			}
 		}
 		
-		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
-		//if(true)
+		//if (isActive && SDL_GetTicks() > (tickFrame + tick) )
+		if(true)
 		{
 			tickFrame = SDL_GetTicks();
 			drawGL();
@@ -408,9 +355,15 @@ void drawGL(void)
 	rootNodePtr->drawGeometry();
 	//glPopMatrix();
 
+	// ********************
+	// *** UPDATE POINT *** 
+	// ********************
+
 	// draw the animation
-	demon->update(0.03);
-	
+	demon->update(0.006);
+	lostSoul->update(0.006);
+	bossCube->update(0.006);
+
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
 }
@@ -512,16 +465,23 @@ int initGL(void)
 	centerX = screenWidth/2;
 	centerY = screenHeight/2;
 	
-	//// loads the md2 file
-	md2istance.Load("include/Cyber.md2");
-	md2Texture = MakeTexture("include/cyber.pcx");
+	//// ******************************
+	//// ******** LOADING POINT *******
+	//// ******************************
+
+	//// loads md2 files
+	md2Demon.Load("include/Cyber.md2");
+	md2LostSoul.Load("include/Lostsoul.md2");
+	md2BossCube.Load("include/bosscube.md2");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
 	//// ******************************
 	
 	// write memory usage
-	std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage demon " << (md2Demon.GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage lost soul " << (md2LostSoul.GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage boss cube" << (md2BossCube.GetDataSize()/1024.0f) << "kb\n";
 	//glColor3f(1,1,1);
 
 	return TRUE;
@@ -554,34 +514,34 @@ void keyDown(SDL_keysym *keysym)
 		lKeyPressed = 1;
 		break;
 	case SDLK_0:
-		md2istance.SetAnim(0);
+		md2Demon.SetAnim(0);
 		break;
 	case SDLK_1:
-		md2istance.SetAnim(1);
+		md2Demon.SetAnim(1);
 		break;
 	case SDLK_2:
-		md2istance.SetAnim(2);
+		md2Demon.SetAnim(2);
 		break;
 	case SDLK_3:
-		md2istance.SetAnim(3);
+		md2Demon.SetAnim(3);
 		break;
 	case SDLK_4:
-		md2istance.SetAnim(4);
+		md2Demon.SetAnim(4);
 		break;
 	case SDLK_5:
-		md2istance.SetAnim(5);
+		md2Demon.SetAnim(5);
 		break;
 	case SDLK_6:
-		md2istance.SetAnim(6);
+		md2Demon.SetAnim(6);
 		break;
 	case SDLK_7:
-		md2istance.SetAnim(7);
+		md2Demon.SetAnim(7);
 		break;
 	case SDLK_8:
-		md2istance.SetAnim(8);
+		md2Demon.SetAnim(8);
 		break;
 	case SDLK_9:
-		md2istance.SetAnim(9);
+		md2Demon.SetAnim(9);
 		break;
 	default:
 		break;

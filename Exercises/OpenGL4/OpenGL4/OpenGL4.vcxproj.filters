@@ -226,6 +226,24 @@
     <None Include="include\vortex.pcx">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="include\lostsoul.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\Lostsoul.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\lostsoul.pcx">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\bosscube.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\bosscube.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\bosscube.pcx">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">

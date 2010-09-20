@@ -54,6 +54,9 @@ class SceneNode
 		void SceneNode::removeTransformation();
 		void drawGeometry();
 
+
+		Geometry * geometry;					// Mesh to render
+
 	protected:
 		unsigned int isVisible;
 		int id;									// Unique id
@@ -61,7 +64,7 @@ class SceneNode
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
-		Geometry * geometry;					// Mesh to render
+		
 		
 };
 

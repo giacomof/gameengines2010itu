@@ -142,10 +142,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="glut32.dll" />
+    <None Include="include\bosscube.jpg" />
+    <None Include="include\bosscube.md2" />
+    <None Include="include\bosscube.pcx" />
     <None Include="include\Cyber.md2" />
     <None Include="include\cyber.pcx" />
     <None Include="include\evil_laugh.wav" />
     <None Include="include\glut.def" />
+    <None Include="include\lostsoul.jpg" />
+    <None Include="include\Lostsoul.md2" />
+    <None Include="include\lostsoul.pcx" />
     <None Include="include\nhe.ico" />
     <None Include="include\vortex.pcx" />
     <None Include="LinearAlgebraDLL.dll" />
