@@ -53,10 +53,10 @@ void Transformation::addQuaternionRotation(Quaternion q)
 }
 
 // Apply a translation
-void Transformation::addTranslation(Vector t)
+void Transformation::addTranslation(Vector v)
 {
 	
-	translation = translation + t;
+	translation = translation + v;
 }
 
 // Apply a scale
@@ -78,16 +78,19 @@ void Transformation::addShearing(float p_shXY, float p_shXZ, float p_shYX, float
 	shZY += p_shZY;
 }
 
-/*
-float Transformation::getTranslation()
-{
-	float translation[3];
-	translation[0] = tX;
-	translation[1] = tY;
-	translation[2] = tZ;
 
+Vector Transformation::getTranslation()
+{
 	return translation;
 }
+
+Quaternion Transformation::getOrientationQuaternion()
+{
+	return rotation;
+}
+
+
+/*
 		float getOrientationVector();
 		float getOrientationAngle();
 		float getScaling();

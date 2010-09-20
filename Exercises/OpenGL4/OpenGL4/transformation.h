@@ -16,11 +16,16 @@ class Transformation
 
 		// Return the transpose of the transformation matrix
 		Matrix getTransformation(void);
+		// Return the transpose of the inverse transformation matrix
 		Matrix getInverseTransformation(void);
+
 		void addQuaternionRotation(Quaternion q);
-		void addTranslation(Vector t);
+		void addTranslation(Vector v);
 		void addScaling(float p_sX, float p_sY, float p_sZ);
 		void addShearing(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
+
+		Vector getTranslation();
+		Quaternion getOrientationQuaternion();
 
 		/*
 		float getTranslation();
