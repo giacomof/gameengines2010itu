@@ -22,7 +22,7 @@ class SceneNode
 		// delete object
 		void release() { delete this; }
 
-		void update(void);
+		void update(float dt);
 		void destroy(void);
 
 		// add a child
@@ -37,6 +37,8 @@ class SceneNode
 		void setName(string name);
 		// get the node name
 		string getName(void);
+
+		void setVisible(unsigned int v);
 
 		void addGeometry(Geometry &g);
 
@@ -53,6 +55,7 @@ class SceneNode
 		void drawGeometry();
 
 	protected:
+		unsigned int isVisible;
 		int id;									// Unique id
 		string nodeName;						// Name
 		SceneNode * parentNode;					// Parent Node
@@ -73,7 +76,7 @@ class Root : public SceneNode
 		void setParent ( SceneNode* pNode );
 		// get parent node
 		SceneNode* getParent(void);
-
+		void update(float dt);
 		void drawGeometry();
 
 };

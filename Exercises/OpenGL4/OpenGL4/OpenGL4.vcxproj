@@ -146,6 +146,8 @@
     <None Include="include\cyber.pcx" />
     <None Include="include\evil_laugh.wav" />
     <None Include="include\glut.def" />
+    <None Include="include\nhe.ico" />
+    <None Include="include\vortex.pcx" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
   </ItemGroup>

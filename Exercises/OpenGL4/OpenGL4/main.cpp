@@ -36,6 +36,8 @@ static int const thread_delay		= 3;			// Minimum time between loops
 
 static float const PI = 3.14159f;					// PI definition
 
+Uint32 tickFrame = 0;
+
 // Message pump used for passing Events between threads
 MessagePump inputPump;								
 
@@ -44,7 +46,7 @@ GLuint image;
 
 // Root node of the Scene Graph
 Root * rootNodePtr;
-
+SceneNode * demon;
 md2Loader md2istance;
 unsigned int md2Texture;
 
@@ -164,6 +166,7 @@ int main(int argc, char *argv[])
 	int videoFlags;
 	SDL_Event event;
 	const SDL_VideoInfo *videoInfo;
+	
 	int isActive = TRUE;
 	
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
@@ -210,6 +213,8 @@ int main(int argc, char *argv[])
 	if (videoInfo->blit_hw)
 		videoFlags |= SDL_HWACCEL;
 	
+	SDL_WM_SetCaption( "Loading Name Here Engine... ", "include/nhe.ico" );
+
 	// Apply Video Flags and Settings
 	surface = SDL_SetVideoMode(	screenWidth,
 								screenHeight,
@@ -235,7 +240,7 @@ int main(int argc, char *argv[])
 	// Binds mouse and keyboard input to the OpenGL window
 	SDL_WM_GrabInput(SDL_GRAB_ON); 
 	
-	Uint32 tickFrame = 0;
+	
 
 	// Move the mouse in the center of the windows before starting render
 	SDL_WarpMouse((short)centerX, (short)centerY);
@@ -268,9 +273,14 @@ int main(int argc, char *argv[])
 	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
 	plane3.scale(1,1,1);*/
 
+	Geometry doomDemon = Geometry(&md2istance);
+	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	demon->scale(0.5, 0.5, 0.5);
+
 	Geometry sunG = Geometry(1);
 	sunG.setSphere(50, 30, 30);
-	SceneNode sun(rootNodePtr, "Sun", &sunG, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode sun(demon, "Sun", &sunG, 0.0f, 100.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	sun.setVisible(0);
 
 	Geometry earthG = Geometry(1);
 	earthG.setSphere(20, 30, 30);
@@ -280,20 +290,27 @@ int main(int argc, char *argv[])
 	moonG.setSphere(1, 30, 30);
 	SceneNode moon(&earth, "Moon", &moonG, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	Geometry doomDemon = Geometry(&md2istance);
-	SceneNode demon(rootNodePtr, "Doom Demon", &doomDemon, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
-	demon.scale(0.5, 0.5, 0.5);
+
 	
-
-
 	while(!quit)
 	{
+
+		//Show FPS in window title
+		char title[80];
+		sprintf(title, "Name Here Engine");
+		SDL_WM_SetCaption( title, NULL );
+
+<<<<<<< .mine
+=======
+	while(!quit)
+	{
+>>>>>>> .r199
 		
 		sun.rotateAboutAxis(Vector(0,1,0),0.2f);
 		earth.rotateAboutAxis(Vector(0,1,0),0.3f);
 		moon.rotateAboutAxis(Vector(0,1,0),0.4f);
 		//demon.rotateAboutAxis(Vector(0,1,0),0.2f);
-		//demon.translate(0.5, 0, 0);
+		demon->translate(0.5, 0, 0);
 		//lock 
 		//SDL_mutexP ( value_mutex ); 
 		
@@ -348,6 +365,7 @@ int main(int argc, char *argv[])
 		{
 			tickFrame = SDL_GetTicks();
 			drawGL();
+
 		}
 
 		//release the lock 
@@ -390,17 +408,8 @@ void drawGL(void)
 	rootNodePtr->drawGeometry();
 	//glPopMatrix();
 
-
-
-	// ******************************
-	// ******** DEBUG INFO **********
-	// ******************************
-	
-	// write memory usage
-	//std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
-
 	// draw the animation
-	md2istance.Update(0.03);
+	demon->update(0.03);
 	
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
@@ -513,7 +522,7 @@ int initGL(void)
 	
 	// write memory usage
 	std::cout << "memory usage " << (md2istance.GetDataSize()/1024.0f) << "kb\n";
-	glColor3f(1,1,1);
+	//glColor3f(1,1,1);
 
 	return TRUE;
 }
