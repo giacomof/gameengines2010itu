@@ -144,6 +144,7 @@
     <None Include="glut32.dll" />
     <None Include="include\Cyber.md2" />
     <None Include="include\cyber.pcx" />
+    <None Include="include\evil_laugh.wav" />
     <None Include="include\glut.def" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
