@@ -57,7 +57,7 @@ md2Loader md2BossCube;
 
 // Define Lights Attributes
 // *************************************
-// ********** LIGHTS *++++++************
+// ********** LIGHTS *******************
 // *************************************
 GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
 GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
