@@ -251,6 +251,8 @@ int main(int argc, char *argv[])
 
 	Geometry doomDemon = Geometry(&md2istance);
 	SceneNode demon(rootNodePtr, "Doom Demon", &doomDemon, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	demon.scale(0.5, 0.5, 0.5);
+	
 
 
 
@@ -259,7 +261,8 @@ int main(int argc, char *argv[])
 		sun.rotateAboutAxis(Vector(0,1,0),0.2f);
 		earth.rotateAboutAxis(Vector(0,1,0),0.3f);
 		moon.rotateAboutAxis(Vector(0,1,0),0.4f);
-
+		//demon.rotateAboutAxis(Vector(0,1,0),0.2f);
+		//demon.translate(0.5, 0, 0);
 		//lock 
 		//SDL_mutexP ( value_mutex ); 
 		
@@ -348,7 +351,7 @@ void drawGL(void)
 	float *CamTransform = getCamera();
 
 	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
-	glBindTexture(GL_TEXTURE_2D, md2Texture);
+	//glBindTexture(GL_TEXTURE_2D, md2Texture);
 
 	//Root::drawGeometry();
 	rootNodePtr->drawGeometry();
