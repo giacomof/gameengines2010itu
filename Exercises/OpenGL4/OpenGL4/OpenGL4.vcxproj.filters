@@ -220,6 +220,12 @@
     <None Include="include\evil_laugh.wav">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="include\nhe.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\vortex.pcx">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
