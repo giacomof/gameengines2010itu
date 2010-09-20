@@ -32,6 +32,7 @@ Matrix Transformation::getTransformation(void)
 	return transformationMatrix.getTranspose();
 }
 
+// Return the inverse of the transposed actual transformation matrix
 Matrix Transformation::getInverseTransformation(void)
 {
 	float tranM[16];
@@ -79,21 +80,33 @@ void Transformation::addShearing(float p_shXY, float p_shXZ, float p_shYX, float
 }
 
 
+// Return the vector of the actual translation
 Vector Transformation::getTranslation()
 {
 	return translation;
 }
 
-Quaternion Transformation::getOrientationQuaternion()
+// Return the quaternion of the actual rotation
+Quaternion Transformation::getOrientation()
 {
 	return rotation;
 }
 
+// Put inside the array received the values of the actual scaling
+void Transformation::getScaling(float * scaleValuesArray)
+{
+	scaleValuesArray[0] = sX;
+	scaleValuesArray[1] = sY;
+	scaleValuesArray[2] = sZ;
+}
 
-/*
-		float getOrientationVector();
-		float getOrientationAngle();
-		float getScaling();
-		float getShearing();
-
-		*/
+// Put inside the array received the values of the actual shearing
+void Transformation::getShearing(float * shearValuesArray)
+{
+	shearValuesArray[0] = shXY;
+	shearValuesArray[1] = shXZ;
+	shearValuesArray[2] = shYX;
+	shearValuesArray[3] = shYZ;
+	shearValuesArray[4] = shZX;
+	shearValuesArray[5] = shZY;
+}
