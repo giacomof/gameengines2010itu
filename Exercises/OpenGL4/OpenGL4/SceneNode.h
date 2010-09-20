@@ -38,9 +38,11 @@ class SceneNode
 		// get the node name
 		string getName(void);
 
-		void setVisible(unsigned int v);
+		bool isVisible(void);
+		void setVisible(bool b);
 
-		void addGeometry(Geometry &g);
+		void addGeometry(Geometry * g);
+		Geometry* getGeometry();
 
 
 		//Matrix getTransformation(void); 
@@ -54,17 +56,18 @@ class SceneNode
 		void SceneNode::removeTransformation();
 		void drawGeometry();
 
+		
 
-		Geometry * geometry;					// Mesh to render
+		
 
 	protected:
-		unsigned int isVisible;
+		bool visible;							// The node should be drawn or not
 		int id;									// Unique id
 		string nodeName;						// Name
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
-		
+		Geometry * geometry;					// Mesh to render
 		
 };
 

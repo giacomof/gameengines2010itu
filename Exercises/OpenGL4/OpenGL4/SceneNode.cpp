@@ -32,7 +32,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 	nodeTransformation = Transformation(p_tX, p_tY, p_tZ,
 										p_axis, p_angle);
 
-	isVisible = 1;
+	visible = true;
 	
 	// Define the unique identifier of the node
 	id = nodeCount;
@@ -109,10 +109,15 @@ string SceneNode::getName(void)
 	return nodeName;
 }
 
-void SceneNode::addGeometry(Geometry &g) 
+void SceneNode::addGeometry(Geometry * g) 
 {
+	geometry = g;
 
+}
 
+Geometry* SceneNode::getGeometry()
+{
+	return geometry;
 }
 
 
@@ -146,7 +151,7 @@ void SceneNode::drawGeometry()
 {
 	applyTransformation();
 	
-	if(isVisible) {
+	if(isVisible()) {
 
 		switch (geometry->getShapeFlag()) {
 
@@ -179,7 +184,6 @@ void SceneNode::drawGeometry()
 	}
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			//removeTransformation();
 			(*itS)->drawGeometry();
 			
 	}
@@ -210,9 +214,14 @@ void SceneNode::removeTransformation()
 
 }
 
-void SceneNode::setVisible(unsigned int v) {
+bool SceneNode::isVisible(void)
+{
+	return visible;
+}
+
+void SceneNode::setVisible(bool b) {
 	
-	isVisible = v;
+	visible = b;
 
 }
 
