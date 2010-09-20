@@ -4,10 +4,10 @@
 #include <stdlib.h>						// Header File For the STD library
 #include <SDL.h>						// Header File for the SDL library
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
-#include <SDL_thread.h>
-#include <SDL_audio.h>
+#include <SDL_thread.h>					// Header File for SDL thread library
+#include <SDL_audio.h>					// Header File for SDL audio library
 
-#include <glut.h>
+#include <glut.h>						// Header File for glut commands
 
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "SceneNode.h"					// Header File for the SceneNode/Scenegraph
@@ -16,16 +16,15 @@
 #include "md2Loader.h"					// Header File for our md2 loader
 #include "pcxLoader.h"
 
-using namespace std;
-using namespace linearAlgebraDLL;
-
-
 #define NUM_SOUNDS 2
 struct sample {
     Uint8 *data;
     Uint32 dpos;
     Uint32 dlen;
 } sounds[NUM_SOUNDS];
+
+using namespace std;
+using namespace linearAlgebraDLL;
 
 
 static int const screenWidth		= 800;			// Window Width
@@ -41,10 +40,12 @@ Uint32 tickFrame = 0;
 // Message pump used for passing Events between threads
 MessagePump inputPump;								
 
-SDL_Surface *surface;					
+// Pointer to SDL rendering surface
+SDL_Surface *surface;				
+
 GLuint image;	
 
-// Root node of the Scene Graph
+// Root node and other Scene Node
 Root * rootNodePtr;
 SceneNode * demon;
 md2Loader md2Demon;
@@ -53,9 +54,10 @@ md2Loader md2LostSoul;
 SceneNode * bossCube;
 md2Loader md2BossCube;
 
+
 // Define Lights Attributes
 // *************************************
-// ********** GREEN LIGHTS *************
+// ********** LIGHTS *++++++************
 // *************************************
 GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
 GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
@@ -242,7 +244,6 @@ int main(int argc, char *argv[])
 	lostSoul->scale(1, 1, 1);
 
 	Geometry bossCube_g = Geometry(&md2BossCube, "include/bosscube.pcx");
-	//moonG.setSphere(1, 30, 30);
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
 	bossCube->scale(0.8, 0.8, 0.8);
 
@@ -307,8 +308,8 @@ int main(int argc, char *argv[])
 			}
 		}
 		
-		//if (isActive && SDL_GetTicks() > (tickFrame + tick) )
-		if(true)
+		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
+		//if(true)
 		{
 			tickFrame = SDL_GetTicks();
 			drawGL();
@@ -578,7 +579,6 @@ void keyUp(SDL_keysym *keysym)
 float* getCamera()
 {		
 	glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();
 
 	float tranM[16];
 	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
@@ -627,6 +627,7 @@ int resizeWindow(int width, int height)
 	return TRUE;
 }
 
+// Audio mixer for SDL sounds
 void mixaudio(void *unused, Uint8 *stream, int len)
 {
     int i;
@@ -642,6 +643,8 @@ void mixaudio(void *unused, Uint8 *stream, int len)
     }
 }
 
+
+// Function that load a sound, converti it and let it start to play
 void PlaySound(char *file)
 {
     int index;
