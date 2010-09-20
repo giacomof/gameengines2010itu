@@ -93,11 +93,35 @@ void clampCamera();
 GLuint	filter;
 GLuint	texture[3];
 
-// Mutex to lock variables
-SDL_mutex *value_mutex;
-
 // Defines when to stop looping
 bool quit = false;
+
+/* This thread handles audio */
+int soundmngr(void *data)
+{
+	// Thread name
+	char *tname = ( char * )data;
+
+		extern void mixaudio(void *unused, Uint8 *stream, int len);
+    SDL_AudioSpec fmt;
+
+    /* Set 16-bit stereo audio at 22Khz */
+    fmt.freq = 22050;
+    fmt.format = AUDIO_S16;
+    fmt.channels = 2;
+    fmt.samples = 512;        /* A good value for games */
+    fmt.callback = mixaudio;
+    fmt.userdata = NULL;
+
+    /* Open the audio device and start playing sound! */
+    if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
+        fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
+        exit(1);
+    }
+    SDL_PauseAudio(0);
+
+	SDL_CloseAudio();
+}
 
 /* This thread updates the scene */
 int updater(void *data)
@@ -131,25 +155,6 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	extern void mixaudio(void *unused, Uint8 *stream, int len);
-    SDL_AudioSpec fmt;
-
-    /* Set 16-bit stereo audio at 22Khz */
-    fmt.freq = 22050;
-    fmt.format = AUDIO_S16;
-    fmt.channels = 2;
-    fmt.samples = 512;        /* A good value for games */
-    fmt.callback = mixaudio;
-    fmt.userdata = NULL;
-
-    /* Open the audio device and start playing sound! */
-    if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
-        fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
-        exit(1);
-    }
-    SDL_PauseAudio(0);
-
-	
 	videoInfo = SDL_GetVideoInfo();
 	if (!videoInfo)
 	{
@@ -207,22 +212,20 @@ int main(int argc, char *argv[])
 
 	// The updater thread
 	SDL_Thread *id1;
-	char *tnames[1] = { "Updater" };
+	SDL_Thread *id2;
+	char *tnames[] = { "Updater", "Sound Manager" };
 
 	// Define the exit of the program in relation to SDL variables
 	atexit(SDL_Quit);
 
-	// Create the mutex
-	value_mutex = SDL_CreateMutex();
-
 	//create the threads
 	id1 = SDL_CreateThread ( updater, tnames[0] );
+	id2 = SDL_CreateThread ( soundmngr, tnames[1] );
 
 	/*Geometry bigTriangle = Geometry(0);
 	bigTriangle.addVertex(&Point(0.0f, 0.0f, 0.0f));
 	bigTriangle.addVertex(&Point(100.0f, 0.0f, 0.0f));
 	bigTriangle.addVertex(&Point(0.0f, 0.0f, -100.0f));
-
 
 	SceneNode plane(rootNodePtr, "Triangle Plane", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
 	SceneNode plane2(&plane, "Triangle Plane2", &bigTriangle, 100.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
@@ -257,10 +260,6 @@ int main(int argc, char *argv[])
 		sun.rotateAboutAxis(Vector(0,1,0),0.2f);
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
 		bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
-
-
-		//lock 
-		//SDL_mutexP ( value_mutex ); 
 		
 		while(SDL_PollEvent(&event))
 		{
@@ -315,24 +314,15 @@ int main(int argc, char *argv[])
 			drawGL();
 
 		}
-
-		//release the lock 
-		//SDL_mutexV ( value_mutex );
-		
+	
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
 	ShowCursor(TRUE);
 
-	
-
 	//wait for the threads to exit
 	SDL_WaitThread ( id1, NULL );
-
-	SDL_CloseAudio();
-
-	// Release the mutex
-	SDL_DestroyMutex ( value_mutex );
+	SDL_WaitThread ( id2, NULL );
 
 	// Delete the message pump between threads
 	delete &inputPump;
