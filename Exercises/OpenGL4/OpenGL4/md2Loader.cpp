@@ -12,6 +12,7 @@ inline void LERP(float out[],const InType a[],const InType b[],const float inter
 	out[2] = a[2]*inv_interp_t + b[2]*interp_t;
 }
 
+// constructor
 md2Loader::md2Loader() : md2File() {
 	m_AnimTime=0;
 	m_Verts=0;
@@ -19,10 +20,12 @@ md2Loader::md2Loader() : md2File() {
 	m_NumAnims=0;
 }
 
+// destructor
 md2Loader::~md2Loader() {
 	Release();
 }
 
+// resets all variables and clears animation buffer
 void md2Loader::Release() {
 	m_Anims.clear();
 	delete [] m_Verts;
@@ -34,7 +37,7 @@ void md2Loader::Release() {
 	m_data=0;
 }
 
-// 
+// loads the md2 model and allocate proper memory
 bool md2Loader::Load(const char* filename) {
 	Release();
 	if( !md2File::Load(filename) )
@@ -83,6 +86,7 @@ bool md2Loader::Load(const char* filename) {
 	return true;
 }
 
+// update the animation state
 void md2Loader::Update(float dt) {
 	if(!m_data)
 		return;
@@ -158,6 +162,7 @@ void md2Loader::Update(float dt) {
 	}			
 }
 
+// draw the mesh with OpenGL commands
 void md2Loader::Render() const {
 
 	// ensure valid model loaded
@@ -194,12 +199,6 @@ void md2Loader::Render() const {
 				//continue;
 			}
 			
-			// **************************
-			// ******* DEBUG INFO *******
-			// **************************
-
-			//std::cout << "using strips";
-
 			// the primitive type to draw
 			GLenum PrimitiveType = GL_TRIANGLE_STRIP;
 
@@ -208,10 +207,6 @@ void md2Loader::Render() const {
 				PrimitiveType = GL_TRIANGLE_FAN;
 				num = -num;
 				
-				// **************************
-				// ******* DEBUG INFO *******
-				// **************************
-				//std::cout << "using FANS";
 			}
 			
 			// start drawing
@@ -224,14 +219,8 @@ void md2Loader::Render() const {
 				glCommandVertex* pEnd  = pStart + num;
 				for( ; pStart != pEnd; ++pStart )
 				{
-					//glColor3f(0.0, 1.0f, 0.0f);
 					glTexCoord2fv(pStart->data);
 					glVertex3fv(m_Verts + 3*pStart->vertexIndex);
-					
-					// **************************
-					// ******* DEBUG INFO *******
-					// **************************
-					//std::cout << "rendering vertexes";
 				}
 			glEnd();
 

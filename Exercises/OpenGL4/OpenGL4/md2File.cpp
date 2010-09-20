@@ -3,12 +3,14 @@
 #include <stdio.h>
 #include <iostream>
 
+// returns the 3d mesh
 const md2File::model* md2File::GetModel() const {
 	if(!m_data) return 0;
 	void *p=m_data;
 	return reinterpret_cast<model*>( p );
 }
 
+// returns the data of a single frame of the animation
 const md2File::frame* md2File::GetFrame(unsigned int num) const {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
@@ -16,6 +18,7 @@ const md2File::frame* md2File::GetFrame(unsigned int num) const {
 	return reinterpret_cast<frame*>(ptr);
 }
 
+// returns the Triangles List
 const md2File::triangle* md2File::GetTriangles() const {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
@@ -23,6 +26,7 @@ const md2File::triangle* md2File::GetTriangles() const {
 	return reinterpret_cast<triangle*>(ptr);
 }
 
+// returns the uv coordinates of the texture (mapped inside the md2)
 const md2File::uv* md2File::GetTexCoords() const {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
@@ -30,12 +34,14 @@ const md2File::uv* md2File::GetTexCoords() const {
 	return reinterpret_cast<uv*>(ptr);
 }
 
+// returns the GL command list built-in the md2 (optional)
 const md2File::glCommandList* md2File::GetCommands() const  {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetGlCommands;
 	return reinterpret_cast<glCommandList*>(ptr);
 }
+
 
 const char*	md2File::GetSkin(unsigned int num) const {
 	if(!m_data) return 0;
