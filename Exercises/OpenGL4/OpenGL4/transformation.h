@@ -10,7 +10,7 @@ class Transformation
 {
 	public:
 		Transformation() { };
-		Transformation(	float p_tX, float p_tY, float p_tZ,
+		Transformation(	Vector p_translation,
 						Vector p_axis, float p_angle );
 		//~Transformation();
 
@@ -18,7 +18,7 @@ class Transformation
 		Matrix getTransformation(void);
 		Matrix getInverseTransformation(void);
 		void addQuaternionRotation(Quaternion q);
-		void addTranslation(float p_tX, float p_tY, float p_tZ);
+		void addTranslation(Vector t);
 		void addScaling(float p_sX, float p_sY, float p_sZ);
 		void addShearing(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
@@ -36,7 +36,7 @@ class Transformation
 
 		// Values of the transformation contained inside the transformation matrix
 		Quaternion rotation;
-		float tX, tY, tZ;
+		Vector translation;
 		float sX, sY, sZ;
 		float shXY, shXZ, shYX, shYZ, shZX, shZY;
 };

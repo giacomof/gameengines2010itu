@@ -1,7 +1,7 @@
 #include "transformation.h"
 
 // Constructor that take the initial position and the initial orientation
-Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
+Transformation::Transformation(	Vector p_translation,
 								Vector p_axis, float p_angle )
 {
 	// The transformation matrix initially is equal to the identity matrix
@@ -10,9 +10,7 @@ Transformation::Transformation(	float p_tX,		float p_tY,		float p_tZ,
 	// Initialise all the values
 	rotation = Quaternion(p_axis, p_angle);
 
-	tX = p_tX; 
-	tY = p_tY;
-	tZ = p_tZ;
+	translation = p_translation;
 
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
@@ -25,7 +23,7 @@ Matrix Transformation::getTransformation(void)
 
 	float tranM[16];
 	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
-	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ) * transformationMatrix;
+	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(2)) * transformationMatrix;
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
 	
@@ -40,7 +38,7 @@ Matrix Transformation::getInverseTransformation(void)
 	
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getInverse();
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
-	transformationMatrix = Matrix::generateTranslationMatrix(tX, tY, tZ).getInverse() * transformationMatrix;
+	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(1)).getInverse() * transformationMatrix;
 	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation).getInverse() * transformationMatrix;
 
 	transformationMatrix.getMatrix(&tranM[0]);
@@ -55,12 +53,10 @@ void Transformation::addQuaternionRotation(Quaternion q)
 }
 
 // Apply a translation
-void Transformation::addTranslation(float p_tX, float p_tY, float p_tZ)
+void Transformation::addTranslation(Vector t)
 {
 	
-	tX += p_tX;
-	tY += p_tY;
-	tZ += p_tZ;
+	translation = translation + t;
 }
 
 // Apply a scale
