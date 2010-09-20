@@ -5,6 +5,7 @@
 #include <SDL.h>						// Header File for the SDL library
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
 #include <SDL_thread.h>
+#include <SDL_mutex.h>
 
 #include "glut.h"
 
@@ -37,6 +38,8 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 	// Define the unique identifier of the node
 	id = nodeCount;
 	nodeCount++;
+
+	mutex_node = SDL_CreateMutex();
 	
 }
 
@@ -231,11 +234,13 @@ Root::Root()
 	nodeName = "Root";
 	id = nodeCount;
 	nodeCount++;
+	mutex_node = SDL_CreateMutex();
 }
 
 
 Root::~Root(void)
 {
+	SDL_DestroyMutex ( mutex_node );
 }
 
 // Method for drawing the entire world moving along the scene graph
@@ -263,3 +268,12 @@ void Root::update(float dt)
 	
 }
 
+void SceneNode::lock(void)
+{
+	SDL_mutexP( mutex_node );
+}
+
+void SceneNode::unlock(void)
+{
+	SDL_mutexV( mutex_node );
+}

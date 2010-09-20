@@ -1,3 +1,4 @@
+#include <SDL_mutex.h>
 #include <string>
 #include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
@@ -12,18 +13,22 @@ class SceneNode
 {
 	public:
 		// default constructor
-		SceneNode() {};
+		SceneNode() { mutex_node = SDL_CreateMutex(); };
 		// actual constructor
 		SceneNode(		SceneNode * parentNode, string str, Geometry * g,
 						float p_tX,		float p_tY,		float p_tZ,
 						Vector p_axis, float p_angle);
 		// destructor
-		virtual ~SceneNode() { }
+		virtual ~SceneNode() { SDL_DestroyMutex ( mutex_node ); }
 		// delete object
-		void release() { delete this; }
+		void release() { delete this; SDL_DestroyMutex ( mutex_node ); }
 
 		void update(float dt);
 		void destroy(void);
+
+		// Mutex commands
+		void lock();
+		void unlock();
 
 		// add a child
 		void addChild( SceneNode * pNode );
@@ -67,8 +72,8 @@ class SceneNode
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
+		SDL_mutex *mutex_node;					// Mutex for the Node		
 		Geometry * geometry;					// Mesh to render
-		
 };
 
 
