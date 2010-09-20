@@ -31,15 +31,30 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 	// Initialise the member transformation with the position and orientation parameters
 	nodeTransformation = Transformation(p_tX, p_tY, p_tZ,
 										p_axis, p_angle);
+
+	isVisible = 1;
+
 	// Define the unique identifier of the node
 	id = nodeCount;
 	nodeCount++;
 	
 }
 
-void SceneNode::update(void) 
+void SceneNode::update(float dt) 
 {
+	
+	if(geometry->getShapeFlag() == 2)
+	{
 
+		geometry->mesh->Update(dt);
+
+		list<SceneNode*>::iterator itS;
+
+		for(itS = childList.begin(); itS != childList.end(); itS++) {
+				(*itS)->update(dt);
+				
+		}
+	}
 }
 
 void SceneNode::destroy(void) 
@@ -131,31 +146,32 @@ void SceneNode::drawGeometry()
 {
 	applyTransformation();
 	
-	switch (geometry->getShapeFlag()) {
+	if(isVisible) {
+		switch (geometry->getShapeFlag()) {
 
-		case 0 : 
-			glDisable(GL_TEXTURE_2D);
-			for(int i = 0; i < geometry->vertexList.size(); i+=3) {
-				glBegin(GL_TRIANGLES);
-					glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
-					glVertex3f(geometry->vertexList[i+1]->get(0), geometry->vertexList[i+1]->get(1), geometry->vertexList[i+1]->get(2));
-					glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
-				glEnd();
-			}
-			glEnable(GL_TEXTURE_2D);
-			break;
+			case 0 : 
+				glDisable(GL_TEXTURE_2D);
+				for(int i = 0; i < geometry->vertexList.size(); i+=3) {
+					glBegin(GL_TRIANGLES);
+						glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
+						glVertex3f(geometry->vertexList[i+1]->get(0), geometry->vertexList[i+1]->get(1), geometry->vertexList[i+1]->get(2));
+						glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
+					glEnd();
+				}
+				glEnable(GL_TEXTURE_2D);
+				break;
 
-		case 1 :
-			glDisable(GL_TEXTURE_2D);	
-			glutSolidSphere(geometry->getSphereRadius(), geometry->getSphereSlices(), geometry->getSphereStacks());
-			glEnable(GL_TEXTURE_2D);	
-			break;
-		case 2 :
-			geometry->render();
-		default:
-			break;
+			case 1 :
+				glDisable(GL_TEXTURE_2D);	
+				glutSolidSphere(geometry->getSphereRadius(), geometry->getSphereSlices(), geometry->getSphereStacks());
+				glEnable(GL_TEXTURE_2D);	
+				break;
+			case 2 :
+				geometry->render();
+			default:
+				break;
+		}
 	}
-
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
 			//removeTransformation();
@@ -189,6 +205,12 @@ void SceneNode::removeTransformation()
 
 }
 
+void SceneNode::setVisible(unsigned int v) {
+	
+	isVisible = v;
+
+}
+
 // Overloaded constructor for the Root node
 Root::Root()
 {
@@ -216,13 +238,14 @@ void Root::drawGeometry()
 	
 }
 
-//void Root::update(float dt)
-//{
-//	list<SceneNode*>::iterator itS;
-//
-//	for(itS = childList.begin(); itS != childList.end(); itS++) {
-//			(*itS)->update(dt);
-//				
-//	}
-//	
-//}
+void Root::update(float dt)
+{
+	list<SceneNode*>::iterator itS;
+
+	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->update(dt);
+				
+	}
+	
+}
+

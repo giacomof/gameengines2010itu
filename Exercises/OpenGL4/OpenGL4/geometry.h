@@ -16,7 +16,7 @@ class Geometry
 		~Geometry(void);
 
 		void render();
-
+		
 		void addVertex(Point * p);
 
 		void setShapeFlag(int flag);
@@ -27,14 +27,10 @@ class Geometry
 		int getSphereSlices(void);
 		int getSphereStacks(void);
 
-
+		md2Loader * mesh;
 		vector<Point*> vertexList;				// List of Vertex
 
-	private:
-		md2Loader * mesh;
-
 		int shapeFlag;
-
 		float radius;
 		int slices, stacks;
 
