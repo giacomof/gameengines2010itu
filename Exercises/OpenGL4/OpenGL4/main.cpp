@@ -234,20 +234,20 @@ int main(int argc, char *argv[])
 	plane3.scale(1,1,1);*/
 
 	Geometry doomDemon = Geometry(&md2Demon, "include/cyber.pcx");
-	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, 0.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	demon->scale(0.8, 0.8, 0.8);
 	
 	Geometry sunG = Geometry(1);
 	sunG.setSphere(50, 30, 30);
-	SceneNode sun(demon, "Sun", &sunG, 0.0f, 100.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode sun(demon, "Sun", &sunG, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	sun.setVisible(0);
 	
 	Geometry lostSoul_g = Geometry(&md2LostSoul, "include/lostsoul.pcx");
-	lostSoul = new SceneNode(&sun, "LostSoul", &lostSoul_g, 200.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	lostSoul = new SceneNode(&sun, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
 
 	Geometry bossCube_g = Geometry(&md2BossCube, "include/bosscube.pcx");
-	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, 100.0f, 0.0f, 0.0f, Vector(0.0f,0.0f,0.0f), 0.0f);
+	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	bossCube->scale(0.8, 0.8, 0.8);
 
 	while(!quit)

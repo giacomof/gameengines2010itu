@@ -16,7 +16,7 @@ class SceneNode
 		SceneNode() { mutex_node = SDL_CreateMutex(); };
 		// actual constructor
 		SceneNode(		SceneNode * parentNode, string str, Geometry * g,
-						float p_tX,		float p_tY,		float p_tZ,
+						Vector v,
 						Vector p_axis, float p_angle);
 		// destructor
 		virtual ~SceneNode() { SDL_DestroyMutex ( mutex_node ); }
@@ -32,8 +32,10 @@ class SceneNode
 
 		// add a child
 		void addChild( SceneNode * pNode );
+
 		// detach a child
 		//void detachChild( SceneNode & cNode );
+
 		// set parent node
 		void setParent ( SceneNode * pNode );
 		// get parent node
@@ -53,7 +55,7 @@ class SceneNode
 		//Matrix getTransformation(void); 
 
 		void rotateAboutAxis(Vector p_Axis, float p_Degree);
-		void translate(float p_tX, float p_tY, float p_tZ);
+		void translate(Vector translateVector);
 		void scale(float p_sX, float p_sY, float p_sZ);
 		void shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
@@ -87,7 +89,10 @@ class Root : public SceneNode
 		void setParent ( SceneNode* pNode );
 		// get parent node
 		SceneNode* getParent(void);
+
+		// Update all the children
 		void update(float dt);
+		// Draw the geometry of all the children
 		void drawGeometry();
 
 };

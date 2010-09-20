@@ -17,7 +17,7 @@ static int nodeCount=0;
 // the initial position of the node
 // the initial orientation of the node
 SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
-						float p_tX, float p_tY, float p_tZ,
+						Vector v,
 						Vector p_axis, float p_angle)
 {
 	// variables inizialization
@@ -30,7 +30,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 	parentNode->addChild(this);
 
 	// Initialise the member transformation with the position and orientation parameters
-	nodeTransformation = Transformation(p_tX, p_tY, p_tZ,
+	nodeTransformation = Transformation(v,
 										p_axis, p_angle);
 
 	visible = true;
@@ -43,6 +43,8 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 	
 }
 
+// If the geometry is a MD2 model than update his animation status
+// and do so for all his childs
 void SceneNode::update(float dt) 
 {
 	
@@ -112,12 +114,14 @@ string SceneNode::getName(void)
 	return nodeName;
 }
 
+// Add a geometry to the Scene Node
 void SceneNode::addGeometry(Geometry * g) 
 {
 	geometry = g;
 
 }
 
+// Return the Geometry of the Scene Node
 Geometry* SceneNode::getGeometry()
 {
 	return geometry;
@@ -131,9 +135,9 @@ void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 }
 
 // Translate the node
-void SceneNode::translate(float p_tX, float p_tY, float p_tZ) 
+void SceneNode::translate(Vector translateVector) 
 {	
-	nodeTransformation.addTranslation(p_tX, p_tY, p_tZ);
+	nodeTransformation.addTranslation(translateVector);
 }
 
 // Scale the node
@@ -206,6 +210,7 @@ void SceneNode::applyTransformation()
 
 }
 
+// Apply the inverse transformation of the node
 void SceneNode::removeTransformation()
 {
 	float tranM[16];
@@ -217,11 +222,13 @@ void SceneNode::removeTransformation()
 
 }
 
+// Return the visibility status of the Scene Node
 bool SceneNode::isVisible(void)
 {
 	return visible;
 }
 
+// Change the visibility status of the Scene Node
 void SceneNode::setVisible(bool b) {
 	
 	visible = b;
@@ -257,6 +264,7 @@ void Root::drawGeometry()
 	
 }
 
+// Update the transformation status of all the child nodes of root
 void Root::update(float dt)
 {
 	list<SceneNode*>::iterator itS;
