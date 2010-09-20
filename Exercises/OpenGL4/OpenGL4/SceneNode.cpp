@@ -134,6 +134,7 @@ void SceneNode::drawGeometry()
 	switch (geometry->getShapeFlag()) {
 
 		case 0 : 
+			glDisable(GL_TEXTURE_2D);
 			for(int i = 0; i < geometry->vertexList.size(); i+=3) {
 				glBegin(GL_TRIANGLES);
 					glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
@@ -141,10 +142,13 @@ void SceneNode::drawGeometry()
 					glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
 				glEnd();
 			}
+			glEnable(GL_TEXTURE_2D);
 			break;
 
 		case 1 :
+			glDisable(GL_TEXTURE_2D);	
 			glutSolidSphere(geometry->getSphereRadius(), geometry->getSphereSlices(), geometry->getSphereStacks());
+			glEnable(GL_TEXTURE_2D);	
 			break;
 		case 2 :
 			geometry->render();
