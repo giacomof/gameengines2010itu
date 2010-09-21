@@ -14,14 +14,14 @@ namespace linearAlgebraDLL
 // Constructor for vectors without parameter
 Vector::Vector(void)
 {
-     // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
+     // Resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
      data[3] = 0;
 }
 
 // Constructor for vectors with parameters
 Vector::Vector(float x, float y, float z)
 {
-     // Here I also fill in the parameters
+     // Fill in the parameters
      data[0] = x;
      data[1] = y;
      data[2] = z;
@@ -33,7 +33,7 @@ float Vector::getMagnitude(void)
 {
      float magnitude = *this * *this;
      magnitude = sqrt(magnitude);
-     // I return the result
+     // Return the result
      return magnitude;
 }
 
@@ -46,69 +46,70 @@ float Vector::getQuadraticMagnitude(void)
 // Function to normalize the vector
 Vector Vector::normalize(void)
 {
-     // I create a new vector to store the results
+     // Create a new vector to store the results
      Vector result;
-     // Calculating the length using the the formula "square root of ( x^2 + y^2 + z^2 )", a short cut is multiplying the entire vector with itself
+     // Calculate the magnitude of the vector
      float magnitude = this->getMagnitude();
 
-     // Checking that I am not about to divide by zero...
+     // If the vector has magnitude = 0, then return an empty vector
      if (magnitude == 0) {
 
 		result.set(0, 0);
         result.set(1, 0);
         result.set(2, 0);
 
-		 // ...if i is, I throw an exception to be handle by whoever is calling this function and are smart enough to use try and catch
-		 //throw DivisionByZeroException();
-
-     } else if (magnitude != 1) {
-        // ...if magnitude isn't, I go ahead with normalization
-        result.set(0, this->get(0) / magnitude);
-        result.set(1, this->get(1) / magnitude);
-        result.set(2, this->get(2) / magnitude);
-     } else {
+		// If the vector magnitude is 1, then it is already normalized
+     } else if (magnitude == 1) {
+        
 		result.set(0, this->get(0));
         result.set(1, this->get(1));
         result.set(2, this->get(2));
+
+		// else, normalize the vector
+     } else {
+		result.set(0, this->get(0) / magnitude);
+        result.set(1, this->get(1) / magnitude);
+        result.set(2, this->get(2) / magnitude);
 	 }
-     // I return the result
+
+     // Return the result
      return result;
 }
 
 // Operator overload for the + sign
 Vector Vector::operator+(Vector &other)
 {
-     // I create a new vector to store the results
+     // Create a new vector to store the results
      Vector result;
-     // I calculate the result
+     // Calculate the result
      result.set(0, this->get(0) + other.get(0) );
      result.set(1, this->get(1) + other.get(1) );
      result.set(2, this->get(2) + other.get(2) );
-     // I return it
+
      return result;
 }
 
-// Operator overload for the - sign
+// Operator overload for the - sign between two vectors
 Vector Vector::operator-(Vector &other)
 {
-     // I create a new vector to store the results
+     // Create a new vector to store the results
      Vector result;
-     // I calculate the result
+     // Calculate the result
      result.set(0, this->get(0) - other.get(0) );
      result.set(1, this->get(1) - other.get(1) );
      result.set(2, this->get(2) - other.get(2) );
-     // I return it
+     // Return it
      return result;
 }
 
 // Operator overload for the * sign between two vectors
 float Vector::operator*(Vector &other)
 {
-     // I create a new float to store the result
+     // Create a new float to store the result
      float result;
-     // I calculate the result using the formula "x1*x2 + y1*y2 + z1*z2"
+     // Calculate the result
      result = (data[0] * other.data[0] + data[1] * other.data[1] + data[2] * other.data[2]);
-     // I return the Dot product.
+     // Return the Dot product
      return result;
 }
 
@@ -116,7 +117,7 @@ float Vector::operator*(Vector &other)
 Vector Vector::operator*(float s)
 {
 	Vector result;
-	// I scale the the vector.
+	// Scale the the vector
 	result.set(0, data[0] * s);
 	result.set(1, data[1] * s);
 	result.set(2, data[2] * s);
@@ -128,7 +129,7 @@ Vector Vector::operator%(Vector &other)
 {
 	Vector result;
 
-	// I scale the the vector.
+	// Scale the the vector
 	result.set(0, data[1] * other.data[2] - data[2] * other.data[1]);
 	result.set(1, -data[0] * other.data[2] - data[2] * other.data[0]);
 	result.set(2, data[0] * other.data[1] - data[1] * other.data[0]);
@@ -136,19 +137,19 @@ Vector Vector::operator%(Vector &other)
 	return result;
 }
 
-// Operator overload for the [] symbols (example, Vector[0] returns the content of data[0])
+// Operator overload for the [] symbols (Vector[0] returns the content of data[0])
 float  Vector::operator[](unsigned short i)
 {
-     // I access the internal stl vector in the same place as the class vector was accessed and return the content
+     // Access the internal stl vector in the same place as the class vector was accessed and return the content
      return data[i];
 }
 
 // Operator overload for << for sending a vector to the output stream
 std::ostream & operator<< (std::ostream &os, const Vector &v)
 {
-     // I add to the output stream in the following format: "{x,y,z}"
+     // Add to the output stream in the following format: "{x,y,z}"
      os << "{" << v.get(0) << "," << v.get(1) << "," << v.get(2)<< "," << v.get(3) << "}";
-     // I return the stream
+     // Return the stream
      return os;
 }
 
@@ -162,7 +163,7 @@ Point::Point(void)
 // Constructor for points with parameters
 Point::Point(float x, float y, float z)
 {
-     // We're doing the same here, only also filling in the parameters now
+     // Fill in the parameters
      data[0] = x;
      data[1] = y;
      data[2] = z;
@@ -172,19 +173,17 @@ Point::Point(float x, float y, float z)
 // Constructor for quaternions without parameter
 Quaternion::Quaternion(void)
 {
-     // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
 	vector = Vector(0.0f, 0.0f, 0.0f);
-	d = 0;
+	w = 0;
 }
 
-// Constructor for quaternions with parameter
+// Constructor for quaternions from a vector and an angle
 Quaternion::Quaternion(Vector axis, float angle)
 {
-    // I resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
 	float sinAngle;
 	angle *= 0.5f;
-	Vector vn(axis);
-	vn = vn.normalize();
+
+	Vector vn = axis.normalize();
  
 	sinAngle = sin(angle*PI/180);
  
@@ -193,7 +192,7 @@ Quaternion::Quaternion(Vector axis, float angle)
 	for (unsigned short i = 0; i < 3; i++) {
 		vector.set(i, vn.get(i));
 	}
-	d = cos(angle*PI/180);
+	w = cos(angle*PI/180);
 }
 
 // Operator overload for sum between quaternions
@@ -205,7 +204,7 @@ Quaternion Quaternion::operator+(Quaternion &other)
 
 	Quaternion resultQuaternion = Quaternion();
 	resultQuaternion.vector = resultVector;
-	resultQuaternion.d = resultDegree;
+	resultQuaternion.w = resultDegree;
 
 	return resultQuaternion;
 }
@@ -214,15 +213,15 @@ Quaternion Quaternion::operator+(Quaternion &other)
 Quaternion Quaternion::operator*(Quaternion &other)
 {
 	Vector resultVector = Vector();
-	resultVector.set(0, d * other.vector.get(0) + vector.get(0) * other.d + vector.get(1) * other.vector.get(2) - vector.get(2) * other.vector.get(1)); 
-	resultVector.set(1, d * other.vector.get(1) + vector.get(1) * other.d + vector.get(2) * other.vector.get(0) - vector.get(0) * other.vector.get(2)); 
-	resultVector.set(2, d * other.vector.get(2) + vector.get(2) * other.d + vector.get(0) * other.vector.get(1) - vector.get(1) * other.vector.get(0));
+	resultVector.set(0, w * other.vector.get(0) + vector.get(0) * other.w + vector.get(1) * other.vector.get(2) - vector.get(2) * other.vector.get(1)); 
+	resultVector.set(1, w * other.vector.get(1) + vector.get(1) * other.w + vector.get(2) * other.vector.get(0) - vector.get(0) * other.vector.get(2)); 
+	resultVector.set(2, w * other.vector.get(2) + vector.get(2) * other.w + vector.get(0) * other.vector.get(1) - vector.get(1) * other.vector.get(0));
 
-	float resultD = d * other.d - vector.get(0) * other.vector.get(0) - vector.get(1) * other.vector.get(1) - vector.get(2) * other.vector.get(2);
+	float resultW = w * other.w - vector.get(0) * other.vector.get(0) - vector.get(1) * other.vector.get(1) - vector.get(2) * other.vector.get(2);
 
 	Quaternion resultQuaternion = Quaternion();
 	resultQuaternion.vector = resultVector;
-	resultQuaternion.d = resultD;
+	resultQuaternion.w = resultW;
 
 	return resultQuaternion;
 }
@@ -235,22 +234,24 @@ Vector Quaternion::getVector(void)
 
 float Quaternion::getD(void)
 {
-	return d;
+	return w;
 }
 
+// Function for getting axis and angle from quaternion
 void Quaternion::getAxisAngle(Vector *axis, float *angle)
 {
 	float magnitude = vector.getMagnitude();
 	axis->set(0,  vector.get(0) / magnitude);
 	axis->set(1,  vector.get(1) / magnitude);
 	axis->set(2,  vector.get(2) / magnitude);
-	*angle = acos(d*PI/180) * 2.0f;
+	*angle = acos(w*PI/180) * 2.0f;
 }
 
+// Function to output quaternions
 std::ostream & operator<< (std::ostream &os, const Quaternion &q)
 {
 	// I add to the output stream in the following format: "{x,y,z}"
-     os << "{(" << q.vector.get(0) << "," << q.vector.get(1) << "," << q.vector.get(2)<< ")," << q.d << "}";
+     os << "{(" << q.vector.get(0) << "," << q.vector.get(1) << "," << q.vector.get(2)<< ")," << q.w << "}";
     // I return the stream
     return os;
 }
@@ -320,22 +321,22 @@ Matrix Matrix::generateIdentityMatrix(void)
 }
 
 // Generate a translation matrix from three float values
-Matrix Matrix::generateTranslationMatrix(float Tx, float Ty, float Tz) 
+Matrix Matrix::generateTranslationMatrix(float tX, float tY, float tZ) 
  {
 	Matrix result;
 
 	result.set(0,0,1);
 	result.set(0,1,0);
 	result.set(0,2,0);
-	result.set(0,3,Tx);
+	result.set(0,3,tX);
 	result.set(1,0,0);
 	result.set(1,1,1);
 	result.set(1,2,0);
-	result.set(1,3,Ty);
+	result.set(1,3,tY);
 	result.set(2,0,0);
 	result.set(2,1,0);
 	result.set(2,2,1);
-	result.set(2,3,Tz);
+	result.set(2,3,tY);
 	result.set(3,0,0);
 	result.set(3,1,0);
 	result.set(3,2,0);
@@ -345,21 +346,21 @@ Matrix Matrix::generateTranslationMatrix(float Tx, float Ty, float Tz)
  }
 
 // Generate a scaling matrix from three float values
-Matrix Matrix::generateScalingMatrix(float Sx, float Sy, float Sz)
+Matrix Matrix::generateScalingMatrix(float sX, float sY, float sZ)
 {
 	Matrix result;
 
-	result.set(0,0,Sx);
+	result.set(0,0,sX);
 	result.set(0,1,0);
 	result.set(0,2,0);
 	result.set(0,3,0);
 	result.set(1,0,0);
-	result.set(1,1,Sy);
+	result.set(1,1,sY);
 	result.set(1,2,0);
 	result.set(1,3,0);
 	result.set(2,0,0);
 	result.set(2,1,0);
-	result.set(2,2,Sz);
+	result.set(2,2,sZ);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);
@@ -370,21 +371,21 @@ Matrix Matrix::generateScalingMatrix(float Sx, float Sy, float Sz)
 }
 
 // Generate a uniform scaling matrix from a float value
-Matrix Matrix::generateUniformScalingMatrix(float S)
+Matrix Matrix::generateUniformScalingMatrix(float s)
 {
 	Matrix result;
 
-	result.set(0,0,S);
+	result.set(0,0,s);
 	result.set(0,1,0);
 	result.set(0,2,0);
 	result.set(0,3,0);
 	result.set(1,0,0);
-	result.set(1,1,S);
+	result.set(1,1,s);
 	result.set(1,2,0);
 	result.set(1,3,0);
 	result.set(2,0,0);
 	result.set(2,1,0);
-	result.set(2,2,S);
+	result.set(2,2,s);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);
@@ -546,20 +547,20 @@ Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
 }
 
 // Generate a shearing matrix from six float values 
-Matrix Matrix::generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy)
+Matrix Matrix::generateShearingMatrix(float sXY,float sXZ,float sYX,float sYZ,float sZX,float sZY)
 {
 	Matrix result;
 
 	result.set(0,0,1);
-	result.set(0,1,Sxy);
-	result.set(0,2,Sxz);
+	result.set(0,1,sXY);
+	result.set(0,2,sXZ);
 	result.set(0,3,0);
-	result.set(1,0,Syx);
+	result.set(1,0,sYX);
 	result.set(1,1,1);
-	result.set(1,2,Syz);
+	result.set(1,2,sYZ);
 	result.set(1,3,0);
-	result.set(2,0,SZx);
-	result.set(2,1,Szy);
+	result.set(2,0,sZX);
+	result.set(2,1,sZY);
 	result.set(2,2,1);
 	result.set(2,3,0);
 	result.set(3,0,0);
@@ -575,8 +576,10 @@ Matrix Matrix::operator*(Matrix &other)
 {
      Matrix result;
 
-     // This set of loops will go though each field in the result matrix, then calculate using another loop to resuse code for each multiplication between elements
-     // r is row, c is column, i is row for one element of a multiplication and column for the other element of the same multiplication
+     // This set of loops will go though each field in the result matrix, 
+	 // then calculate using another loop to resuse code for each multiplication 
+	 // between elements r is row, c is column, i is row for one element 
+	 // of a multiplication and column for the other element of the same multiplication
      for (unsigned int c = 0; c < 4; c++)
          for (unsigned int r = 0; r < 4; r++) {
              float temp = 0;
@@ -621,9 +624,9 @@ Vector Matrix::operator*(Vector &other)
          result.set(r, temp);
      }
          
-     // Checking that I am not about to divide by zero...
+     // Checking that is not about to divide by zero
      if (result.get(3) != 0) {
-        // ...if i isn't, I go ahead with homogeneous divide. I use a loop to reuse code
+
         for (unsigned int i = 0; i < 4; i++) {
             result.set(i, result.get(i) / result.get(3));
         }
@@ -718,6 +721,7 @@ float Matrix::getDeterminant()
 			temp3*temp8 - temp4*temp7 + temp5*temp6;
 }
 
+// Return the matrix inside the float vector received as argument
 void Matrix::getMatrix(float * matrix) {
 
 	for(unsigned short i=0; i<16; i++) {
