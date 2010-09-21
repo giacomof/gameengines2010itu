@@ -13,7 +13,7 @@ class Geometry
 {
 	public:
 		Geometry(int flag);
-		Geometry(md2Loader * meshMD2, const char * filename);
+		Geometry(md2Loader * meshMD2, char * filename);
 		~Geometry(void);
 
 		void render();
@@ -34,7 +34,7 @@ class Geometry
 		md2Loader * mesh;
 		vector<Point*> vertexList;				// List of Vertex
 
-		const char * textureFile;
+		char * textureFile;
 		int shapeFlag;
 		float radius;
 		int slices, stacks;
