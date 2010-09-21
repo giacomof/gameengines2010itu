@@ -6,21 +6,6 @@
 namespace linearAlgebraDLL
 {
 
-// Exception used to signal divisions by zero
-class DivisionByZeroException {};
-
-/*
-class MathFunctions
-{
-	public:
-		// Function for correct floating point calculation for sine and cosine
-		__declspec(dllexport) static void floatingPointSinCos(float* sincos, float* degree);
-
-		__declspec(dllexport) static float MathFunctions::floatingPointSin(float degree);
-		__declspec(dllexport) static float MathFunctions::floatingPointCos(float degree);
-};
-*/
-
 // Describe a vector and its standard operations
 class Vector
 {
@@ -91,7 +76,7 @@ class Quaternion
 
 	protected:
 		Vector vector;
-		float d;
+		float w;
 };
 
 // Describe a matrix
@@ -114,12 +99,12 @@ class Matrix
 		__declspec(dllexport) static Matrix generateIdentityMatrix(void);
 
 		// Generate a translation matrix from three float values
-		__declspec(dllexport) static Matrix generateTranslationMatrix(float Tx, float Ty, float Tz);
+		__declspec(dllexport) static Matrix generateTranslationMatrix(float tX, float tY, float tZ);
 
 		// Generate a scaling matrix from three float values
-		__declspec(dllexport) static Matrix generateScalingMatrix(float Sx, float Sy, float Sz);
+		__declspec(dllexport) static Matrix generateScalingMatrix(float sX, float sY, float sZ);
 		// Generate a uniform scaling matrix from a float value
-		__declspec(dllexport) static Matrix generateUniformScalingMatrix(float S);
+		__declspec(dllexport) static Matrix generateUniformScalingMatrix(float s);
 
 		// Generate a rotation matrix about x-axes, from a  float value
 		__declspec(dllexport) static Matrix generateXRotationMatrix(float degree);
@@ -133,7 +118,7 @@ class Matrix
 		__declspec(dllexport) static Matrix generateQuaternionRotationMatrix(Quaternion q);
 
 		//Generate a shearing matrix
-		__declspec(dllexport) static Matrix generateShearingMatrix(float Sxy,float Sxz,float Syx,float Syz,float SZx,float Szy);
+		__declspec(dllexport) static Matrix generateShearingMatrix(float sXY,float sXZ,float sYX,float sYZ,float sZX,float sZY);
 
 		// Matrix multiplication
         __declspec(dllexport) Matrix operator*(Matrix &other); 
