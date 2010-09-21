@@ -102,7 +102,7 @@ int soundmngr(void *data)
 	// Thread name
 	char *tname = ( char * )data;
 
-		extern void mixaudio(void *unused, Uint8 *stream, int len);
+	extern void mixaudio(void *unused, Uint8 *stream, int len);
     SDL_AudioSpec fmt;
 
     /* Set 16-bit stereo audio at 22Khz */
@@ -116,11 +116,13 @@ int soundmngr(void *data)
     /* Open the audio device and start playing sound! */
     if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
         fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
-        exit(1);
+		return 1;
+		// exit(1);
     }
     SDL_PauseAudio(0);
 
 	SDL_CloseAudio();
+	return 0;
 }
 
 /* This thread updates the scene */
@@ -620,10 +622,9 @@ int resizeWindow(int width, int height)
 // Audio mixer for SDL sounds
 void mixaudio(void *unused, Uint8 *stream, int len)
 {
-    int i;
-    Uint32 amount;
+    int amount;
 
-    for ( i=0; i<NUM_SOUNDS; ++i ) {
+    for (int i=0; i<NUM_SOUNDS; ++i ) {
         amount = (sounds[i].dlen-sounds[i].dpos);
         if ( amount > len ) {
             amount = len;

@@ -165,13 +165,7 @@ void SceneNode::drawGeometry()
 			case 0 : 
 				glDisable(GL_TEXTURE_2D);
 
-				// ****************************************************
-				// **** ATTENTION: Changed the "<" symbol to "==" *****
-				// **** to eliminate some warning of the compiler *****
-				// **** if you encounter any problem reset it *********
-				// ****************************************************
-
-				for(int i = 0; i == geometry->vertexList.size(); i+=3) {
+				for(unsigned int i = 0; i < geometry->vertexList.size(); i+=3) {
 					glBegin(GL_TRIANGLES);
 						glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
 						glVertex3f(geometry->vertexList[i+1]->get(0), geometry->vertexList[i+1]->get(1), geometry->vertexList[i+1]->get(2));
