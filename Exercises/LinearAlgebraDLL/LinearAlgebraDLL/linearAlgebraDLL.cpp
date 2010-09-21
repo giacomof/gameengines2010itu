@@ -336,7 +336,7 @@ Matrix Matrix::generateTranslationMatrix(float tX, float tY, float tZ)
 	result.set(2,0,0);
 	result.set(2,1,0);
 	result.set(2,2,1);
-	result.set(2,3,tY);
+	result.set(2,3,tZ);
 	result.set(3,0,0);
 	result.set(3,1,0);
 	result.set(3,2,0);
