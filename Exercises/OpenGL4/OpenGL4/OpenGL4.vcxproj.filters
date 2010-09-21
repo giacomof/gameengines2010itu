@@ -42,6 +42,9 @@
     <ClCompile Include="pcxLoader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sceneObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geometry.h">
@@ -195,6 +198,9 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="pcxLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
