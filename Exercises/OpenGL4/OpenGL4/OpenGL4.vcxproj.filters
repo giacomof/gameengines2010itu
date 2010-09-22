@@ -244,6 +244,7 @@
     <None Include="include\cyber.jpg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
