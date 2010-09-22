@@ -220,9 +220,6 @@
     <None Include="include\Cyber.md2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="include\cyber.pcx">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="include\evil_laugh.wav">
       <Filter>Resource Files</Filter>
     </None>
@@ -238,16 +235,13 @@
     <None Include="include\Lostsoul.md2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="include\lostsoul.pcx">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="include\bosscube.jpg">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="include\bosscube.md2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="include\bosscube.pcx">
+    <None Include="include\cyber.jpg">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

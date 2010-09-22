@@ -1,3 +1,6 @@
+#include <il.h>
+#include <ilu.h>
+#include <ilut.h>
 #include <vector>
 #include "linearAlgebraDLL.h"
 #include "md2Loader.h"
