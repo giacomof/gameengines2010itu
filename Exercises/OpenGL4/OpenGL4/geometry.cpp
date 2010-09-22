@@ -22,12 +22,12 @@ Geometry::Geometry(int flag)
 	}
 }
 
-Geometry::Geometry(md2Loader * meshMD2, char * filename) 
+Geometry::Geometry(md2Loader * meshMD2, unsigned int texture)
 {
 	shapeFlag = 2;
 	mesh = meshMD2;
-	textureFile = filename;
-	md2Texture = MakeTexture();
+	//textureFile = filename;
+	md2Texture = texture;
 }
 
 void Geometry::render() 
@@ -76,46 +76,4 @@ int Geometry::getSphereSlices(void)
 int Geometry::getSphereStacks(void)
 {
 	return stacks;
-}
-
-// A function to load an image file and return the texture object for it
-unsigned int Geometry::MakeTexture() {
-
-	// Initialization of DevIL
-	ilInit(); 
-	// Generation of one image name 
-	ilGenImages(1, &texid); 
-	// Binding of image name
-	ilBindImage(texid);
-	// Loading of image 
-	success = ilLoadImage(textureFile);
-
-	if (success)
-	{
-		// Convert colour (for alpha channel images change to IL_RGBA)
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); 
-
-		if (!success)
-		{
-			// Error occured 
-			//SDL_Quit();
-			std::cout << "ERROR" << std::endl;
-			return -1;
-		}
-	}
-
-	// Texture name generation
-	glGenTextures(1, &imageT); 
-	// Binding of texture name
-	glBindTexture(GL_TEXTURE_2D, imageT);
-	// Linear interpolation for magnification filter
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Linear interpolation for minifying filter
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	// Texture settings
-	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
-		ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-		ilGetData());
-
-	return imageT;
 }
