@@ -84,7 +84,7 @@
     <ClCompile Include="md2Loader.cpp" />
     <ClCompile Include="messagePump.cpp" />
     <ClCompile Include="pcxLoader.c" />
-    <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="sceneNode.cpp" />
     <ClCompile Include="sceneObject.cpp" />
     <ClCompile Include="transformation.cpp" />
   </ItemGroup>
@@ -138,7 +138,7 @@
     <ClInclude Include="md2Loader.h" />
     <ClInclude Include="messagePump.h" />
     <ClInclude Include="pcxLoader.h" />
-    <ClInclude Include="SceneNode.h" />
+    <ClInclude Include="sceneNode.h" />
     <ClInclude Include="sceneObject.h" />
     <ClInclude Include="transformation.h" />
   </ItemGroup>
