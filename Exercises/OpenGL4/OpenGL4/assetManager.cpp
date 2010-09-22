@@ -3,9 +3,11 @@
 
 AssetManager::AssetManager(void)
 {
+
 }
 
 
 AssetManager::~AssetManager(void)
 {
+
 }
