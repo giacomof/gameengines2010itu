@@ -9,7 +9,7 @@
 struct textureContainer 
 {
 	unsigned int textureID;
-	char * textureMD5;
+	std::string textureMD5;
 };
 
 using namespace std;

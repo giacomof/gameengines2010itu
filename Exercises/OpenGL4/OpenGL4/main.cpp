@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
-	
+
 
 	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
 
