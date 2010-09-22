@@ -13,18 +13,25 @@ AssetManager::~AssetManager(void)
 
 }
 
-void AssetManager::loadTexture(char * fileName, char * textureName)
+void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 {
 	ILuint texid;
 	ILboolean success;
 	GLuint imageT;
+
+
+	md5wrapper md5;
+	// This will store the md5 hash of a file called test.txt in a string hash1
+	std::string hash1 = md5.getHashFromFile(fileDirectory);
+	
+	cout << hash1 << endl;
 
 	// Generation of one image name 
 	ilGenImages(1, &texid); 
 	// Binding of image name
 	ilBindImage(texid);
 	// Loading of image 
-	success = ilLoadImage(fileName);
+	success = ilLoadImage(fileDirectory);
 
 	if (success)
 	{
@@ -52,11 +59,11 @@ void AssetManager::loadTexture(char * fileName, char * textureName)
 		ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
 		ilGetData());
 
-	texture_list[textureName] = imageT;
+	texture_list[textureName].textureID = imageT;
 
 }
 
 unsigned int AssetManager::getTexture(char * textureName)
 {
-	return texture_list[textureName];
+	return texture_list[textureName].textureID;
 }

@@ -40,6 +40,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>
     </LinkIncremental>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;$(ProjectDir)/include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -53,7 +54,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\include</AdditionalLibraryDirectories>
       <AdditionalDependencies>DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -83,6 +84,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="md2File.cpp" />
     <ClCompile Include="md2Loader.cpp" />
+    <ClCompile Include="md5.cpp" />
+    <ClCompile Include="md5wrapper.cpp" />
     <ClCompile Include="messagePump.cpp" />
     <ClCompile Include="sceneNode.cpp" />
     <ClCompile Include="sceneObject.cpp" />
@@ -137,6 +140,8 @@
     <ClInclude Include="include\SDL_video.h" />
     <ClInclude Include="md2File.h" />
     <ClInclude Include="md2Loader.h" />
+    <ClInclude Include="md5.h" />
+    <ClInclude Include="md5wrapper.h" />
     <ClInclude Include="messagePump.h" />
     <ClInclude Include="sceneNode.h" />
     <ClInclude Include="sceneObject.h" />
@@ -153,7 +158,6 @@
     <None Include="include\lostsoul.jpg" />
     <None Include="include\Lostsoul.md2" />
     <None Include="include\nhe.ico" />
-    <None Include="include\vortex.pcx" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
     <None Include="todo.txt" />

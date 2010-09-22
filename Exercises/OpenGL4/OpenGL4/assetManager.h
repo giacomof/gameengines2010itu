@@ -2,23 +2,32 @@
 #include <ilu.h>
 #include <ilut.h>
 #include <iostream>
-
+#include <fstream>
 #include <map>
+#include "md5wrapper.h"
+
+struct textureContainer 
+{
+	unsigned int textureID;
+	char * textureMD5;
+};
 
 using namespace std;
 
 class AssetManager
 {
 
+
+
 public:
 	AssetManager(void);
 	~AssetManager(void);
 
-	void loadTexture(char * fileName, char * textureName);
+	void loadTexture(char * fileDirectory, char * textureName);
 	unsigned int getTexture(char * textureName);
 
 private:
-	std::map <char *, unsigned int> texture_list;
+	std::map <char *, textureContainer> texture_list;
 
 };
 

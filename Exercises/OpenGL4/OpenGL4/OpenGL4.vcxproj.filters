@@ -45,6 +45,12 @@
     <ClCompile Include="assetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="md5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="md5wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geometry.h">
@@ -203,6 +209,12 @@
     <ClInclude Include="assetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="md5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="md5wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL.dll">
@@ -224,9 +236,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="include\nhe.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="include\vortex.pcx">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="include\lostsoul.jpg">
