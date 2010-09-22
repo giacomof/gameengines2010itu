@@ -7,9 +7,9 @@ Global tasks:
 S- Camera as child of sceneObject
 V- Childs of sceneObject
 G- Asset Manager
-	- Texture Manager
-	- Mesh Manager
-	- Sound Manager
+	G- Texture Manager
+	0- Mesh Manager
+	0- Sound Manager
 0- Root as Singleton
 0- Input Abstraction Layer
 0- Physics SDK (Bullet?)
@@ -17,6 +17,16 @@ G- Asset Manager
 0- Sounds without movements freeze
 0- Merge MD2File and MD2Loader classes
 0- FBX/Collada Loader
+0- Create unit units for testing
+0- Compile everything we can as a DLL
+0- A DisplayManager capable of opening a window with an opengl context
+0- fps counter with a sliding frame window
+0- debug draw system
+	0- axis of rotation of an object via line draws
+	0- draw the bounding box or bounding sphere of an object
+0- logging system with verbosity levels
+0- attach/detach camera to player model
+
 
 Symbology Map:
 
