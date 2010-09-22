@@ -53,10 +53,10 @@
       <AdditionalIncludeDirectories>$(ProjectDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\include</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,14 +146,12 @@
     <None Include="glut32.dll" />
     <None Include="include\bosscube.jpg" />
     <None Include="include\bosscube.md2" />
-    <None Include="include\bosscube.pcx" />
+    <None Include="include\cyber.jpg" />
     <None Include="include\Cyber.md2" />
-    <None Include="include\cyber.pcx" />
     <None Include="include\evil_laugh.wav" />
     <None Include="include\glut.def" />
     <None Include="include\lostsoul.jpg" />
     <None Include="include\Lostsoul.md2" />
-    <None Include="include\lostsoul.pcx" />
     <None Include="include\nhe.ico" />
     <None Include="include\vortex.pcx" />
     <None Include="LinearAlgebraDLL.dll" />
