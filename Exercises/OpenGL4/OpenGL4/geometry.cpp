@@ -81,7 +81,7 @@ int Geometry::getSphereStacks(void)
 // A function to load a bitmap file and return the texture object for that texture
 unsigned int Geometry::MakeTexture() {
 
-	/*unsigned int w,h,bpp;
+	unsigned int w,h,bpp;
 	unsigned char* pixels;
 
 	if(!LoadPcxImage(textureFile,&pixels,&w,&h,&bpp)) {
@@ -110,10 +110,10 @@ unsigned int Geometry::MakeTexture() {
 		break;
 		return 0;
 	}
-	*/
+	
 
 	unsigned int tex_obj=0;
-	tex_obj = ilutGLLoadImage(textureFile);
+	//tex_obj = ilutGLLoadImage(textureFile);
 	glGenTextures(1,&tex_obj);
 
 	glBindTexture (GL_TEXTURE_2D, tex_obj);
@@ -124,7 +124,7 @@ unsigned int Geometry::MakeTexture() {
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	//glTexImage2D(GL_TEXTURE_2D,0,outfmt,w,h,0,infmt,GL_UNSIGNED_BYTE,pixels);
+	glTexImage2D(GL_TEXTURE_2D,0,outfmt,w,h,0,infmt,GL_UNSIGNED_BYTE,pixels);
 
 	return tex_obj;
 }
