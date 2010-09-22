@@ -78,81 +78,44 @@ int Geometry::getSphereStacks(void)
 	return stacks;
 }
 
-// A function to load a bitmap file and return the texture object for that texture
+// A function to load an image file and return the texture object for it
 unsigned int Geometry::MakeTexture() {
 
-	//unsigned int w,h,bpp;
-	//unsigned char* pixels;
+	// Initialization of DevIL
+	ilInit(); 
+	// Generation of one image name 
+	ilGenImages(1, &texid); 
+	// Binding of image name
+	ilBindImage(texid);
+	// Loading of image 
+	success = ilLoadImage(textureFile);
 
-	//if(!LoadPcxImage(textureFile,&pixels,&w,&h,&bpp)) {
-	//	std::cout << "ERROR LOADING THE TEXTURE";
-	//	return 0;
-	//}
-
-	//GLenum infmt,outfmt;
-	//switch(bpp) {
-	//case 3:
-	//	infmt = GL_RGB;
-	//	outfmt = GL_RGB;
-	//	break;
-	//case 4:
-	//	infmt = GL_RGBA;
-	//	outfmt = GL_RGBA;
-	//	break;
-	//case 1:
-	//	infmt = outfmt = GL_ALPHA;
-	//	break;
-	//case 2:
-	//	infmt = outfmt = GL_RGB5_A1;
-	//	break;
-	//default:
-	//	free(pixels);
-	//	break;
-	//	return 0;
-	//}
-	//
-
-	//unsigned int tex_obj=0;
-	////tex_obj = ilutGLLoadImage(textureFile);
-	//glGenTextures(1,&tex_obj);
-
-	//glBindTexture (GL_TEXTURE_2D, tex_obj);
-
-	//glPixelStorei (GL_UNPACK_ALIGNMENT, 1);	
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	//glTexImage2D(GL_TEXTURE_2D,0,outfmt,w,h,0,infmt,GL_UNSIGNED_BYTE,pixels);
-
- 
-	ilInit(); /* Initialization of DevIL */
-	ilGenImages(1, &texid); /* Generation of one image name */
-	ilBindImage(texid); /* Binding of image name */
-	success = ilLoadImage(textureFile); /* Loading of image "image.jpg" */
-	if (success) /* If no error occured: */
+	if (success)
 	{
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
-			unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+		// Convert colour (for alpha channel images change to IL_RGBA)
+		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); 
+
 		if (!success)
 		{
-			/* Error occured */
+			// Error occured 
 			//SDL_Quit();
 			std::cout << "ERROR" << std::endl;
 			return -1;
 		}
 	}
-	glGenTextures(1, &imageT); /* Texture name generation */
-	glBindTexture(GL_TEXTURE_2D, imageT); /* Binding of texture name */
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
-		interpolation for magnification filter */
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); /* We will use linear
-		interpolation for minifying filter */
+
+	// Texture name generation
+	glGenTextures(1, &imageT); 
+	// Binding of texture name
+	glBindTexture(GL_TEXTURE_2D, imageT);
+	// Linear interpolation for magnification filter
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Linear interpolation for minifying filter
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Texture settings
 	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
 		ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-		ilGetData()); /* Texture specification */
-
+		ilGetData());
 
 	return imageT;
 }

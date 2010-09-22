@@ -36,13 +36,13 @@
     <ClCompile Include="include\linearAlgebraDLL.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="pcxLoader.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sceneNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="assetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,13 +194,13 @@
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="pcxLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sceneObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sceneNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

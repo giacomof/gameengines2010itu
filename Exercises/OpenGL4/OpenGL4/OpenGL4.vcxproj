@@ -77,18 +77,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="assetManager.cpp" />
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="include\linearAlgebraDLL.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="md2File.cpp" />
     <ClCompile Include="md2Loader.cpp" />
     <ClCompile Include="messagePump.cpp" />
-    <ClCompile Include="pcxLoader.c" />
     <ClCompile Include="sceneNode.cpp" />
     <ClCompile Include="sceneObject.cpp" />
     <ClCompile Include="transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="assetManager.h" />
     <ClInclude Include="geometry.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
@@ -137,7 +138,6 @@
     <ClInclude Include="md2File.h" />
     <ClInclude Include="md2Loader.h" />
     <ClInclude Include="messagePump.h" />
-    <ClInclude Include="pcxLoader.h" />
     <ClInclude Include="sceneNode.h" />
     <ClInclude Include="sceneObject.h" />
     <ClInclude Include="transformation.h" />
