@@ -14,7 +14,7 @@
 #include "geometry.h"					// Header File for the Geometry container
 #include "messagePump.h"				// Header File for the input messahe pump system
 #include "md2Loader.h"					// Header File for our md2 loader
-#include "pcxLoader.h"
+#include "assetManager.h"
 
 #define NUM_SOUNDS 2
 struct sample {
@@ -47,6 +47,9 @@ GLuint image;
 
 // Root node and other Scene Node
 Root * rootNodePtr;
+
+AssetManager * assetManagerPtr;
+
 SceneNode * demon;
 md2Loader md2Demon;
 SceneNode * lostSoul;
@@ -174,7 +177,7 @@ int main(int argc, char *argv[])
 	if (videoInfo->blit_hw)
 		videoFlags |= SDL_HWACCEL;
 	
-	SDL_WM_SetCaption( "Loading Name Here Engine... ", "include/nhe.ico" );
+	//SDL_WM_SetCaption( "Loading Name Here Engine... ", "include/nhe.ico" );
 
 	// Apply Video Flags and Settings
 	surface = SDL_SetVideoMode(	screenWidth,
@@ -208,6 +211,8 @@ int main(int argc, char *argv[])
 
 	// Create the root node
 	rootNodePtr = new Root();
+
+	assetManagerPtr = new AssetManager();
 
 	// The updater thread
 	SDL_Thread *id1;
