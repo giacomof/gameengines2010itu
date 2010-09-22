@@ -237,9 +237,15 @@ int main(int argc, char *argv[])
 	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
 	plane3.scale(1,1,1);*/
 
+	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
+	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
+	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
+	
 
 	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
-	Geometry doomDemon = Geometry(&md2Demon, "include/cyber.jpg");
+
+
+	Geometry doomDemon = Geometry(&md2Demon, assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rootNodePtr->unlock(); // We can unlock the node now
 
@@ -254,15 +260,17 @@ int main(int argc, char *argv[])
 	sun.lock();
 	sun.setVisible(0);
 
-	Geometry lostSoul_g = Geometry(&md2LostSoul, "include/lostsoul.jpg");
+
+	Geometry lostSoul_g = Geometry(&md2LostSoul, assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&sun, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	sun.unlock();
 
 	lostSoul->lock();
 	lostSoul->scale(1, 1, 1);
 	lostSoul->unlock();
+	
 
-	Geometry bossCube_g = Geometry(&md2BossCube, "include/bosscube.jpg");
+	Geometry bossCube_g = Geometry(&md2BossCube, assetManagerPtr->getTexture("bossCubeTx"));
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->unlock();
 

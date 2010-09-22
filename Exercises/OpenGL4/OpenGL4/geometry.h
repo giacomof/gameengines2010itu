@@ -16,6 +16,7 @@ class Geometry
 	public:
 		Geometry(int flag);
 		Geometry(md2Loader * meshMD2, char * filename);
+		Geometry(md2Loader * meshMD2, unsigned int texture);
 		~Geometry(void);
 
 		void render();
@@ -30,7 +31,6 @@ class Geometry
 		int getSphereSlices(void);
 		int getSphereStacks(void);
 
-		unsigned int MakeTexture();
 		unsigned int md2Texture;
 
 		md2Loader * mesh;
