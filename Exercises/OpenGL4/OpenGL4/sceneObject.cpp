@@ -1,11 +1,19 @@
 #include "sceneObject.h"
 
 
-sceneObject::sceneObject(void)
+// ************************************* //
+// ************ SceneObject ************ //
+// ************************************* //
+
+SceneObject::SceneObject(void)
 {
 }
 
 
-sceneObject::~sceneObject(void)
+SceneObject::~SceneObject(void)
 {
 }
+
+// ************************************* //
+// ************** MD2 ****************** //
+// ************************************* //
