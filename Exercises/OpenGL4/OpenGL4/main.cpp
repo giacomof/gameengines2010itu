@@ -10,8 +10,8 @@
 #include <glut.h>						// Header File for glut commands
 
 #include "linearAlgebraDLL.h"			// Header File for our math library
-#include "SceneNode.h"					// Header File for the SceneNode/Scenegraph
-#include "Geometry.h"					// Header File for the Geometry container
+#include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
+#include "geometry.h"					// Header File for the Geometry container
 #include "messagePump.h"				// Header File for the input messahe pump system
 #include "md2Loader.h"					// Header File for our md2 loader
 #include "pcxLoader.h"
