@@ -80,6 +80,7 @@ class Mesh : SceneObject
 
 };
 
+/*
 class md2File : Mesh 
 {
 	public:
@@ -90,7 +91,7 @@ class md2File : Mesh
 		char * textureFile;
 		int md2Texture; 
 };
-
+*/
 class FBXfile : Mesh
 {
 	public:
