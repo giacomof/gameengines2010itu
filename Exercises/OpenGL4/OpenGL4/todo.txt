@@ -7,7 +7,7 @@ Global tasks:
 S- Camera as child of sceneObject
 V- Childs of sceneObject
 G- Asset Manager
-	G- Texture Manager
+	1(G)- Texture Manager
 		0- MD5 hashing for checking that each file is loaded only once
 	0- Mesh Manager
 	0- Sound Manager
