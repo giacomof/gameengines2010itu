@@ -1,0 +1,27 @@
+// ******************************************************************************************************* //
+// ************************************** COMMON TO-DO LIST ********************************************** //
+// ******************************************************************************************************* //
+
+Global tasks:
+
+S- Camera as child of sceneObject
+V- Childs of sceneObject
+G- Asset Manager
+	- Texture Manager
+	- Mesh Manager
+	- Sound Manager
+0- Root as Singleton
+0- Input Abstraction Layer
+0- Physics SDK (Bullet?)
+	- Physics Wrapper? (PAL?)
+0- Sounds without movements freeze
+0- Merge MD2File and MD2Loader classes
+0- FBX/Collada Loader
+
+Symbology Map:
+
+V = Valerio is working on this
+G = Giacomo // //       //  //
+S = Simon   // //       //  //
+0 = Nobody is working on this
+1 = Finished Task
