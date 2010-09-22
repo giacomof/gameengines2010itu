@@ -235,22 +235,37 @@ int main(int argc, char *argv[])
 	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
 	plane3.scale(1,1,1);*/
 
+	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
 	Geometry doomDemon = Geometry(&md2Demon, "include/cyber.pcx");
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	rootNodePtr->unlock(); // We can unlock the node now
+
+	demon->lock(); // The new node needs to be locked now since we're doing a transform on it, then adding a child
 	demon->scale(0.8, 0.8, 0.8);
 	
 	Geometry sunG = Geometry(1);
 	sunG.setSphere(50, 30, 30);
 	SceneNode sun(demon, "Sun", &sunG, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	demon->unlock(); // We can now unlock it
+
+	sun.lock();
 	sun.setVisible(0);
-	
+
 	Geometry lostSoul_g = Geometry(&md2LostSoul, "include/lostsoul.pcx");
 	lostSoul = new SceneNode(&sun, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	sun.unlock();
+
+	lostSoul->lock();
 	lostSoul->scale(1, 1, 1);
+	lostSoul->unlock();
 
 	Geometry bossCube_g = Geometry(&md2BossCube, "include/bosscube.pcx");
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	lostSoul->unlock();
+
+	bossCube->lock();
 	bossCube->scale(0.8, 0.8, 0.8);
+	bossCube->unlock();
 
 	while(!quit)
 	{
@@ -345,7 +360,9 @@ void drawGL(void)
 	//glBindTexture(GL_TEXTURE_2D, md2Texture);
 
 	//Root::drawGeometry();
+	rootNodePtr->lock();
 	rootNodePtr->drawGeometry();
+	rootNodePtr->unlock();
 	//glPopMatrix();
 
 	// ********************
@@ -353,9 +370,17 @@ void drawGL(void)
 	// ********************
 
 	// draw the animation
+	demon->lock();
 	demon->update(0.006);
+	demon->unlock();
+
+	lostSoul->lock();
 	lostSoul->update(0.006);
+	lostSoul->unlock();
+	
+	bossCube->lock();
 	bossCube->update(0.006);
+	bossCube->unlock();
 
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();

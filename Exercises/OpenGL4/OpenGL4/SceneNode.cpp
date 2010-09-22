@@ -56,8 +56,9 @@ void SceneNode::update(float dt)
 		list<SceneNode*>::iterator itS;
 
 		for(itS = childList.begin(); itS != childList.end(); itS++) {
+				(*itS)->lock();
 				(*itS)->update(dt);
-				
+				(*itS)->unlock();				
 		}
 	}
 }
@@ -68,6 +69,7 @@ void SceneNode::destroy(void)
 	list<SceneNode*>::iterator i;
 	for(i=childList.begin(); i != childList.end(); ++i) 
 	{ 
+		(*i)->lock();
 		(*i)->destroy(); 
 	}
 		
@@ -190,8 +192,9 @@ void SceneNode::drawGeometry()
 	}
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->lock();
 			(*itS)->drawGeometry();
-			
+			(*itS)->unlock();
 	}
 	glPopMatrix();
 	
@@ -255,9 +258,9 @@ void Root::drawGeometry()
 	list<SceneNode*>::iterator itS;
 
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->lock();
 			(*itS)->drawGeometry();
-			
-			
+			(*itS)->unlock();			
 	}
 	glPopMatrix();
 	
@@ -269,8 +272,9 @@ void Root::update(float dt)
 	list<SceneNode*>::iterator itS;
 
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->lock();
 			(*itS)->update(dt);
-				
+			(*itS)->unlock();				
 	}
 	
 }
