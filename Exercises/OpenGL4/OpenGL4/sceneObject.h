@@ -22,7 +22,7 @@ class Text : SceneObject
 
 		void setTextSize(int size);
 		void setText(char p_text);
-}
+};
 
 class Sphere : SceneObject 
 {
@@ -48,7 +48,7 @@ class Plane : SceneObject
 		void setDimensions(float w, float h);
 
 		float width, height;
-}
+};
 
 class Cube : SceneObject
 {
@@ -59,7 +59,7 @@ class Cube : SceneObject
 		void setSide(float s);
 
 		float side;
-}
+};
 
 class Line : SceneObject
 {
@@ -70,7 +70,7 @@ class Line : SceneObject
 		void setLine(Vector lStart, Vector lEnd); 
 
 		Vector lineStart, lineEnd;
-}
+};
 
 class Mesh : SceneObject
 {
@@ -78,7 +78,7 @@ class Mesh : SceneObject
 		Mesh(char * filename);
 		~Mesh(void);
 
-}
+};
 
 class md2File : Mesh 
 {
@@ -89,11 +89,11 @@ class md2File : Mesh
 		md2Loader * mesh;
 		char * textureFile;
 		int md2Texture; 
-}
+};
 
 class FBXfile : Mesh
 {
 	public:
 		FBXfile(char * filename);
 		~FBXfile(void);
-}
+};
