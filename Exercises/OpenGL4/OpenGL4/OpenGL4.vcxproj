@@ -156,6 +156,7 @@
     <None Include="include\vortex.pcx" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
+    <None Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib" />
