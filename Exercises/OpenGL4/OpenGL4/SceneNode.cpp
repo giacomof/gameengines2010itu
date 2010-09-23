@@ -16,7 +16,7 @@ static int nodeCount=0;
 // Constructor that take a pointer to the parant node, the name of the node
 // the initial position of the node
 // the initial orientation of the node
-SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
+SceneNode::SceneNode(	SceneNode * parentNode, string str, SceneObject * g,
 						Vector v,
 						Vector p_axis, float p_angle)
 {
@@ -47,20 +47,16 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, Geometry * g,
 // and do so for all his childs
 void SceneNode::update(float dt) 
 {
-	
-	if(geometry->getShapeFlag() == 2)
-	{
+	geometry->update();
 
-		geometry->mesh->Update(dt);
+	list<SceneNode*>::iterator itS;
 
-		list<SceneNode*>::iterator itS;
-
-		for(itS = childList.begin(); itS != childList.end(); itS++) {
-				(*itS)->lock();
-				(*itS)->update(dt);
-				(*itS)->unlock();				
-		}
+	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->lock();
+			(*itS)->update(dt);
+			(*itS)->unlock();				
 	}
+	
 }
 
 void SceneNode::destroy(void) 
@@ -117,14 +113,14 @@ string SceneNode::getName(void)
 }
 
 // Add a geometry to the Scene Node
-void SceneNode::addGeometry(Geometry * g) 
+void SceneNode::addSceneObject(SceneObject * g) 
 {
 	geometry = g;
 
 }
 
 // Return the Geometry of the Scene Node
-Geometry* SceneNode::getGeometry()
+SceneObject * SceneNode::getSceneObject()
 {
 	return geometry;
 }
@@ -161,35 +157,9 @@ void SceneNode::drawGeometry()
 	applyTransformation();
 	
 	if(isVisible()) {
-
-		switch (geometry->getShapeFlag()) {
-
-			case 0 : 
-				glDisable(GL_TEXTURE_2D);
-				for(unsigned int i = 0; i < geometry->vertexList.size(); i+=3) {
-					glBegin(GL_TRIANGLES);
-						glVertex3f(geometry->vertexList[i]->get(0), geometry->vertexList[i]->get(1), geometry->vertexList[i]->get(2));
-						glVertex3f(geometry->vertexList[i+1]->get(0), geometry->vertexList[i+1]->get(1), geometry->vertexList[i+1]->get(2));
-						glVertex3f(geometry->vertexList[i+2]->get(0), geometry->vertexList[i+2]->get(1), geometry->vertexList[i+2]->get(2));
-					glEnd();
-				}
-				glEnable(GL_TEXTURE_2D);
-				break;
-
-			case 1 :
-				glDisable(GL_TEXTURE_2D);	
-				glutSolidSphere(geometry->getSphereRadius(), geometry->getSphereSlices(), geometry->getSphereStacks());
-				glEnable(GL_TEXTURE_2D);	
-				break;
-			case 2 :
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture (GL_TEXTURE_2D, geometry->md2Texture);
-				geometry->render();
-				glDisable(GL_TEXTURE_2D);	
-			default:
-				break;
-		}
+		geometry->drawGeometry();
 	}
+
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
 			(*itS)->lock();
