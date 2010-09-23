@@ -5,7 +5,7 @@
 Global tasks:
 
 S- Camera as child of sceneObject
-V- Childs of sceneObject
+1(V)- Childs of sceneObject
 G- Asset Manager
 	1(G)- Texture Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
@@ -16,9 +16,9 @@ G- Asset Manager
 0- Physics SDK (Bullet?)
 	- Physics Wrapper? (PAL?)
 0- Sounds without movements freeze
-0- Merge MD2File and MD2Loader classes
+1(V)- Merge MD2File and MD2Loader classes
 0- FBX/Collada Loader
-0- Create unit units for testing
+G- Create unit units for testing
 0- Compile everything we can as a DLL
 0- A DisplayManager capable of opening a window with an opengl context
 0- Clock Class
