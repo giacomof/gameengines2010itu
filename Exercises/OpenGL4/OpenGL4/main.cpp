@@ -11,7 +11,7 @@
 
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
-#include "geometry.h"					// Header File for the Geometry container
+#include "sceneObject.h"				// Header File for the SceneObject container
 #include "messagePump.h"				// Header File for the input messahe pump system
 #include "md2Loader.h"					// Header File for our md2 loader
 #include "assetManager.h"
@@ -241,27 +241,23 @@ int main(int argc, char *argv[])
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 
-
 	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
-
-
-	Geometry doomDemon = Geometry(&md2Demon, assetManagerPtr->getTexture("doomDemonTx"));
+	
+	md2File doomDemon = md2File(&md2Demon, assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rootNodePtr->unlock(); // We can unlock the node now
 
 	demon->lock(); // The new node needs to be locked now since we're doing a transform on it, then adding a child
 	demon->scale(0.8, 0.8, 0.8);
 	
-	Geometry sunG = Geometry(1);
-	sunG.setSphere(50, 30, 30);
+	Sphere sunG = Sphere(50, 30, 30, true);
 	SceneNode sun(demon, "Sun", &sunG, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	demon->unlock(); // We can now unlock it
 
+	sun.setVisible(1);
+
 	sun.lock();
-	sun.setVisible(0);
-
-
-	Geometry lostSoul_g = Geometry(&md2LostSoul, assetManagerPtr->getTexture("lostSoulTx"));
+	md2File lostSoul_g = md2File(&md2LostSoul, assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&sun, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	sun.unlock();
 
@@ -269,8 +265,7 @@ int main(int argc, char *argv[])
 	lostSoul->scale(1, 1, 1);
 	lostSoul->unlock();
 	
-
-	Geometry bossCube_g = Geometry(&md2BossCube, assetManagerPtr->getTexture("bossCubeTx"));
+	md2File bossCube_g = md2File(&md2BossCube, assetManagerPtr->getTexture("bossCubeTx"));
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->unlock();
 
@@ -286,7 +281,7 @@ int main(int argc, char *argv[])
 		SDL_WM_SetCaption( title, NULL );
 		
 		sun.rotateAboutAxis(Vector(0,1,0),0.2f);
-		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
+		lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
 		bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
 		
 		while(SDL_PollEvent(&event))
@@ -392,6 +387,8 @@ void drawGL(void)
 	bossCube->lock();
 	bossCube->update(0.006);
 	bossCube->unlock();
+	
+
 
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
@@ -497,6 +494,9 @@ int initGL(void)
 	//// ******************************
 	//// ******** LOADING POINT *******
 	//// ******************************
+	md2Demon = md2Loader();
+	md2LostSoul = md2Loader();
+	md2BossCube = md2Loader();
 
 	//// loads md2 files
 	md2Demon.Load("include/Cyber.md2");

@@ -15,13 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="geometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="md2File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="md2Loader.cpp">
@@ -53,12 +47,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="geometry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="md2File.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="md2Loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>

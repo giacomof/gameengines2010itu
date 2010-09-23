@@ -1,5 +1,4 @@
 #include "md2Loader.h"
-#include "md2File.h"
 
 #define MD2_FRAME_RATE (1.0f/MD2_FRAMES_PER_SEC)
 
@@ -13,7 +12,7 @@ inline void LERP(float out[],const InType a[],const InType b[],const float inter
 }
 
 // constructor
-md2Loader::md2Loader() : md2File() {
+md2Loader::md2Loader() {
 	m_AnimTime=0;
 	m_Verts=0;
 	m_CurrentAnim=0;
@@ -22,14 +21,14 @@ md2Loader::md2Loader() : md2File() {
 
 // destructor
 md2Loader::~md2Loader() {
-	Release();
+	//Release();
 }
 
 // resets all variables and clears animation buffer
 void md2Loader::Release() {
 	m_Anims.clear();
-	delete [] m_Verts;
-	delete [] m_data;
+	//delete [] m_Verts;
+	//delete [] m_data;
 	m_AnimTime=0;
 	m_Verts=0;
 	m_CurrentAnim=0;
@@ -37,10 +36,57 @@ void md2Loader::Release() {
 	m_data=0;
 }
 
+// returns the 3d mesh
+const md2Loader::model* md2Loader::GetModel() const {
+	if(!m_data) return 0;
+	void *p=m_data;
+	return reinterpret_cast<model*>( p );
+}
+
+// returns the data of a single frame of the animation
+const md2Loader::frame* md2Loader::GetFrame(unsigned int num) const {
+	if(!m_data) return 0;
+	const model* pm = GetModel();
+	void* ptr = m_data + pm->offsetFrames + (num*pm->frameSize);
+	return reinterpret_cast<frame*>(ptr);
+}
+
+// returns the Triangles List
+const md2Loader::triangle* md2Loader::GetTriangles() const {
+	if(!m_data) return 0;
+	const model* pm = GetModel();
+	void* ptr = m_data + pm->offsetTriangles;
+	return reinterpret_cast<triangle*>(ptr);
+}
+
+// returns the uv coordinates of the texture (mapped inside the md2)
+const md2Loader::uv* md2Loader::GetTexCoords() const {
+	if(!m_data) return 0;
+	const model* pm = GetModel();
+	void* ptr = m_data + pm->offsetTexCoords;
+	return reinterpret_cast<uv*>(ptr);
+}
+
+// returns the GL command list built-in the md2 (optional)
+const md2Loader::glCommandList* md2Loader::GetCommands() const  {
+	if(!m_data) return 0;
+	const model* pm = GetModel();
+	void* ptr = m_data + pm->offsetGlCommands;
+	return reinterpret_cast<glCommandList*>(ptr);
+}
+
+
+const char*	md2Loader::GetSkin(unsigned int num) const {
+	if(!m_data) return 0;
+	void* p = m_data + GetModel()->offsetSkins + num*64;
+	return reinterpret_cast<char*>(p);
+}
+
 // loads the md2 model and allocate proper memory
 bool md2Loader::Load(const char* filename) {
 	Release();
-	if( !md2File::Load(filename) )
+
+	if( !loadFile(filename) )
 		return false;
 
 	// allocate memory for vertex data
@@ -84,6 +130,43 @@ bool md2Loader::Load(const char* filename) {
 		m_Anims.push_back(ref);
 
 	return true;
+}
+
+bool md2Loader::loadFile(const char* filename) {
+	FILE* fp = fopen(filename,"rb");
+	if(!fp) {
+		std::cout << "[ERROR] \"" 
+				  << filename 
+				  << "\" could not be opened"
+				  << std::cout;
+		return false;
+	}
+	fseek(fp,0,SEEK_END);
+	data_size = ftell(fp);
+	m_data = new unsigned char[data_size];
+	assert(m_data);
+#if 0
+	fclose(fp);
+	fp = fopen(filename,"rb");
+#else
+	rewind(fp);
+#endif
+	fread(m_data,sizeof(unsigned char),data_size,fp);
+	fclose(fp);
+
+	// ensure format is valid
+	if( GetModel()->magic != 0x32504449 ||
+		GetModel()->version != 8 ) {
+			delete [] m_data;
+			m_data  = 0;
+			std::cout << "[ERROR] \"" 
+					  << filename 
+					  << "\" does not contain 'IDP2' flag"
+					  << std::cout;
+			return false;
+	}
+
+	return true;	
 }
 
 // update the animation state

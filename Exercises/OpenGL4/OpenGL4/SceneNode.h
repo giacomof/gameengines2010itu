@@ -3,7 +3,7 @@
 #include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "transformation.h"
-#include "geometry.h"
+#include "sceneObject.h"
 
 using namespace linearAlgebraDLL;
 using namespace std;
@@ -15,7 +15,7 @@ class SceneNode
 		// default constructor
 		SceneNode() { mutex_node = SDL_CreateMutex(); };
 		// actual constructor
-		SceneNode(		SceneNode * parentNode, string str, Geometry * g,
+		SceneNode(		SceneNode * parentNode, string str, SceneObject * g,
 						Vector v,
 						Vector p_axis, float p_angle);
 		// destructor
@@ -48,8 +48,8 @@ class SceneNode
 		bool isVisible(void);
 		void setVisible(bool b);
 
-		void addGeometry(Geometry * g);
-		Geometry* getGeometry();
+		void addSceneObject(SceneObject * g);
+		SceneObject* getSceneObject();
 
 
 		//Matrix getTransformation(void); 
@@ -75,7 +75,7 @@ class SceneNode
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
 		SDL_mutex *mutex_node;					// Mutex for the Node		
-		Geometry * geometry;					// Mesh to render
+		SceneObject * geometry;					// Mesh to render
 };
 
 
