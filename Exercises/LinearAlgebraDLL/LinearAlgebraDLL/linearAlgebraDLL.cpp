@@ -137,6 +137,20 @@ Vector Vector::operator%(Vector &other)
 	return result;
 }
 
+// Operator Overload for vector comparison
+bool Vector::operator==(Vector &other)
+{
+	bool equal = true;
+
+	for (unsigned short i = 0; i < 4; i++) {
+		if (data[i] != other.data[i]) {
+			equal = false;
+		}
+	}
+
+	return equal;
+}
+
 // Operator overload for the [] symbols (Vector[0] returns the content of data[0])
 float  Vector::operator[](unsigned short i)
 {
@@ -200,7 +214,7 @@ Quaternion Quaternion::operator+(Quaternion &other)
 {
 	Vector resultVector = Vector(this->getVector() + other.getVector());
 
-	float resultDegree = this->getD() + other.getD();
+	float resultDegree = this->getW() + other.getW();
 
 	Quaternion resultQuaternion = Quaternion();
 	resultQuaternion.vector = resultVector;
@@ -226,13 +240,28 @@ Quaternion Quaternion::operator*(Quaternion &other)
 	return resultQuaternion;
 }
 
+// Quaternion comparison
+bool Quaternion::operator==(Quaternion &other)
+{
+	bool equal;
+
+	if ((vector == other.getVector()) && (w == other.getW())) {
+		equal = true;
+	} else {
+		equal = false;
+	}
+
+	return equal;
+}
+
+
 //Function for getting members of quaternion
 Vector Quaternion::getVector(void)
 {
 	return vector;
 }
 
-float Quaternion::getD(void)
+float Quaternion::getW(void)
 {
 	return w;
 }
@@ -519,9 +548,9 @@ Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
 	float xy = q.getVector().get(0) * q.getVector().get(1);
 	float xz = q.getVector().get(0) * q.getVector().get(2);
 	float yz = q.getVector().get(1) * q.getVector().get(2);
-	float dx = q.getD() * q.getVector().get(0);
-	float dy = q.getD() * q.getVector().get(1);
-	float dz = q.getD() * q.getVector().get(2);
+	float dx = q.getW() * q.getVector().get(0);
+	float dy = q.getW() * q.getVector().get(1);
+	float dz = q.getW() * q.getVector().get(2);
  
 	Matrix result;
 
@@ -580,11 +609,11 @@ Matrix Matrix::operator*(Matrix &other)
 	 // then calculate using another loop to resuse code for each multiplication 
 	 // between elements r is row, c is column, i is row for one element 
 	 // of a multiplication and column for the other element of the same multiplication
-     for (unsigned int c = 0; c < 4; c++)
-         for (unsigned int r = 0; r < 4; r++) {
+     for (unsigned short c = 0; c < 4; c++)
+         for (unsigned short r = 0; r < 4; r++) {
              float temp = 0;
              
-             for (unsigned int i = 0; i < 4; i++) {
+             for (unsigned short i = 0; i < 4; i++) {
                  temp = temp + this->get(r,i) * other.get(i,c);
              }
              
@@ -599,8 +628,8 @@ Matrix Matrix::operator*(float other)
 {
 	Matrix result;
 
-	for (unsigned int r = 0; r < 4; r++)
-         for (unsigned int c = 0; c < 4; c++) {             
+	for (unsigned short r = 0; r < 4; r++)
+         for (unsigned short c = 0; c < 4; c++) {             
              
              result.set(r,c, data[4*r + c]*other);
          }
@@ -617,7 +646,7 @@ Vector Matrix::operator*(Vector &other)
      for (unsigned int r = 0; r < 4; r++) {
          float temp = 0;
 
-         for (unsigned int i = 0; i < 4; i++) {
+         for (unsigned short i = 0; i < 4; i++) {
              temp = temp + this->get(r,i) * other.get(i);
          }
 
@@ -627,12 +656,28 @@ Vector Matrix::operator*(Vector &other)
      // Checking that is not about to divide by zero
      if (result.get(3) != 0) {
 
-        for (unsigned int i = 0; i < 4; i++) {
+        for (unsigned short i = 0; i < 4; i++) {
             result.set(i, result.get(i) / result.get(3));
         }
      }
 
      return result;
+}
+
+// Operator overload for matrix comparison
+bool Matrix::operator==(Matrix &other)
+{
+	bool equal = true;
+
+	for (unsigned short r = 0; r < 4; r++) {
+		for (unsigned short c = 0; c < 4; c++) {
+			if(data[r*4 + c] != other.get(r, c)) {
+				equal = false;
+			}
+		}
+	}
+
+	return equal;
 }
 
 // Function for the transpose matrix

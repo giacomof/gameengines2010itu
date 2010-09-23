@@ -27,6 +27,8 @@ class Vector
         __declspec(dllexport) float operator*(Vector &other);
 		// Vector cross product
 		__declspec(dllexport) Vector operator%(Vector &other);
+		// Vector comparison
+		__declspec(dllexport) bool operator==(Vector &other);
 
         // Functions for magnitude, quadratic magnitude and normalization
 		__declspec(dllexport) float getMagnitude(void);
@@ -65,10 +67,12 @@ class Quaternion
 		// Operator overload
 		__declspec(dllexport) Quaternion operator+(Quaternion &other);
 		__declspec(dllexport) Quaternion operator*(Quaternion &other);
+		// Quaternion comparison
+		__declspec(dllexport) bool operator==(Quaternion &other);
 
 		// Get functions
 		__declspec(dllexport) Vector getVector(void);
-		__declspec(dllexport) float getD(void);
+		__declspec(dllexport) float getW(void);
 		__declspec(dllexport) void getAxisAngle(Vector *axis, float *angle);
 
 		// Print functions
@@ -127,6 +131,8 @@ class Matrix
 		// Matrix * vector multiplication
 		// can also be used for points
         __declspec(dllexport) Vector operator*(Vector &other);
+		// Matrix comparison
+		__declspec(dllexport) bool operator==(Matrix &other);
 
 		// Function for transpose matrix
 		__declspec(dllexport) Matrix getTranspose();
