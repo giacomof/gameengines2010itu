@@ -98,8 +98,12 @@ BOOST_AUTO_TEST_CASE( vector_methods )
 
 }
 
-BOOST_AUTO_TEST_CASE( vector_methods )
+BOOST_AUTO_TEST_CASE( point_operators_overload )
 {
+
+	//point - point
+	//point + vector
+
 	// Istantiation of normalized vectors coincident with axes
 	Vector nX = Vector(1.0f, 0.0f, 0.0f);
 	Vector nY = Vector(0.0f, 1.0f, 0.0f);
@@ -140,5 +144,3 @@ BOOST_AUTO_TEST_CASE( vector_methods )
 
 }
 
-//point - point
-//point + vector
