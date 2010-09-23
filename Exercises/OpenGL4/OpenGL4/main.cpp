@@ -250,17 +250,18 @@ int main(int argc, char *argv[])
 	demon->lock(); // The new node needs to be locked now since we're doing a transform on it, then adding a child
 	demon->scale(0.8, 0.8, 0.8);
 	
-	Sphere sunG = Sphere(50, 30, 30, true);
-	SceneNode sun(demon, "Sun", &sunG, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	Sphere kernel_sphere = Sphere(50, 30, 30, true);
+	SceneNode kernel(demon, "kernel", &kernel_sphere, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	kernel.setVisible(0);
 	demon->unlock(); // We can now unlock it
-
-	sun.setVisible(1);
-
-	sun.lock();
+	
+	kernel.lock();
 	md2File lostSoul_g = md2File(&md2LostSoul, assetManagerPtr->getTexture("lostSoulTx"));
-	lostSoul = new SceneNode(&sun, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	sun.unlock();
+	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	kernel.unlock();
 
+
+	// why here? - ask Simon
 	lostSoul->lock();
 	lostSoul->scale(1, 1, 1);
 	lostSoul->unlock();
@@ -280,8 +281,8 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine");
 		SDL_WM_SetCaption( title, NULL );
 		
-		sun.rotateAboutAxis(Vector(0,1,0),0.2f);
-		lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
+		kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
+		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
 		bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
 		
 		while(SDL_PollEvent(&event))

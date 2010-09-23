@@ -43,6 +43,11 @@ void md2File::drawGeometry(void) {
 }
 
 void  md2File::update(void) {
+
+	// *************************************************************** //
+	// TEMP METHOD, WE HAVE TO CHANGE THIS  WHEN WE MAKE THE FPS CLASS //
+	// *************************************************************** //
+
 	//if(dt==NULL) dt = 0.03f;
 	mesh->Update(0.03f);
 }
