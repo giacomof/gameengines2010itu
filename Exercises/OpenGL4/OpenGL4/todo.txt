@@ -11,7 +11,7 @@ G- Asset Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
 	0- Mesh Manager
 	0- Sound Manager
-0- Root as Singleton
+V- Root as Singleton
 0- Input Abstraction Layer
 0- Physics SDK (Bullet?)
 	- Physics Wrapper? (PAL?)
