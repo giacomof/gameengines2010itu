@@ -86,6 +86,12 @@ Vector Vector::operator+(Vector &other)
      result.set(1, this->get(1) + other.get(1) );
      result.set(2, this->get(2) + other.get(2) );
 
+	 // If was a sum between a point and a vector
+	 // the result will be a point
+	 if ((data[3] == 1) || (other.get(3) == 1)) {
+		 result.set(3, 1);
+	 }
+
      return result;
 }
 
