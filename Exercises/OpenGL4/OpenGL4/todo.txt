@@ -21,7 +21,8 @@ G- Asset Manager
 0- Create unit units for testing
 0- Compile everything we can as a DLL
 0- A DisplayManager capable of opening a window with an opengl context
-0- fps counter with a sliding frame window
+0- Clock Class
+	0- fps counter with a sliding frame window
 0- debug draw system
 	0- axis of rotation of an object via line draws
 	0- draw the bounding box or bounding sphere of an object
