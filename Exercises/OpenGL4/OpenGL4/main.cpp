@@ -211,6 +211,7 @@ int main(int argc, char *argv[])
 
 	// Create the root node
 	rootNodePtr = new Root();
+	rootNodePtr->setName("root");
 
 	assetManagerPtr = new AssetManager();
 

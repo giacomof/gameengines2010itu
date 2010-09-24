@@ -92,6 +92,10 @@ void SceneNode::detachChild( SceneNode & cNode )
 void SceneNode::setParent( SceneNode * cNode ) 
 {
 	parentNode = cNode;
+	if(parentNode->getName() == "root") {
+		Root::childOfRootList.push_front(this);
+	}
+	
 }
 
 // Return the parent of the node
@@ -207,19 +211,19 @@ void SceneNode::setVisible(bool b) {
 
 }
 
-// Overloaded constructor for the Root node
-Root::Root()
+unsigned int SceneNode::getNodeCount(void) 
 {
-	nodeName = "Root";
-	id = nodeCount;
-	nodeCount++;
-	mutex_node = SDL_CreateMutex();
+	return nodeCount;
 }
 
+// Static member initialization. 
+Root Root::_instance;
+list<SceneNode*> Root::childOfRootList;
+unsigned int id;
 
-Root::~Root(void)
+Root &Root::getInstance()
 {
-	SDL_DestroyMutex ( mutex_node );
+	return _instance;
 }
 
 // Method for drawing the entire world moving along the scene graph
@@ -227,7 +231,7 @@ void Root::drawGeometry()
 {
 	list<SceneNode*>::iterator itS;
 
-	for(itS = childList.begin(); itS != childList.end(); itS++) {
+	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
 			(*itS)->lock();
 			(*itS)->drawGeometry();
 			(*itS)->unlock();			
@@ -241,7 +245,7 @@ void Root::update(float dt)
 {
 	list<SceneNode*>::iterator itS;
 
-	for(itS = childList.begin(); itS != childList.end(); itS++) {
+	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
 			(*itS)->lock();
 			(*itS)->update(dt);
 			(*itS)->unlock();				
