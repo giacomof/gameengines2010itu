@@ -282,6 +282,11 @@ void Quaternion::getAxisAngle(Vector *axis, float *angle)
 	*angle = acos(w*PI/180) * 2.0f;
 }
 
+void Quaternion::setW(float value)
+{
+	w = value;
+}
+
 // Function to output quaternions
 std::ostream & operator<< (std::ostream &os, const Quaternion &q)
 {
