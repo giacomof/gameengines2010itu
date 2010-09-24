@@ -134,8 +134,6 @@ std::string md5wrapper::getHashFromFilePtr(FILE * filePtr, int size)
 
 	FILE *file = filePtr;
   	MD5_CTX context;
-  
-	int len;
 	int filesize = size;
   	unsigned char digest[16];
 

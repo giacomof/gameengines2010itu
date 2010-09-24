@@ -36,7 +36,7 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		fclose(file);
 		// This will store the md5 hash of a file called test.txt in a string hash1
 		hash = md5.getHashFromFilePtr((FILE *)lump, (int) size);
-	} catch (exception& e) {
+	} catch (exception&) {
 		free(lump);
 		return;
 	}
