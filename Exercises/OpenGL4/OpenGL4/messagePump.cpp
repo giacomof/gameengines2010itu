@@ -3,7 +3,7 @@
 // actual definition
 list<SDL_Event> MessagePump::messageList;
 
-// Static member initialization. 
+// Static member initialization
 MessagePump MessagePump::_instance;
 
 MessagePump &MessagePump::getInstance()

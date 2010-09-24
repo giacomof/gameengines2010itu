@@ -27,8 +27,8 @@ class SceneNode
 		void destroy(void);
 
 		// Mutex commands
-		void lock();
-		void unlock();
+		void lock(void);
+		void unlock(void);
 
 		// add a child
 		void addChild( SceneNode * pNode );
@@ -59,11 +59,11 @@ class SceneNode
 		void scale(float p_sX, float p_sY, float p_sZ);
 		void shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
-		void applyTransformation();
-		void SceneNode::removeTransformation();
-		void drawGeometry();
+		void applyTransformation(void);
+		void SceneNode::removeTransformation(void);
+		void drawGeometry(void);
 
-		
+		static unsigned int getNodeCount(void);
 
 		
 
@@ -81,19 +81,31 @@ class SceneNode
 
 class Root : public SceneNode
 {
-	public:
-		Root(void);
-		~Root(void);
+	public: // Singleton
+		static Root _instance;
 
+		Root(void) { &getInstance(); }
+		~Root(void) { } 
+
+		Root(const Root &getInstance());
+
+		Root & operator=(Root &getInstance());
+		
+		static Root &getInstance();
 		// set parent node
-		void setParent ( SceneNode* pNode );
+		static void setParent( SceneNode * pNode );
 		// get parent node
-		SceneNode* getParent(void);
+		static SceneNode * getParent(void);
 
 		// Update all the children
-		void update(float dt);
+		static void update(float dt);
 		// Draw the geometry of all the children
-		void drawGeometry();
+		static void drawGeometry(void);
+
+		static list<SceneNode*> childOfRootList;
+
+		static unsigned int id;
+		static string nodeName;
 
 };
 
