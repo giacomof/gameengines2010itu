@@ -56,6 +56,9 @@ class md5wrapper
 		 * returns it as string
 		 */	
 		std::string getHashFromFile(std::string filename);
+
+
+		std::string getHashFromFilePtr(FILE * filePtr, int size);
 };
 
 
