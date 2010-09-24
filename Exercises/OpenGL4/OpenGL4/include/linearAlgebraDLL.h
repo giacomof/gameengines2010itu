@@ -70,10 +70,11 @@ class Quaternion
 		// Quaternion comparison
 		__declspec(dllexport) bool operator==(Quaternion &other);
 
-		// Get functions
+		// Get/set functions
 		__declspec(dllexport) Vector getVector(void);
 		__declspec(dllexport) float getW(void);
 		__declspec(dllexport) void getAxisAngle(Vector *axis, float *angle);
+		__declspec(dllexport) void setW(float value);
 
 		// Print functions
 		__declspec(dllexport) friend std::ostream & operator<< (std::ostream &os, const Quaternion &q);
