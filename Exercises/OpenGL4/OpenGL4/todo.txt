@@ -9,9 +9,9 @@ S- Camera as child of sceneObject
 G- Asset Manager
 	1(G)- Texture Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
-	0- Mesh Manager
+	V- Mesh Manager
 	0- Sound Manager
-V- Root as Singleton
+1(V)- Root as Singleton
 0- Input Abstraction Layer
 0- Physics SDK (Bullet?)
 	- Physics Wrapper? (PAL?)
