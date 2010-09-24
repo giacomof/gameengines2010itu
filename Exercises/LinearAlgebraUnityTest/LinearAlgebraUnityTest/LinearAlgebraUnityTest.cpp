@@ -208,3 +208,100 @@ BOOST_AUTO_TEST_CASE( quaternion_operators_overload )
 
 }
 
+// Test case for methods and operators of the Matrix class
+BOOST_AUTO_TEST_CASE( matrix_methods )
+{
+	// Istantiation of various matrices for the tests
+	Matrix m1 = Matrix(	0.0f,	1.0f,	2.0f,	3.0f,
+						4.0f,	5.0f,	6.0f,	7.0f,
+						8.0f,	9.0f,	10.0f,	11.0f,
+						12.0f,	13.0f,	14.0f,	15.0f);
+
+	Matrix mTranslation = Matrix(	1.0f, 0.0f, 0.0f, 3.0f,
+									0.0f, 1.0f, 0.0f, 4.0f,
+									0.0f, 0.0f, 1.0f, 5.0f,
+									0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mScaling = Matrix(	6.0f, 0.0f, 0.0f, 0.0f,
+								0.0f, 7.0f, 0.0f, 0.0f,
+								0.0f, 0.0f, 8.0f, 0.0f,
+								0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mUniformScaling = Matrix(	9.0f, 0.0f, 0.0f, 0.0f,
+										0.0f, 9.0f, 0.0f, 0.0f,
+										0.0f, 0.0f, 9.0f, 0.0f,
+										0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mXRotation = Matrix(	9.0f, 0.0f, 0.0f, 0.0f,
+								0.0f, 9.0f, 0.0f, 0.0f,
+								0.0f, 0.0f, 9.0f, 0.0f,
+								0.0f, 0.0f, 0.0f, 1.0f);
+	
+	Matrix manualIdentity = Matrix(	1.0f, 0.0f, 0.0f, 0.0f,
+									0.0f, 1.0f, 0.0f, 0.0f,
+									0.0f, 0.0f, 1.0f, 0.0f,
+									0.0f, 0.0f, 0.0f, 1.0f);
+	
+
+	// Test for the compare operator between matrices
+	BOOST_CHECK(m1 == m1);
+	BOOST_CHECK(manualIdentity == manualIdentity);
+
+	// Test for the generateIdentityMatrix() method
+	BOOST_CHECK(manualIdentity == Matrix::generateIdentityMatrix());
+
+	// Test for the generateTranslationMatrix() method
+	BOOST_CHECK(mTranslation == Matrix::generateTranslationMatrix(3.0f, 4.0f, 5.0f));
+
+	// Test for the generateScalingMatrix() method
+	BOOST_CHECK(mScaling == Matrix::generateScalingMatrix(6.0f, 7.0f, 8.0f));
+
+	// Test for the generateUniformScalingMatrix() method
+	BOOST_CHECK(mUniformScaling == Matrix::generateUniformScalingMatrix(9.0f));
+
+	// Test for the generateXRotationMatrix() method
+	//BOOST_CHECK(mUniformScaling == Matrix::generateXRotationMatrix(9.0f));
+	/*
+
+		// Generate a rotation matrix about x-axes, from a  float value
+		__declspec(dllexport) static Matrix generateXRotationMatrix(float degree);
+		// Generate a rotation matrix about y-axes, from a  float value
+		__declspec(dllexport) static Matrix generateYRotationMatrix(float degree);
+		// Generate a rotation matrix about z-axes, from a  float value
+		__declspec(dllexport) static Matrix generateZRotationMatrix(float degree);
+		// Generate a rotation matrix about an arbitrary axes
+		__declspec(dllexport) static Matrix generateAxesRotationMatrix(Vector axes, float degree);
+		// Generate a rotation matrix from a quaternion
+		__declspec(dllexport) static Matrix generateQuaternionRotationMatrix(Quaternion q);
+
+		//Generate a shearing matrix
+		__declspec(dllexport) static Matrix generateShearingMatrix(float sXY,float sXZ,float sYX,float sYZ,float sZX,float sZY);
+
+		// Matrix multiplication
+        __declspec(dllexport) Matrix operator*(Matrix &other); 
+		// Matrix * scalar multiplication
+		__declspec(dllexport) Matrix operator*(float other);
+		// Matrix * vector multiplication
+		// can also be used for points
+        __declspec(dllexport) Vector operator*(Vector &other);
+
+		// Function for transpose matrix
+		__declspec(dllexport) Matrix getTranspose();
+		// Function for inverse matrix
+		__declspec(dllexport) Matrix getInverse();
+
+		//Function for the determinant of the matrix
+		__declspec(dllexport) float getDeterminant();
+
+        // Functions and operator to access 
+		// individual matrix elements
+        __declspec(dllexport) float get(unsigned short row, unsigned short col) const { return data[4*row + col]; }
+        __declspec(dllexport) void set(unsigned short row, unsigned short col, float val) { data[4*row + col] = val; }
+		__declspec(dllexport) void getMatrix(float* matrix);
+
+		//Function to get Vector from matrix
+		__declspec(dllexport) Vector getRowAsVector(unsigned short row);
+		__declspec(dllexport) Vector getColumnAsVector(unsigned short column);
+		*/
+
+}
