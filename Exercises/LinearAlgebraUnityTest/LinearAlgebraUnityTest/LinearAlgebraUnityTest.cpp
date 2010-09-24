@@ -25,27 +25,27 @@ BOOST_AUTO_TEST_CASE( vector_methods )
 	Vector two = Vector(2.0f, 2.0f, 2.0f);
 	
 
-	// Test case for the vector getMagnitude() method
+	// Test for the vector getMagnitude() method
 	BOOST_CHECK(nX.getMagnitude() == 1.0f);
 	BOOST_CHECK_CLOSE( two.getMagnitude(), 3.4641f, 0.1 );
 
-	// Test case for the vector getQuadraticMagnitude() method
+	// Test for the vector getQuadraticMagnitude() method
 	BOOST_CHECK(one.getQuadraticMagnitude() == 3.0f);
 	BOOST_CHECK(two.getQuadraticMagnitude() == 12.0f);
 
-	// Test case for the vector normalize() method
+	// Test for the vector normalize() method
 	BOOST_CHECK(nX.normalize() == nX);
 	temp = temp.normalize();
 	BOOST_CHECK_CLOSE( temp.get(0), 0.802f, 0.1 );
 	BOOST_CHECK_CLOSE( temp.get(1), 0.267f, 0.1 );
 	BOOST_CHECK_CLOSE( temp.get(2), 0.534f, 0.1 );
 
-	// Test case for the vector get() method
+	// Test for the vector get() method
 	BOOST_CHECK(nX.get(0) == 1.0f);
 	BOOST_CHECK(nZ.get(2) == 1.0f);
 	BOOST_CHECK(nY.get(0) != 1.0f);
 
-	// Test case for the vector set() method
+	// Test for the vector set() method
 	zero.set(0, 2.0f);
 	zero.set(1, 2.0f);
 	zero.set(2, 2.0f);
@@ -67,33 +67,33 @@ BOOST_AUTO_TEST_CASE( vector_operators_overloads )
 	Vector one = Vector(1.0f, 1.0f, 1.0f);
 
 
-	// Test case for the vector comparison operation
+	// Test for the vector comparison operation
 	BOOST_CHECK(nX == nX);
 	BOOST_CHECK(one == one);
 
-	// Test case for the vectors sum
+	// Test for the vectors sum
 	BOOST_CHECK(nX + nY == Vector(1.0f, 1.0f, 0.0f));
 	BOOST_CHECK(nX + nZ == Vector(1.0f, 0.0f, 1.0f));
 	BOOST_CHECK(nX + nY + nZ == Vector(1.0f, 1.0f, 1.0f));
 
-	// Test case for the vectors subtraction
+	// Test for the vectors subtraction
 	BOOST_CHECK(one - nY == Vector(1.0f, 0.0f, 1.0f));
 	BOOST_CHECK(one - nZ - nX == Vector(0.0f, 1.0f, 0.0f));
 	BOOST_CHECK(nX - nY - nZ == Vector(1.0f, -1.0f, -1.0f));
 
-	// Test case for the product between vectors and scalars
+	// Test for the product between vectors and scalars
 	BOOST_CHECK(nX * 3.0f == Vector(3.0f, 0.0f, 0.0f));
 	BOOST_CHECK(one * -5.0f == Vector(-5.0f, -5.0f, -5.0f));
 
-	// Test case for the vector scalar product
+	// Test for the vector scalar product
 	BOOST_CHECK(nX * nY == 0);
 	BOOST_CHECK(nX * nX == 1);
 
-	// Test case for the vector cross product
+	// Test for the vector cross product
 	BOOST_CHECK(nX % nY == nZ);
 	BOOST_CHECK(one % nY == Vector(-1.0f, 0.0f, 1.0f));
 
-	// Test case for the vector [] operator
+	// Test for the vector [] operator
 	BOOST_CHECK(nX[0] == 1.0f);
 	BOOST_CHECK(nZ[2] == 1.0f);
 	BOOST_CHECK(nY[0] != 1.0f);
@@ -116,11 +116,11 @@ BOOST_AUTO_TEST_CASE( point_operators_overload )
 	Vector test1 = Vector(0.0f, 1.0f, 2.0f);
 
 
-	// Test case for the points subtraction
+	// Test for the points subtraction
 	BOOST_CHECK(p123 - p1 == test1);
 	BOOST_CHECK(p1 - p1 == zero);
 
-	// Test case for the points and vectors sum
+	// Test for the points and vectors sum
 	BOOST_CHECK(p1 + one == p2);
 	BOOST_CHECK(p123 + one == p234);
 }
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE( quaternion_methods )
 	Quaternion q3 = Quaternion(Vector(1.0f, 0.0f, 1.0f), 90.0f);
 
 
-	// Test case for the quaternion getVector() method
+	// Test for the quaternion getVector() method
 	Vector test1 = q1.getVector();
 	BOOST_CHECK_CLOSE( test1.get(0), 0.4999f, 0.1 );
 	BOOST_CHECK_CLOSE( test1.get(1), 0.0f, 0.1 );
@@ -144,11 +144,11 @@ BOOST_AUTO_TEST_CASE( quaternion_methods )
 	BOOST_CHECK_CLOSE( test2.get(1), 0.0f, 0.1 );
 	BOOST_CHECK_CLOSE( test2.get(2), 0.4999f, 0.1 );
 
-	// Test case for the quaternion getW() method
+	// Test for the quaternion getW() method
 	BOOST_CHECK_CLOSE( q1.getW(), 0.8660f, 0.1 );
 	BOOST_CHECK_CLOSE( q3.getW(), 0.7071f, 0.1 );
 
-	// Test case for the quaternion getAxisAngle() method
+	// Test for the quaternion getAxisAngle() method
 	Vector * vectorTestPtr;
 	vectorTestPtr = &Vector();
 	float testF = 0;
@@ -157,10 +157,9 @@ BOOST_AUTO_TEST_CASE( quaternion_methods )
 	BOOST_CHECK(*vectorTestPtr == Vector(1.0f, 0.0f, 0.0f));
 	BOOST_CHECK_CLOSE( testF, 60.0f, 0.1 );
 
-	/*
-		__declspec(dllexport) void getAxisAngle(Vector *axis, float *angle);
-		__declspec(dllexport) void setW(float value);
-		*/
+	// Test for the quaternion setW() method
+	q3.setW(12.0f);
+	BOOST_CHECK(q3.getW() == 12.0f);
 
 }
 
@@ -206,8 +205,6 @@ BOOST_AUTO_TEST_CASE( quaternion_operators_overload )
 	BOOST_CHECK_CLOSE( test4.getVector().get(1), 0.1913f, 0.1 );
 	BOOST_CHECK_CLOSE( test4.getVector().get(2), 0.7325f, 0.1 );
 	BOOST_CHECK_CLOSE( test4.getW(), 0.4619f, 0.1 );
-
-
 
 }
 
