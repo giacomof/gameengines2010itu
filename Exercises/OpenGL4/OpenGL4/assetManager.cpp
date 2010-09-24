@@ -21,11 +21,23 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 	bool exist = false;
 	std::string hash;
 	md5wrapper md5;
+	ILubyte * lump;
+	ILuint size;
+	FILE * file;
 
 	try {
+		file = fopen(fileDirectory, "rb");
+		fseek(file, 0, SEEK_END);
+		size = ftell(file);
+
+		lump = (ILubyte*)malloc(size);
+		fseek(file, 0, SEEK_SET);
+		fread(lump, 1, size, file);
+		fclose(file);
 		// This will store the md5 hash of a file called test.txt in a string hash1
-		hash = md5.getHashFromFile(fileDirectory);
-	} catch (char * str ) {
+		hash = md5.getHashFromFilePtr((FILE *)lump, (int) size);
+	} catch (exception& e) {
+		free(lump);
 		return;
 	}
 
@@ -33,10 +45,15 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 	for ( std::map<char *, textureContainer>::const_iterator iter = texture_list.begin(); iter != texture_list.end(); ++iter ) {
 
 		if (iter->second.textureMD5 == hash) {
-			texture_list[textureName].textureID = iter->second.textureID;
-			texture_list[textureName].textureMD5 = iter->second.textureMD5;
-			exist = true;
-			break;
+			if (iter->first == textureName) {
+				exist = true;
+				break;
+			} else {
+				texture_list[textureName].textureID = iter->second.textureID;
+				texture_list[textureName].textureMD5 = iter->second.textureMD5;
+				exist = true;
+				break;
+			}
 		}
 	}
 
@@ -46,7 +63,7 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		// Binding of image name
 		ilBindImage(texid);
 		// Loading of image 
-		success = ilLoadImage(fileDirectory);
+		success = ilLoadL(IL_TYPE_UNKNOWN, lump, size);
 
 		if (success)
 		{
@@ -77,6 +94,8 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		texture_list[textureName].textureID = imageT;
 		texture_list[textureName].textureMD5 = hash;
 	}
+
+	free(lump);
 
 }
 

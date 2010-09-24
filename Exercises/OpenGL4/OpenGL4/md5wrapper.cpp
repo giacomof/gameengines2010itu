@@ -129,6 +129,31 @@ std::string md5wrapper::getHashFromFile(std::string filename)
 	return convToString(digest);
  }	
 
+std::string md5wrapper::getHashFromFilePtr(FILE * filePtr, int size)
+{
+
+	FILE *file = filePtr;
+  	MD5_CTX context;
+  
+	int len;
+	int filesize = size;
+  	unsigned char digest[16];
+
+
+	//init md5
+ 	md5->MD5Init (&context);
+ 	
+	//read the filecontent
+	md5->MD5Update (&context, (unsigned char *)filePtr, size);
+	
+	/*
+	generate hash, close the file and return the
+	hash as std::string
+	*/
+	md5->MD5Final (digest, &context);
+	return convToString(digest);
+}
+
 /*
  * EOF
  */
