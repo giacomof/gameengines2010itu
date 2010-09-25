@@ -664,13 +664,11 @@ Vector Matrix::operator*(Vector &other)
          result.set(r, temp);
      }
          
-     // Checking that is not about to divide by zero
-     if (result.get(3) != 0) {
-
-        for (unsigned short i = 0; i < 4; i++) {
-            result.set(i, result.get(i) / result.get(3));
-        }
-     }
+     if (other.get(3) == 1) {
+		 result.set(3, 1);
+	 } else {
+		 result.set(3, 0);
+	 }
 
      return result;
 }
