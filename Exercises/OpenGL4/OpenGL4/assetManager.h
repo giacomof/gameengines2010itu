@@ -5,6 +5,7 @@
 #include <fstream>
 #include <map>
 #include "md5wrapper.h"
+#include "sceneObject.h"
 
 struct textureContainer 
 {
@@ -12,12 +13,17 @@ struct textureContainer
 	std::string textureMD5;
 };
 
+struct md2InterfaceContainer
+{
+	unsigned int md2ID;
+	std::string md2Name;
+	md2File md2Mesh;
+};
+
 using namespace std;
 
 class AssetManager
 {
-
-
 
 public:
 	AssetManager(void);
@@ -26,8 +32,12 @@ public:
 	void loadTexture(char * fileDirectory, char * textureName);
 	unsigned int getTexture(char * textureName);
 
+	void loadMd2(char * filePath, char * md2Name);
+	md2File* getMesh(char * md2Name);
+
 private:
 	std::map <char *, textureContainer> texture_list;
+	std::map <char *, md2InterfaceContainer> md2_list;
 
 };
 
