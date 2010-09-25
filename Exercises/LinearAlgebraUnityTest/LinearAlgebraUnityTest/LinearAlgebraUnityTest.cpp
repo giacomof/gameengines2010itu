@@ -220,6 +220,11 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 						8.0f,	9.0f,	10.0f,	11.0f,
 						0.0f,	0.0f,	0.0f,	1.0f);
 
+	Matrix m1t = Matrix(	0.0f,	4.0f,	8.0f,	0.0f,
+							1.0f,	5.0f,	9.0f,	0.0f,
+							2.0f,	6.0f,	10.0f,	0.0f,
+							3.0f,	7.0f,	11.0f,	1.0f);
+
 	Matrix m2 = Matrix(	0.0f,	2.0f,	4.0f,	6.0f,
 						8.0f,	10.0f,	12.0f,	14.0f,
 						16.0f,	18.0f,	20.0f,	22.0f,
@@ -370,28 +375,27 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 	BOOST_CHECK( mUniformScaling9 * vTwo == Vector(18.0f, 18.0f, 18.0f));
 	BOOST_CHECK( mTranslation345 * pTwo == Point(5.0f, 6.0f, 7.0f));
 
-	/*
-		// Matrix * vector multiplication
-		// can also be used for points
-        __declspec(dllexport) Vector operator*(Vector &other);
+	// Test for the getTranspose() method
+	BOOST_CHECK( m1.getTranspose() == m1t);
 
-		// Function for transpose matrix
-		__declspec(dllexport) Matrix getTranspose();
-		// Function for inverse matrix
-		__declspec(dllexport) Matrix getInverse();
+	// Test for the getInverse() method
+	BOOST_CHECK(Matrix::generateIdentityMatrix().getInverse() == manualIdentity);
 
-		//Function for the determinant of the matrix
-		__declspec(dllexport) float getDeterminant();
+	Matrix inverseTest = mAxisRotation * mAxisRotation.getInverse();
+	for(unsigned short r = 0; r < 4; r++) {
+		for(unsigned short c = 0; c < 4; c++) {
+			epsilon = manualIdentity.get(r, c) - inverseTest.get(r, c);
+			BOOST_CHECK_SMALL( epsilon, 0.00001 );
+		}
+	}
 
-        // Functions and operator to access 
-		// individual matrix elements
-        __declspec(dllexport) float get(unsigned short row, unsigned short col) const { return data[4*row + col]; }
-        __declspec(dllexport) void set(unsigned short row, unsigned short col, float val) { data[4*row + col] = val; }
-		__declspec(dllexport) void getMatrix(float* matrix);
+	// Test for the getInverse() method
+	BOOST_CHECK(m1.getDeterminant() == 0);
 
-		//Function to get Vector from matrix
-		__declspec(dllexport) Vector getRowAsVector(unsigned short row);
-		__declspec(dllexport) Vector getColumnAsVector(unsigned short column);
-		*/
+	// Test for the getRowAsVector() method
+	BOOST_CHECK(m1t.getRowAsVector(1) == Vector(1.0f, 5.0f, 9.0f));
+
+	// Test for the getColumnAsVector() method
+	BOOST_CHECK(m2.getColumnAsVector(0) == Vector(0.0f, 8.0f, 16.0f));
 
 }
