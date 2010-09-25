@@ -666,8 +666,6 @@ Vector Matrix::operator*(Vector &other)
          
      if (other.get(3) == 1) {
 		 result.set(3, 1);
-	 } else {
-		 result.set(3, 0);
 	 }
 
      return result;
