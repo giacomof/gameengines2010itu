@@ -279,7 +279,7 @@ void Quaternion::getAxisAngle(Vector *axis, float *angle)
 	axis->set(0,  vector.get(0) / magnitude);
 	axis->set(1,  vector.get(1) / magnitude);
 	axis->set(2,  vector.get(2) / magnitude);
-	*angle = acos(w*PI/180) * 2.0f;
+	*angle = (acos(w) * 2.0f)*180/PI;
 }
 
 void Quaternion::setW(float value)
