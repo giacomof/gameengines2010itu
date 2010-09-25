@@ -25,24 +25,24 @@ SceneObject::~SceneObject(void)
 // ************** MD2 ****************** //
 // ************************************* //
 
-md2File::md2File(md2Loader * m, unsigned int texture)
+md2Interface::md2Interface(md2File * m, unsigned int texture)
 {
 	mesh = m;
 	md2Texture = texture;
 }
 
-md2File::~md2File(void)
+md2Interface::~md2Interface(void)
 {
 }
 
-void md2File::drawGeometry(void) {
+void md2Interface::drawGeometry(void) {
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, md2Texture);
-	mesh->Render();
+		glBindTexture (GL_TEXTURE_2D, md2Texture);
+		mesh->Render();
 	glDisable(GL_TEXTURE_2D);	
 }
 
-void  md2File::update(void) {
+void  md2Interface::update(void) {
 
 	// *************************************************************** //
 	// TEMP METHOD, WE HAVE TO CHANGE THIS  WHEN WE MAKE THE FPS CLASS //

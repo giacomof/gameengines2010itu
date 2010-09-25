@@ -5,7 +5,7 @@
 #include <ilut.h>
 #include <vector>
 #include "linearAlgebraDLL.h"
-#include "md2Loader.h"
+#include "md2File.h"
 
 
 using namespace std;
@@ -95,16 +95,16 @@ class Line : public SceneObject
 		Vector lineStart, lineEnd, lineVector;
 };
 
-class md2File : public SceneObject 
+class md2Interface : public SceneObject 
 {
 	public:
-		md2File(md2Loader * m, unsigned int texture);
-		~md2File(void);
+		md2Interface(md2File * m, unsigned int texture);
+		~md2Interface(void);
 
 		void update(void);
 		void drawGeometry(void);
 
-		md2Loader * mesh;
+		md2File * mesh;
 		int md2Texture; 
 };
 

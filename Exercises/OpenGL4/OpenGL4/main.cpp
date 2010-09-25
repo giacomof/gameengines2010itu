@@ -6,15 +6,14 @@
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
 #include <SDL_thread.h>					// Header File for SDL thread library
 #include <SDL_audio.h>					// Header File for SDL audio library
-
 #include <glut.h>						// Header File for glut commands
 
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"				// Header File for the SceneObject container
 #include "messagePump.h"				// Header File for the input messahe pump system
-#include "md2Loader.h"					// Header File for our md2 loader
-#include "assetManager.h"
+#include "md2File.h"					// Header File for our md2 loader
+#include "assetManager.h"				// Header File for our Asset Manager
 
 #define NUM_SOUNDS 2
 struct sample {
@@ -51,11 +50,11 @@ Root * rootNodePtr;
 AssetManager * assetManagerPtr;
 
 SceneNode * demon;
-md2Loader md2Demon;
+md2File md2Demon;
 SceneNode * lostSoul;
-md2Loader md2LostSoul;
+md2File md2LostSoul;
 SceneNode * bossCube;
-md2Loader md2BossCube;
+md2File md2BossCube;
 
 
 // Define Lights Attributes
@@ -227,24 +226,13 @@ int main(int argc, char *argv[])
 	id1 = SDL_CreateThread ( updater, tnames[0] );
 	id2 = SDL_CreateThread ( soundmngr, tnames[1] );
 
-	/*Geometry bigTriangle = Geometry(0);
-	bigTriangle.addVertex(&Point(0.0f, 0.0f, 0.0f));
-	bigTriangle.addVertex(&Point(100.0f, 0.0f, 0.0f));
-	bigTriangle.addVertex(&Point(0.0f, 0.0f, -100.0f));
-
-	SceneNode plane(rootNodePtr, "Triangle Plane", &bigTriangle, 0.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
-	SceneNode plane2(&plane, "Triangle Plane2", &bigTriangle, 100.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
-	plane2.scale(1,1,1);
-	SceneNode plane3(&plane2, "Triangle Plane3", &bigTriangle, 50.0f, 0.0f, 0.0f, Vector(1.0f,0.0f,0.0f), 90.0f);
-	plane3.scale(1,1,1);*/
-
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 
 	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
 	
-	md2File doomDemon = md2File(&md2Demon, assetManagerPtr->getTexture("doomDemonTx"));
+	md2Interface doomDemon = md2Interface(&md2Demon, assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rootNodePtr->unlock(); // We can unlock the node now
 
@@ -257,7 +245,7 @@ int main(int argc, char *argv[])
 	demon->unlock(); // We can now unlock it
 	
 	kernel.lock();
-	md2File lostSoul_g = md2File(&md2LostSoul, assetManagerPtr->getTexture("lostSoulTx"));
+	md2Interface lostSoul_g = md2Interface(&md2LostSoul, assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	kernel.unlock();
 
@@ -267,7 +255,7 @@ int main(int argc, char *argv[])
 	lostSoul->scale(1, 1, 1);
 	lostSoul->unlock();
 	
-	md2File bossCube_g = md2File(&md2BossCube, assetManagerPtr->getTexture("bossCubeTx"));
+	md2Interface bossCube_g = md2Interface(&md2BossCube, assetManagerPtr->getTexture("bossCubeTx"));
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->unlock();
 
@@ -363,9 +351,6 @@ void drawGL(void)
 
 	// Set the camera
 	float *CamTransform = getCamera();
-
-	// Binds the "image" texture to the OpenGL object GL_TEXTURE_2D
-	//glBindTexture(GL_TEXTURE_2D, md2Texture);
 
 	//Root::drawGeometry();
 	rootNodePtr->lock();
@@ -496,9 +481,9 @@ int initGL(void)
 	//// ******************************
 	//// ******** LOADING POINT *******
 	//// ******************************
-	md2Demon = md2Loader();
-	md2LostSoul = md2Loader();
-	md2BossCube = md2Loader();
+	md2Demon = md2File();
+	md2LostSoul = md2File();
+	md2BossCube = md2File();
 
 	//// loads md2 files
 	md2Demon.Load("include/Cyber.md2");
@@ -512,9 +497,8 @@ int initGL(void)
 	// write memory usage
 	std::cout << "memory usage demon " << (md2Demon.GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage lost soul " << (md2LostSoul.GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage boss cube" << (md2BossCube.GetDataSize()/1024.0f) << "kb\n";
-	//glColor3f(1,1,1);
-
+	std::cout << "memory usage boss cube " << (md2BossCube.GetDataSize()/1024.0f) << "kb\n";
+	
 	return TRUE;
 }
 

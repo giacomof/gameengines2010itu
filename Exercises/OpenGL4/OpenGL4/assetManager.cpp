@@ -68,7 +68,7 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		if (success)
 		{
 			// Convert colour (for alpha channel images change to IL_RGBA)
-			success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); 
+			success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE); 
 
 			if (!success)
 			{
@@ -103,3 +103,4 @@ unsigned int AssetManager::getTexture(char * textureName)
 {
 	return texture_list[textureName].textureID;
 }
+

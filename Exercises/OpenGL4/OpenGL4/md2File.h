@@ -1,5 +1,5 @@
-#ifndef MD2LOADER__H__
-#define MD2LOADER__H__
+#ifndef md2File__H__
+#define md2File__H__
 
 
 	#include <vector>
@@ -16,14 +16,14 @@
 	// sets the frames per second for the animations
 	#define MD2_FRAMES_PER_SEC 5
 
-	class md2Loader {
+	class md2File {
 	public:
 
 		// Constructor
-		md2Loader() ;
+		md2File() ;
 
 		// Destructor
-		~md2Loader() ;
+		~md2File() ;
 		
 		// releases the current model
 		void Release();
@@ -174,8 +174,8 @@
 		unsigned char* m_data;
 		unsigned int data_size;
 
-		/*md2Loader() : m_data(0) {}
-		~md2Loader() {
+		/*md2File() : m_data(0) {}
+		~md2File() {
 			delete [] m_data;
 			m_data=0;
 		}*/

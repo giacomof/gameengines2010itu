@@ -1,4 +1,4 @@
-#include "md2Loader.h"
+#include "md2File.h"
 
 #define MD2_FRAME_RATE (1.0f/MD2_FRAMES_PER_SEC)
 
@@ -12,7 +12,7 @@ inline void LERP(float out[],const InType a[],const InType b[],const float inter
 }
 
 // constructor
-md2Loader::md2Loader() {
+md2File::md2File() {
 	m_AnimTime=0;
 	m_Verts=0;
 	m_CurrentAnim=0;
@@ -20,12 +20,12 @@ md2Loader::md2Loader() {
 }
 
 // destructor
-md2Loader::~md2Loader() {
+md2File::~md2File() {
 	//Release();
 }
 
 // resets all variables and clears animation buffer
-void md2Loader::Release() {
+void md2File::Release() {
 	m_Anims.clear();
 	//delete [] m_Verts;
 	//delete [] m_data;
@@ -37,14 +37,14 @@ void md2Loader::Release() {
 }
 
 // returns the 3d mesh
-const md2Loader::model* md2Loader::GetModel() const {
+const md2File::model* md2File::GetModel() const {
 	if(!m_data) return 0;
 	void *p=m_data;
 	return reinterpret_cast<model*>( p );
 }
 
 // returns the data of a single frame of the animation
-const md2Loader::frame* md2Loader::GetFrame(unsigned int num) const {
+const md2File::frame* md2File::GetFrame(unsigned int num) const {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetFrames + (num*pm->frameSize);
@@ -52,7 +52,7 @@ const md2Loader::frame* md2Loader::GetFrame(unsigned int num) const {
 }
 
 // returns the Triangles List
-const md2Loader::triangle* md2Loader::GetTriangles() const {
+const md2File::triangle* md2File::GetTriangles() const {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetTriangles;
@@ -60,7 +60,7 @@ const md2Loader::triangle* md2Loader::GetTriangles() const {
 }
 
 // returns the uv coordinates of the texture (mapped inside the md2)
-const md2Loader::uv* md2Loader::GetTexCoords() const {
+const md2File::uv* md2File::GetTexCoords() const {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetTexCoords;
@@ -68,7 +68,7 @@ const md2Loader::uv* md2Loader::GetTexCoords() const {
 }
 
 // returns the GL command list built-in the md2 (optional)
-const md2Loader::glCommandList* md2Loader::GetCommands() const  {
+const md2File::glCommandList* md2File::GetCommands() const  {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetGlCommands;
@@ -76,14 +76,14 @@ const md2Loader::glCommandList* md2Loader::GetCommands() const  {
 }
 
 
-const char*	md2Loader::GetSkin(unsigned int num) const {
+const char*	md2File::GetSkin(unsigned int num) const {
 	if(!m_data) return 0;
 	void* p = m_data + GetModel()->offsetSkins + num*64;
 	return reinterpret_cast<char*>(p);
 }
 
 // loads the md2 model and allocate proper memory
-bool md2Loader::Load(const char* filename) {
+bool md2File::Load(const char* filename) {
 	Release();
 
 	if( !loadFile(filename) )
@@ -132,7 +132,7 @@ bool md2Loader::Load(const char* filename) {
 	return true;
 }
 
-bool md2Loader::loadFile(const char* filename) {
+bool md2File::loadFile(const char* filename) {
 	FILE* fp = fopen(filename,"rb");
 	if(!fp) {
 		std::cout << "[ERROR] \"" 
@@ -170,7 +170,7 @@ bool md2Loader::loadFile(const char* filename) {
 }
 
 // update the animation state
-void md2Loader::Update(float dt) {
+void md2File::Update(float dt) {
 	if(!m_data)
 		return;
 
@@ -246,7 +246,7 @@ void md2Loader::Update(float dt) {
 }
 
 // draw the mesh with OpenGL commands
-void md2Loader::Render() const {
+void md2File::Render() const {
 
 	// ensure valid model loaded
 	if(!m_data)
@@ -358,7 +358,7 @@ void md2Loader::Render() const {
 }
 
 // starts the specified animation
-void md2Loader::SetAnim(unsigned short idx) {
+void md2File::SetAnim(unsigned short idx) {
 	if(idx < GetNumAnims()) {
 		m_CurrentAnim = idx;
 		m_AnimTime=0;
@@ -366,21 +366,21 @@ void md2Loader::SetAnim(unsigned short idx) {
 }
 
 // returns the name of the frame of the specified animation we are playing
-const char* md2Loader::GetAnimName(unsigned short idx) const {
+const char* md2File::GetAnimName(unsigned short idx) const {
 	if(idx<GetNumAnims())
 		return GetFrame( m_Anims[idx].m_FrameStart )->name;
 	return 0;
 }
 
 //returns the number of the animations in the md2 file
-unsigned short md2Loader::GetNumAnims() const {
+unsigned short md2File::GetNumAnims() const {
 	return static_cast<unsigned short>(m_Anims.size());
 }
 
 // returns the size of the model
-unsigned int md2Loader::GetDataSize() const {
+unsigned int md2File::GetDataSize() const {
 	return static_cast<unsigned int>(
-		sizeof(md2Loader) + data_size +
+		sizeof(md2File) + data_size +
 		m_Anims.size() * sizeof(AnimRef) +
 		sizeof(float)*3*GetNumVerts());
 }
