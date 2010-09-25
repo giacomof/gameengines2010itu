@@ -6,10 +6,13 @@
 
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
+#include <boost/test/floating_point_comparison.hpp>
 
 
 using namespace linearAlgebraDLL;
 using namespace boost::unit_test;
+
+
 
 // Test case for methods of the Vector class
 BOOST_AUTO_TEST_CASE( vector_methods )
@@ -215,33 +218,70 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 	Matrix m1 = Matrix(	0.0f,	1.0f,	2.0f,	3.0f,
 						4.0f,	5.0f,	6.0f,	7.0f,
 						8.0f,	9.0f,	10.0f,	11.0f,
-						12.0f,	13.0f,	14.0f,	15.0f);
+						0.0f,	0.0f,	0.0f,	1.0f);
 
-	Matrix mTranslation = Matrix(	1.0f, 0.0f, 0.0f, 3.0f,
-									0.0f, 1.0f, 0.0f, 4.0f,
-									0.0f, 0.0f, 1.0f, 5.0f,
-									0.0f, 0.0f, 0.0f, 1.0f);
+	Matrix m2 = Matrix(	0.0f,	2.0f,	4.0f,	6.0f,
+						8.0f,	10.0f,	12.0f,	14.0f,
+						16.0f,	18.0f,	20.0f,	22.0f,
+						0.0f,	0.0f,	0.0f,	2.0f);
 
-	Matrix mScaling = Matrix(	6.0f, 0.0f, 0.0f, 0.0f,
-								0.0f, 7.0f, 0.0f, 0.0f,
-								0.0f, 0.0f, 8.0f, 0.0f,
-								0.0f, 0.0f, 0.0f, 1.0f);
-
-	Matrix mUniformScaling = Matrix(	9.0f, 0.0f, 0.0f, 0.0f,
-										0.0f, 9.0f, 0.0f, 0.0f,
-										0.0f, 0.0f, 9.0f, 0.0f,
-										0.0f, 0.0f, 0.0f, 1.0f);
-
-	Matrix mXRotation = Matrix(	9.0f, 0.0f, 0.0f, 0.0f,
-								0.0f, 9.0f, 0.0f, 0.0f,
-								0.0f, 0.0f, 9.0f, 0.0f,
-								0.0f, 0.0f, 0.0f, 1.0f);
-	
 	Matrix manualIdentity = Matrix(	1.0f, 0.0f, 0.0f, 0.0f,
 									0.0f, 1.0f, 0.0f, 0.0f,
 									0.0f, 0.0f, 1.0f, 0.0f,
 									0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mTranslation345 = Matrix(	1.0f, 0.0f, 0.0f, 3.0f,
+										0.0f, 1.0f, 0.0f, 4.0f,
+										0.0f, 0.0f, 1.0f, 5.0f,
+										0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mScaling678 = Matrix(	6.0f, 0.0f, 0.0f, 0.0f,
+									0.0f, 7.0f, 0.0f, 0.0f,
+									0.0f, 0.0f, 8.0f, 0.0f,
+									0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mUniformScaling9 = Matrix(	9.0f, 0.0f, 0.0f, 0.0f,
+										0.0f, 9.0f, 0.0f, 0.0f,
+										0.0f, 0.0f, 9.0f, 0.0f,
+										0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mXRotationM90 = Matrix(	1.0f, 0.0f, 0.0f, 0.0f,
+									0.0f, 0.0f, 1.0f, 0.0f,
+									0.0f, -1.0f, 0.0f, 0.0f,
+									0.0f, 0.0f, 0.0f, 1.0f);
+
+	Matrix mYRotation45 = Matrix(	0.707107f,	0.0f, 0.707106f,	0.0f,
+									0.0f,		1.0f, 0.0f,			0.0f,
+									-0.707106f, 0.0f, 0.707106f,	0.0f,
+									0.0f,		0.0f, 0.0f,			1.0f);
+
+	Matrix mZRotation30 = Matrix(	0.866026f,	-0.5f,		0.0f,	0.0f,
+									0.5f,		0.866026f,	0.0f,	0.0f,
+									0.0f,		0.0f,		1.0f,	0.0f,
+									0.0f,		0.0f,		0.0f,	1.0f);
+
+	Matrix mAxisRotation = Matrix(	1.0f,		-0.866025f,	0.499999f,	0.0f,
+									0.866025f,	0.500001f,	-0.866025f,	0.0f,
+									0.0f,		0.866025f,	1.0f,		0.0f,
+									0.0f,		0.0f,		0.0f,		1.0f);
+
+	Matrix mQuaternionRotation = Matrix(	0.75f,		-0.612372f,	0.25f,		0.0f,
+											0.612372f,	0.500001f,	-0.612372f,	0.0f,
+											0.25f,		0.612372f,	0.75f,		0.0f,
+											0.0f,		0.0f,		0.0f,		1.0f);
+
+	Matrix mShearingMatrix = Matrix(	1.0f, 1.0f, 2.0f, 0.0f,
+										3.0f, 1.0f, 4.0f, 0.0f,
+										5.0f, 6.0f, 1.0f, 0.0f,
+										0.0f, 0.0f, 0.0f, 1.0f);
 	
+	// Istantiation of various points and vectors for the tests
+	Vector vTwo = Vector(2.0f, 2.0f, 2.0f);
+	Point pTwo = Point(2.0f, 2.0f, 2.0f);
+
+	// Used to compare floating point values
+	double epsilon;
+
 
 	// Test for the compare operator between matrices
 	BOOST_CHECK(m1 == m1);
@@ -251,36 +291,86 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 	BOOST_CHECK(manualIdentity == Matrix::generateIdentityMatrix());
 
 	// Test for the generateTranslationMatrix() method
-	BOOST_CHECK(mTranslation == Matrix::generateTranslationMatrix(3.0f, 4.0f, 5.0f));
+	BOOST_CHECK(mTranslation345 == Matrix::generateTranslationMatrix(3.0f, 4.0f, 5.0f));
 
 	// Test for the generateScalingMatrix() method
-	BOOST_CHECK(mScaling == Matrix::generateScalingMatrix(6.0f, 7.0f, 8.0f));
+	BOOST_CHECK(mScaling678 == Matrix::generateScalingMatrix(6.0f, 7.0f, 8.0f));
 
 	// Test for the generateUniformScalingMatrix() method
-	BOOST_CHECK(mUniformScaling == Matrix::generateUniformScalingMatrix(9.0f));
+	BOOST_CHECK(mUniformScaling9 == Matrix::generateUniformScalingMatrix(9.0f));
 
 	// Test for the generateXRotationMatrix() method
-	//BOOST_CHECK(mUniformScaling == Matrix::generateXRotationMatrix(9.0f));
+	Matrix generatedMXRotationM90 = Matrix::generateXRotationMatrix(-90.0);
+
+	for(unsigned short r = 0; r < 4; r++) {
+		for(unsigned short c = 0; c < 4; c++) {
+			epsilon = generatedMXRotationM90.get(r, c) - mXRotationM90.get(r, c);
+			BOOST_CHECK_SMALL( epsilon, 0.00001 );
+		}
+	}
+
+	// Test for the generateYRotationMatrix() method
+	Matrix generatedMYRotation45 = Matrix::generateYRotationMatrix(45.0);
+
+	for(unsigned short r = 0; r < 4; r++) {
+		for(unsigned short c = 0; c < 4; c++) {
+			epsilon = generatedMYRotation45.get(r, c) - mYRotation45.get(r, c);
+			BOOST_CHECK_SMALL( epsilon, 0.00001 );
+		}
+	}
+
+	// Test for the generateZRotationMatrix() method
+	Matrix generatedMZRotation30 = Matrix::generateZRotationMatrix(30.0);
+
+	for(unsigned short r = 0; r < 4; r++) {
+		for(unsigned short c = 0; c < 4; c++) {
+			epsilon = generatedMZRotation30.get(r, c) - mZRotation30.get(r, c);
+			BOOST_CHECK_SMALL( epsilon, 0.00001 );
+		}
+	}
+
+	// Test for the generateAxesRotationMatrix() method
+	Matrix generatedAxisRotation = Matrix::generateAxesRotationMatrix(Vector(1.0f, 0.0f, 1.0f), 60.0f);
+
+	for(unsigned short r = 0; r < 4; r++) {
+		for(unsigned short c = 0; c < 4; c++) {
+			epsilon = generatedAxisRotation.get(r, c) - mAxisRotation.get(r, c);
+			BOOST_CHECK_SMALL( epsilon, 0.00001 );
+		}
+	}
+
+	// Test for the generateQuaternionRotationMatrix() method
+	Matrix generatedQuaternionRotation = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0f, 0.0f, 1.0f), 60.0f));
+
+	for(unsigned short r = 0; r < 4; r++) {
+		for(unsigned short c = 0; c < 4; c++) {
+			epsilon = generatedQuaternionRotation.get(r, c) - mQuaternionRotation.get(r, c);
+			BOOST_CHECK_SMALL( epsilon, 0.00001 );
+		}
+	}
+
+	// Test for the generateShearingMatrix() method
+	Matrix generatedShearingMatrix = Matrix::generateShearingMatrix(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f);
+
+	for(unsigned short r = 0; r < 4; r++) {
+		for(unsigned short c = 0; c < 4; c++) {
+			epsilon = generatedShearingMatrix.get(r, c) - mShearingMatrix.get(r, c);
+			BOOST_CHECK_SMALL( epsilon, 0.00001 );
+		}
+	}
+
+	// Test for the Matrix * Matrix operator
+	BOOST_CHECK( m1 * manualIdentity == m1);
+
+	// Test for the Matrix * scalar operator
+	BOOST_CHECK( m1 * 2.0f == m2);
+
+	// Test for the Matrix * vector/point operator
+	BOOST_CHECK( mTranslation345 * vTwo == vTwo);
+	BOOST_CHECK( mUniformScaling9 * vTwo == Vector(18.0f, 18.0f, 18.0f));
+	BOOST_CHECK( mTranslation345 * pTwo == Point(5.0f, 6.0f, 7.0f));
+
 	/*
-
-		// Generate a rotation matrix about x-axes, from a  float value
-		__declspec(dllexport) static Matrix generateXRotationMatrix(float degree);
-		// Generate a rotation matrix about y-axes, from a  float value
-		__declspec(dllexport) static Matrix generateYRotationMatrix(float degree);
-		// Generate a rotation matrix about z-axes, from a  float value
-		__declspec(dllexport) static Matrix generateZRotationMatrix(float degree);
-		// Generate a rotation matrix about an arbitrary axes
-		__declspec(dllexport) static Matrix generateAxesRotationMatrix(Vector axes, float degree);
-		// Generate a rotation matrix from a quaternion
-		__declspec(dllexport) static Matrix generateQuaternionRotationMatrix(Quaternion q);
-
-		//Generate a shearing matrix
-		__declspec(dllexport) static Matrix generateShearingMatrix(float sXY,float sXZ,float sYX,float sYZ,float sZX,float sZY);
-
-		// Matrix multiplication
-        __declspec(dllexport) Matrix operator*(Matrix &other); 
-		// Matrix * scalar multiplication
-		__declspec(dllexport) Matrix operator*(float other);
 		// Matrix * vector multiplication
 		// can also be used for points
         __declspec(dllexport) Vector operator*(Vector &other);
