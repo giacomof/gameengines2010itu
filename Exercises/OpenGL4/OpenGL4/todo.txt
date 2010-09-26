@@ -2,7 +2,7 @@
 // ************************************** COMMON TO-DO LIST ********************************************** //
 // ******************************************************************************************************* //
 
-Global tasks:
+GLOBAL TASKS:
 
 S- Camera as child of sceneObject
 1(V)- Childs of sceneObject
@@ -15,7 +15,6 @@ G- Asset Manager
 1(V)- Root as Singleton
 S- Input Abstraction Layer
 0- Physics SDK (Bullet?)
-	- Physics Wrapper? (PAL?)
 0- Sounds without movements freeze
 1(V)- Merge md2Loader and md2File classes in the md2Interface
 G- FBX/Collada Loader --->Working on COLLADA
@@ -24,11 +23,18 @@ G- FBX/Collada Loader --->Working on COLLADA
 0- A DisplayManager capable of opening a window with an opengl context
 0- Clock Class
 	0- fps counter with a sliding frame window
+0- logging system with verbosity levels
+0- attach/detach camera to player model
+
+OPTIONALS:
+
+0- father of scenenode to inherit mutex methods
+0- singleton superclass
 0- debug draw system
 	0- axis of rotation of an object via line draws
 	0- draw the bounding box or bounding sphere of an object
-0- logging system with verbosity levels
-0- attach/detach camera to player model
+0- Physics Wrapper? (PAL?)
+
 
 
 Symbology Map:
