@@ -11,12 +11,13 @@ G- Asset Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
 	V- Mesh Manager
 	0- Sound Manager
+	0- make it Singleton
 1(V)- Root as Singleton
 S- Input Abstraction Layer
 0- Physics SDK (Bullet?)
 	- Physics Wrapper? (PAL?)
 0- Sounds without movements freeze
-1(V)- Merge md2Interface and md2File classes
+1(V)- Merge md2Loader and md2File classes in the md2Interface
 G- FBX/Collada Loader --->Working on COLLADA
 1(G)- Create unit units for testing
 0- Compile everything we can as a DLL
