@@ -36,4 +36,4 @@ V = Valerio is working on this
 G = Giacomo // //       //  //
 S = Simon   // //       //  //
 0 = Nobody is working on this
-1 = Finished Task
+1 = Finished Task (who)
