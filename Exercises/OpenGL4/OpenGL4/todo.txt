@@ -12,7 +12,7 @@ G- Asset Manager
 	V- Mesh Manager
 	0- Sound Manager
 1(V)- Root as Singleton
-0- Input Abstraction Layer
+S- Input Abstraction Layer
 0- Physics SDK (Bullet?)
 	- Physics Wrapper? (PAL?)
 0- Sounds without movements freeze
