@@ -17,7 +17,7 @@ S- Input Abstraction Layer
 0- Physics SDK (Bullet?)
 0- Sounds without movements freeze
 1(V)- Merge md2Loader and md2File classes in the md2Interface
-G- FBX/Collada Loader --->Working on COLLADA
+G- FBX/Collada Loader --->Working on COLLADA --> Collada loader ready, implementing it in the engine
 1(G)- Create unit units for testing
 0- Compile everything we can as a DLL
 0- A DisplayManager capable of opening a window with an opengl context
@@ -25,6 +25,9 @@ G- FBX/Collada Loader --->Working on COLLADA
 	0- fps counter with a sliding frame window
 0- logging system with verbosity levels
 0- attach/detach camera to player model
+
+
+0-Check why some methods in md2file are "const"
 
 OPTIONALS:
 
