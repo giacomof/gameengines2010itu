@@ -1,0 +1,5 @@
+Singletons:
+assetManager?
+our rootnode? (list file it is in?)
+controller
+(list any other singletons we have)

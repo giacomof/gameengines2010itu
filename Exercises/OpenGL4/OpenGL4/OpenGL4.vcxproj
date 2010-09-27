@@ -164,6 +164,7 @@
     <None Include="include\nhe.ico" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
+    <None Include="structure.txt" />
     <None Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
