@@ -1,14 +1,14 @@
 #include "sceneObject.h"
 
-class entitySpectator : public sceneObject
+class entitySpectator : public SceneObject
 {
 private:
-	bool moveForward = false;
-	bool moveBackward = false;
-	bool strafeLeft = false;
-	bool strafeRight = false;
-	float lookUpDownAmount = 0;
-	float lookLeftRightAmount = 0;
+	bool moveForward;
+	bool moveBackward;
+	bool strafeLeft;
+	bool strafeRight;
+	float lookUpDownAmount;
+	float lookLeftRightAmount;
 
 public:
 	virtual void update();
