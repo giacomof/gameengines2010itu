@@ -266,6 +266,7 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="todo.txt" />
+    <None Include="structure.txt" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
