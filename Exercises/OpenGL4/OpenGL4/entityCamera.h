@@ -1,6 +1,6 @@
 #include "sceneObject.h"
 
-class entityCamera : public sceneObject
+class entityCamera : public SceneObject
 {
 
 
