@@ -11,10 +11,10 @@
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"				// Header File for the SceneObject container
-#include "messagePump.h"				// Header File for the input message pump system
+//#include "messagePump.h"				// Header File for the input message pump system
 #include "md2File.h"					// Header File for our md2 loader
 #include "assetManager.h"				// Header File for our Asset Manager
-//#include "inputManager.h"				// Header File for our Input Manager
+#include "inputManager.h"				// Header File for our Input Manager
 
 #define NUM_SOUNDS 2
 
@@ -94,12 +94,16 @@ int threadInput(void *data)
 {
 	char *tname = ( char * )data;
 
+	inputManager inputManager;
+
 	while ( !quit ) {
-		//inputManager();
+		inputManager.update();
 
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
+
+	delete &inputManager;
 
 	return 0;
 }
@@ -319,9 +323,9 @@ int main(int argc, char *argv[])
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 			case SDL_MOUSEMOTION:
-				/*MessagePump::getInstance().lock();
+				MessagePump::getInstance().lock();
 				MessagePump::getInstance().sendMessage(currentEvent);
-				MessagePump::getInstance().unlock();*/
+				MessagePump::getInstance().unlock();
 				break;
 			// Anything else we don't care about
 			default:
