@@ -1,10 +1,12 @@
 #include <SDL.h>
-#include "messagePump.h"
+//#include "messagePump.h"
 
-static int inputManager();
+class inputManager
+{
+public:
 
-static void inputKeyPress(SDL_Event currentEvent);
-
-static void inputMousePress(SDL_Event currentEvent);
-
-static void inputMousePress(SDL_Event currentEvent);
+private:
+	void keyPress(SDL_Event currentEvent);
+	void mousePress(SDL_Event currentEvent);
+	void mouseMotion(SDL_Event currentEvent);
+}

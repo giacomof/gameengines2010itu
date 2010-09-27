@@ -31,5 +31,4 @@ public:
 
 	// external declaration
 	static list<SDL_Event> messageList;
-	
 };

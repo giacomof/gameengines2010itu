@@ -1,24 +1,26 @@
 #include "inputManager.h"
 
-static int inputManager()
-{
-	SDL_Event currentEvent;
+;
 
-	while ( !MessagePump::getInstance().empty() )
+int update()
+{
+SDL_Event currentEvent;
+
+	while ( false /*!MessagePump::getInstance().empty()*/ )
 	{
-		MessagePump::getInstance().lock();
+		/*MessagePump::getInstance().lock();
 		currentEvent = MessagePump::getInstance().receiveMessage();
-		MessagePump::getInstance().unlock();
+		MessagePump::getInstance().unlock();*/
 
 		switch (currentEvent.type)
 		{
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
-			inputKeyPress(currentEvent);
+			//inputKeyPress(currentEvent);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
-			inputMousePress(currentEvent);
+			//inputMousePress(currentEvent);
 			break;
 		case SDL_MOUSEMOTION:
 			break;
@@ -30,7 +32,7 @@ static int inputManager()
 	return 0;
 }
 
-static void inputKeyPress(SDL_Event currentEvent)
+void inputManager::keyPress(SDL_Event currentEvent)
 {
 	switch (currentEvent.key.keysym.sym)
 	{
@@ -44,12 +46,12 @@ static void inputKeyPress(SDL_Event currentEvent)
 	}
 }
 
-static void inputMousePress(SDL_Event currentEvent)
+void inputManager::mousePress(SDL_Event currentEvent)
 {
 	// Do nothing at this time
 }
 
-static void inputMousePress(SDL_Event currentEvent)
+void inputManager::mouseMotion(SDL_Event currentEvent)
 {
 	// Do nothing at this time
 }
