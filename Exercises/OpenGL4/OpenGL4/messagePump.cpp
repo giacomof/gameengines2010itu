@@ -1,14 +1,18 @@
 #include "messagePump.h"
 
-// actual definition
+// Declare static variables
 list<SDL_Event> MessagePump::messageList;
-
-// Static member initialization
 MessagePump MessagePump::_instance;
+SDL_mutex * MessagePump::mutex_event;
 
 MessagePump &MessagePump::getInstance()
 {
   return _instance;
+}
+
+bool MessagePump::empty()
+{
+	return messageList.empty();
 }
 
 void MessagePump::sendMessage(SDL_Event  msg) 

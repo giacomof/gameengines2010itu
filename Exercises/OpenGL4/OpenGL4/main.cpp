@@ -11,11 +11,14 @@
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"				// Header File for the SceneObject container
-#include "messagePump.h"				// Header File for the input messahe pump system
+#include "messagePump.h"				// Header File for the input message pump system
 #include "md2File.h"					// Header File for our md2 loader
 #include "assetManager.h"				// Header File for our Asset Manager
+#include "inputManager.h"				// Header File for our Input Manager
 
 #define NUM_SOUNDS 2
+
+// Type for Sound data
 struct sample {
     Uint8 *data;
     Uint32 dpos;
@@ -25,19 +28,17 @@ struct sample {
 using namespace std;
 using namespace linearAlgebraDLL;
 
-
 static int const screenWidth		= 800;			// Window Width
 static int const screenHeight		= 600;			// Window Height
 static int const screenColorDepth	= 32;			// Color Depth
 static int const tick				= 16;			// Minimum time between screen frames
 static int const thread_delay		= 3;			// Minimum time between loops
-
 static float const PI = 3.14159f;					// PI definition
 
 Uint32 tickFrame = 0;
 
 // Message pump used for passing Events between threads
-MessagePump inputPump;								
+MessagePump InputPump;								
 
 // Pointer to SDL rendering surface
 SDL_Surface *surface;				
@@ -45,32 +46,15 @@ SDL_Surface *surface;
 GLuint image;	
 
 // Root node and other Scene Node
-Root * rootNodePtr;
-
-AssetManager * assetManagerPtr;
-
-SceneNode * demon;
-md2File md2Demon;
-SceneNode * lostSoul;
-md2File md2LostSoul;
-SceneNode * bossCube;
-md2File md2BossCube;
-
-
-// Define Lights Attributes
-GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
-GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
-GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
+Root *rootNodePtr;
+// Asset manager
+AssetManager *assetManagerPtr;
 
 // Camera and Movements Definitions
 float camYaw, camPitch, camYawRad, camPitchRad;
 float camPosX, camPosY, camPosZ;
 float camSpeed = 0.5f;
 float rotationSpeed = 0.1f;
-
-// Camera input states
-int mouseStateX, mouseStateY, centerX=0, centerY=0, dX, dY, temp;
-int wKeyPressed = 0, sKeyPressed = 0, aKeyPressed = 0, dKeyPressed = 0, lKeyPressed = 0;
 
 // OpenGL Attributes
 Uint32 timeLeft(void);
@@ -80,9 +64,6 @@ int initGL(void);
 
 // STD/OpenGL Methods
 void drawGL(void);
-void keyDown(SDL_keysym *keysym);
-void keyUp(SDL_keysym *keysym);
-void update();
 
 // Pointer to the function that moves the camera
 float* getCamera();
@@ -92,11 +73,39 @@ void clampCamera();
 GLuint	filter;
 GLuint	texture[3];
 
-// Defines when to stop looping
+// Test stuff
+SceneNode * demon;
+md2File md2Demon;
+SceneNode * lostSoul;
+md2File md2LostSoul;
+SceneNode * bossCube;
+md2File md2BossCube;
+
+// Define Test Lights Attributes
+GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
+GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
+GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
+
+// Check for when to quit
 bool quit = false;
 
+/* This thread handles input */
+int threadInput(void *data)
+{
+	char *tname = ( char * )data;
+
+	while ( !quit ) {
+		inputManager();
+
+		// Delay the thread to make room for others on the CPU
+		SDL_Delay(thread_delay);
+	}
+
+	return 0;
+}
+
 /* This thread handles audio */
-int soundmngr(void *data)
+int threadSound(void *data)
 {
 	// Thread name
 	char *tname = ( char * )data;
@@ -108,7 +117,7 @@ int soundmngr(void *data)
     fmt.freq = 22050;
     fmt.format = AUDIO_S16;
     fmt.channels = 2;
-    fmt.samples = 512;        /* A good value for games */
+    fmt.samples = 512;
     fmt.callback = mixaudio;
     fmt.userdata = NULL;
 
@@ -116,28 +125,30 @@ int soundmngr(void *data)
     if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
         fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
 		return 1;
-		// exit(1);
     }
     SDL_PauseAudio(0);
+
+	// Run the audio handling here
+
 
 	SDL_CloseAudio();
 	return 0;
 }
 
 /* This thread updates the scene */
-int updater(void *data)
+int threadUpdate(void *data)
 {
 	// Thread name
 	char *tname = ( char * )data;
 
 	while ( !quit ) {
-		// Runs the update scene method
-		update();
+		// Runs the update method here
+
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
 
-	exit(0);
+	return 0;
 }
 
 /* Application entry point */
@@ -146,7 +157,6 @@ int main(int argc, char *argv[])
 
 	// SDL/OpenGL data
 	int videoFlags;
-	SDL_Event event;
 	const SDL_VideoInfo *videoInfo;
 	
 	int isActive = TRUE;
@@ -203,28 +213,30 @@ int main(int argc, char *argv[])
 	// Binds mouse and keyboard input to the OpenGL window
 	SDL_WM_GrabInput(SDL_GRAB_ON); 
 	
-	
-
-	// Move the mouse in the center of the windows before starting render
-	SDL_WarpMouse((short)centerX, (short)centerY);
-
 	// Create the root node
 	rootNodePtr = new Root();
 	rootNodePtr->setName("root");
 
+	// start the asset manager
 	assetManagerPtr = new AssetManager();
-
-	// The updater thread
-	SDL_Thread *id1;
-	SDL_Thread *id2;
-	char *tnames[] = { "Updater", "Sound Manager" };
 
 	// Define the exit of the program in relation to SDL variables
 	atexit(SDL_Quit);
 
-	//create the threads
-	id1 = SDL_CreateThread ( updater, tnames[0] );
-	id2 = SDL_CreateThread ( soundmngr, tnames[1] );
+	// Create the thread handles and assign names
+	SDL_Thread *id1;
+	SDL_Thread *id2;
+	SDL_Thread *id3;
+	char *tnames[] = { "General Update", "Sound Manager", "Input"};
+
+	// Create the threads
+	id1 = SDL_CreateThread ( threadUpdate, tnames[0] );
+	id2 = SDL_CreateThread ( threadSound, tnames[1] );
+	id3 = SDL_CreateThread ( threadInput, tnames[2] );
+
+	/* ---------------------------------------- *
+	 * Graph and asset testing stuff start here *
+	 * ---------------------------------------- */
 
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
@@ -249,7 +261,6 @@ int main(int argc, char *argv[])
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	kernel.unlock();
 
-
 	// why here? - ask Simon
 	lostSoul->lock();
 	lostSoul->scale(1, 1, 1);
@@ -263,6 +274,10 @@ int main(int argc, char *argv[])
 	bossCube->scale(0.8, 0.8, 0.8);
 	bossCube->unlock();
 
+	/* ---------------------------------------- *
+	 * Graph and asset testing stuff ends here  *
+	 * ---------------------------------------- */
+
 	while(!quit)
 	{
 		
@@ -274,54 +289,48 @@ int main(int argc, char *argv[])
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
 		bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
 		
-		while(SDL_PollEvent(&event))
+		// Time to take care of the SDL events we have recieved
+		SDL_Event currentEvent;
+		while(SDL_PollEvent(&currentEvent))
 		{
-			switch(event.type)
+			switch(currentEvent.type)
 			{
+			// Some general events to handle immediately
 			case SDL_ACTIVEEVENT:
-				if (event.active.gain==0)
+				if (currentEvent.active.gain==0)
 					isActive = FALSE;
 				else
 					isActive = TRUE;
 				break;
 			case SDL_VIDEORESIZE:
-				surface = SDL_SetVideoMode(	event.resize.w,
-											event.resize.h,
-											screenColorDepth,
-											videoFlags);
+				surface = SDL_SetVideoMode(	currentEvent.resize.w, currentEvent.resize.h, screenColorDepth, videoFlags);
 				if (!surface)
 				{
 					exit(1);
 				}
-
-				resizeWindow( event.resize.w, event.resize.h);
+				resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
 				break;
-			case SDL_KEYDOWN:
-				keyDown(&event.key.keysym);
-				break;
-			case SDL_KEYUP:
-				keyUp(&event.key.keysym);
-				break;
-			case SDL_MOUSEMOTION:
-				SDL_GetMouseState(&mouseStateX, &mouseStateY);
-				dX = (int)mouseStateX - centerX;
-				dY = (int)mouseStateY - centerY;
-				camYaw -= rotationSpeed * dX;
-				camPitch -= rotationSpeed * dY;
-				clampCamera();
-				SDL_WarpMouse((short)centerX, (short)centerY);
-				break;
-
 			case SDL_QUIT:
 				quit = TRUE;
 				break;
+			// Input events coming below. They are all just passed on to the input pump
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			case SDL_MOUSEMOTION:
+				MessagePump::getInstance().lock();
+				MessagePump::getInstance().sendMessage(currentEvent);
+				MessagePump::getInstance().unlock();
+				break;
+			// Anything else we don't care about
 			default:
 				break;
 			}
 		}
 		
+		// Actual frame rendering happens here
 		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
-		//if(true)
 		{
 			tickFrame = SDL_GetTicks();
 			drawGL();
@@ -331,14 +340,17 @@ int main(int argc, char *argv[])
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
-	ShowCursor(TRUE);
 
 	//wait for the threads to exit
 	SDL_WaitThread ( id1, NULL );
 	SDL_WaitThread ( id2, NULL );
+	SDL_WaitThread ( id3, NULL );
 
 	// Delete the message pump between threads
-	delete &inputPump;
+	delete &InputPump;
+
+	// Show the cursor again
+	ShowCursor(TRUE);
 	
 	exit(0);  
 }
@@ -381,65 +393,6 @@ void drawGL(void)
 	SDL_GL_SwapBuffers();
 }
 
-
-/* Update gamestate */
-void update()
-{
-	//lock variables
-	//SDL_mutexP ( value_mutex );
-
-	// The initial orientation, to be modified by pitch and yaw
-	Vector CamForward	(0.0, 0.0, -1.0	);
-	Vector CamSideways	(1.0, 0.0, 0.0	);
-	Vector CamUp		(0.0, 1.0, 0.0	);
-
-	// If we need to move, find the actual forward and sideway vectors
-	if ( (wKeyPressed+sKeyPressed+aKeyPressed+dKeyPressed) > 0 ) {
-		Matrix CamMatrix;
-		CamMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-		CamMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * CamMatrix;
-		
-		CamForward = CamMatrix * CamForward;
-		CamSideways = CamMatrix * CamSideways;
-		CamUp = CamMatrix * CamUp;
-		
-	}
-
-	// Forward
-	if (wKeyPressed && !sKeyPressed) {
-		camPosX -= CamForward[0] * camSpeed;
-		camPosY -= CamForward[1] * camSpeed;
-		camPosZ -= CamForward[2] * camSpeed;
-	}
-	
-	// Backwards
-	if (sKeyPressed && !wKeyPressed) {
-		camPosX += CamForward[0] * camSpeed;
-		camPosY += CamForward[1] * camSpeed;
-		camPosZ += CamForward[2] * camSpeed;
-	}
-	
-	// Left
-	if (aKeyPressed && !dKeyPressed) {
-		camPosX += CamSideways[0] * camSpeed;
-		camPosY += CamSideways[1] * camSpeed;
-		camPosZ += CamSideways[2] * camSpeed;
-	}
-	
-	// Right
-	if (dKeyPressed && !aKeyPressed) {
-		camPosX -= CamSideways[0] * camSpeed;
-		camPosY -= CamSideways[1] * camSpeed;
-		camPosZ -= CamSideways[2] * camSpeed;
-	}
-	if (lKeyPressed) {
-		PlaySound("include/evil_laugh.wav", NULL, SND_ALIAS | SND_APPLICATION);
-	}
-
-	//release the lock 
-	//SDL_mutexV ( value_mutex );
-}
-
 /* Initialize OpenGL */
 int initGL(void)
 {
@@ -472,12 +425,7 @@ int initGL(void)
 	// sets ambient and diffuse components of light0
 	glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
-	
-	
-	// defines the center of the screen
-	centerX = screenWidth/2;
-	centerY = screenHeight/2;
-	
+		
 	//// ******************************
 	//// ******** LOADING POINT *******
 	//// ******************************
@@ -500,93 +448,6 @@ int initGL(void)
 	std::cout << "memory usage boss cube " << (md2BossCube.GetDataSize()/1024.0f) << "kb\n";
 	
 	return TRUE;
-}
-
-/* Check key press events */
-void keyDown(SDL_keysym *keysym)
-{
-	switch(keysym->sym)
-	{
-	case SDLK_ESCAPE:
-		exit(0);
-		break;
-	case SDLK_F1:
-		SDL_WM_ToggleFullScreen(surface);
-		break;
-	case SDLK_w:
-		wKeyPressed = 1;
-		break;
-	case SDLK_s:
-		sKeyPressed = 1;
-		break;
-	case SDLK_a:
-		aKeyPressed = 1;
-		break;
-	case SDLK_d:
-		dKeyPressed = 1;
-		break;
-	case SDLK_l:
-		lKeyPressed = 1;
-		break;
-	case SDLK_0:
-		md2Demon.SetAnim(0);
-		break;
-	case SDLK_1:
-		md2Demon.SetAnim(1);
-		break;
-	case SDLK_2:
-		md2Demon.SetAnim(2);
-		break;
-	case SDLK_3:
-		md2Demon.SetAnim(3);
-		break;
-	case SDLK_4:
-		md2Demon.SetAnim(4);
-		break;
-	case SDLK_5:
-		md2Demon.SetAnim(5);
-		break;
-	case SDLK_6:
-		md2Demon.SetAnim(6);
-		break;
-	case SDLK_7:
-		md2Demon.SetAnim(7);
-		break;
-	case SDLK_8:
-		md2Demon.SetAnim(8);
-		break;
-	case SDLK_9:
-		md2Demon.SetAnim(9);
-		break;
-	default:
-		break;
-	}
-	return;
-}
-
-/* Check key release events */ 
-void keyUp(SDL_keysym *keysym) 
-{
-	switch (keysym->sym)
-    {
-		case SDLK_w:
-			wKeyPressed = 0;
-			break;
-		case SDLK_s:
-			sKeyPressed = 0;
-			break;
-		case SDLK_a:
-			aKeyPressed = 0;
-			break;
-		case SDLK_d:
-			dKeyPressed = 0;
-			break;
-		case SDLK_l:
-			lKeyPressed = 0;
-			break;
-		default:
-			break;
-	}
 }
 
 /* Apply camera matrices */

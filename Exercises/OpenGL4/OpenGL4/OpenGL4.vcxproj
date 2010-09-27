@@ -79,7 +79,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp" />
+    <ClCompile Include="controller.cpp" />
+    <ClCompile Include="entityCamera.cpp" />
+    <ClCompile Include="entitySpectator.cpp" />
     <ClCompile Include="include\linearAlgebraDLL.cpp" />
+    <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="md2File.cpp" />
     <ClCompile Include="md5.cpp" />
@@ -91,6 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h" />
+    <ClInclude Include="controller.h" />
+    <ClInclude Include="entityCamera.h" />
+    <ClInclude Include="entitySpectator.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
     <ClInclude Include="include\glut.h" />
@@ -135,6 +142,7 @@
     <ClInclude Include="include\SDL_types.h" />
     <ClInclude Include="include\SDL_version.h" />
     <ClInclude Include="include\SDL_video.h" />
+    <ClInclude Include="inputManager.h" />
     <ClInclude Include="md2File.h" />
     <ClInclude Include="md5.h" />
     <ClInclude Include="md5wrapper.h" />
