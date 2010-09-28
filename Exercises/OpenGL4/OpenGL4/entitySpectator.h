@@ -3,10 +3,10 @@
 class entitySpectator : public SceneObject
 {
 private:
-	bool moveForward;
-	bool moveBackward;
-	bool strafeLeft;
-	bool strafeRight;
+	bool shouldMoveForward;
+	bool shouldMoveBackward;
+	bool shouldStrafeLeft;
+	bool shouldStrafeRight;
 	float lookUpDownAmount;
 	float lookLeftRightAmount;
 
