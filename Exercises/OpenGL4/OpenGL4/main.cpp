@@ -11,7 +11,6 @@
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"				// Header File for the SceneObject container
-//#include "messagePump.h"				// Header File for the input message pump system
 #include "md2File.h"					// Header File for our md2 loader
 #include "assetManager.h"				// Header File for our Asset Manager
 #include "inputManager.h"				// Header File for our Input Manager
@@ -96,12 +95,20 @@ int threadInput(void *data)
 
 	inputManager inputManager;
 
+	// Disable the Windows Cursor
+	//SDL_ShowCursor(SDL_DISABLE); 
+	
+	// Binds mouse and keyboard input to the OpenGL window
+	//SDL_WM_GrabInput(SDL_GRAB_ON); 
+
 	while ( !quit ) {
 		inputManager.update();
 
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
+
+	//SDL_ShowCursor(SDL_ENABLE); 
 
 	delete &inputManager;
 
@@ -210,12 +217,6 @@ int main(int argc, char *argv[])
 	
 	// resizes OpenGL window
 	resizeWindow(screenWidth, screenHeight);
-	
-	// Disable the Windows Cursor
-	ShowCursor(SDL_DISABLE); 
-	
-	// Binds mouse and keyboard input to the OpenGL window
-	SDL_WM_GrabInput(SDL_GRAB_ON); 
 	
 	// Create the root node
 	rootNodePtr = new Root();
@@ -353,9 +354,6 @@ int main(int argc, char *argv[])
 	// Delete the message pump between threads
 	delete &InputPump;
 
-	// Show the cursor again
-	ShowCursor(TRUE);
-	
 	exit(0);  
 }
 

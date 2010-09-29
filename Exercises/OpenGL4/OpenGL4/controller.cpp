@@ -19,30 +19,36 @@ void Controller::setPlayerObject(entitySpectator *player)
 
 void Controller::moveForward(bool shouldMove)
 {
-
+	if (playerObject != NULL)
+		playerObject->moveForward(shouldMove);
 }
 
 void Controller::moveBackward(bool shouldMove)
 {
-
+	if (playerObject != NULL)
+		playerObject->moveBackward(shouldMove);
 }
 
 void Controller::strafeLeft(bool shouldMove)
 {
-
+	if (playerObject != NULL)
+		playerObject->strafeLeft(shouldMove);
 }
 
 void Controller::strafeRight(bool shouldMove)
 {
-
+	if (playerObject != NULL)
+		playerObject->strafeRight(shouldMove);
 }
 
-void Controller::lookUpDown(float deltaLook)
+void Controller::lookDeltaX(float deltaLook)
 {
-
+	if (playerObject != NULL)
+		playerObject->lookDeltaX(deltaLook);
 }
 
-void Controller::lookLeftRight(float deltaLook)
+void Controller::lookDeltaY(float deltaLook)
 {
-
+	if (playerObject != NULL)
+		playerObject->lookDeltaY(deltaLook);
 }
