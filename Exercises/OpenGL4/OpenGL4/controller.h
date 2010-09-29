@@ -19,8 +19,8 @@ public:
 	static void moveBackward(bool shouldMove);
 	static void strafeLeft(bool shouldMove);
 	static void strafeRight(bool shouldMove);
-	static void lookUpDown(float deltaLook);
-	static void lookLeftRight(float deltaLook);
+	static void lookDeltaX(float deltaLook);
+	static void lookDeltaY(float deltaLook);
 	static void lock() { SDL_mutexP( mutex_controller ); }
 	static void unlock() { SDL_mutexV( mutex_controller ); }
 };

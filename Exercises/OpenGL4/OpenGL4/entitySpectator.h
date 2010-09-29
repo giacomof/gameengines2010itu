@@ -7,8 +7,8 @@ private:
 	bool shouldMoveBackward;
 	bool shouldStrafeLeft;
 	bool shouldStrafeRight;
-	float lookUpDownAmount;
-	float lookLeftRightAmount;
+	float lookDeltaXAmount;
+	float lookDeltaYAmount;
 
 public:
 	virtual void update();
@@ -16,6 +16,6 @@ public:
 	virtual void moveBackward(bool shouldMove);
 	virtual void strafeLeft(bool shouldMove);
 	virtual void strafeRight(bool shouldMove);
-	virtual void lookUpDown(float deltaLook);
-	virtual void lookLeftRight(float deltaLook);
+	virtual void lookDeltaX(float deltaLook);
+	virtual void lookDeltaY(float deltaLook);
 };
