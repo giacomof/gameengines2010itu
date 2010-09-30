@@ -4,8 +4,7 @@
 Controller Controller::_instance;
 SDL_mutex * Controller::mutex_controller;
 entitySpectator * Controller::playerObject;
-
-
+bool Controller::quit;
 
 Controller &Controller::getInstance()
 {

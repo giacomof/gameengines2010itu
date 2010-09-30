@@ -66,8 +66,6 @@ void drawGL(void);
 
 // Pointer to the function that moves the camera
 float* getCamera();
-// Function that restricts camera movements
-void clampCamera();
 
 GLuint	filter;
 GLuint	texture[3];
@@ -96,19 +94,19 @@ int threadInput(void *data)
 	inputManager inputManager;
 
 	// Disable the Windows Cursor
-	//SDL_ShowCursor(SDL_DISABLE); 
+	SDL_ShowCursor(SDL_DISABLE); 
 	
 	// Binds mouse and keyboard input to the OpenGL window
-	//SDL_WM_GrabInput(SDL_GRAB_ON); 
+	SDL_WM_GrabInput(SDL_GRAB_ON); 
 
-	while ( !quit ) {
+	while ( !Controller::getInstance().quit ) {
 		inputManager.update();
 
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
 
-	//SDL_ShowCursor(SDL_ENABLE); 
+	SDL_ShowCursor(SDL_ENABLE); 
 
 	delete &inputManager;
 
@@ -152,7 +150,7 @@ int threadUpdate(void *data)
 	// Thread name
 	char *tname = ( char * )data;
 
-	while ( !quit ) {
+	while ( !Controller::getInstance().quit ) {
 		// Runs the update method here
 
 		// Delay the thread to make room for others on the CPU
@@ -283,7 +281,14 @@ int main(int argc, char *argv[])
 	 * Graph and asset testing stuff ends here  *
 	 * ---------------------------------------- */
 
-	while(!quit)
+	// Set up camera and spectator
+	entitySpectator *player = new entitySpectator();
+	entityCamera *playercamera = new entityCamera();
+	player->setCamera(playercamera);
+
+	Controller::getInstance().setPlayerObject(player);
+
+	while(!Controller::getInstance().quit)
 	{
 		
 		char title[80];
@@ -316,7 +321,7 @@ int main(int argc, char *argv[])
 				resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
 				break;
 			case SDL_QUIT:
-				quit = TRUE;
+				Controller::getInstance().quit = true;
 				break;
 			// Input events coming below. They are all just passed on to the input pump
 			case SDL_KEYDOWN:
@@ -333,6 +338,8 @@ int main(int argc, char *argv[])
 				break;
 			}
 		}
+
+		Controller::getInstance().playerObject->update();
 		
 		// Actual frame rendering happens here
 		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
@@ -457,30 +464,29 @@ float* getCamera()
 {		
 	glMatrixMode(GL_MODELVIEW);
 
-	float tranM[16];
-	Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),-camPitch).getTranspose();
-	transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),-camYaw).getTranspose() * transformationMatrix;
-	transformationMatrix = Matrix::generateTranslationMatrix(camPosX, camPosY, camPosZ).getTranspose() * transformationMatrix;
-	transformationMatrix.getMatrix(&tranM[0]);
+	entityCamera *currentCamera = Controller::getInstance().playerObject->getCamera();
+
+	float tranM[16] = {	1, 0, 0, 0,
+						0, 1, 0, 0,
+						0, 0, 1, 0,
+						0, 0, 0, 0};
+
+	if ( currentCamera != NULL )
+	{
+		currentCamera->lock();
+
+		Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),currentCamera->pitch).getTranspose();
+		transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),currentCamera->yaw).getTranspose() * transformationMatrix;
+		transformationMatrix = Matrix::generateTranslationMatrix(	currentCamera->vPosition[0],
+																	currentCamera->vPosition[1],
+																	currentCamera->vPosition[2]).getTranspose() * transformationMatrix;
+		transformationMatrix.getMatrix(&tranM[0]);
+
+		currentCamera->unlock();
+	}
 
 	glMultMatrixf(&tranM[0]);
 	return &tranM[0];
-}
-
-/* Clamps the camera to a specific pitch and constrains yaw */
-void clampCamera()
-{
-	// Limits camera pitch
-	if (camPitch>90.0f)
-		camPitch = 90.0f;
-	else if (camPitch<-90.0f)
-		camPitch = -90.0f;
-
-	// Rolls over yaw
-	while(camYaw<=0.0f)
-		camYaw += 360.0f;
-	while(camYaw>=360.0f)
-		camYaw -= 360.0f;
 }
 
 /* Resize the window */
