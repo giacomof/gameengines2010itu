@@ -67,14 +67,6 @@ const md2File::uv* md2File::GetTexCoords() const {
 	return reinterpret_cast<uv*>(ptr);
 }
 
-// returns the GL command list built-in the md2 (optional)
-const md2File::glCommandList* md2File::GetCommands() const  {
-	if(!m_data) return 0;
-	const model* pm = GetModel();
-	void* ptr = m_data + pm->offsetGlCommands;
-	return reinterpret_cast<glCommandList*>(ptr);
-}
-
 
 const char*	md2File::GetSkin(unsigned int num) const {
 	if(!m_data) return 0;
@@ -252,109 +244,45 @@ void md2File::Render() const {
 	if(!m_data)
 		return;
 
-	// if we have gl Commands in the file, use those for they are 
-	// slightly faster
-	if( !(MD2_ALWAYS_GL_TRIANGLES) && 
-		 GetModel()->numGlCommands > 1 ) 
-	{
+	// decompress the uv data
+	float uv_scale_s = 1.0f / GetModel()->skinWidth;
+	float uv_scale_t = 1.0f / GetModel()->skinHeight;
 
-		// the Md2 stores how many DWORDS (4 byte chunks) are used
-		// We want this in bytes so we can figure out the total size
-		// of the gl command section
-		int gl_command_data_size = 4 * GetModel()->numGlCommands;
+	glMatrixMode(GL_TEXTURE);
+	glPushMatrix();
+	glScalef(uv_scale_s,uv_scale_t,1.0f);
+	glMatrixMode(GL_MODELVIEW);
 
-		// use pointer to walk through the data
-		unsigned char* ptr = m_data + GetModel()->offsetGlCommands;
-		unsigned char* end = ptr + gl_command_data_size;
+	// draw each triangle
+	glBegin(GL_TRIANGLES);
+		// get num of triangles in mesh
+		unsigned short nTris = GetNumTriangles();
 
-		// loop till end
-		while(ptr != end) 
+		// get point to triangle
+		const triangle* pt = GetTriangles();
+
+		// loop through each triangle 
+		for(unsigned short i=0;i!=nTris;++i) 
 		{
-			// get the command list for this strip or fan
-			glCommandList* pCommand = ((glCommandList*)((void*)ptr));
-			int num = pCommand->num;
-
-			// ignore if zero
-			if(num == 0) {
-				return; 
-				
-				//ptr += 4;
-				//continue;
-			}
-			
-			// the primitive type to draw
-			GLenum PrimitiveType = GL_TRIANGLE_STRIP;
-
-			// if num is negative, we have to draw a triangle fan
-			if(num<0) {
-				PrimitiveType = GL_TRIANGLE_FAN;
-				num = -num;
-				
-			}
-			
-			// start drawing
-			glBegin(PrimitiveType);
-
-				// iterate through the openGL command vertices.
-				// these basically just contain a vertex index and 
-				// the UV coord data for this vertex
-				glCommandVertex* pStart=pCommand->verts;
-				glCommandVertex* pEnd  = pStart + num;
-				for( ; pStart != pEnd; ++pStart )
-				{
-					glTexCoord2fv(pStart->data);
-					glVertex3fv(m_Verts + 3*pStart->vertexIndex);
-				}
-			glEnd();
-
-			// move iterator to next command
-			ptr += (4 + sizeof(glCommandVertex)*num);
-			
-		}
-	}
-
-	// otherwise use triangle list
-	else
-	{
-		// decompress the uv data
-		float uv_scale_s = 1.0f / GetModel()->skinWidth;
-		float uv_scale_t = 1.0f / GetModel()->skinHeight;
-
-		glMatrixMode(GL_TEXTURE);
-		glPushMatrix();
-		glScalef(uv_scale_s,uv_scale_t,1.0f);
-		glMatrixMode(GL_MODELVIEW);
-
-		// draw each triangle
-		glBegin(GL_TRIANGLES);
-			// get num of triangles in mesh
-			unsigned short nTris = GetNumTriangles();
-
-			// get point to triangle
-			const triangle* pt = GetTriangles();
-
-			// loop through each triangle 
-			for(unsigned short i=0;i!=nTris;++i) 
+			// loop through each vertex on the triangle
+			for(unsigned int j=0;j!=3;++j) 
 			{
-				// loop through each vertex on the triangle
-				for(unsigned int j=0;j!=3;++j) 
-				{
-					const float* pvertex = m_Verts + 3*pt[i].vertexIndices[j];
-					const uv*    puv     = GetTexCoords() + pt[i].textureIndices[j];
+				const float* pvertex = m_Verts + 3*pt[i].vertexIndices[j];
+				const uv*    puv     = GetTexCoords() + pt[i].textureIndices[j];
 
-					// set UV
-					glTexCoord2sv(puv->data);
+				// set UV
+				glTexCoord2sv(puv->data);
 
-					// draw vertex
-					glVertex3fv(pvertex);
-				}
+				// draw vertex
+				glVertex3fv(pvertex);
 			}
-		glEnd();
+		}
+	glEnd();
 		
-		glMatrixMode(GL_TEXTURE);
-		glPopMatrix();
-		glMatrixMode(GL_MODELVIEW);
-	}
+	glMatrixMode(GL_TEXTURE);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	
 }
 
 // starts the specified animation
