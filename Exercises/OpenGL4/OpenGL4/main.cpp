@@ -110,8 +110,6 @@ int threadInput(void *data)
 
 	SDL_ShowCursor(SDL_ENABLE); 
 
-	delete &input;
-
 	return 0;
 }
 
@@ -370,8 +368,7 @@ int main(int argc, char *argv[])
 	delete player;
 	delete rootNodePtr;
 	delete assetManagerPtr;
-	delete &InputPump;
-
+	
 	exit(0);  
 }
 
