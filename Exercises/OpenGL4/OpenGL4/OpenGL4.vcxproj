@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp" />
+    <ClCompile Include="colladaFile.cpp" />
     <ClCompile Include="controller.cpp" />
     <ClCompile Include="entityCamera.cpp" />
     <ClCompile Include="entitySpectator.cpp" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h" />
+    <ClInclude Include="colladaFile.h" />
     <ClInclude Include="controller.h" />
     <ClInclude Include="entityCamera.h" />
     <ClInclude Include="entitySpectator.h" />

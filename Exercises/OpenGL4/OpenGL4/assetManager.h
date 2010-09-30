@@ -15,9 +15,8 @@ struct textureContainer
 
 struct md2InterfaceContainer
 {
-	unsigned int md2ID;
-	std::string md2Name;
-	md2File md2Mesh;
+	md2File * md2Mesh;
+	std::string meshMD5;
 };
 
 using namespace std;
@@ -32,9 +31,9 @@ public:
 	void loadTexture(char * fileDirectory, char * textureName);
 	unsigned int getTexture(char * textureName);
 
-	void loadMd2(char * filePath, char * md2Name);
-	md2File* getMesh(char * md2Name);
-
+	void loadMd2(char * filePath, char * md2NameChar);
+	md2File* getMesh(char * md2NameChar);
+	
 private:
 	std::map <char *, textureContainer> texture_list;
 	std::map <char *, md2InterfaceContainer> md2_list;

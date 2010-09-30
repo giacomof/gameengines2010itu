@@ -12,8 +12,11 @@
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"				// Header File for the SceneObject container
 #include "md2File.h"					// Header File for our md2 loader
+#include "colladaFile.h"				// Header File for out COLLADA loader
 #include "assetManager.h"				// Header File for our Asset Manager
 #include "inputManager.h"				// Header File for our Input Manager
+
+
 
 #define NUM_SOUNDS 2
 
@@ -40,14 +43,22 @@ Uint32 tickFrame = 0;
 MessagePump InputPump;								
 
 // Pointer to SDL rendering surface
-SDL_Surface *surface;				
+SDL_Surface * surface;				
 
 GLuint image;	
 
 // Root node and other Scene Node
 Root *rootNodePtr;
 // Asset manager
-AssetManager *assetManagerPtr;
+AssetManager * assetManagerPtr;
+
+SceneNode * demon;
+//md2File md2Demon;
+SceneNode * lostSoul;
+//md2File md2LostSoul;
+SceneNode * bossCube;
+//md2File md2BossCube;
+ColladaFile colladaTest;
 
 // Camera and Movements Definitions
 float camYaw, camPitch, camYawRad, camPitchRad;
@@ -70,13 +81,6 @@ float* getCamera();
 GLuint	filter;
 GLuint	texture[3];
 
-// Test stuff
-SceneNode * demon;
-md2File md2Demon;
-SceneNode * lostSoul;
-md2File md2LostSoul;
-SceneNode * bossCube;
-md2File md2BossCube;
 
 // Define Test Lights Attributes
 GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
@@ -163,6 +167,8 @@ int threadUpdate(void *data)
 /* Application entry point */
 int main(int argc, char *argv[])
 {
+	// start the asset manager
+	assetManagerPtr = new AssetManager();
 
 	// SDL/OpenGL data
 	int videoFlags;
@@ -220,9 +226,6 @@ int main(int argc, char *argv[])
 	rootNodePtr = new Root();
 	rootNodePtr->setName("root");
 
-	// start the asset manager
-	assetManagerPtr = new AssetManager();
-
 	// Define the exit of the program in relation to SDL variables
 	atexit(SDL_Quit);
 
@@ -247,7 +250,7 @@ int main(int argc, char *argv[])
 
 	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
 	
-	md2Interface doomDemon = md2Interface(&md2Demon, assetManagerPtr->getTexture("doomDemonTx"));
+	md2Interface doomDemon = md2Interface(assetManagerPtr->getMesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rootNodePtr->unlock(); // We can unlock the node now
 
@@ -260,7 +263,7 @@ int main(int argc, char *argv[])
 	demon->unlock(); // We can now unlock it
 	
 	kernel.lock();
-	md2Interface lostSoul_g = md2Interface(&md2LostSoul, assetManagerPtr->getTexture("lostSoulTx"));
+	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	kernel.unlock();
 
@@ -269,7 +272,7 @@ int main(int argc, char *argv[])
 	lostSoul->scale(1, 1, 1);
 	lostSoul->unlock();
 	
-	md2Interface bossCube_g = md2Interface(&md2BossCube, assetManagerPtr->getTexture("bossCubeTx"));
+	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->unlock();
 
@@ -297,7 +300,7 @@ int main(int argc, char *argv[])
 		
 		kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
-		bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
+		//bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
 		
 		// Time to take care of the SDL events we have recieved
 		SDL_Event currentEvent;
@@ -379,24 +382,16 @@ void drawGL(void)
 	rootNodePtr->unlock();
 	//glPopMatrix();
 
+	colladaTest.render();
+
 	// ********************
 	// *** UPDATE POINT *** 
 	// ********************
 
 	// draw the animation
-	demon->lock();
-	demon->update(0.006);
-	demon->unlock();
-
-	lostSoul->lock();
-	lostSoul->update(0.006);
-	lostSoul->unlock();
-	
-	bossCube->lock();
-	bossCube->update(0.006);
-	bossCube->unlock();
-	
-
+	rootNodePtr->lock();
+	rootNodePtr->update(0.06);
+	rootNodePtr->unlock();
 
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
@@ -422,7 +417,9 @@ int initGL(void)
 	glEnable(GL_TEXTURE_2D);
 	// enables smooth shading (garaud)
 	glShadeModel(GL_SMOOTH);
-	
+	// frontfacing culling
+	/*glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);*/
 	// enables lighting
 	glEnable(GL_LIGHTING);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -438,24 +435,25 @@ int initGL(void)
 	//// ******************************
 	//// ******** LOADING POINT *******
 	//// ******************************
-	md2Demon = md2File();
-	md2LostSoul = md2File();
-	md2BossCube = md2File();
+	assetManagerPtr->loadMd2("include/Cyber.md2", "md2Demon");
+	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
+	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
 
-	//// loads md2 files
-	md2Demon.Load("include/Cyber.md2");
-	md2LostSoul.Load("include/Lostsoul.md2");
-	md2BossCube.Load("include/bosscube.md2");
+	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
+	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
+	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
+
+	colladaTest.load("include/duck.dae");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
 	//// ******************************
 	
 	// write memory usage
-	std::cout << "memory usage demon " << (md2Demon.GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage lost soul " << (md2LostSoul.GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage boss cube " << (md2BossCube.GetDataSize()/1024.0f) << "kb\n";
-	
+	std::cout << "memory usage demon " << (assetManagerPtr->getMesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage lost soul " << (assetManagerPtr->getMesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage boss cube " << (assetManagerPtr->getMesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage COLLADA duck " << (colladaTest.getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 
