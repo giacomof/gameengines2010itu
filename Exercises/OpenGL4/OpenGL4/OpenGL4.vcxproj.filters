@@ -284,6 +284,12 @@
     <None Include="include\snippets.txt">
       <Filter>Text Files</Filter>
     </None>
+    <None Include="include\duck.dae">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\duck2.dae">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
