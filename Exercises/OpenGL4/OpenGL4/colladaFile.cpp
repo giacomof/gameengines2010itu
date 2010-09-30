@@ -58,15 +58,17 @@ bool ColladaFile::load(const char* filename)
 				indexCount = atoi(indexNode->first_attribute("count")->value());	
 				indexArray = indexNode->first_node("p")->value();
 
-				// check if there are other meshes to load
-
-				isFinished = true;
-			} 
+			}
 		}
 
 		if(!isFinished)  {
-			tempNode = tempNode->next_sibling();
-			tempNodeName = tempNode->name();
+			// check if there are other meshes to load
+			if (tempNode->next_sibling() != 0) {
+				tempNode = tempNode->next_sibling();
+				tempNodeName = tempNode->name();
+			} else {
+				isFinished = true;
+			}
 		}
 	}
 
