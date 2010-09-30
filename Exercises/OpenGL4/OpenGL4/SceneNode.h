@@ -21,7 +21,7 @@ class SceneNode
 		// destructor
 		virtual ~SceneNode() { SDL_DestroyMutex ( mutex_node ); }
 		// delete object
-		void release() { delete this; SDL_DestroyMutex ( mutex_node ); }
+		void release() { SDL_DestroyMutex ( mutex_node ); }
 
 		void update(float dt);
 		void destroy(void);
