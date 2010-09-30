@@ -10,9 +10,6 @@
 	#include <stdlib.h>
 	#include <glut.h>
 
-	// 1 to force the renderer to use GL_TRIANGLES only, 0 otherwise
-	#define MD2_ALWAYS_GL_TRIANGLES 0
-
 	// sets the frames per second for the animations
 	#define MD2_FRAMES_PER_SEC 5
 
@@ -51,7 +48,7 @@
 		unsigned short GetNumAnims() const;
 
 		// returns the total size of the model in kb
-		unsigned int GetDataSize() const ;
+		unsigned int GetDataSize() const;
 
 	protected:
 
@@ -62,6 +59,10 @@
 		unsigned short GetNumTriangles() const {
 			return GetModel()->numTriangles;
 		}
+
+		// *****************************************************
+		// ************* Custom Struct Definitions *************
+		// *****************************************************
 
 		// Header of the MD2 file
 
@@ -86,10 +87,6 @@
 			int offsetEnd;			// end of all offsets
 		};
 	
-		// *****************************************************
-		// ************* Custom Struct Definitions *************
-		// *****************************************************
-
 		// triangles
 		struct triangle
 		{
@@ -138,13 +135,6 @@
 			int vertexIndex;
 		};
 
-		// embeded list of OpenGL commands
-		struct glCommandList
-		{
-			int num;
-			glCommandVertex verts[1];
-		};
-
 		/// holds a reference to an animation within the MD2 file
 		struct AnimRef {
 
@@ -169,16 +159,9 @@
 		const char*			 GetSkin(unsigned int num) const;
 		const triangle*		 GetTriangles() const;
 		const uv*			 GetTexCoords() const;
-		const glCommandList* GetCommands() const;
 
 		unsigned char* m_data;
 		unsigned int data_size;
-
-		/*md2File() : m_data(0) {}
-		~md2File() {
-			delete [] m_data;
-			m_data=0;
-		}*/
 
 		// the time of the current animation
 		float m_AnimTime;
