@@ -32,7 +32,8 @@ public:
 	// *****************************************************
 
 	// character type defaults to char
-	xml_document<> doc;   
+	xml_document<> doc; 
+	xml_node<>* tempNode;
 	// Texture file name
 	string textureName;
 	// int for containing the number of vertices, normals and maps
@@ -41,6 +42,8 @@ public:
 	string vertexArray, normalArray, mapArray, indexArray;
 	float * vertex, * normal, * map;
 	unsigned int * index;
+	unsigned int offset;
+	bool hasTexture, hasMoreNodes, isFinished;
 
 };
 

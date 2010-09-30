@@ -27,9 +27,9 @@
 
 		// loads the specified md2 model
 		// returns true if OK
-		bool Load(const char* filename);
+		bool Load(unsigned char * p_data, unsigned int p_size );
 
-		bool loadFile(const char* filename);
+		bool checkFile(void);
 
 		// updates the animation
 		// dt is delta time from last frame

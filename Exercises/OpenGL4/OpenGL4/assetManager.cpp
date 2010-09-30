@@ -10,7 +10,7 @@ AssetManager::AssetManager(void)
 
 AssetManager::~AssetManager(void)
 {
-
+	//DON'T FORGET TO DEALLOCATE MD2 MALLOC
 }
 
 void AssetManager::loadTexture(char * fileDirectory, char * textureName)
@@ -104,3 +104,68 @@ unsigned int AssetManager::getTexture(char * textureName)
 	return texture_list[textureName].textureID;
 }
 
+void AssetManager::loadMd2(char * filePath, char * md2NameChar)
+{
+
+	bool exist = false;
+	unsigned char * m_data;
+	unsigned int data_size;
+	std::string hash;
+	md5wrapper md5;
+
+	FILE* fp = fopen(filePath,"rb");
+	if(!fp) {
+		std::cout << "[ERROR] \"" 
+				  << filePath 
+				  << "\" could not be opened"
+				  << std::cout;
+		return;
+	}
+	fseek(fp,0,SEEK_END);
+	data_size = ftell(fp);
+	m_data = new unsigned char[data_size];
+	assert(m_data);
+
+	rewind(fp);
+
+	fread(m_data,sizeof(unsigned char),data_size,fp);
+	fclose(fp);
+
+
+	// This will store the md5 hash of a file called test.txt in a string hash1
+	hash = md5.getHashFromFilePtr((FILE *)m_data, (int) data_size);
+
+
+	// use const_iterator to walk through elements of pairs
+	for ( std::map<char *, md2InterfaceContainer>::const_iterator iter = md2_list.begin(); iter != md2_list.end(); ++iter ) {
+
+		if (iter->second.meshMD5 == hash) {
+			if (iter->first == md2NameChar) {
+				exist = true;
+				break;
+			} else {
+				md2_list[md2NameChar].md2Mesh = iter->second.md2Mesh;
+				md2_list[md2NameChar].meshMD5 = iter->second.meshMD5;
+				exist = true;
+				break;
+			}
+		}
+	}
+
+	if (exist == false) {
+
+		md2File * temp = (md2File *)malloc(sizeof(md2File));
+		temp = new md2File();
+		temp->Load(m_data, data_size);
+
+		md2_list[md2NameChar].md2Mesh = temp;
+		md2_list[md2NameChar].meshMD5 = hash;
+
+	}
+
+}
+
+md2File * AssetManager::getMesh(char * md2NameChar) 
+{
+	return md2_list[md2NameChar].md2Mesh;
+}

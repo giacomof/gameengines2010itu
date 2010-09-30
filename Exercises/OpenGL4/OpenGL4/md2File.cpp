@@ -75,10 +75,19 @@ const char*	md2File::GetSkin(unsigned int num) const {
 }
 
 // loads the md2 model and allocate proper memory
-bool md2File::Load(const char* filename) {
+bool md2File::Load(unsigned char * p_data, unsigned int p_size ) {
 	Release();
 
-	if( !loadFile(filename) )
+	
+
+	data_size = p_size;
+	m_data = new unsigned char[data_size];
+
+	for(unsigned int i = 0; i < data_size; i++) {
+		m_data[i] = p_data[i];
+	}
+
+	if (!checkFile())
 		return false;
 
 	// allocate memory for vertex data
@@ -124,36 +133,14 @@ bool md2File::Load(const char* filename) {
 	return true;
 }
 
-bool md2File::loadFile(const char* filename) {
-	FILE* fp = fopen(filename,"rb");
-	if(!fp) {
-		std::cout << "[ERROR] \"" 
-				  << filename 
-				  << "\" could not be opened"
-				  << std::cout;
-		return false;
-	}
-	fseek(fp,0,SEEK_END);
-	data_size = ftell(fp);
-	m_data = new unsigned char[data_size];
-	assert(m_data);
-#if 0
-	fclose(fp);
-	fp = fopen(filename,"rb");
-#else
-	rewind(fp);
-#endif
-	fread(m_data,sizeof(unsigned char),data_size,fp);
-	fclose(fp);
+bool md2File::checkFile(void) {
 
 	// ensure format is valid
 	if( GetModel()->magic != 0x32504449 ||
 		GetModel()->version != 8 ) {
 			delete [] m_data;
 			m_data  = 0;
-			std::cout << "[ERROR] \"" 
-					  << filename 
-					  << "\" does not contain 'IDP2' flag"
+			std::cout << "[ERROR] the MD2 does not contain 'IDP2' flag"
 					  << std::cout;
 			return false;
 	}
