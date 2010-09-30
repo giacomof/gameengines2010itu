@@ -4,7 +4,7 @@
 
 GLOBAL TASKS:
 
-S- Camera as child of sceneObject ->classes are in place. Just need to make them respond to input
+1(S)- Camera as child of sceneObject
 1(V)- Childs of sceneObject
 G- Asset Manager
 	1(G)- Texture Manager
@@ -17,20 +17,22 @@ G- Asset Manager
 0- Physics SDK (Bullet?)
 0- Sounds without movements freeze
 1(V)- Merge md2Loader and md2File classes in the md2Interface
-G- FBX/Collada Loader --->Working on COLLADA --> Collada loader ready, implementing it in the engine
+1(G+V)- FBX/Collada Loader --->Working on COLLADA --> Collada loader ready, implementing it in the engine
+	V- multi-node collada loader
+	V- include the Collada in the AssetManager
 1(G)- Create unit units for testing
 0- Compile everything we can as a DLL
 0- A DisplayManager capable of opening a window with an opengl context
 0- Clock Class
 	0- fps counter with a sliding frame window
-0- logging system with verbosity levels
 0- attach/detach camera to player model -> S: We'd most likely be attaching it to the game entity that the model is attached to as well, instead (fx, attaching it to entitySpectator)
 
 
-0-Check why some methods in md2file are "const"
+
 
 OPTIONALS:
 
+0- logging system with verbosity levels
 0- father of scenenode to inherit mutex methods
 0- singleton superclass
 0- debug draw system

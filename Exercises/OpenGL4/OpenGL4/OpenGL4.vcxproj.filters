@@ -267,6 +267,7 @@
     </None>
     <None Include="todo.txt" />
     <None Include="structure.txt" />
+    <None Include="include\TEAMDETAILS.txt" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
