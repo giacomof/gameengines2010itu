@@ -7,8 +7,9 @@ public:
 	static Controller _instance;
 	static SDL_mutex *mutex_controller;
 	static entitySpectator *playerObject;
+	static bool quit;
  
-	Controller() { mutex_controller = SDL_CreateMutex(); playerObject = NULL; &getInstance(); }
+	Controller() { quit = false; mutex_controller = SDL_CreateMutex(); playerObject = NULL; &getInstance(); }
 	~Controller() { SDL_DestroyMutex( mutex_controller ); } 
 	Controller(const Controller &getInstance());
 	

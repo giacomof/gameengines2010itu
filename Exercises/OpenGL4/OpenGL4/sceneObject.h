@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL.h>
 #include <il.h>
 #include <ilu.h>
 #include <ilut.h>
@@ -13,11 +14,18 @@ using namespace linearAlgebraDLL;
 
 class SceneObject
 {
+	protected:
+		SDL_mutex *mutex_object;
+
 	public:
 		SceneObject(void);
 		virtual ~SceneObject(void);
 		virtual void drawGeometry() {};
 		virtual void update(void) {};
+
+		// Mutex commands
+		virtual void lock(void);
+		virtual void unlock(void);
 };
 
 class Text : public SceneObject 

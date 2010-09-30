@@ -12,6 +12,7 @@ GLuint imageT;
 
 SceneObject::SceneObject(void)
 {
+	mutex_object = SDL_CreateMutex();
 }
 
 
@@ -19,7 +20,15 @@ SceneObject::~SceneObject(void)
 {
 }
 
+void SceneObject::lock(void)
+{
+	SDL_mutexP( mutex_object );
+}
 
+void SceneObject::unlock(void)
+{
+	SDL_mutexV( mutex_object );
+}
 
 // ************************************* //
 // ************** MD2 ****************** //
