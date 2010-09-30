@@ -162,6 +162,7 @@
     <None Include="include\lostsoul.jpg" />
     <None Include="include\Lostsoul.md2" />
     <None Include="include\nhe.ico" />
+    <None Include="include\TEAMDETAILS.txt" />
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
     <None Include="structure.txt" />
