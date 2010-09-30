@@ -44,19 +44,19 @@ bool ColladaFile::load(const char* filename)
 			{
 				// Mesh
 				xml_node<>* geometryNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source")->first_node("float_array");
-				vertexCount = atoi(geometryNode->first_attribute("count")->value());
-				vertexArray = geometryNode->value();
+				vertexCount += atoi(geometryNode->first_attribute("count")->value());
+				vertexArray += geometryNode->value();
 				
 				// Normals
 				xml_node<>* normalNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source");
 				normalNode = normalNode->next_sibling();
-				normalCount = atoi(normalNode->first_node("float_array")->first_attribute("count")->value());
-				normalArray = normalNode->first_node("float_array")->value();
+				normalCount += atoi(normalNode->first_node("float_array")->first_attribute("count")->value());
+				normalArray += normalNode->first_node("float_array")->value();
 				
 				// Indices
 				xml_node<>* indexNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("triangles");
-				indexCount = atoi(indexNode->first_attribute("count")->value());	
-				indexArray = indexNode->first_node("p")->value();
+				indexCount += atoi(indexNode->first_attribute("count")->value());	
+				indexArray += indexNode->first_node("p")->value();
 
 			}
 		}
