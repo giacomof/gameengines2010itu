@@ -16,8 +16,6 @@
 #include "assetManager.h"				// Header File for our Asset Manager
 #include "inputManager.h"				// Header File for our Input Manager
 
-
-
 #define NUM_SOUNDS 2
 
 // Type for Sound data
@@ -81,6 +79,8 @@ float* getCamera();
 GLuint	filter;
 GLuint	texture[3];
 
+// input manager definition
+inputManager input;
 
 // Define Test Lights Attributes
 GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
@@ -95,8 +95,6 @@ int threadInput(void *data)
 {
 	char *tname = ( char * )data;
 
-	inputManager inputManager;
-
 	// Disable the Windows Cursor
 	SDL_ShowCursor(SDL_DISABLE); 
 	
@@ -104,7 +102,7 @@ int threadInput(void *data)
 	SDL_WM_GrabInput(SDL_GRAB_ON); 
 
 	while ( !Controller::getInstance().quit ) {
-		inputManager.update();
+		input.update();
 
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
@@ -112,7 +110,7 @@ int threadInput(void *data)
 
 	SDL_ShowCursor(SDL_ENABLE); 
 
-	delete &inputManager;
+	delete &input;
 
 	return 0;
 }
@@ -142,7 +140,6 @@ int threadSound(void *data)
     SDL_PauseAudio(0);
 
 	// Run the audio handling here
-
 
 	SDL_CloseAudio();
 	return 0;
@@ -184,6 +181,7 @@ int main(int argc, char *argv[])
 	videoInfo = SDL_GetVideoInfo();
 	if (!videoInfo)
 	{
+		delete assetManagerPtr;
 		exit(1);
 	}
 	
@@ -211,11 +209,13 @@ int main(int argc, char *argv[])
 
 	if (!surface)
 	{
+		delete assetManagerPtr;
 		exit(1);
 	}
 
 	if (initGL()==FALSE)
 	{
+		delete assetManagerPtr;
 		exit(1);
 	}
 	
@@ -319,6 +319,7 @@ int main(int argc, char *argv[])
 				surface = SDL_SetVideoMode(	currentEvent.resize.w, currentEvent.resize.h, screenColorDepth, videoFlags);
 				if (!surface)
 				{
+					delete assetManagerPtr;
 					exit(1);
 				}
 				resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
@@ -361,7 +362,14 @@ int main(int argc, char *argv[])
 	SDL_WaitThread ( id2, NULL );
 	SDL_WaitThread ( id3, NULL );
 
-	// Delete the message pump between threads
+	// Deletes
+	delete demon;
+	delete lostSoul; 
+	delete bossCube;
+	delete playercamera;
+	delete player;
+	delete rootNodePtr;
+	delete assetManagerPtr;
 	delete &InputPump;
 
 	exit(0);  

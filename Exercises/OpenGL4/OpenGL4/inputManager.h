@@ -5,7 +5,7 @@
 class inputManager
 {
 public:
-	int update();
+	int update(void);
 
 private:
 	void keyPress(SDL_Event currentEvent);
