@@ -58,6 +58,8 @@ bool ColladaFile::load(const char* filename)
 				indexCount = atoi(indexNode->first_attribute("count")->value());	
 				indexArray = indexNode->first_node("p")->value();
 
+				// check if there are other meshes to load
+
 				isFinished = true;
 			} 
 		}
