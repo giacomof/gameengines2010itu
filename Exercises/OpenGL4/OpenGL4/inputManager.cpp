@@ -2,7 +2,7 @@
 
 const float mouse_sensitivity = 0.2;
 
-int inputManager::update()
+int inputManager::update(void)
 {
 SDL_Event currentEvent;
 
