@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Text Files">
+      <UniqueIdentifier>{c45e4732-351d-4eb7-b22c-1ad573e86c9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -265,9 +268,16 @@
     <None Include="include\cyber.jpg">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="todo.txt" />
-    <None Include="structure.txt" />
     <None Include="include\TEAMDETAILS.txt" />
+    <None Include="structure.txt">
+      <Filter>Text Files</Filter>
+    </None>
+    <None Include="todo.txt">
+      <Filter>Text Files</Filter>
+    </None>
+    <None Include="include\snippets.txt">
+      <Filter>Text Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
