@@ -169,9 +169,12 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 
 }
 
-void AssetManager::loadCollada(char * filePath, char * md2NameChar)
+void AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 {
-
+	ColladaFile * tempCollada = (ColladaFile*) malloc(sizeof(ColladaFile));
+	tempCollada = new ColladaFile();
+	tempCollada->load(filePath);
+	collada_list[colladaNameChar].colladaMesh = tempCollada;
 }
 
 md2File * AssetManager::getMd2Mesh(char * md2NameChar) 
