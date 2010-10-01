@@ -364,12 +364,13 @@ int main(int argc, char *argv[])
 	//delete demon;
 	//delete lostSoul; 
 	//delete bossCube;
-	//delete playercamera;
-	//delete player;
-	//delete rootNodePtr;
-	//delete assetManagerPtr;
+	delete playercamera;
+	delete player;
+	delete rootNodePtr;
+	delete assetManagerPtr;
 	
-	exit(0);  
+	//exit(0);  
+	return 0;
 }
 
 /* Draw the scene */

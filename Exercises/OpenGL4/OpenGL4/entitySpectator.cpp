@@ -19,9 +19,9 @@ entitySpectator::entitySpectator(void)
 
 entitySpectator::~entitySpectator(void)
 {
-	SDL_DestroyMutex ( mutex_object );
-	if (camera != NULL)
-		delete camera;
+	//SDL_DestroyMutex ( mutex_object );
+	/*if (camera != NULL)
+		delete camera;*/
 }
 void entitySpectator::update()
 {

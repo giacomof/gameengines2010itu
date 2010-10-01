@@ -13,7 +13,8 @@ public:
 	
 	entityCamera(void);
 	~entityCamera(void);
-	virtual void update();
+
+	virtual void update(void);
 	virtual void setPosition(float x, float y, float z);
 	virtual void setForwardVector(float x, float y, float z);
 	virtual void setUpVector(float x, float y, float z);
