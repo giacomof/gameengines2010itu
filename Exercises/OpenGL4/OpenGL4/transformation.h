@@ -1,3 +1,5 @@
+#pragma once
+
 #include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
 

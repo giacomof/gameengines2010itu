@@ -1,3 +1,5 @@
+#pragma once
+
 #include "sceneObject.h"
 #include "linearAlgebraDLL.h"
 #include "entityCamera.h"
