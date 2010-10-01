@@ -74,6 +74,9 @@ class Quaternion
 		__declspec(dllexport) Vector getVector(void);
 		__declspec(dllexport) float getW(void);
 		__declspec(dllexport) void getAxisAngle(Vector *axis, float *angle);
+		__declspec(dllexport) void setX(float value);
+		__declspec(dllexport) void setY(float value);
+		__declspec(dllexport) void setZ(float value);
 		__declspec(dllexport) void setW(float value);
 
 		// Print functions
