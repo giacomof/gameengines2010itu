@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL_mutex.h>
 #include <string>
 #include <list>

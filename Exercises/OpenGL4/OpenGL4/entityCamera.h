@@ -1,3 +1,5 @@
+#pragma once
+
 #include "sceneObject.h"
 
 class entityCamera : public SceneObject

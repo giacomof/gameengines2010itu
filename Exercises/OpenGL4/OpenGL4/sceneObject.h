@@ -116,11 +116,11 @@ class md2Interface : public SceneObject
 		int md2Texture; 
 };
 
-class FBXfile : public SceneObject
+class ColladaInterface : public SceneObject
 {
 	public:
-		FBXfile(char * filename);
-		~FBXfile(void);
+		ColladaInterface(char * filename);
+		~ColladaInterface(void);
 
 		void update(void) {};
 		void drawGeometry(void);

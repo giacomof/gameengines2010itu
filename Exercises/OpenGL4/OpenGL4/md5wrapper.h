@@ -1,3 +1,4 @@
+
 /*
  *	This is my wrapper-class to create
  *	a MD5 Hash from a string and a file.
