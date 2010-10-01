@@ -134,12 +134,10 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 
 	fread(m_data,sizeof(unsigned char),data_size,fp);
 	fclose(fp);
-
-
+	
 	// This will store the md5 hash of a file called test.txt in a string hash1
 	hash = md5.getHashFromFilePtr((FILE *)m_data, (int) data_size);
-
-
+	
 	// use const_iterator to walk through elements of pairs
 	for ( std::map<char *, md2InterfaceContainer>::const_iterator iter = md2_list.begin(); iter != md2_list.end(); ++iter ) {
 
@@ -168,11 +166,20 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 	}
 
 	delete m_data;
-	
 
 }
 
-md2File * AssetManager::getMesh(char * md2NameChar) 
+void AssetManager::loadCollada(char * filePath, char * md2NameChar)
+{
+
+}
+
+md2File * AssetManager::getMd2Mesh(char * md2NameChar) 
 {
 	return md2_list[md2NameChar].md2Mesh;
+}
+
+ColladaFile * AssetManager::getColladaMesh(char * colladaNameChar) 
+{
+	return collada_list[colladaNameChar].colladaMesh;
 }

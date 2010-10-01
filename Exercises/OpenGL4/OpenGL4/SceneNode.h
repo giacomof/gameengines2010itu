@@ -53,9 +53,6 @@ class SceneNode
 		void addSceneObject(SceneObject * g);
 		SceneObject* getSceneObject();
 
-
-		//Matrix getTransformation(void); 
-
 		void rotateAboutAxis(Vector p_Axis, float p_Degree);
 		void translate(Vector translateVector);
 		void scale(float p_sX, float p_sY, float p_sZ);
@@ -66,8 +63,6 @@ class SceneNode
 		void drawGeometry(void);
 
 		static unsigned int getNodeCount(void);
-
-		
 
 	protected:
 		bool visible;							// The node should be drawn or not
