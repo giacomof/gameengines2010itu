@@ -19,6 +19,11 @@ ColladaFile::~ColladaFile(void)
 
 bool ColladaFile::load(const char* filename)
 {
+	// resets
+	vertexCount = 0;
+	normalCount = 0;
+	indexCount = 0;
+
 	std::ifstream ifs(filename);
 	std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
 
@@ -76,30 +81,6 @@ bool ColladaFile::load(const char* filename)
 		}
 	}
 
-	// Get the vertices data
-	//xml_node<>* geometryRootNode = rootNode->first_node("library_geometries")->first_node("geometry")->first_node("mesh");
-	//xml_node<>* tempNode = geometryRootNode->first_node("source");
-	//vertexCount = atoi(tempNode->first_node("float_array")->first_attribute("count")->value());
-	//vertexArray = tempNode->first_node("float_array")->value();
-
-	// Get the normals data
-	//tempNode = tempNode->next_sibling();
-	//normalCount = atoi(tempNode->first_node("float_array")->first_attribute("count")->value());
-	//normalArray = tempNode->first_node("float_array")->value();
-
-	//if(hasTexture)
-	//{
-	//	// Get the maps data
-	//	tempNode = tempNode->next_sibling();
-	//	mapCount = atoi(tempNode->first_node("float_array")->first_attribute("count")->value());
-	//	mapArray = tempNode->first_node("float_array")->value();
-	//}
-
-	// get the indices data
-	//tempNode = rootNode->first_node("library_geometries")->first_node("geometry")->first_node("mesh")->first_node("triangles");
-	//indexCount = atoi(tempNode->first_attribute("count")->value());	
-	//indexArray = tempNode->first_node("p")->value();
-	
 	// Memory reservation for arrays of float that will contain the data
 	vertex = (float *)malloc(vertexCount*sizeof(float));
 	normal = (float *)malloc(normalCount*sizeof(float));
@@ -154,9 +135,9 @@ bool ColladaFile::load(const char* filename)
 
 void ColladaFile::render(void) const
 {
-		int firstVertex;
-		int secondVertex;
-		int thirdVertex;
+		int firstVertex=0;
+		int secondVertex=0;
+		int thirdVertex=0;
 
 	for(unsigned int i=0; i<indexCount*offset; i+=offset) 
 	{

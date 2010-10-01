@@ -56,7 +56,8 @@ SceneNode * lostSoul;
 //md2File md2LostSoul;
 SceneNode * bossCube;
 //md2File md2BossCube;
-ColladaFile colladaTest;
+SceneNode * colladaDuck;
+//ColladaFile colladaTest;
 
 // Camera and Movements Definitions
 float camYaw, camPitch, camYawRad, camPitchRad;
@@ -180,7 +181,6 @@ int main(int argc, char *argv[])
 	videoInfo = SDL_GetVideoInfo();
 	if (!videoInfo)
 	{
-		delete assetManagerPtr;
 		exit(1);
 	}
 	
@@ -208,13 +208,13 @@ int main(int argc, char *argv[])
 
 	if (!surface)
 	{
-		delete assetManagerPtr;
+		
 		exit(1);
 	}
 
 	if (initGL()==FALSE)
 	{
-		delete assetManagerPtr;
+		
 		exit(1);
 	}
 	
@@ -278,6 +278,9 @@ int main(int argc, char *argv[])
 	bossCube->lock();
 	bossCube->scale(0.8, 0.8, 0.8);
 	bossCube->unlock();
+
+	ColladaInterface fuckingDuck_g = ColladaInterface(assetManagerPtr->getColladaMesh("fuckingDuck"));
+	colladaDuck = new SceneNode(rootNodePtr, "fuckingDuck", &fuckingDuck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	/* ---------------------------------------- *
 	 * Graph and asset testing stuff ends here  *
@@ -388,8 +391,6 @@ void drawGL(void)
 	rootNodePtr->unlock();
 	//glPopMatrix();
 
-	colladaTest.render();
-
 	// ********************
 	// *** UPDATE POINT *** 
 	// ********************
@@ -444,12 +445,13 @@ int initGL(void)
 	assetManagerPtr->loadMd2("include/Cyber.md2", "md2Demon");
 	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
 	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
+	assetManagerPtr->loadCollada("include/duck.dae", "fuckingDuck");
 
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 
-	colladaTest.load("include/duck.dae");
+	//colladaTest.load("include/duck.dae");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
@@ -459,7 +461,7 @@ int initGL(void)
 	std::cout << "memory usage demon " << (assetManagerPtr->getMd2Mesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA duck " << (colladaTest.getDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("fuckingDuck")->getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 
