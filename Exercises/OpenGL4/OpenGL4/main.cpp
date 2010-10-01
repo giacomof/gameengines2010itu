@@ -93,6 +93,7 @@ bool quit = false;
 /* This thread handles input */
 int threadInput(void *data)
 {
+	input = input.getInstance();
 	char *tname = ( char * )data;
 
 	// Disable the Windows Cursor
@@ -197,7 +198,7 @@ int main(int argc, char *argv[])
 	if (videoInfo->blit_hw)
 		videoFlags |= SDL_HWACCEL;
 	
-	//SDL_WM_SetCaption( "Loading Name Here Engine... ", "include/nhe.ico" );
+	SDL_WM_SetCaption( "Loading Name Here Engine... ", "include/nhe.ico" );
 
 	// Apply Video Flags and Settings
 	surface = SDL_SetVideoMode(	screenWidth,
@@ -364,13 +365,12 @@ int main(int argc, char *argv[])
 	//delete demon;
 	//delete lostSoul; 
 	//delete bossCube;
-	delete playercamera;
-	delete player;
-	delete rootNodePtr;
-	delete assetManagerPtr;
+	//delete playercamera;
+	//delete player;
+	//delete rootNodePtr;
+	//delete assetManagerPtr;
 	
-	//exit(0);  
-	return 0;
+	exit(0);  
 }
 
 /* Draw the scene */
