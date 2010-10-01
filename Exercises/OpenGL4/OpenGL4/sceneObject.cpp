@@ -63,6 +63,30 @@ void  md2Interface::update(void) {
 }
 
 // ************************************* //
+// ******** COLLADA INTERFACE ********** //
+// ************************************* //
+
+ColladaInterface::ColladaInterface(ColladaFile * c)
+{
+	mesh = c;
+}
+
+ColladaInterface::~ColladaInterface(void)
+{
+}
+
+void ColladaInterface::drawGeometry(void) {
+		
+		mesh->render();
+
+}
+
+void  ColladaInterface::update(void) {
+	// update the animation
+	// if any
+}
+
+// ************************************* //
 // ************** Sphere *************** //
 // ************************************* //
 

@@ -248,7 +248,7 @@ int main(int argc, char *argv[])
 
 	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
 	
-	md2Interface doomDemon = md2Interface(assetManagerPtr->getMesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
+	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rootNodePtr->unlock(); // We can unlock the node now
 
@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
 	demon->unlock(); // We can now unlock it
 	
 	kernel.lock();
-	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
+	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	kernel.unlock();
 
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 	lostSoul->scale(1, 1, 1);
 	lostSoul->unlock();
 	
-	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->unlock();
 
@@ -456,9 +456,9 @@ int initGL(void)
 	//// ******************************
 	
 	// write memory usage
-	std::cout << "memory usage demon " << (assetManagerPtr->getMesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage lost soul " << (assetManagerPtr->getMesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage boss cube " << (assetManagerPtr->getMesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage demon " << (assetManagerPtr->getMd2Mesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (colladaTest.getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }

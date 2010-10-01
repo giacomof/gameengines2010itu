@@ -21,6 +21,12 @@ struct md2InterfaceContainer
 	std::string meshMD5;
 };
 
+struct colladaInterfaceContainer
+{
+	ColladaFile * colladaMesh;
+	std::string meshMD5;
+};
+
 using namespace std;
 
 class AssetManager
@@ -34,11 +40,14 @@ public:
 	unsigned int getTexture(char * textureName);
 
 	void loadMd2(char * filePath, char * md2NameChar);
-	md2File* getMesh(char * md2NameChar);
+	md2File * getMd2Mesh(char * md2NameChar);
 	
+	void loadCollada(char * filePath, char * colladaNameChar);
+	ColladaFile * getColladaMesh(char * colladaNameChar);
+
 private:
 	std::map <char *, textureContainer> texture_list;
 	std::map <char *, md2InterfaceContainer> md2_list;
-
+	std::map <char *, colladaInterfaceContainer> collada_list;
 };
 

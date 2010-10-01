@@ -69,7 +69,7 @@ void SceneNode::destroy(void)
 		(*i)->destroy(); 
 	}
 		
-	this->release();
+	 this->release();
 
 }
 

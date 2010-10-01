@@ -7,6 +7,7 @@
 #include <vector>
 #include "linearAlgebraDLL.h"
 #include "md2File.h"
+#include "colladaFile.h"
 
 
 using namespace std;
@@ -119,9 +120,11 @@ class md2Interface : public SceneObject
 class ColladaInterface : public SceneObject
 {
 	public:
-		ColladaInterface(char * filename);
+		ColladaInterface(ColladaFile * c);
 		~ColladaInterface(void);
 
-		void update(void) {};
+		void update(void);
 		void drawGeometry(void);
+
+		ColladaFile * mesh;
 };
