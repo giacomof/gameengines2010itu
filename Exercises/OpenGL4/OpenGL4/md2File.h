@@ -22,8 +22,8 @@
 		// Destructor
 		~md2File() ;
 		
-		// releases the current model
-		void Release();
+		// Clear the current model
+		void Clear();
 
 		// loads the specified md2 model
 		// returns true if OK

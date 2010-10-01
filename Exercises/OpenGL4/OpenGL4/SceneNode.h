@@ -19,7 +19,7 @@ class SceneNode
 						Vector v,
 						Vector p_axis, float p_angle);
 		// destructor
-		virtual ~SceneNode() { SDL_DestroyMutex ( mutex_node ); }
+		virtual ~SceneNode() { destroy(); }
 		// delete object
 		void release() { SDL_DestroyMutex ( mutex_node ); }
 

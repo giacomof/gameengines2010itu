@@ -11,6 +11,10 @@ ColladaFile::ColladaFile(void)
 
 ColladaFile::~ColladaFile(void)
 {
+	free(vertex);
+	free(normal);
+	if(hasTexture) free(map);
+	free(index);
 }
 
 bool ColladaFile::load(const char* filename)

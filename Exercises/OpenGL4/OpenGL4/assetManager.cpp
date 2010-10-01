@@ -10,7 +10,11 @@ AssetManager::AssetManager(void)
 
 AssetManager::~AssetManager(void)
 {
-	//DON'T FORGET TO DEALLOCATE MD2 MALLOC
+	for ( std::map<char *, md2InterfaceContainer>::const_iterator iter = md2_list.begin(); iter != md2_list.end(); ++iter ) {
+		free (iter->second.md2Mesh);
+	}
+	delete &texture_list;
+	delete &md2_list;
 }
 
 void AssetManager::loadTexture(char * fileDirectory, char * textureName)
@@ -162,6 +166,9 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 		md2_list[md2NameChar].meshMD5 = hash;
 
 	}
+
+	delete m_data;
+	
 
 }
 

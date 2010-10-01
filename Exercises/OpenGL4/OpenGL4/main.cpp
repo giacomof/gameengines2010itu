@@ -361,13 +361,13 @@ int main(int argc, char *argv[])
 	SDL_WaitThread ( id3, NULL );
 
 	// Deletes
-	delete demon;
-	delete lostSoul; 
-	delete bossCube;
-	delete playercamera;
-	delete player;
-	delete rootNodePtr;
-	delete assetManagerPtr;
+	//delete demon;
+	//delete lostSoul; 
+	//delete bossCube;
+	//delete playercamera;
+	//delete player;
+	//delete rootNodePtr;
+	//delete assetManagerPtr;
 	
 	exit(0);  
 }

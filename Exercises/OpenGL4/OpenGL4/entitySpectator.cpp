@@ -17,6 +17,12 @@ entitySpectator::entitySpectator(void)
 	lookDeltaYAmount = 0.0f;
 }
 
+entitySpectator::~entitySpectator(void)
+{
+	SDL_DestroyMutex ( mutex_object );
+	if (camera != NULL)
+		delete camera;
+}
 void entitySpectator::update()
 {
 	this->lock();

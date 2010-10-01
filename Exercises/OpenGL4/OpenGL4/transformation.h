@@ -12,7 +12,6 @@ class Transformation
 		Transformation() { };
 		Transformation(	Vector p_translation,
 						Vector p_axis, float p_angle );
-		//~Transformation();
 
 		// Return the transpose of the transformation matrix
 		Matrix getTransformation(void);

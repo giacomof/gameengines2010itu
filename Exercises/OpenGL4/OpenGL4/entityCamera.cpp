@@ -5,6 +5,11 @@ entityCamera::entityCamera(void)
 	mutex_object = SDL_CreateMutex();
 }
 
+entityCamera::~entityCamera(void)
+{
+	SDL_DestroyMutex ( mutex_object );
+}
+
 void entityCamera::update()
 {
 	// Do nothing
