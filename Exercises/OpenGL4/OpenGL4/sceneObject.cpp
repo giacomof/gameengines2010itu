@@ -18,6 +18,7 @@ SceneObject::SceneObject(void)
 
 SceneObject::~SceneObject(void)
 {
+	SDL_DestroyMutex( mutex_object );
 }
 
 void SceneObject::lock(void)

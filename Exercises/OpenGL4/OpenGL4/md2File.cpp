@@ -21,14 +21,13 @@ md2File::md2File() {
 
 // destructor
 md2File::~md2File() {
-	//Release();
+	delete [] m_Verts;
+	delete [] m_data;
 }
 
 // resets all variables and clears animation buffer
-void md2File::Release() {
+void md2File::Clear() {
 	m_Anims.clear();
-	//delete [] m_Verts;
-	//delete [] m_data;
 	m_AnimTime=0;
 	m_Verts=0;
 	m_CurrentAnim=0;
@@ -76,7 +75,7 @@ const char*	md2File::GetSkin(unsigned int num) const {
 
 // loads the md2 model and allocate proper memory
 bool md2File::Load(unsigned char * p_data, unsigned int p_size ) {
-	Release();
+	Clear();
 
 	
 
