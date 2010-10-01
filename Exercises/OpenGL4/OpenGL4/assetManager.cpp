@@ -13,8 +13,8 @@ AssetManager::~AssetManager(void)
 	for ( std::map<char *, md2InterfaceContainer>::const_iterator iter = md2_list.begin(); iter != md2_list.end(); ++iter ) {
 		free (iter->second.md2Mesh);
 	}
-	delete &texture_list;
-	delete &md2_list;
+	//delete &texture_list;
+	//delete &md2_list;
 }
 
 void AssetManager::loadTexture(char * fileDirectory, char * textureName)
