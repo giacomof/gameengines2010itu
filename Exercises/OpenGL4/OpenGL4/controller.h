@@ -11,7 +11,7 @@ public:
 	static entitySpectator *playerObject;
 	static bool quit;
  
-	Controller() { quit = false; mutex_controller = SDL_CreateMutex(); playerObject = NULL; &getInstance(); }
+	Controller() { quit = false; mutex_controller = SDL_CreateMutex(); &getInstance(); }
 	~Controller() { SDL_DestroyMutex( mutex_controller ); } 
 	Controller(const Controller &getInstance());
 	

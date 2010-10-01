@@ -1,6 +1,12 @@
 #include "inputManager.h"
 
 const float mouse_sensitivity = 0.2;
+inputManager inputManager::_instance;
+
+inputManager &inputManager::getInstance()
+{
+  return _instance;
+}
 
 int inputManager::update(void)
 {
