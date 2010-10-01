@@ -87,7 +87,7 @@ class Root : public SceneNode
 		static Root _instance;
 
 		Root(void) { &getInstance(); }
-		~Root(void) { } 
+		//~Root(void);
 
 		Root(const Root &getInstance());
 
