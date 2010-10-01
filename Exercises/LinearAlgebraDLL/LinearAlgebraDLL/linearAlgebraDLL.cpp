@@ -282,6 +282,21 @@ void Quaternion::getAxisAngle(Vector *axis, float *angle)
 	*angle = (acos(w) * 2.0f)*180/PI;
 }
 
+void Quaternion::setX(float value)
+{
+	vector.set(0, value);
+}
+
+void Quaternion::setY(float value)
+{
+	vector.set(1, value);
+}
+
+void Quaternion::setZ(float value)
+{
+	vector.set(2, value);
+}
+
 void Quaternion::setW(float value)
 {
 	w = value;
