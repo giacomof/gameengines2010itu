@@ -21,7 +21,8 @@ public:
 	// releases the current model
 	void release(void);
 	// loads the collada file
-	bool load(const char* filename);
+	// and returns the name of the texture
+	char * load(const char* filename);
 	// renders the collada model
 	void render(void) const;
 	// returns the total size of the model in bytes
@@ -37,12 +38,11 @@ public:
 	// Texture file name
 	string textureName;
 	// int for containing the number of vertices, normals and maps
-	unsigned int vertexCount, normalCount, mapCount, indexCount, vertexStride, normalStride, mapStride;
+	unsigned int vertexCount, normalCount, mapCount, indexCount, vertexStride, normalStride, mapStride, offset;
 	// string for containing vertices, normals and maps
 	string vertexArray, normalArray, mapArray, indexArray;
 	float * vertex, * normal, * map;
 	unsigned long * index;
-	unsigned int offset;
 	bool hasTexture, hasMoreNodes, isFinished;
 
 };

@@ -281,8 +281,8 @@ int main(int argc, char *argv[])
 	bossCube->scale(0.8, 0.8, 0.8);
 	bossCube->unlock();
 
-	ColladaInterface fuckingDuck_g = ColladaInterface(assetManagerPtr->getColladaMesh("fuckingDuck"));
-	colladaDuck = new SceneNode(rootNodePtr, "fuckingDuck", &fuckingDuck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	ColladaInterface psyDuck_g = ColladaInterface(assetManagerPtr->getColladaMesh("fuckingDuck"), assetManagerPtr->getTexture("duckCM.tga"));
+	colladaDuck = new SceneNode(rootNodePtr, "fuckingDuck", &psyDuck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	/* ---------------------------------------- *
 	 * Graph and asset testing stuff ends here  *
@@ -452,6 +452,7 @@ int initGL(void)
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
+	assetManagerPtr->loadTexture("include/duckCM.tga", "duckCM.tga");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********

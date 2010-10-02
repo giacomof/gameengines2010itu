@@ -42,7 +42,7 @@ public:
 	void loadMd2(char * filePath, char * md2NameChar);
 	md2File * getMd2Mesh(char * md2NameChar);
 	
-	void loadCollada(char * filePath, char * colladaNameChar);
+	char * loadCollada(char * filePath, char * colladaNameChar);
 	ColladaFile * getColladaMesh(char * colladaNameChar);
 
 private:

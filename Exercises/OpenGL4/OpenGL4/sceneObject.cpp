@@ -66,9 +66,10 @@ void  md2Interface::update(void) {
 // ******** COLLADA INTERFACE ********** //
 // ************************************* //
 
-ColladaInterface::ColladaInterface(ColladaFile * c)
+ColladaInterface::ColladaInterface(ColladaFile * c, unsigned int texture)
 {
 	mesh = c;
+	colladaTexture = texture;
 }
 
 ColladaInterface::~ColladaInterface(void)
@@ -77,7 +78,10 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void) {
 		
-		mesh->render();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture (GL_TEXTURE_2D, colladaTexture);
+	mesh->render();
+	glDisable(GL_TEXTURE_2D);
 
 }
 

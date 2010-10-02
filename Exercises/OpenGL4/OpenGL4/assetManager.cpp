@@ -169,12 +169,19 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 
 }
 
-void AssetManager::loadCollada(char * filePath, char * colladaNameChar)
+char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 {
 	ColladaFile * tempCollada = (ColladaFile*) malloc(sizeof(ColladaFile));
 	tempCollada = new ColladaFile();
-	tempCollada->load(filePath);
+	char * tempName = tempCollada->load(filePath);
 	collada_list[colladaNameChar].colladaMesh = tempCollada;
+	
+	if(tempName!="") {
+		string path = "include/" + (string) tempName;
+		loadTexture( (char*) path.c_str(), tempName );
+		return tempName;
+	
+	} else return "";
 }
 
 md2File * AssetManager::getMd2Mesh(char * md2NameChar) 

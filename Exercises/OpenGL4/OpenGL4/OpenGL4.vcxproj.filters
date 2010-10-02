@@ -290,6 +290,9 @@
     <None Include="include\astroboy.dae">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="include\duckCM.tga">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
