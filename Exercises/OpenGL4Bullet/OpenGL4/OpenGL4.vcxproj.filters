@@ -1213,5 +1213,8 @@
     <Library Include="include\ILUT.lib">
       <Filter>Resource Files</Filter>
     </Library>
+    <Library Include="include\DevIL.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>
