@@ -478,6 +478,7 @@
   <ItemGroup>
     <Library Include="include\BulletCollision.lib" />
     <Library Include="include\BulletDynamics.lib" />
+    <Library Include="include\DevIL.lib" />
     <Library Include="include\glut32.lib" />
     <Library Include="include\ILU.lib" />
     <Library Include="include\ILUT.lib" />
