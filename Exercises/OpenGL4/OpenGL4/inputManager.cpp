@@ -2,6 +2,8 @@
 
 const float mouse_sensitivity = 0.2;
 inputManager inputManager::_instance;
+MessagePump messageP = MessagePump::getInstance();
+
 
 inputManager &inputManager::getInstance()
 {
@@ -14,10 +16,8 @@ SDL_Event currentEvent;
 
 	while ( !MessagePump::getInstance().empty() )
 	{
-		MessagePump::getInstance().lock();
-		currentEvent = MessagePump::getInstance().receiveMessage();
-		MessagePump::getInstance().unlock();
-
+		currentEvent = messageP.receiveMessage();
+		
 		switch (currentEvent.type)
 		{
 		case SDL_KEYDOWN:
