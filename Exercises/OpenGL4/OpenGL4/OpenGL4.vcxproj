@@ -155,12 +155,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="glut32.dll" />
+    <None Include="include\astroboy.dae" />
     <None Include="include\bosscube.jpg" />
     <None Include="include\bosscube.md2" />
     <None Include="include\cyber.jpg" />
     <None Include="include\Cyber.md2" />
     <None Include="include\duck.dae" />
-    <None Include="include\duck2.dae" />
     <None Include="include\evil_laugh.wav" />
     <None Include="include\glut.def" />
     <None Include="include\lostsoul.jpg" />
