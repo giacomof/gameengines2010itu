@@ -4,25 +4,21 @@
 
 GLOBAL TASKS:
 
-1(S)- Camera as child of sceneObject
-1(V)- Childs of sceneObject
 G- Asset Manager
+	0- make it Singleton
 	1(G)- Texture Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
 	1(V)- Mesh Manager
 		1(V+G) - MD2 Manager + MD5 hashing
-		1(V+G) - COLLADA Manager + MD5 hashing
+		  1(V) - COLLADA Manager
+					0- MD5 hashing	
 	0- Sound Manager
-	0- make it Singleton
-1(V)- Root as Singleton
-1(S)- Input Abstraction Layer -> System is there. Just need to add the keys that should do something
+		0- Sounds without movements freeze
+	0- Mutex Manager
 G- Physics SDK (Bullet?)
-0- Sounds without movements freeze
-1(V)- Merge md2Loader and md2File classes in the md2Interface
 1(G+V)- Collada Loader
 	V- multi-node collada loader
 	1(V)- include the Collada in the AssetManager
-1(G)- Create unit units for testing
 0- Compile everything we can as a DLL
 0- A DisplayManager capable of opening a window with an opengl context
 0- Clock Class
@@ -40,6 +36,16 @@ OPTIONALS:
 	0- axis of rotation of an object via line draws
 	0- draw the bounding box or bounding sphere of an object
 0- Physics Wrapper? (PAL?)
+
+COMPLETED:
+
+1(S)- Camera as child of sceneObject
+1(V)- Childs of sceneObject
+1(V)- Root as Singleton
+1(S)- Input Abstraction Layer
+1(V)- Merge md2Loader and md2File classes in the md2Interface
+1(G)- Create unit units for testing
+
 
 Symbology Map:
 
