@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
 	btCollisionShape* fallShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
 	btDefaultMotionState* fallMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,100,0)));
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,150,0)));
 
 	btScalar mass = 5;
 	btVector3 fallInertia(0,0,0);
@@ -305,6 +305,7 @@ int main(int argc, char *argv[])
 	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
 	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	bossCube = new SceneNode(rootNodePtr, "boss cube", &bossCube_g, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+	//bossCube->scale(0.5f,0.5f,0.5f);
 	rootNodePtr->unlock(); // We can unlock the node now
 
 
@@ -354,7 +355,9 @@ int main(int argc, char *argv[])
 		
 		//kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
-		bossCube->rotateAboutAxis(Vector(0,1,0),0.05f);
+		bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
+		//bossCube->translate(Vector(0.5f,0,0));
+
 		
 		// Time to take care of the SDL events we have recieved
 		SDL_Event currentEvent;
@@ -471,6 +474,8 @@ int initGL(void)
 	glLoadIdentity();
 	// sets the matrix stack as the modelview matrix stack
 	glMatrixMode(GL_MODELVIEW);
+
+	gluPerspective(60.0f, screenWidth/screenHeight, 0.1f, 10000.0f);
 	
 	// enables the Z-buffer
 	glEnable(GL_DEPTH_TEST);
@@ -561,7 +566,7 @@ int resizeWindow(int width, int height)
 	glLoadIdentity();
 	
 	// sets the Field of View, pixel ratio, Frustum
-	gluPerspective(60.0f, ratio, 0.1f, 1000.0f);
+	gluPerspective(60.0f, ratio, 0.1f, 10000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
