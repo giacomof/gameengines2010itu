@@ -11,11 +11,13 @@ public:
 	int update(void);
 
 	inputManager() { &getInstance(); }
-	~inputManager() { } 
+	~inputManager() { SDL_DestroyMutex( mutex_event );  } 
 	inputManager(const inputManager &getInstance());   
 	
 	inputManager & operator=(inputManager &getInstance());
 	static inputManager &getInstance();
+
+	static SDL_mutex * mutex_event;
 
 private:
 	void keyPress(SDL_Event currentEvent);

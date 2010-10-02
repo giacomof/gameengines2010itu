@@ -19,6 +19,7 @@ public:
 	
 	MessagePump & operator=(MessagePump &getInstance());
 	static MessagePump &getInstance();
+	
 	static bool empty();
 	static void sendMessage(SDL_Event msg);
 	static void sendPriorityMessage(SDL_Event msg);
@@ -28,6 +29,7 @@ public:
 	static SDL_Event readLastMessage();
 	static void deleteMessage();
 	static void deleteLastMessage();
+	
 	static void lock() { SDL_mutexP( mutex_event ); }
 	static void unlock() { SDL_mutexV( mutex_event ); }
 
