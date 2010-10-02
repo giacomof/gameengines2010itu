@@ -29,8 +29,7 @@ G- Physics SDK (Bullet?)
 	0- fps counter with a sliding frame window
 0- attach/detach camera to player model -> S: We'd most likely be attaching it to the game entity that the model is attached to as well, instead (fx, attaching it to entitySpectator)
 
-V- EXIT BUG
-
+1(V)- EXIT BUG
 
 OPTIONALS:
 
