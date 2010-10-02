@@ -9,15 +9,17 @@ GLOBAL TASKS:
 G- Asset Manager
 	1(G)- Texture Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
-	V- Mesh Manager
+	1(V)- Mesh Manager
+		1(V+G) - MD2 Manager + MD5 hashing
+		1(V+G) - COLLADA Manager + MD5 hashing
 	0- Sound Manager
 	0- make it Singleton
 1(V)- Root as Singleton
 1(S)- Input Abstraction Layer -> System is there. Just need to add the keys that should do something
-0- Physics SDK (Bullet?)
+G- Physics SDK (Bullet?)
 0- Sounds without movements freeze
 1(V)- Merge md2Loader and md2File classes in the md2Interface
-1(G+V)- FBX/Collada Loader --->Working on COLLADA --> Collada loader ready, implementing it in the engine
+1(G+V)- Collada Loader
 	V- multi-node collada loader
 	1(V)- include the Collada in the AssetManager
 1(G)- Create unit units for testing
@@ -27,7 +29,7 @@ G- Asset Manager
 	0- fps counter with a sliding frame window
 0- attach/detach camera to player model -> S: We'd most likely be attaching it to the game entity that the model is attached to as well, instead (fx, attaching it to entitySpectator)
 
-
+V- EXIT BUG
 
 
 OPTIONALS:
