@@ -1097,6 +1097,24 @@
     <ClInclude Include="include\bullet_include\LinearMath\btVector3.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ilut_config.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\il.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\il_wrap.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ilu.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ilu_region.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ilut.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL.dll">
@@ -1151,6 +1169,15 @@
     <None Include="include\astroboy.dae">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="DevIL.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ILU.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ILUT.dll">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\glut32.lib">
@@ -1172,6 +1199,12 @@
       <Filter>Resource Files</Filter>
     </Library>
     <Library Include="include\BulletCollision.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="include\ILU.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="include\ILUT.lib">
       <Filter>Resource Files</Filter>
     </Library>
   </ItemGroup>

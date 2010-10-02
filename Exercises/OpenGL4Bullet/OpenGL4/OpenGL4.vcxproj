@@ -394,6 +394,12 @@
     <ClInclude Include="include\bullet_include\LinearMath\btVector3.h" />
     <ClInclude Include="include\close_code.h" />
     <ClInclude Include="include\glut.h" />
+    <ClInclude Include="include\il.h" />
+    <ClInclude Include="include\ilu.h" />
+    <ClInclude Include="include\ilut.h" />
+    <ClInclude Include="include\ilut_config.h" />
+    <ClInclude Include="include\ilu_region.h" />
+    <ClInclude Include="include\il_wrap.h" />
     <ClInclude Include="include\linearAlgebraDLL.h" />
     <ClInclude Include="include\SDL.h" />
     <ClInclude Include="include\SDL_active.h" />
@@ -445,7 +451,10 @@
     <ClInclude Include="transformation.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DevIL.dll" />
     <None Include="glut32.dll" />
+    <None Include="ILU.dll" />
+    <None Include="ILUT.dll" />
     <None Include="include\astroboy.dae" />
     <None Include="include\bosscube.jpg" />
     <None Include="include\bosscube.md2" />
@@ -468,6 +477,8 @@
     <Library Include="include\BulletCollision.lib" />
     <Library Include="include\BulletDynamics.lib" />
     <Library Include="include\glut32.lib" />
+    <Library Include="include\ILU.lib" />
+    <Library Include="include\ILUT.lib" />
     <Library Include="include\LinearAlgebraDLL.lib" />
     <Library Include="include\LinearMath.lib" />
     <Library Include="include\SDL.lib" />
