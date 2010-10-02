@@ -215,6 +215,14 @@ Quaternion::Quaternion(Vector axis, float angle)
 	w = cos(angle*PI/180);
 }
 
+Quaternion::Quaternion(float p_x, float p_y, float p_z, float p_w)
+{
+	vector.set(0, p_x);
+	vector.set(1, p_y);
+	vector.set(2, p_z);
+	w = p_w;
+}
+
 // Operator overload for sum between quaternions
 Quaternion Quaternion::operator+(Quaternion &other)
 {

@@ -63,6 +63,7 @@ class Quaternion
 		// Constructors
         __declspec(dllexport) Quaternion(void);
         __declspec(dllexport) Quaternion(Vector axis, float angle);
+		__declspec(dllexport) Quaternion(float p_x, float p_y, float p_z, float p_w);
 
 		// Operator overload
 		__declspec(dllexport) Quaternion operator+(Quaternion &other);
