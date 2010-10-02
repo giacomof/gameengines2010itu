@@ -136,6 +136,14 @@ SceneObject * SceneNode::getSceneObject()
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
+	btTransform trans;
+	physicsGeometry->getMotionState()->getWorldTransform(trans);
+	btQuaternion actualRotation = trans.getRotation();
+	btQuaternion newRotation = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree);
+	btQuaternion final = newRotation * actualRotation;
+	physicsGeometry->getWorldTransform().setRotation(final);
+
+
 	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
 }
 

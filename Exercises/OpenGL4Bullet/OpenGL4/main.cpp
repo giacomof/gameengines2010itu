@@ -291,13 +291,14 @@ int main(int argc, char *argv[])
 	btCollisionShape* fallShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
 	btDefaultMotionState* fallMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,100,0)));
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,100,0)));
 
 	btScalar mass = 5;
 	btVector3 fallInertia(0,0,0);
 	fallShape->calculateLocalInertia(mass,fallInertia);
 
 	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
+
 	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
 	dynamicsWorld->addRigidBody(fallRigidBody);
 
@@ -353,7 +354,7 @@ int main(int argc, char *argv[])
 		
 		//kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
-		//bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
+		bossCube->rotateAboutAxis(Vector(1,0,0),0.05f);
 		
 		// Time to take care of the SDL events we have recieved
 		SDL_Event currentEvent;
