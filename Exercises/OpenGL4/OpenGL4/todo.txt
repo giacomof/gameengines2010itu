@@ -27,7 +27,7 @@ G- Physics SDK (Bullet?)
 0- A DisplayManager capable of opening a window with an opengl context
 0- Clock Class
 	0- fps counter with a sliding frame window
-0- attach/detach camera to player model -> S: We'd most likely be attaching it to the game entity that the model is attached to as well, instead (fx, attaching it to entitySpectator)
+0- attach/detach camera to player model
 
 1(V)- EXIT BUG
 
@@ -40,8 +40,6 @@ OPTIONALS:
 	0- axis of rotation of an object via line draws
 	0- draw the bounding box or bounding sphere of an object
 0- Physics Wrapper? (PAL?)
-
-
 
 Symbology Map:
 

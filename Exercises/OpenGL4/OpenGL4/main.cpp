@@ -252,6 +252,7 @@ int main(int argc, char *argv[])
 	
 	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	demon->setVisible(false);
 	rootNodePtr->unlock(); // We can unlock the node now
 
 	demon->lock(); // The new node needs to be locked now since we're doing a transform on it, then adding a child
@@ -451,8 +452,6 @@ int initGL(void)
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
-
-	//colladaTest.load("include/duck.dae");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********

@@ -287,7 +287,7 @@
     <None Include="include\duck.dae">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="include\duck2.dae">
+    <None Include="include\astroboy.dae">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

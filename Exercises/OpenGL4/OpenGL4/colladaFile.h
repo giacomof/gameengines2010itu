@@ -41,7 +41,7 @@ public:
 	// string for containing vertices, normals and maps
 	string vertexArray, normalArray, mapArray, indexArray;
 	float * vertex, * normal, * map;
-	unsigned int * index;
+	unsigned long * index;
 	unsigned int offset;
 	bool hasTexture, hasMoreNodes, isFinished;
 

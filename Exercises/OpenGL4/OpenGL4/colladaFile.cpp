@@ -51,22 +51,42 @@ bool ColladaFile::load(const char* filename)
 		} else {
 			if(tempNodeName == "library_geometries")
 			{
+
 				// Mesh
 				xml_node<>* geometryNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source")->first_node("float_array");
-				vertexCount += atoi(geometryNode->first_attribute("count")->value());
-				vertexArray += geometryNode->value();
+				vertexCount = atoi(geometryNode->first_attribute("count")->value());
+				vertexArray = geometryNode->value();
 				
 				// Normals
 				xml_node<>* normalNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source");
 				normalNode = normalNode->next_sibling();
-				normalCount += atoi(normalNode->first_node("float_array")->first_attribute("count")->value());
-				normalArray += normalNode->first_node("float_array")->value();
+				normalCount = atoi(normalNode->first_node("float_array")->first_attribute("count")->value());
+				normalArray = normalNode->first_node("float_array")->value();
 				
 				// Indices
 				xml_node<>* indexNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("triangles");
 				indexCount += atoi(indexNode->first_attribute("count")->value());	
 				indexArray += indexNode->first_node("p")->value();
+				
+				// check if the collada file is a multinode mesh
+				bool moreMeshes = true;
+				while(moreMeshes){
+					
+					if (indexNode->next_sibling() != 0) {
+						indexNode = indexNode->next_sibling();
+						moreMeshes = true;
+						
+						indexCount += atoi(indexNode->first_attribute("count")->value());	
+						indexArray += indexNode->first_node("p")->value();
+						indexArray += " ";
+					
+					} else { 
+						moreMeshes = false;
 
+					}
+
+
+				}
 			}
 		}
 
@@ -85,7 +105,9 @@ bool ColladaFile::load(const char* filename)
 	vertex = (float *)malloc(vertexCount*sizeof(float));
 	normal = (float *)malloc(normalCount*sizeof(float));
 	if(hasTexture) map = (float *)malloc(mapCount*sizeof(float));
-	index = (unsigned int *)malloc(indexCount*offset*sizeof(unsigned int));
+	long porcamerda = indexCount*offset*sizeof(unsigned long);
+	int suca = sizeof(unsigned long);
+	index = (unsigned long *)malloc(indexCount*offset*sizeof(unsigned long));
 
 	// Token used for splitting strings
 	string token;
@@ -135,15 +157,16 @@ bool ColladaFile::load(const char* filename)
 
 void ColladaFile::render(void) const
 {
-		int firstVertex=0;
-		int secondVertex=0;
-		int thirdVertex=0;
+		unsigned long firstVertex=0;
+		unsigned long secondVertex=0;
+		unsigned long thirdVertex=0;
 
 	for(unsigned int i=0; i<indexCount*offset; i+=offset) 
 	{
 		firstVertex = index[i]*3;
 		secondVertex = index[i+(offset/3)]*3;
 		thirdVertex = index[i+((offset/3)*2)]*3;
+
 
 		glBegin(GL_TRIANGLES);
 		glVertex3f( vertex[firstVertex], vertex[firstVertex+1], vertex[firstVertex+2]);
