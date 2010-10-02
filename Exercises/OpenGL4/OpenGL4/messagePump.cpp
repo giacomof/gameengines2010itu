@@ -3,7 +3,7 @@
 // Declare static variables
 list<SDL_Event> MessagePump::messageList;
 MessagePump MessagePump::_instance;
-SDL_mutex * MessagePump::mutex_event;
+//SDL_mutex * MessagePump::mutex_event;
 
 MessagePump &MessagePump::getInstance()
 {
