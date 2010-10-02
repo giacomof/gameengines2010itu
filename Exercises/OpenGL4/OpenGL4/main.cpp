@@ -337,9 +337,7 @@ int main(int argc, char *argv[])
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 			case SDL_MOUSEMOTION:
-				InputPump.lock();
 				InputPump.sendMessage(currentEvent);
-				InputPump.unlock();
 				break;
 			// Anything else we don't care about
 			default:

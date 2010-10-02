@@ -11,7 +11,7 @@ public:
 	int update(void);
 
 	inputManager() { &getInstance(); }
-	~inputManager() {} 
+	~inputManager() { } 
 	inputManager(const inputManager &getInstance());   
 	
 	inputManager & operator=(inputManager &getInstance());
