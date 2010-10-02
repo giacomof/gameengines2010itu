@@ -120,11 +120,12 @@ class md2Interface : public SceneObject
 class ColladaInterface : public SceneObject
 {
 	public:
-		ColladaInterface(ColladaFile * c);
+		ColladaInterface(ColladaFile * c, unsigned int texture);
 		~ColladaInterface(void);
 
 		void update(void);
 		void drawGeometry(void);
 
 		ColladaFile * mesh;
+		int colladaTexture;
 };

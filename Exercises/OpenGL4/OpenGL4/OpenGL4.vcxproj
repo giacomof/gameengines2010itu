@@ -161,6 +161,7 @@
     <None Include="include\cyber.jpg" />
     <None Include="include\Cyber.md2" />
     <None Include="include\duck.dae" />
+    <None Include="include\duckCM.tga" />
     <None Include="include\evil_laugh.wav" />
     <None Include="include\glut.def" />
     <None Include="include\lostsoul.jpg" />
