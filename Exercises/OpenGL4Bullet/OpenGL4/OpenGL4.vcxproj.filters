@@ -1118,6 +1118,9 @@
     <ClInclude Include="include\rapidxml.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\bullet_include\Bullet-C-Api.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL.dll">

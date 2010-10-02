@@ -222,6 +222,7 @@
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\bullet_include\btBulletCollisionCommon.h" />
     <ClInclude Include="include\bullet_include\btBulletDynamicsCommon.h" />
+    <ClInclude Include="include\bullet_include\Bullet-C-Api.h" />
     <ClInclude Include="include\bullet_include\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
     <ClInclude Include="include\bullet_include\BulletCollision\BroadphaseCollision\btBroadphaseInterface.h" />
     <ClInclude Include="include\bullet_include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.h" />
