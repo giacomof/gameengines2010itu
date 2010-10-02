@@ -11,10 +11,10 @@ class MessagePump								// Singleton
 {
 public:
 	static MessagePump _instance;
-	static SDL_mutex *mutex_event;
+	//static SDL_mutex * mutex_event;
  
-	MessagePump() { &getInstance(); mutex_event = SDL_CreateMutex(); }
-	~MessagePump() { SDL_DestroyMutex( mutex_event ); } 
+	MessagePump() { &getInstance();  }
+	~MessagePump() {  } 
 	MessagePump(const MessagePump &getInstance());   
 	
 	MessagePump & operator=(MessagePump &getInstance());
@@ -28,8 +28,8 @@ public:
 	static SDL_Event readLastMessage();
 	static void deleteMessage();
 	static void deleteLastMessage();
-	static void lock() { SDL_mutexP( mutex_event ); }
-	static void unlock() { SDL_mutexV( mutex_event ); }
+	static void lock() { /*SDL_mutexP( mutex_event );*/ }
+	static void unlock() { /*SDL_mutexV( mutex_event );*/ }
 
 	// external declaration
 	static list<SDL_Event> messageList;

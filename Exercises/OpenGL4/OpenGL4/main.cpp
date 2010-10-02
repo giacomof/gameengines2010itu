@@ -166,6 +166,7 @@ int main(int argc, char *argv[])
 {
 	// start the asset manager
 	assetManagerPtr = new AssetManager();
+	InputPump = MessagePump();
 
 	// SDL/OpenGL data
 	int videoFlags;
@@ -335,9 +336,9 @@ int main(int argc, char *argv[])
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 			case SDL_MOUSEMOTION:
-				MessagePump::getInstance().lock();
-				MessagePump::getInstance().sendMessage(currentEvent);
-				MessagePump::getInstance().unlock();
+				InputPump.lock();
+				InputPump.sendMessage(currentEvent);
+				InputPump.unlock();
 				break;
 			// Anything else we don't care about
 			default:
