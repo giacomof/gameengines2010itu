@@ -354,7 +354,7 @@ int main(int argc, char *argv[])
 		
 		//kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
-		bossCube->rotateAboutAxis(Vector(1,0,0),0.05f);
+		bossCube->rotateAboutAxis(Vector(0,1,0),0.05f);
 		
 		// Time to take care of the SDL events we have recieved
 		SDL_Event currentEvent;
