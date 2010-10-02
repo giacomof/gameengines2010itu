@@ -1,9 +1,9 @@
 #include "inputManager.h"
 
-const float mouse_sensitivity = 0.2;
+const float mouse_sensitivity = 0.3;
 inputManager inputManager::_instance;
 MessagePump messageP = MessagePump::getInstance();
-
+SDL_mutex * inputManager::mutex_event;
 
 inputManager &inputManager::getInstance()
 {
@@ -14,10 +14,12 @@ int inputManager::update(void)
 {
 SDL_Event currentEvent;
 
-	while ( !MessagePump::getInstance().empty() )
+	while ( !messageP.empty() )
 	{
+		SDL_mutexP( mutex_event );
 		currentEvent = messageP.receiveMessage();
-		
+		SDL_mutexV( mutex_event );
+
 		switch (currentEvent.type)
 		{
 		case SDL_KEYDOWN:
