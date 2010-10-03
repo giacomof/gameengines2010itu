@@ -374,6 +374,8 @@ int main(int argc, char *argv[])
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.08f);
 
+		cout << demon->getWorldPosition() << endl;
+
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
 		//bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
 		//bossCube->translate(Vector(0.5f,0,0));

@@ -170,7 +170,7 @@ void SceneNode::translate(Vector translateVector)
 	if (physicsGeometry != 0) {
 		btTransform trans;
 		physicsGeometry->getMotionState()->getWorldTransform(trans);
-		btVector3 final = trans.getOrigin() + btVector3(translateVector.get(0), translateVector.get(1), translateVector.get(1));
+		btVector3 final = trans.getOrigin() + btVector3(translateVector.get(0), translateVector.get(1), translateVector.get(1));	
 		physicsGeometry->getWorldTransform().setOrigin(final);
 	}
 
@@ -197,6 +197,30 @@ void SceneNode::scale(float p_sX, float p_sY, float p_sZ)
 void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, float p_shZX, float p_shZY)
 {
 	nodeTransformation.addShearing(p_shXY, p_shXZ, p_shYX, p_shYZ, p_shZX, p_shZY);
+}
+
+Vector SceneNode::getWorldPosition(void)
+{
+	SceneNode * nodePointer = this;
+	Vector worldPosition = nodePointer->getTransformation()->getTranslation();
+	nodePointer = nodePointer->getParent();
+	Quaternion qTemp;
+
+
+	while(nodePointer->getName() != "root") {
+		worldPosition = worldPosition + nodePointer->getTransformation()->getTranslation();
+
+		worldPosition = Matrix::generateQuaternionRotationMatrix(qTemp) * worldPosition;
+
+		nodePointer = nodePointer->getParent();
+	}
+
+	return worldPosition;
+}
+
+Transformation * SceneNode::getTransformation()
+{
+	return &nodeTransformation;
 }
 
 

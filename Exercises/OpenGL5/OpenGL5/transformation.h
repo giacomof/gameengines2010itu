@@ -32,8 +32,8 @@ class Transformation
 		void getScaling(float * scaleValuesArray);
 		void getShearing(float * shearValuesArray);
 
-		Vector getBBTranslation();
-		Quaternion getBBOrientation();
+		Vector getBBTranslation(void);
+		Quaternion getBBOrientation(void);
 		
 		void setTranslation(Vector t);
 		void setOrientation(Quaternion q);
