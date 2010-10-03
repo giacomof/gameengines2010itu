@@ -16,9 +16,9 @@ SDL_Event currentEvent;
 
 	while ( !messageP.empty() )
 	{
-		SDL_mutexP( mutex_event );
+		AssetManager::lockMutex( mutex_event );
 		currentEvent = messageP.receiveMessage();
-		SDL_mutexV( mutex_event );
+		AssetManager::unlockMutex( mutex_event );
 
 		switch (currentEvent.type)
 		{

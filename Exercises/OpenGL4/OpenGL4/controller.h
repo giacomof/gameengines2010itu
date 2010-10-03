@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include "entitySpectator.h"
+#include "assetManager.h"
 
 class Controller								// Singleton
 {
@@ -24,6 +25,5 @@ public:
 	static void strafeRight(bool shouldMove);
 	static void lookDeltaX(float deltaLook);
 	static void lookDeltaY(float deltaLook);
-	static void lock() { SDL_mutexP( mutex_controller ); }
-	static void unlock() { SDL_mutexV( mutex_controller ); }
+
 };

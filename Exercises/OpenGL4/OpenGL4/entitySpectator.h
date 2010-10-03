@@ -3,6 +3,7 @@
 #include "sceneObject.h"
 #include "linearAlgebraDLL.h"
 #include "entityCamera.h"
+#include "assetManager.h"
 
 class entitySpectator : public SceneObject
 {
@@ -21,6 +22,7 @@ private:
 public:
 	entitySpectator(void);
 	~entitySpectator(void);
+	
 	virtual void update();
 	virtual void setCamera(entityCamera *newCamera);
 	virtual entityCamera* getCamera();

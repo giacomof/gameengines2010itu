@@ -6,6 +6,7 @@
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "transformation.h"
 #include "sceneObject.h"
+#include "assetManager.h"
 
 using namespace linearAlgebraDLL;
 using namespace std;
@@ -14,6 +15,9 @@ using namespace std;
 class SceneNode 
 {
 	public:
+
+		SDL_mutex *mutex_node;					// Mutex for the Node
+		
 		// default constructor
 		SceneNode() { mutex_node = SDL_CreateMutex(); };
 		// actual constructor
@@ -27,10 +31,6 @@ class SceneNode
 
 		void update(float dt);
 		void destroy(void);
-
-		// Mutex commands
-		void lock(void);
-		void unlock(void);
 
 		// add a child
 		void addChild( SceneNode * pNode );
@@ -71,7 +71,6 @@ class SceneNode
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
-		SDL_mutex *mutex_node;					// Mutex for the Node		
 		SceneObject * geometry;					// Mesh to render
 };
 
@@ -80,6 +79,8 @@ class Root : public SceneNode
 {
 	public: // Singleton
 		static Root _instance;
+		
+		static SDL_mutex * rootMutex;
 
 		Root(void) { &getInstance(); }
 		//~Root(void);

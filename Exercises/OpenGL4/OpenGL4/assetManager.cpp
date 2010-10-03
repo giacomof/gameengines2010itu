@@ -7,8 +7,6 @@ AssetManager::~AssetManager(void)
 	for ( std::map<char *, md2InterfaceContainer>::const_iterator iter = md2_list.begin(); iter != md2_list.end(); ++iter ) {
 		free (iter->second.md2Mesh);
 	}
-	//delete &texture_list;
-	//delete &md2_list;
 }
 
 AssetManager &AssetManager::getInstance()
@@ -194,4 +192,14 @@ md2File * AssetManager::getMd2Mesh(char * md2NameChar)
 ColladaFile * AssetManager::getColladaMesh(char * colladaNameChar) 
 {
 	return collada_list[colladaNameChar].colladaMesh;
+}
+
+void AssetManager::lockMutex( SDL_mutex * m ) 
+{
+	SDL_mutexP(m);
+}
+
+void AssetManager::unlockMutex( SDL_mutex * m )
+{
+	SDL_mutexV(m);
 }

@@ -21,16 +21,6 @@ SceneObject::~SceneObject(void)
 	SDL_DestroyMutex( mutex_object );
 }
 
-void SceneObject::lock(void)
-{
-	SDL_mutexP( mutex_object );
-}
-
-void SceneObject::unlock(void)
-{
-	SDL_mutexV( mutex_object );
-}
-
 // ************************************* //
 // ************** MD2 ****************** //
 // ************************************* //

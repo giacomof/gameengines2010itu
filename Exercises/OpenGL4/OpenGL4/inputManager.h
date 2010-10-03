@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "messagePump.h"
 #include "controller.h"
+#include "assetManager.h"
 
 class inputManager
 {

@@ -46,7 +46,7 @@ SDL_Surface * surface;
 GLuint image;	
 
 // Root node and other Scene Node
-Root *rootNodePtr;
+Root * rootNodePtr;
 // Asset manager
 AssetManager * assetManagerPtr;
 
@@ -247,39 +247,24 @@ int main(int argc, char *argv[])
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
-
-	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
 	
 	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	demon->setVisible(false);
-	rootNodePtr->unlock(); // We can unlock the node now
 
-	demon->lock(); // The new node needs to be locked now since we're doing a transform on it, then adding a child
 	demon->scale(0.8, 0.8, 0.8);
 	
 	Sphere kernel_sphere = Sphere(50, 30, 30, true);
 	SceneNode kernel(demon, "kernel", &kernel_sphere, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	kernel.setVisible(0);
-	demon->unlock(); // We can now unlock it
 	
-	kernel.lock();
 	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	kernel.unlock();
-
-	// why here? - ask Simon
-	lostSoul->lock();
 	lostSoul->scale(1, 1, 1);
-	lostSoul->unlock();
-	
+
 	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	lostSoul->unlock();
-
-	bossCube->lock();
 	bossCube->scale(0.8, 0.8, 0.8);
-	bossCube->unlock();
 
 	ColladaInterface psyDuck_g = ColladaInterface(assetManagerPtr->getColladaMesh("fuckingDuck"), assetManagerPtr->getTexture("duckCM.tga"));
 	colladaDuck = new SceneNode(rootNodePtr, "fuckingDuck", &psyDuck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
@@ -386,19 +371,18 @@ void drawGL(void)
 	float *CamTransform = getCamera();
 
 	//Root::drawGeometry();
-	rootNodePtr->lock();
+	AssetManager::lockMutex( rootNodePtr->mutex_node );
 	rootNodePtr->drawGeometry();
-	rootNodePtr->unlock();
-	//glPopMatrix();
+	AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// ********************
 	// *** UPDATE POINT *** 
 	// ********************
 
 	// draw the animation
-	rootNodePtr->lock();
+	AssetManager::lockMutex( rootNodePtr->mutex_node );
 	rootNodePtr->update(0.06);
-	rootNodePtr->unlock();
+	AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
@@ -478,7 +462,7 @@ float* getCamera()
 
 	if ( currentCamera != NULL )
 	{
-		currentCamera->lock();
+		AssetManager::lockMutex( currentCamera->mutex_object );
 
 		Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),currentCamera->pitch).getTranspose();
 		transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),currentCamera->yaw).getTranspose() * transformationMatrix;
@@ -487,7 +471,7 @@ float* getCamera()
 																	currentCamera->vPosition[2]).getTranspose() * transformationMatrix;
 		transformationMatrix.getMatrix(&tranM[0]);
 
-		currentCamera->unlock();
+		AssetManager::unlockMutex( currentCamera->mutex_object );
 	}
 
 	glMultMatrixf(&tranM[0]);

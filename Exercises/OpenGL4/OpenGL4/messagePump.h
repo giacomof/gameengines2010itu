@@ -1,5 +1,7 @@
 #pragma once
 
+#include "assetManager.h"
+
 #include <SDL.h>
 #include <string>
 #include <list>
@@ -30,9 +32,6 @@ public:
 	static void deleteMessage();
 	static void deleteLastMessage();
 	
-	static void lock() { SDL_mutexP( mutex_event ); }
-	static void unlock() { SDL_mutexV( mutex_event ); }
-
 	// external declaration
 	static list<SDL_Event> messageList;
 };

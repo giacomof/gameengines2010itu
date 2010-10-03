@@ -2,7 +2,7 @@
 
 entitySpectator::entitySpectator(void)
 {
-	mutex_object = SDL_CreateMutex();
+	//mutex_object = SDL_CreateMutex();
 	camera = NULL;
 	yaw = 0.0f;
 	pitch = 0.0f;
@@ -25,7 +25,7 @@ entitySpectator::~entitySpectator(void)
 }
 void entitySpectator::update()
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 
 	// hardcode speed constant for now
 	float camSpeed = 0.5;
@@ -94,22 +94,24 @@ void entitySpectator::update()
 	// Update camera
 	if (camera != NULL)
 	{
-		camera->lock();
+		//camera->lock();
+		AssetManager::lockMutex( SceneObject::mutex_object );
 		camera->setPosition(position[0],position[1],position[2]);
 		camera->setForwardVector(vForward[0],vForward[1],vForward[2]);
 		camera->setUpVector(vUp[0],vUp[1],vUp[2]);
 		camera->setPitchYaw(pitch, yaw);
-		camera->unlock();
+		AssetManager::unlockMutex( SceneObject::mutex_object );
+		//camera->unlock();
 	}
 
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::setCamera(entityCamera *newcamera)
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 	camera = newcamera;
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 entityCamera* entitySpectator::getCamera()
@@ -119,42 +121,42 @@ entityCamera* entitySpectator::getCamera()
 
 void entitySpectator::moveForward(bool shouldMove)
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 	shouldMoveForward = shouldMove;
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::moveBackward(bool shouldMove)
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 	shouldMoveBackward = shouldMove;
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::strafeLeft(bool shouldMove)
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 	shouldStrafeLeft = shouldMove;
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::strafeRight(bool shouldMove)
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 	shouldStrafeRight = shouldMove;
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::lookDeltaX(float deltaLook)
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 	lookDeltaXAmount = lookDeltaXAmount + deltaLook;
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::lookDeltaY(float deltaLook)
 {
-	this->lock();
+	AssetManager::lockMutex( SceneObject::mutex_object );
 	lookDeltaYAmount = lookDeltaYAmount + deltaLook;
-	this->unlock();
+	AssetManager::unlockMutex( SceneObject::mutex_object );
 }

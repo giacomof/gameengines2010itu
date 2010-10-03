@@ -52,9 +52,9 @@ void SceneNode::update(float dt)
 	list<SceneNode*>::iterator itS;
 
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			(*itS)->lock();
+			//(*itS)->lock();
 			(*itS)->update(dt);
-			(*itS)->unlock();				
+			//(*itS)->unlock();				
 	}
 	
 }
@@ -65,7 +65,7 @@ void SceneNode::destroy(void)
 	list<SceneNode*>::iterator i;
 	for(i=childList.begin(); i != childList.end(); ++i) 
 	{ 
-		(*i)->lock();
+		//(*i)->lock();
 		(*i)->destroy(); 
 	}
 		
@@ -166,9 +166,9 @@ void SceneNode::drawGeometry()
 
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			(*itS)->lock();
+			//(*itS)->lock();
 			(*itS)->drawGeometry();
-			(*itS)->unlock();
+			//(*itS)->unlock();
 	}
 	glPopMatrix();
 	
@@ -216,10 +216,14 @@ unsigned int SceneNode::getNodeCount(void)
 	return nodeCount;
 }
 
+SDL_mutex * Root::rootMutex;
+
 // Static member initialization. 
 Root Root::_instance;
 list<SceneNode*> Root::childOfRootList;
 unsigned int id;
+
+
 
 Root &Root::getInstance()
 {
@@ -232,10 +236,11 @@ void Root::drawGeometry()
 	list<SceneNode*>::iterator itS;
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
-			(*itS)->lock();
+		AssetManager::lockMutex( rootMutex );
 			(*itS)->drawGeometry();
-			(*itS)->unlock();			
+		AssetManager::unlockMutex( rootMutex );
 	}
+
 	glPopMatrix();
 	
 }
@@ -246,19 +251,9 @@ void Root::update(float dt)
 	list<SceneNode*>::iterator itS;
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
-			(*itS)->lock();
+			AssetManager::lockMutex( rootMutex );
 			(*itS)->update(dt);
-			(*itS)->unlock();				
+			AssetManager::unlockMutex( rootMutex );				
 	}
 	
-}
-
-void SceneNode::lock(void)
-{
-	SDL_mutexP( mutex_node );
-}
-
-void SceneNode::unlock(void)
-{
-	SDL_mutexV( mutex_node );
 }
