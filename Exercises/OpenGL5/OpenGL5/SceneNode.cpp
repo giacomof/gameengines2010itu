@@ -18,7 +18,8 @@ static int nodeCount=0;
 // the initial orientation of the node
 SceneNode::SceneNode(	SceneNode * parentNode, string str, SceneObject * g,
 						Vector v,
-						Vector p_axis, float p_angle)
+						Vector p_axis, float p_angle,
+						btRigidBody * rigidBody)
 {
 	// variables inizialization
 	nodeName = str;
@@ -32,6 +33,8 @@ SceneNode::SceneNode(	SceneNode * parentNode, string str, SceneObject * g,
 	// Initialise the member transformation with the position and orientation parameters
 	nodeTransformation = Transformation(v,
 										p_axis, p_angle);
+
+	physicsGeometry = rigidBody;
 
 	visible = true;
 	
@@ -133,19 +136,61 @@ SceneObject * SceneNode::getSceneObject()
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
+	/* OLD CODE
+	btTransform trans;
+	physicsGeometry->getMotionState()->getWorldTransform(trans);
+	btQuaternion actualRotation = trans.getRotation();
+	btQuaternion newRotation = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree);
+	btQuaternion final = newRotation * actualRotation;
+	physicsGeometry->getWorldTransform().setRotation(final);
+	*/
+
+	if (physicsGeometry != 0) {
+		btTransform trans;
+		physicsGeometry->getMotionState()->getWorldTransform(trans);
+		btQuaternion final = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree) * trans.getRotation();
+		physicsGeometry->getWorldTransform().setRotation(final);
+	}
+
 	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
 }
 
 // Translate the node
 void SceneNode::translate(Vector translateVector) 
 {	
+	/* OLD CODE
+	btTransform trans;
+	physicsGeometry->getMotionState()->getWorldTransform(trans);
+	btVector3 originalPosition = trans.getOrigin();
+	btVector3 newPosition = btVector3(translateVector.get(0), translateVector.get(1), translateVector.get(1));
+	btVector3 final = originalPosition + newPosition;
+	physicsGeometry->getWorldTransform().setOrigin(final);
+	*/
+
+	if (physicsGeometry != 0) {
+		btTransform trans;
+		physicsGeometry->getMotionState()->getWorldTransform(trans);
+		btVector3 final = trans.getOrigin() + btVector3(translateVector.get(0), translateVector.get(1), translateVector.get(1));
+		physicsGeometry->getWorldTransform().setOrigin(final);
+	}
+
 	nodeTransformation.addTranslation(translateVector);
 }
 
 // Scale the node
 void SceneNode::scale(float p_sX, float p_sY, float p_sZ)
 {
+	/* SCALING NOT CONSISTENT BETWEEN PHYSICS AND GRAPHICS
+	NEED TO BE FIXED*/
+
+	if (physicsGeometry != 0) {
+		btVector3 oldScale = physicsGeometry->getCollisionShape()->getLocalScaling();
+		physicsGeometry->getCollisionShape()->setLocalScaling(btVector3(oldScale.getX()*p_sX, oldScale.getY()*p_sY, oldScale.getX()*p_sZ));
+		oldScale = physicsGeometry->getCollisionShape()->getLocalScaling();
+	}
+
 	nodeTransformation.addScaling(p_sX, p_sY, p_sZ);
+
 }
 
 // Apply a shearing to the node
@@ -158,8 +203,16 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 // Apply the trasformation of the node and then draw it
 void SceneNode::drawGeometry()
 {
-	applyTransformation();
+	if (physicsGeometry != 0) {
+		btTransform trans;
 	
+		physicsGeometry->getMotionState()->getWorldTransform(trans);
+		nodeTransformation.setTranslation(Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
+		nodeTransformation.setOrientation(Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW()));
+	}
+	applyTransformation();
+
+
 	if(isVisible()) {
 		geometry->drawGeometry();
 	}

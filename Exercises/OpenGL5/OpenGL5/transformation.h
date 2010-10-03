@@ -32,6 +32,9 @@ class Transformation
 		void getScaling(float * scaleValuesArray);
 		void getShearing(float * shearValuesArray);
 		
+		void setTranslation(Vector t);
+		void setOrientation(Quaternion q);
+		
 
 	private:
 		Matrix transformationMatrix;					// Cointains the actual transformation matrix

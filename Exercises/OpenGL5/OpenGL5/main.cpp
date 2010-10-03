@@ -7,6 +7,7 @@
 #include <SDL_thread.h>					// Header File for SDL thread library
 #include <SDL_audio.h>					// Header File for SDL audio library
 #include <glut.h>						// Header File for glut commands
+#include <btBulletDynamicsCommon.h>		// Header File for Bullet Physics
 
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
@@ -58,6 +59,8 @@ SceneNode * bossCube;
 //md2File md2BossCube;
 SceneNode * colladaDuck;
 //ColladaFile colladaTest;
+
+SceneNode * testPlane;
 
 // Camera and Movements Definitions
 float camYaw, camPitch, camYawRad, camPitchRad;
@@ -229,6 +232,18 @@ int main(int argc, char *argv[])
 	// Define the exit of the program in relation to SDL variables
 	atexit(SDL_Quit);
 
+	// Initialise the physic world
+	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+ 
+    btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+    btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+ 
+    btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+ 
+    btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+ 
+    dynamicsWorld->setGravity(btVector3(0,-10,0));
+
 	// Create the thread handles and assign names
 	SDL_Thread *id1;
 	SDL_Thread *id2;
@@ -250,9 +265,9 @@ int main(int argc, char *argv[])
 	
 	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
 	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	demon->setVisible(false);
+	demon->setVisible(true);
 
-	demon->scale(0.8, 0.8, 0.8);
+	//demon->scale(0.8, 0.8, 0.8);
 	
 	Sphere kernel_sphere = Sphere(50, 30, 30, true);
 	SceneNode kernel(demon, "kernel", &kernel_sphere, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
@@ -262,12 +277,47 @@ int main(int argc, char *argv[])
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
 
-	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(lostSoul, "boss cube", &bossCube_g, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	bossCube->scale(0.8, 0.8, 0.8);
+	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
+	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	ColladaInterface psyDuck_g = ColladaInterface(assetManagerPtr->getColladaMesh("fuckingDuck"), assetManagerPtr->getTexture("duckCM.tga"));
-	colladaDuck = new SceneNode(rootNodePtr, "fuckingDuck", &psyDuck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	/* ---------------------------------------- *
+	 * Physic stuff								*
+	 * ---------------------------------------- */
+
+	btCollisionShape* fallShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
+
+	btDefaultMotionState* fallMotionState =
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,150,0)));
+
+	btScalar mass = 5;
+	btVector3 fallInertia(0,0,0);
+	fallShape->calculateLocalInertia(mass,fallInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
+
+	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
+	dynamicsWorld->addRigidBody(fallRigidBody);
+
+	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+	bossCube = new SceneNode(rootNodePtr, "boss cube", &bossCube_g, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+
+
+	// Collision shape of a plane
+	btCollisionShape* groundShape = new btBoxShape(btVector3(500.0f, 1.0f, 500.0f));
+
+	Quaternion testQ = Quaternion(Vector(1,0,1), 30);
+
+	btDefaultMotionState* groundMotionState =
+		new btDefaultMotionState(btTransform(btQuaternion(testQ.getVector().get(0),testQ.getVector().get(1),testQ.getVector().get(2),testQ.getW()),btVector3(0,0,0)));
+
+	btRigidBody::btRigidBodyConstructionInfo
+                groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
+	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
+
+	dynamicsWorld->addRigidBody(groundRigidBody);
+
+	Plane testPlaneGeom(1000.0f, 1000.0f);
+	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(1.0f, 0.0f, 1.0f), 30.0f, groundRigidBody);
 
 	/* ---------------------------------------- *
 	 * Graph and asset testing stuff ends here  *
@@ -288,8 +338,9 @@ int main(int argc, char *argv[])
 		SDL_WM_SetCaption( title, NULL );
 		
 		kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
-		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
-		//bossCube->rotateAboutAxis(Vector(1,0,1),0.4f);
+		lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
+		bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
+		//bossCube->translate(Vector(0.5f,0,0));
 		
 		// Time to take care of the SDL events we have recieved
 		SDL_Event currentEvent;
@@ -335,6 +386,8 @@ int main(int argc, char *argv[])
 		// Actual frame rendering happens here
 		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
 		{
+			dynamicsWorld->stepSimulation(1/60.f, 10);
+
 			tickFrame = SDL_GetTicks();
 			drawGL();
 
@@ -429,7 +482,7 @@ int initGL(void)
 	assetManagerPtr->loadMd2("include/Cyber.md2", "md2Demon");
 	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
 	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
-	assetManagerPtr->loadCollada("include/duck.dae", "fuckingDuck");
+	assetManagerPtr->loadCollada("include/duck.dae", "duck");
 
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
@@ -444,7 +497,7 @@ int initGL(void)
 	std::cout << "memory usage demon " << (assetManagerPtr->getMd2Mesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("fuckingDuck")->getDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 
