@@ -64,6 +64,10 @@ class SceneNode
 		void setPosition(Vector t);
 		void setOrientation(Quaternion q);
 
+		Vector getWorldPosition(void);
+
+		Transformation * getTransformation();
+
 		void applyTransformation(void);
 		void SceneNode::removeTransformation(void);
 		void drawGeometry(void);

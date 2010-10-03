@@ -113,12 +113,12 @@ void Transformation::getShearing(float * shearValuesArray)
 	shearValuesArray[5] = shZY;
 }
 
-Vector Transformation::getBBTranslation()
+Vector Transformation::getBBTranslation(void)
 {
 	return bbTranslation;
 }
 
-Quaternion Transformation::getBBOrientation() 
+Quaternion Transformation::getBBOrientation(void) 
 {
 	return bbRotation;
 }
