@@ -19,4 +19,6 @@ public:
 	virtual void setForwardVector(float x, float y, float z);
 	virtual void setUpVector(float x, float y, float z);
 	virtual void setPitchYaw(float newpitch, float newyaw);
+
+	SDL_mutex * mutex_camera;
 };

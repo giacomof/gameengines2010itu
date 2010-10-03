@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 {
 	// start the asset manager
 	assetManagerPtr = new AssetManager();
-	InputPump = MessagePump();
+	InputPump = MessagePump::getInstance();
 
 	// SDL/OpenGL data
 	int videoFlags;
@@ -492,7 +492,6 @@ int initGL(void)
 	glLoadIdentity();
 	// sets the matrix stack as the modelview matrix stack
 	glMatrixMode(GL_MODELVIEW);
-	
 	gluPerspective(60.0f, screenWidth/screenHeight, 0.1f, 5000.0f);
 
 	// enables the Z-buffer

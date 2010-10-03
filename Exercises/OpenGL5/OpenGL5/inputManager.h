@@ -12,12 +12,13 @@ public:
 	int update(void);
 
 	inputManager() { &getInstance(); }
-	~inputManager() { SDL_DestroyMutex( mutex_event );  } 
+	~inputManager() { /*SDL_DestroyMutex( inputManager::mutex_event );*/  } 
 	inputManager(const inputManager &getInstance());   
 	
 	inputManager & operator=(inputManager &getInstance());
 	static inputManager &getInstance();
 
+	static unsigned int count;
 	static SDL_mutex * mutex_event;
 
 private:

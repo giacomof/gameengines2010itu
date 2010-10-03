@@ -8,7 +8,8 @@ bool Controller::quit;
 
 Controller &Controller::getInstance()
 {
-  return _instance;
+	mutex_controller = SDL_CreateMutex();
+	return _instance;
 }
 
 void Controller::setPlayerObject(entitySpectator *player)

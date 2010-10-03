@@ -15,12 +15,12 @@ public:
 	static MessagePump _instance;
 	static SDL_mutex * mutex_event;
  
-	MessagePump() { &getInstance();  }
-	~MessagePump() { SDL_DestroyMutex( mutex_event ); } 
+	MessagePump() { getInstance(); }
+	//~MessagePump() { /*SDL_DestroyMutex( MessagePump::mutex_event );*/ } 
 	MessagePump(const MessagePump &getInstance());   
 	
-	MessagePump & operator=(MessagePump &getInstance());
-	static MessagePump &getInstance();
+	MessagePump & operator=(MessagePump getInstance());
+	static MessagePump getInstance();
 	
 	static bool empty();
 	static void sendMessage(SDL_Event msg);
@@ -34,4 +34,5 @@ public:
 	
 	// external declaration
 	static list<SDL_Event> messageList;
+	static unsigned int count;
 };
