@@ -339,9 +339,9 @@ int main(int argc, char *argv[])
 	//bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
 
 
-	for(int i = 0; i < 10; i++)
+	for(int i = 0; i < 6; i++)
 	{
-		for(int j = 0; j < 10; j++)
+		for(int j = 0; j < 6; j++)
 		{
 			fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,200,-100*j)));
 
