@@ -16,7 +16,7 @@ static int nodeCount=0;
 // Constructor that take a pointer to the parant node, the name of the node
 // the initial position of the node
 // the initial orientation of the node
-SceneNode::SceneNode(	SceneNode * parentNode, string str, SceneObject * g,
+SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 						Vector v,
 						Vector p_axis, float p_angle,
 						btRigidBody * rigidBody)

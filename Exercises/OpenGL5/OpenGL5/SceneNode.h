@@ -23,7 +23,7 @@ class SceneNode
 		// default constructor
 		SceneNode() { mutex_node = SDL_CreateMutex(); };
 		// actual constructor
-		SceneNode(		SceneNode * parentNode, string str, SceneObject * g,
+		SceneNode(		SceneNode * parentNode, char * str, SceneObject * g,
 						Vector v,
 						Vector p_axis, float p_angle,
 						btRigidBody * rigidBody = 0);
