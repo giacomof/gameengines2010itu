@@ -33,7 +33,7 @@ class AssetManager
 {
 
 public:
-
+	// Singleton Statements
 	static AssetManager _instance;
 
 	AssetManager(void) { &getInstance(); }
@@ -43,14 +43,21 @@ public:
 	AssetManager & operator=(AssetManager &getInstance());
 	AssetManager &getInstance();
 
+	// texture methods
 	void loadTexture(char * fileDirectory, char * textureName);
 	unsigned int getTexture(char * textureName);
 
+	// MD2 methods
 	void loadMd2(char * filePath, char * md2NameChar);
 	md2File * getMd2Mesh(char * md2NameChar);
 	
+	// COLLADA methods
 	char * loadCollada(char * filePath, char * colladaNameChar);
 	ColladaFile * getColladaMesh(char * colladaNameChar);
+
+	// mutex methods
+	static void lockMutex( SDL_mutex * m );
+	static void unlockMutex( SDL_mutex * m );
 
 private:
 	std::map <char *, textureContainer> texture_list;

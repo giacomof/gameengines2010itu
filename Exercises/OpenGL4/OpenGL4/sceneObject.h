@@ -8,25 +8,21 @@
 #include "linearAlgebraDLL.h"
 #include "md2File.h"
 #include "colladaFile.h"
-
+#include "assetManager.h"
 
 using namespace std;
 using namespace linearAlgebraDLL;
 
 class SceneObject
 {
-	protected:
+	public:
 		SDL_mutex *mutex_object;
 
-	public:
 		SceneObject(void);
 		virtual ~SceneObject(void);
 		virtual void drawGeometry() {};
 		virtual void update(void) {};
 
-		// Mutex commands
-		virtual void lock(void);
-		virtual void unlock(void);
 };
 
 class Text : public SceneObject 

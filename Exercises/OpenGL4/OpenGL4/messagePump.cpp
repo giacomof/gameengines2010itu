@@ -17,24 +17,24 @@ bool MessagePump::empty()
 
 void MessagePump::sendMessage(SDL_Event  msg) 
 {
-	lock();
+	AssetManager::lockMutex( mutex_event );
 	messageList.push_back(msg);
-	unlock();
+	AssetManager::unlockMutex( mutex_event );
 }
 
 void MessagePump::sendPriorityMessage(SDL_Event msg) 
 {
-	lock();
+	AssetManager::lockMutex( mutex_event );
 	messageList.push_front(msg);
-	unlock();
+	AssetManager::unlockMutex( mutex_event );
 }
 
 SDL_Event MessagePump::receiveMessage()
 {
-	lock();
+	AssetManager::lockMutex( mutex_event );
 	SDL_Event temp = messageList.front();
 	messageList.pop_front();
-	unlock();
+	AssetManager::unlockMutex( mutex_event );
 
 	return temp;
 
@@ -52,24 +52,24 @@ SDL_Event MessagePump::readLastMessage()
 
 SDL_Event MessagePump::receiveLastMessage()
 {
-	lock();
+	AssetManager::lockMutex( mutex_event );
 	SDL_Event temp = messageList.back();
 	messageList.pop_back();
-	unlock();
+	AssetManager::unlockMutex( mutex_event );
 
 	return temp;
 }
 
 void MessagePump::deleteMessage()
 {
-	lock();
+	AssetManager::lockMutex( mutex_event );
 	messageList.pop_front();
-	unlock();
+	AssetManager::unlockMutex( mutex_event );
 }
 
 void MessagePump::deleteLastMessage()
 {
-	lock();
+	AssetManager::lockMutex( mutex_event );
 	messageList.pop_back();
-	unlock();
+	AssetManager::unlockMutex( mutex_event );
 }
