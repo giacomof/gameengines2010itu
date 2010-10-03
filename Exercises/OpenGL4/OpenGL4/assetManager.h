@@ -33,8 +33,15 @@ class AssetManager
 {
 
 public:
-	AssetManager(void);
+
+	static AssetManager _instance;
+
+	AssetManager(void) { &getInstance(); }
 	~AssetManager(void);
+	AssetManager(const AssetManager &getInstance()); 
+
+	AssetManager & operator=(AssetManager &getInstance());
+	AssetManager &getInstance();
 
 	void loadTexture(char * fileDirectory, char * textureName);
 	unsigned int getTexture(char * textureName);
@@ -50,4 +57,3 @@ private:
 	std::map <char *, md2InterfaceContainer> md2_list;
 	std::map <char *, colladaInterfaceContainer> collada_list;
 };
-

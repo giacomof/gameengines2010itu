@@ -4,8 +4,8 @@
 
 GLOBAL TASKS:
 
-G- Asset Manager
-	0- make it Singleton
+V+G- Asset Manager
+	1(V)- make it Singleton
 	1(G)- Texture Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
 	1(V)- Mesh Manager
@@ -14,7 +14,7 @@ G- Asset Manager
 					0- MD5 hashing	
 	0- Sound Manager
 		0- Sounds without movements freeze
-	0- Mutex Manager
+	V- Mutex Manager
 G- Physics SDK (Bullet?)
 1(G+V)- Collada Loader
 	V- multi-node collada loader

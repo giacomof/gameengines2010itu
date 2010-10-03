@@ -1,12 +1,6 @@
 #include "assetManager.h"
 
-
-AssetManager::AssetManager(void)
-{
-	// Initialization of DevIL
-	ilInit(); 
-}
-
+AssetManager AssetManager::_instance;
 
 AssetManager::~AssetManager(void)
 {
@@ -17,8 +11,16 @@ AssetManager::~AssetManager(void)
 	//delete &md2_list;
 }
 
+AssetManager &AssetManager::getInstance()
+{
+  return _instance;
+}
+
 void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 {
+	// Initialization of DevIL
+	ilInit(); 
+	
 	ILuint texid;
 	ILboolean success;
 	GLuint imageT;
