@@ -9,8 +9,10 @@ Transformation::Transformation(	Vector p_translation,
 	
 	// Initialise all the values
 	rotation = Quaternion(p_axis, p_angle);
+	bbRotation = Quaternion(p_axis, p_angle);
 
 	translation = p_translation;
+	bbTranslation = p_translation;
 
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
@@ -109,6 +111,16 @@ void Transformation::getShearing(float * shearValuesArray)
 	shearValuesArray[3] = shYZ;
 	shearValuesArray[4] = shZX;
 	shearValuesArray[5] = shZY;
+}
+
+Vector Transformation::getBBTranslation()
+{
+	return bbTranslation;
+}
+
+Quaternion Transformation::getBBOrientation() 
+{
+	return bbRotation;
 }
 
 void Transformation::setTranslation(Vector t)

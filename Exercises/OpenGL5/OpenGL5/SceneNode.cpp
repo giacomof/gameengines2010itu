@@ -183,11 +183,11 @@ void SceneNode::scale(float p_sX, float p_sY, float p_sZ)
 	/* SCALING NOT CONSISTENT BETWEEN PHYSICS AND GRAPHICS
 	NEED TO BE FIXED*/
 
-	if (physicsGeometry != 0) {
-		btVector3 oldScale = physicsGeometry->getCollisionShape()->getLocalScaling();
-		physicsGeometry->getCollisionShape()->setLocalScaling(btVector3(oldScale.getX()*p_sX, oldScale.getY()*p_sY, oldScale.getX()*p_sZ));
-		oldScale = physicsGeometry->getCollisionShape()->getLocalScaling();
-	}
+	//if (physicsGeometry != 0) {
+	//	btVector3 oldScale = physicsGeometry->getCollisionShape()->getLocalScaling();
+	//	physicsGeometry->getCollisionShape()->setLocalScaling(btVector3(oldScale.getX()*p_sX, oldScale.getY()*p_sY, oldScale.getX()*p_sZ));
+	//	oldScale = physicsGeometry->getCollisionShape()->getLocalScaling();
+	//}
 
 	nodeTransformation.addScaling(p_sX, p_sY, p_sZ);
 
@@ -207,7 +207,11 @@ void SceneNode::drawGeometry()
 		btTransform trans;
 	
 		physicsGeometry->getMotionState()->getWorldTransform(trans);
-		nodeTransformation.setTranslation(Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
+		Vector local = nodeTransformation.getBBTranslation();
+		Vector physic = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+		Vector final = local + physic;
+		nodeTransformation.setTranslation(final);
+
 		nodeTransformation.setOrientation(Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW()));
 	}
 	applyTransformation();

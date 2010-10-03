@@ -31,6 +31,9 @@ class Transformation
 		Quaternion getOrientation();
 		void getScaling(float * scaleValuesArray);
 		void getShearing(float * shearValuesArray);
+
+		Vector getBBTranslation();
+		Quaternion getBBOrientation();
 		
 		void setTranslation(Vector t);
 		void setOrientation(Quaternion q);
@@ -44,5 +47,8 @@ class Transformation
 		Vector translation;
 		float sX, sY, sZ;
 		float shXY, shXZ, shYX, shYZ, shZX, shZY;
+
+		Vector bbTranslation;
+		Quaternion bbRotation;
 };
 
