@@ -242,7 +242,7 @@ int main(int argc, char *argv[])
  
     btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
  
-    dynamicsWorld->setGravity(btVector3(0,-10,0));
+    dynamicsWorld->setGravity(btVector3(0,-25,0));
 
 	// Create the thread handles and assign names
 	SDL_Thread *id1;
@@ -262,23 +262,61 @@ int main(int argc, char *argv[])
 	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
+
+
+	// Create the plane with the collision shape
+	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 1.0f, 1000.0f));
+
+	//Quaternion testQ = Quaternion(Vector(0,1,0), 0);
+
+	btDefaultMotionState* groundMotionState =
+		new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f),btVector3(0.0f, 0.0f, 0.0f)));
+
+	btRigidBody::btRigidBodyConstructionInfo
+                groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
+	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
+
+	dynamicsWorld->addRigidBody(groundRigidBody);
+
+	Plane testPlaneGeom(2000.0f, 2000.0f);
+	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
 	
+
+	// Create demon "rotationabout" node
+	Sphere rotation_sphere = Sphere(50, 30, 30, true);
+	SceneNode rotationCenter(rootNodePtr, "rotationCenter", &rotation_sphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	rotationCenter.setVisible(0);
+
+
+	btCollisionShape* demonBB = new btBoxShape(btVector3(30.0f, 115.0f, 30.0f));
+
+	btDefaultMotionState* demonMotionState =
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),-1.57),btVector3(0,115,0)));
+
+	btScalar demonMass = 0;
+	btVector3 demonInertia(0,0,0);
+	demonBB->calculateLocalInertia(demonMass,demonInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo demonRigidBodyCI(demonMass, demonMotionState, demonBB, demonInertia);
+
+	btRigidBody* demonRigidBody = new btRigidBody(demonRigidBodyCI);
+	dynamicsWorld->addRigidBody(demonRigidBody);
+
 	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
-	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	demon = new SceneNode(&rotationCenter, "Doom Demon", &doomDemon, Vector(-500.0f, -115.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, demonRigidBody);
 	demon->setVisible(true);
+	demon->scale(1.0f, 1.0f, 1.0f);
+	assetManagerPtr->getMd2Mesh("md2Demon")->SetAnim(1);
 
 	//demon->scale(0.8, 0.8, 0.8);
 	
-	Sphere kernel_sphere = Sphere(50, 30, 30, true);
-	SceneNode kernel(demon, "kernel", &kernel_sphere, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	kernel.setVisible(0);
 	
-	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
+	/*md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
 
 	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
-	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);*/
 
 	/* ---------------------------------------- *
 	 * Physic stuff								*
@@ -287,7 +325,7 @@ int main(int argc, char *argv[])
 	btCollisionShape* fallShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
 	btDefaultMotionState* fallMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,150,0)));
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,500,0)));
 
 	btScalar mass = 5;
 	btVector3 fallInertia(0,0,0);
@@ -299,25 +337,22 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(fallRigidBody);
 
 	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(rootNodePtr, "boss cube", &bossCube_g, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+	bossCube = new SceneNode(rootNodePtr, "boss cube", &bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
 
 
-	// Collision shape of a plane
-	btCollisionShape* groundShape = new btBoxShape(btVector3(500.0f, 1.0f, 500.0f));
 
-	Quaternion testQ = Quaternion(Vector(1,0,1), 30);
+	btDefaultMotionState* fallMotionState2 =
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(-50,500,0)));
 
-	btDefaultMotionState* groundMotionState =
-		new btDefaultMotionState(btTransform(btQuaternion(testQ.getVector().get(0),testQ.getVector().get(1),testQ.getVector().get(2),testQ.getW()),btVector3(0,0,0)));
+	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape,fallInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo
-                groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
-	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	btRigidBody* fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
+	dynamicsWorld->addRigidBody(fallRigidBody2);
 
-	dynamicsWorld->addRigidBody(groundRigidBody);
+	md2Interface bossCube_g2 = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+	bossCube = new SceneNode(rootNodePtr, "boss cube", &bossCube_g2, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody2);
 
-	Plane testPlaneGeom(1000.0f, 1000.0f);
-	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(1.0f, 0.0f, 1.0f), 30.0f, groundRigidBody);
+	
 
 	/* ---------------------------------------- *
 	 * Graph and asset testing stuff ends here  *
@@ -337,9 +372,10 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine");
 		SDL_WM_SetCaption( title, NULL );
 		
-		kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
-		lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
-		bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.08f);
+
+		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
+		//bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
 		//bossCube->translate(Vector(0.5f,0,0));
 		
 		// Time to take care of the SDL events we have recieved
@@ -455,6 +491,8 @@ int initGL(void)
 	// sets the matrix stack as the modelview matrix stack
 	glMatrixMode(GL_MODELVIEW);
 	
+	gluPerspective(60.0f, screenWidth/screenHeight, 0.1f, 5000.0f);
+
 	// enables the Z-buffer
 	glEnable(GL_DEPTH_TEST);
 	// enables the texture rendering
@@ -545,7 +583,7 @@ int resizeWindow(int width, int height)
 	glLoadIdentity();
 	
 	// sets the Field of View, pixel ratio, Frustum
-	gluPerspective(60.0f, ratio, 0.1f, 1000.0f);
+	gluPerspective(60.0f, ratio, 0.1f, 5000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
