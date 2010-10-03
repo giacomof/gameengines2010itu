@@ -35,6 +35,7 @@ OPTIONALS:
 0- debug draw system
 	0- axis of rotation of an object via line draws
 	0- draw the bounding box or bounding sphere of an object
+	V- draw the name of the SceneNode
 0- Physics Wrapper? (PAL?)
 
 COMPLETED:
@@ -45,7 +46,8 @@ COMPLETED:
 1(S)- Input Abstraction Layer
 1(V)- Merge md2Loader and md2File classes in the md2Interface
 1(G)- Create unit units for testing
-1(V)- EXIT BUG
+1(V)- Exit Bug (Memory Leak)
+1(V)- Mutex Bug
 
 
 Symbology Map:
