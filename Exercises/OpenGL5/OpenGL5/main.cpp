@@ -322,17 +322,17 @@ int main(int argc, char *argv[])
 	 * Physic stuff								*
 	 * ---------------------------------------- */
 
-	btCollisionShape* fallShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
+	btCollisionShape* cubeShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
-	btDefaultMotionState* fallMotionState;
+	btDefaultMotionState* cubeMotionState;
 
-	btScalar mass = 5;
-	btVector3 fallInertia(0,0,0);
-	fallShape->calculateLocalInertia(mass,fallInertia);
+	btScalar cubeMass = 10;
+	btVector3 cubeInertia(0,0,0);
+	cubeShape->calculateLocalInertia(cubeMass,cubeInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo * fallRigidBodyCI;
+	btRigidBody::btRigidBodyConstructionInfo * cubeRigidBodyCI;
 
-	btRigidBody* fallRigidBody;
+	btRigidBody* cubeRigidBody;
 	//dynamicsWorld->addRigidBody(fallRigidBody);
 
 	md2Interface * bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
@@ -343,20 +343,53 @@ int main(int argc, char *argv[])
 	{
 		for(int j = 0; j < 6; j++)
 		{
-			fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,200,-100*j)));
+			cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,200,-100*j)));
 
-			fallRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(mass,fallMotionState,fallShape,fallInertia);
+			cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
 
-			fallRigidBody = new btRigidBody(*fallRigidBodyCI);
+			cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
 
-			dynamicsWorld->addRigidBody(fallRigidBody);
+			dynamicsWorld->addRigidBody(cubeRigidBody);
 
 			bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-			bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+			bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 		}
 	}
 
-	
+	//btCollisionShape* duckShape = cubeShape;/*new btBoxShape(btVector3(20.0f, 20.0f, 20.0f));*/
+
+	//btDefaultMotionState* duckMotionState;
+
+	//btScalar duckMass = 50;
+	//btVector3 duckInertia(0,0,0);
+	//duckShape->calculateLocalInertia(duckMass,duckInertia);
+
+	//btRigidBody::btRigidBodyConstructionInfo * duckRigidBodyCI;
+
+	//btRigidBody* duckRigidBody;
+
+	//ColladaInterface * duck_g = new ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
+
+
+	//for(int i = 0; i < 10; i++)
+	//{
+	//	for(int j = 0; j < 2; j++)
+	//	{
+	//		duckMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(500 * i,500,-500 * j)));
+
+	//		duckRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(duckMass,duckMotionState,duckShape,duckInertia);
+
+	//		duckRigidBody = new btRigidBody(*duckRigidBodyCI);
+
+	//		dynamicsWorld->addRigidBody(duckRigidBody);
+
+	//		/*duck_g = new ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));*/
+	//		colladaDuck = new SceneNode(rootNodePtr, "duck_node", duck_g, Vector(0.0f, -35.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
+	//		colladaDuck->scale(0.2f, 0.2f, 0.2f);
+	//	}
+	//}
+
+
 
 	/* ---------------------------------------- *
 	 * Graph and asset testing stuff ends here  *
