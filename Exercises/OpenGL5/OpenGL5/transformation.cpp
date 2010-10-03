@@ -110,3 +110,13 @@ void Transformation::getShearing(float * shearValuesArray)
 	shearValuesArray[4] = shZX;
 	shearValuesArray[5] = shZY;
 }
+
+void Transformation::setTranslation(Vector t)
+{
+	translation = t;
+}
+
+void Transformation::setOrientation(Quaternion q)
+{
+	rotation = q;
+}

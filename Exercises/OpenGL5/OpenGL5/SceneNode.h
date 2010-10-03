@@ -8,6 +8,8 @@
 #include "sceneObject.h"
 #include "assetManager.h"
 
+#include <btBulletDynamicsCommon.h>
+
 using namespace linearAlgebraDLL;
 using namespace std;
 
@@ -23,7 +25,8 @@ class SceneNode
 		// actual constructor
 		SceneNode(		SceneNode * parentNode, string str, SceneObject * g,
 						Vector v,
-						Vector p_axis, float p_angle);
+						Vector p_axis, float p_angle,
+						btRigidBody * rigidBody = 0);
 		// destructor
 		virtual ~SceneNode() { destroy(); }
 		// delete object
@@ -58,6 +61,9 @@ class SceneNode
 		void scale(float p_sX, float p_sY, float p_sZ);
 		void shear(float p_sxy, float p_sxz, float p_syx, float p_syz, float p_szx, float p_szy);
 
+		void setPosition(Vector t);
+		void setOrientation(Quaternion q);
+
 		void applyTransformation(void);
 		void SceneNode::removeTransformation(void);
 		void drawGeometry(void);
@@ -72,6 +78,8 @@ class SceneNode
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
 		SceneObject * geometry;					// Mesh to render
+
+		btRigidBody * physicsGeometry;			
 };
 
 
