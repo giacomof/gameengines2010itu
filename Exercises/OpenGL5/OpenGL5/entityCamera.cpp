@@ -2,12 +2,12 @@
 
 entityCamera::entityCamera(void)
 {
-	//mutex_camera = SDL_CreateMutex();
+	mutex_camera = SDL_CreateMutex();
 }
 
 entityCamera::~entityCamera(void)
 {
-	//SDL_DestroyMutex ( mutex_camera );
+	SDL_DestroyMutex ( mutex_camera );
 }
 
 void entityCamera::update()

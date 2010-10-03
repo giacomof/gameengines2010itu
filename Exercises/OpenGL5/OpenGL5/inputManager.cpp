@@ -1,13 +1,19 @@
 #include "inputManager.h"
 
+unsigned int inputManager::count=0;
 const float mouse_sensitivity = 0.3;
+
 inputManager inputManager::_instance;
+
 MessagePump messageP = MessagePump::getInstance();
+
 SDL_mutex * inputManager::mutex_event;
 
 inputManager &inputManager::getInstance()
 {
-  return _instance;
+	if(count==0) inputManager::mutex_event = SDL_CreateMutex();
+	else count++;
+	return _instance;
 }
 
 int inputManager::update(void)
@@ -16,9 +22,9 @@ SDL_Event currentEvent;
 
 	while ( !messageP.empty() )
 	{
-		AssetManager::lockMutex( mutex_event );
+		AssetManager::lockMutex( inputManager::mutex_event );
 		currentEvent = messageP.receiveMessage();
-		AssetManager::unlockMutex( mutex_event );
+		AssetManager::unlockMutex( inputManager::mutex_event );
 
 		switch (currentEvent.type)
 		{
