@@ -29,6 +29,7 @@ Matrix Transformation::getTransformation(void)
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
 	
+
 	
 	transformationMatrix.getMatrix(&tranM[0]);
 	return transformationMatrix.getTranspose();

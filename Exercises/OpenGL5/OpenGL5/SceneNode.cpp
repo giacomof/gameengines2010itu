@@ -146,11 +146,45 @@ void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 	*/
 
 	if (physicsGeometry != 0) {
+		//btTransform trans;
+		//physicsGeometry->getMotionState()->getWorldTransform(trans);
+
+		//btQuaternion final = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree) * trans.getRotation();
+		//physicsGeometry->getWorldTransform().setRotation(final);
+
+		//btVector3 test = btVector3(this->getWorldPosition().get(0), this->getWorldPosition().get(1), this->getWorldPosition().get(2));
+
 		btTransform trans;
 		physicsGeometry->getMotionState()->getWorldTransform(trans);
-		btQuaternion final = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree) * trans.getRotation();
+
+		btVector3 btActualPosition = physicsGeometry->getWorldTransform().getOrigin();
+		Vector actualPosition = Vector(btActualPosition.getX(), btActualPosition.getY(), btActualPosition.getZ());
+
+		Vector newPosition = Matrix::generateAxesRotationMatrix(p_Axis, p_Degree) * actualPosition;
+
+		btVector3 btNewPosition = btVector3(newPosition.get(0), newPosition.get(1), newPosition.get(2));
+
+		physicsGeometry->getWorldTransform().setOrigin(btNewPosition);
+
+		btQuaternion actualRotation = trans.getRotation();
+		btQuaternion newRotation = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree);
+
+		btQuaternion final = newRotation * actualRotation;
 		physicsGeometry->getWorldTransform().setRotation(final);
+
+		//newPosition = Vector(physicsGeometry->getWorldTransform().getOrigin().getX(), physicsGeometry->getWorldTransform().getOrigin().getY(), physicsGeometry->getWorldTransform().getOrigin().getZ());
+		//cout << newPosition << endl;
+
 	}
+
+	list<SceneNode*>::iterator itS;
+	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			//(*itS)->lock();
+			(*itS)->rotateAboutAxis(p_Axis, p_Degree);
+			//(*itS)->unlock();
+	}
+
+
 
 	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
 }
@@ -237,7 +271,11 @@ void SceneNode::drawGeometry()
 		nodeTransformation.setTranslation(final);
 
 		nodeTransformation.setOrientation(Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW()));
+
+		//Vector print = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+		//cout << nodeName << ": " << print << endl;
 	}
+
 	applyTransformation();
 
 

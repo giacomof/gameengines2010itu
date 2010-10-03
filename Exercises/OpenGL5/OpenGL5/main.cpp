@@ -288,10 +288,10 @@ int main(int argc, char *argv[])
 	rotationCenter.setVisible(0);
 
 
-	btCollisionShape* demonBB = new btBoxShape(btVector3(30.0f, 115.0f, 30.0f));
+	btCollisionShape* demonBB = new btBoxShape(btVector3(50.0f, 115.0f, 50.0f));
 
 	btDefaultMotionState* demonMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),-1.57),btVector3(0,115,0)));
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),-1.57),btVector3(-500,115,0)));
 
 	btScalar demonMass = 0;
 	btVector3 demonInertia(0,0,0);
@@ -303,7 +303,7 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(demonRigidBody);
 
 	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
-	demon = new SceneNode(&rotationCenter, "Doom Demon", &doomDemon, Vector(-500.0f, -115.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, demonRigidBody);
+	demon = new SceneNode(&rotationCenter, "Doom Demon", &doomDemon, Vector(0.0f, -115.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, demonRigidBody);
 	demon->setVisible(true);
 	demon->scale(1.0f, 1.0f, 1.0f);
 	assetManagerPtr->getMd2Mesh("md2Demon")->SetAnim(1);
@@ -331,26 +331,28 @@ int main(int argc, char *argv[])
 	btVector3 fallInertia(0,0,0);
 	fallShape->calculateLocalInertia(mass,fallInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
+	btRigidBody::btRigidBodyConstructionInfo * fallRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(mass,fallMotionState,fallShape,fallInertia);
 
-	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
+	btRigidBody* fallRigidBody = new btRigidBody(*fallRigidBodyCI);
 	dynamicsWorld->addRigidBody(fallRigidBody);
 
-	md2Interface bossCube_g = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(rootNodePtr, "boss cube", &bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+	md2Interface * bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+	bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
 
 
+	for(int i = 0; i < 20; i++)
+	{
+		fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(50 * i,500,-50*i)));
 
-	btDefaultMotionState* fallMotionState2 =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(-50,500,0)));
+		fallRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(mass,fallMotionState,fallShape,fallInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape,fallInertia);
+		fallRigidBody = new btRigidBody(*fallRigidBodyCI);
 
-	btRigidBody* fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
-	dynamicsWorld->addRigidBody(fallRigidBody2);
+		dynamicsWorld->addRigidBody(fallRigidBody);
 
-	md2Interface bossCube_g2 = md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(rootNodePtr, "boss cube", &bossCube_g2, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody2);
+		bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+		bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+	}
 
 	
 
@@ -372,9 +374,9 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine");
 		SDL_WM_SetCaption( title, NULL );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.08f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.28f);
 
-		cout << demon->getWorldPosition() << endl;
+		//cout << demon->getWorldPosition() << endl;
 
 		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
 		//bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
@@ -421,10 +423,11 @@ int main(int argc, char *argv[])
 
 		Controller::getInstance().playerObject->update();
 		
+		dynamicsWorld->stepSimulation(1/120.f, 10);
+
 		// Actual frame rendering happens here
 		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
 		{
-			dynamicsWorld->stepSimulation(1/60.f, 10);
 
 			tickFrame = SDL_GetTicks();
 			drawGL();
