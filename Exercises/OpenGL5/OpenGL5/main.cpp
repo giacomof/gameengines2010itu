@@ -324,34 +324,36 @@ int main(int argc, char *argv[])
 
 	btCollisionShape* fallShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
-	btDefaultMotionState* fallMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,500,0)));
+	btDefaultMotionState* fallMotionState;
 
 	btScalar mass = 5;
 	btVector3 fallInertia(0,0,0);
 	fallShape->calculateLocalInertia(mass,fallInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo * fallRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(mass,fallMotionState,fallShape,fallInertia);
+	btRigidBody::btRigidBodyConstructionInfo * fallRigidBodyCI;
 
-	btRigidBody* fallRigidBody = new btRigidBody(*fallRigidBodyCI);
-	dynamicsWorld->addRigidBody(fallRigidBody);
+	btRigidBody* fallRigidBody;
+	//dynamicsWorld->addRigidBody(fallRigidBody);
 
 	md2Interface * bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+	//bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
 
 
-	for(int i = 0; i < 20; i++)
+	for(int i = 0; i < 10; i++)
 	{
-		fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(50 * i,500,-50*i)));
+		for(int j = 0; j < 10; j++)
+		{
+			fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,200,-100*j)));
 
-		fallRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(mass,fallMotionState,fallShape,fallInertia);
+			fallRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(mass,fallMotionState,fallShape,fallInertia);
 
-		fallRigidBody = new btRigidBody(*fallRigidBodyCI);
+			fallRigidBody = new btRigidBody(*fallRigidBodyCI);
 
-		dynamicsWorld->addRigidBody(fallRigidBody);
+			dynamicsWorld->addRigidBody(fallRigidBody);
 
-		bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-		bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+			bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+			bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
+		}
 	}
 
 	
@@ -374,7 +376,7 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine");
 		SDL_WM_SetCaption( title, NULL );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.28f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.50f);
 
 		//cout << demon->getWorldPosition() << endl;
 
