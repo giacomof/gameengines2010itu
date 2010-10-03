@@ -263,30 +263,30 @@ int main(int argc, char *argv[])
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 
-	//rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
-	//
-	//md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
-	//demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	//demon->setVisible(false);
-	//rootNodePtr->unlock(); // We can unlock the node now
+	rootNodePtr->lock(); // Node needs to be locked because we're adding a child to it in the next two lines
+	
+	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
+	demon = new SceneNode(rootNodePtr, "Doom Demon", &doomDemon, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	demon->setVisible(false);
+	rootNodePtr->unlock(); // We can unlock the node now
 
-	//demon->lock(); // The new node needs to be locked now since we're doing a transform on it, then adding a child
-	//demon->scale(0.8, 0.8, 0.8);
-	//
-	//Sphere kernel_sphere = Sphere(50, 30, 30, true);
-	//SceneNode kernel(demon, "kernel", &kernel_sphere, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	//kernel.setVisible(0);
-	//demon->unlock(); // We can now unlock it
-	//
-	//kernel.lock();
-	//md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
-	//lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	//kernel.unlock();
+	demon->lock(); // The new node needs to be locked now since we're doing a transform on it, then adding a child
+	demon->scale(0.8, 0.8, 0.8);
+	
+	Sphere kernel_sphere = Sphere(50, 30, 30, true);
+	SceneNode kernel(demon, "kernel", &kernel_sphere, Vector(0.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	kernel.setVisible(0);
+	demon->unlock(); // We can now unlock it
+	
+	kernel.lock();
+	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
+	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	kernel.unlock();
 
-	//// why here? - ask Simon
-	//lostSoul->lock();
-	//lostSoul->scale(1, 1, 1);
-	//lostSoul->unlock();
+	// why here? - ask Simon
+	lostSoul->lock();
+	lostSoul->scale(1, 1, 1);
+	lostSoul->unlock();
 	
 	btCollisionShape* fallShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 	//colladaDuck = new SceneNode(rootNodePtr, "fuckingDuck", &fuckingDuck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	// Collision shape of a plane
-	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),0);
+	btCollisionShape* groundShape = new btBoxShape(btVector3(500.0f, 1.0f, 500.0f));
 
 	Quaternion testQ = Quaternion(Vector(1,0,1), 30);
 
@@ -353,8 +353,8 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine");
 		SDL_WM_SetCaption( title, NULL );
 		
-		//kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
-		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
+		kernel.rotateAboutAxis(Vector(0,1,0),0.2f);
+		lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
 		bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
 		//bossCube->translate(Vector(0.5f,0,0));
 
