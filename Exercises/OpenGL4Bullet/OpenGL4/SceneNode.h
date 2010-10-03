@@ -20,7 +20,7 @@ class SceneNode
 		SceneNode(		SceneNode * parentNode, string str, SceneObject * g,
 						Vector v,
 						Vector p_axis, float p_angle,
-						btRigidBody * rigidBody);
+						btRigidBody * rigidBody = 0);
 		// destructor
 		virtual ~SceneNode() { destroy(); }
 		// delete object
