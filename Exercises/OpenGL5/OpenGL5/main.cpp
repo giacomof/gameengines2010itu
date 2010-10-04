@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
 	btCollisionShape* demonBB = new btBoxShape(btVector3(50.0f, 115.0f, 50.0f));
 
 	btDefaultMotionState* demonMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),-1.57),btVector3(-500,115,0)));
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,115,500)));
 
 	btScalar demonMass = 0;
 	btVector3 demonInertia(0,0,0);
@@ -343,11 +343,15 @@ int main(int argc, char *argv[])
 	//bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
 
 
-	for(int i = 0; i < 6; i++)
+	for(int i = 2; i < 6; i++)
 	{
-		for(int j = 0; j < 6; j++)
+		for(int j = 0; j < 8; j++)
 		{
-			cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,200,-100*j)));
+			if ( (i+j)%2 == 0) {
+				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,200,-100*j)));
+			} else {
+				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(1,0,1),1.57),btVector3(100 * i,300,-100*j)));
+			}
 
 			cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
 
@@ -355,8 +359,12 @@ int main(int argc, char *argv[])
 
 			dynamicsWorld->addRigidBody(cubeRigidBody);
 
+			
+
 			bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 			bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+
+
 		}
 	}
 
@@ -416,7 +424,7 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
 		SDL_WM_SetCaption( title, "include/nhe.ico" );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.50f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.20f);
 
 		//cout << demon->getWorldPosition() << endl;
 
