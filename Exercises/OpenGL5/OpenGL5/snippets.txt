@@ -20,3 +20,5 @@ void drawString3D(const char *str, float pos[3], float color[4], void *font)
     glPopAttrib();
 }
 
+http://www.lighthouse3d.com/opengl/glut/index.php?bmpfontortho
+

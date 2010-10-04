@@ -21,9 +21,6 @@
     <ClCompile Include="assetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bmp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="colladaFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -417,9 +414,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="colladaFile.h">

@@ -33,7 +33,7 @@ OPTIONALS:
 0- debug draw system
 	0- axis of rotation of an object via line draws
 	0- draw the bounding box or bounding sphere of an object
-	V- draw the name of the SceneNode
+	V- draw the name of the SceneNodes
 0- Physics Wrapper? (PAL?)
 
 COMPLETED:
