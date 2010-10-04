@@ -311,7 +311,6 @@ int main(int argc, char *argv[])
 
 	//demon->scale(0.8, 0.8, 0.8);
 	
-	
 	/*md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
@@ -411,7 +410,7 @@ int main(int argc, char *argv[])
 		
 		char title[80];
 		sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
-		SDL_WM_SetCaption( title, NULL );
+		SDL_WM_SetCaption( title, "include/nhe.ico" );
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.50f);
 
