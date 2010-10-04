@@ -19,7 +19,7 @@ static int nodeCount=0;
 SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 						Vector v,
 						Vector p_axis, float p_angle,
-						btRigidBody * rigidBody)
+						btRigidBody * rigidBody )
 {
 	// variables inizialization
 	nodeName = str;
@@ -353,7 +353,7 @@ void SceneNode::drawName(void)
 	// loop all characters in the string
 	while(*nodeName)
     {
-			pos[0] = nodeTransformation.getTranslation().get(0);
+		pos[0] = nodeTransformation.getTranslation().get(0);
 		pos[1] = nodeTransformation.getTranslation().get(1);
 		pos[2] = nodeTransformation.getTranslation().get(2);
 		glRasterPos3fv(pos);        // place text position
