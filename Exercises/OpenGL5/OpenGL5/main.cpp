@@ -16,6 +16,7 @@
 #include "colladaFile.h"				// Header File for out COLLADA loader
 #include "assetManager.h"				// Header File for our Asset Manager
 #include "inputManager.h"				// Header File for our Input Manager
+#include "frameClock.h"					// Header File for our Clock
 
 #define NUM_SOUNDS 2
 
@@ -402,11 +403,14 @@ int main(int argc, char *argv[])
 
 	Controller::getInstance().setPlayerObject(player);
 
+	// Set up fps clock
+	frameClock renderClock;
+
 	while(!Controller::getInstance().quit)
 	{
 		
 		char title[80];
-		sprintf_s(title, "Name Here Engine");
+		sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
 		SDL_WM_SetCaption( title, NULL );
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.50f);
@@ -465,6 +469,7 @@ int main(int argc, char *argv[])
 		{
 
 			tickFrame = SDL_GetTicks();
+			renderClock.frameUpdate();
 			drawGL();
 
 		}

@@ -83,6 +83,7 @@
     <ClCompile Include="controller.cpp" />
     <ClCompile Include="entityCamera.cpp" />
     <ClCompile Include="entitySpectator.cpp" />
+    <ClCompile Include="frameClock.cpp" />
     <ClCompile Include="include\bullet_include\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />
     <ClCompile Include="include\bullet_include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp" />
     <ClCompile Include="include\bullet_include\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="controller.h" />
     <ClInclude Include="entityCamera.h" />
     <ClInclude Include="entitySpectator.h" />
+    <ClInclude Include="frameClock.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\bullet_include\btBulletCollisionCommon.h" />
     <ClInclude Include="include\bullet_include\btBulletDynamicsCommon.h" />
