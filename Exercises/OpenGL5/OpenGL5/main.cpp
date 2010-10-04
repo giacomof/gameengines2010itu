@@ -266,15 +266,19 @@ int main(int argc, char *argv[])
 
 
 	// Create the plane with the collision shape
-	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 1.0f, 1000.0f));
+	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 0.0f, 1000.0f));
 
 	//Quaternion testQ = Quaternion(Vector(0,1,0), 0);
 
 	btDefaultMotionState* groundMotionState =
 		new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f),btVector3(0.0f, 0.0f, 0.0f)));
 
+	btScalar groundMass = 0;
+	btVector3 grounInertia(0,0,0);
+	groundShape->calculateLocalInertia(groundMass,grounInertia);
+
 	btRigidBody::btRigidBodyConstructionInfo
-                groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
+                groundRigidBodyCI(groundMass, groundMotionState, groundShape, grounInertia);
 	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 
 	dynamicsWorld->addRigidBody(groundRigidBody);
