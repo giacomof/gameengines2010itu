@@ -186,7 +186,7 @@ void md2File::Update(float dt) {
 	// get pointers to frames
 	const frame* pf1 = GetFrame(f1);
 	const frame* pf2 = GetFrame(f2);
-	assert(pf1 && pf2);
+	//assert(pf1 && pf2);
 
 	// scale this to 1 to zero for calculation
 	float interp_t = time_between_frames/MD2_FRAME_RATE;
