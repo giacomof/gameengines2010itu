@@ -266,12 +266,12 @@ int main(int argc, char *argv[])
 
 
 	// Create the plane with the collision shape
-	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 0.0f, 1000.0f));
+	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 10.0f, 1000.0f));
 
 	//Quaternion testQ = Quaternion(Vector(0,1,0), 0);
 
 	btDefaultMotionState* groundMotionState =
-		new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f),btVector3(0.0f, 0.0f, 0.0f)));
+		new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f),btVector3(0.0f, -10.0f, 0.0f)));
 
 	btScalar groundMass = 0;
 	btVector3 grounInertia(0,0,0);
@@ -284,7 +284,7 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(groundRigidBody);
 
 	Plane testPlaneGeom(2000.0f, 2000.0f);
-	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
+	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 10.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
 	
 
 	// Create demon "rotationabout" node
@@ -464,6 +464,7 @@ int main(int argc, char *argv[])
 		}
 
 		Controller::getInstance().playerObject->update();
+		
 		
 		dynamicsWorld->stepSimulation(1/120.f, 10);
 
