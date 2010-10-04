@@ -46,9 +46,9 @@ class SceneNode
 		// get parent node
 		SceneNode* getParent(void);
 		// set the node name
-		void setName(string name);
+		void setName(char * name);
 		// get the node name
-		string getName(void);
+		char * getName(void);
 
 		bool isVisible(void);
 		void setVisible(bool b);
@@ -71,13 +71,14 @@ class SceneNode
 		void applyTransformation(void);
 		void SceneNode::removeTransformation(void);
 		void drawGeometry(void);
+		void drawName(void);
 
 		static unsigned int getNodeCount(void);
 
 	protected:
 		bool visible;							// The node should be drawn or not
 		int id;									// Unique id
-		string nodeName;						// Name
+		char * nodeName;						// Name
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node

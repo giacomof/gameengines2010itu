@@ -51,6 +51,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 void SceneNode::update(float dt) 
 {
 	geometry->update();
+	drawName();
 
 	list<SceneNode*>::iterator itS;
 
@@ -108,13 +109,13 @@ SceneNode* SceneNode::getParent(void)
 }
 
 // Change the name of the node
-void SceneNode::setName(string name) 
+void SceneNode::setName(char * name) 
 {
 	nodeName = name;
 }
 
 // Return the name of the node
-string SceneNode::getName(void) 
+char * SceneNode::getName(void) 
 {
 	return nodeName;
 }
@@ -281,6 +282,8 @@ void SceneNode::drawGeometry()
 
 	if(isVisible()) {
 		geometry->drawGeometry();
+		// draw the name of the SceneNode
+		/*drawName();*/
 	}
 
 	list<SceneNode*>::iterator itS;
@@ -335,6 +338,33 @@ unsigned int SceneNode::getNodeCount(void)
 	return nodeCount;
 }
 
+void SceneNode::drawName(void)
+{
+	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+    glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+
+    glColor3f(0.0f, 1.0f, 0.0f);  // set text color
+	float pos[3];
+
+	pos[0] = nodeTransformation.getTranslation().get(0);
+	pos[1] = nodeTransformation.getTranslation().get(1);
+	pos[2] = nodeTransformation.getTranslation().get(2);
+	
+	// loop all characters in the string
+	while(*nodeName)
+    {
+			pos[0] = nodeTransformation.getTranslation().get(0);
+		pos[1] = nodeTransformation.getTranslation().get(1);
+		pos[2] = nodeTransformation.getTranslation().get(2);
+		glRasterPos3fv(pos);        // place text position
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *nodeName);
+        ++nodeName;
+    }
+
+    glEnable(GL_LIGHTING);
+    glPopAttrib();
+}
+
 SDL_mutex * Root::rootMutex;
 
 // Static member initialization. 
@@ -376,3 +406,4 @@ void Root::update(float dt)
 	}
 	
 }
+
