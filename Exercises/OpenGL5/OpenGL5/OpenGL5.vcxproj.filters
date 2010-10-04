@@ -411,6 +411,9 @@
     <ClCompile Include="include\linearAlgebraDLL.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="frameClock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h">
@@ -1132,6 +1135,9 @@
     </ClInclude>
     <ClInclude Include="include\SDL_video.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="frameClock.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
