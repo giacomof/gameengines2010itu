@@ -171,17 +171,46 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 
 char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 {
-	ColladaFile * tempCollada = (ColladaFile*) malloc(sizeof(ColladaFile));
-	tempCollada = new ColladaFile();
-	char * tempName = tempCollada->load(filePath);
-	collada_list[colladaNameChar].colladaMesh = tempCollada;
+	bool exist = false;
+	unsigned char * m_data;
+	std::string hash;
+	md5wrapper md5;
+
+	std::ifstream ifs(filePath);
+	std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+
+	hash = md5.getHashFromFilePtr((FILE *)str.c_str(), (int) str.length());
+
+	// use const_iterator to walk through elements of pairs
+	for ( std::map<char *, colladaInterfaceContainer>::const_iterator iter = collada_list.begin(); iter != collada_list.end(); ++iter ) {
+
+		if (iter->second.meshMD5 == hash) {
+			if (iter->first == colladaNameChar) {
+				exist = true;
+				break;
+			} else {
+				collada_list[colladaNameChar].colladaMesh = iter->second.colladaMesh;
+				collada_list[colladaNameChar].meshMD5 = iter->second.meshMD5;
+				exist = true;
+				break;
+			}
+		}
+	}
+
+	if (exist == false) {
+		ColladaFile * tempCollada = (ColladaFile*) malloc(sizeof(ColladaFile));
+		tempCollada = new ColladaFile();
+		char * tempName = tempCollada->load(str);
+		collada_list[colladaNameChar].colladaMesh = tempCollada;
+		collada_list[colladaNameChar].meshMD5 = hash;
 	
-	if(tempName!="") {
-		string path = "include/" + (string) tempName;
-		loadTexture( (char*) path.c_str(), tempName );
-		return tempName;
+		if(tempName!="") {
+			string path = "include/" + (string) tempName;
+			loadTexture( (char*) path.c_str(), tempName );
+			return tempName;
 	
-	} else return "";
+		} else return "";
+	}
 }
 
 md2File * AssetManager::getMd2Mesh(char * md2NameChar) 

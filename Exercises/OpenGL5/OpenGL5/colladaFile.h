@@ -25,7 +25,7 @@ public:
 	void release(void);
 	// loads the collada file
 	// and returns the name of the texture
-	char * load(const char* filename);
+	char * load(std::string & str);
 	// renders the collada model
 	void render(void) const;
 	// returns the total size of the model in bytes

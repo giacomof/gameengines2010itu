@@ -11,7 +11,8 @@ V+G- Asset Manager
 	1(V)- Mesh Manager
 		1(V+G) - MD2 Manager + MD5 hashing
 		  1(V) - COLLADA Manager
-					G- MD5 hashing	
+					1(G)- MD5 hashing	
+
 	S- Sound Manager
 		S- Sounds without movements freeze
 	1(V)- Mutex Manager
