@@ -23,6 +23,8 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 {
 	// variables inizialization
 	nodeName = str;
+	nodeNameString = str;
+
 	parentNode = parentNode;
 
 	geometry = g;
@@ -51,7 +53,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 void SceneNode::update(float dt) 
 {
 	geometry->update();
-	drawName();
+	//drawName();
 
 	list<SceneNode*>::iterator itS;
 
@@ -283,7 +285,7 @@ void SceneNode::drawGeometry()
 	if(isVisible()) {
 		geometry->drawGeometry();
 		// draw the name of the SceneNode
-		/*drawName();*/
+		if(drawDebug) drawName();
 	}
 
 	list<SceneNode*>::iterator itS;
@@ -340,29 +342,35 @@ unsigned int SceneNode::getNodeCount(void)
 
 void SceneNode::drawName(void)
 {
+	
 	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
     glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
 
-    glColor3f(0.0f, 1.0f, 0.0f);  // set text color
+    glColor4f(0.1f, 1.0f, 0.1f, 0.2f);  // set text color
 	float pos[3];
+	pos[1] = nodeTransformation.getBBTranslation().get(1);
+	pos[2] = nodeTransformation.getBBTranslation().get(2);
 
-	pos[0] = nodeTransformation.getTranslation().get(0);
-	pos[1] = nodeTransformation.getTranslation().get(1);
-	pos[2] = nodeTransformation.getTranslation().get(2);
+	char * tempName = (char *)nodeNameString.c_str();
+	
+	int i = 0;
+	// proper starting position
+	if(nodeNameString=="boss cube")	i = 15;
+	//else i = 150;
 	
 	// loop all characters in the string
-	while(*nodeName)
+	while(*tempName)
     {
-		pos[0] = nodeTransformation.getTranslation().get(0);
-		pos[1] = nodeTransformation.getTranslation().get(1);
-		pos[2] = nodeTransformation.getTranslation().get(2);
+		pos[0] = nodeTransformation.getBBTranslation().get(0)+i;
 		glRasterPos3fv(pos);        // place text position
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *nodeName);
-        ++nodeName;
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *tempName);
+        ++tempName;
+		i+=5;
     }
-
+	
     glEnable(GL_LIGHTING);
     glPopAttrib();
+
 }
 
 SDL_mutex * Root::rootMutex;

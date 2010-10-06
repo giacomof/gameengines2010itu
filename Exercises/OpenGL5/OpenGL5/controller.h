@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef controller__H__
+#define controller__H__
+
 #include <SDL.h>
 #include "entitySpectator.h"
 #include "assetManager.h"
@@ -27,3 +30,5 @@ public:
 	static void lookDeltaY(float deltaLook);
 
 };
+
+#endif

@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef frameClock__H__
+#define frameClock__H__
+
 #include <deque>
 #include <SDL.h>
 
@@ -17,3 +22,5 @@ private:
 	Uint32 lastTime;
 	float fps;
 };
+
+#endif

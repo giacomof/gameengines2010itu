@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef entityCamera__H__
+#define entityCamera__H__
+
 #include "sceneObject.h"
 
 class entityCamera : public SceneObject
@@ -22,3 +25,5 @@ public:
 
 	SDL_mutex * mutex_camera;
 };
+
+#endif

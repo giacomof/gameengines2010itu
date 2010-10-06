@@ -66,7 +66,7 @@ SceneNode * testPlane;
 // Camera and Movements Definitions
 float camYaw, camPitch, camYawRad, camPitchRad;
 float camPosX, camPosY, camPosZ;
-float camSpeed = 0.5f;
+float camSpeed = 2.0f;
 float rotationSpeed = 0.1f;
 
 // OpenGL Attributes

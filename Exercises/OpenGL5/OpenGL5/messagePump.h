@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef messagePump__H__
+#define messagePump__H__
+
 #include "assetManager.h"
 
 #include <SDL.h>
@@ -16,7 +19,7 @@ public:
 	static SDL_mutex * mutex_event;
  
 	MessagePump() { getInstance(); }
-	//~MessagePump() { /*SDL_DestroyMutex( MessagePump::mutex_event );*/ } 
+	~MessagePump() {} 
 	MessagePump(const MessagePump &getInstance());   
 	
 	MessagePump & operator=(MessagePump getInstance());
@@ -36,3 +39,5 @@ public:
 	static list<SDL_Event> messageList;
 	static unsigned int count;
 };
+
+#endif

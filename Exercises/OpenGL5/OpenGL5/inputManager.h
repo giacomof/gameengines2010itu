@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef inputManager__H__
+#define inputManager__H__
+
 #include <SDL.h>
 #include "messagePump.h"
 #include "controller.h"
@@ -26,3 +29,5 @@ private:
 	void mousePress(SDL_Event currentEvent);
 	void mouseMotion(SDL_Event currentEvent);
 };
+
+#endif
