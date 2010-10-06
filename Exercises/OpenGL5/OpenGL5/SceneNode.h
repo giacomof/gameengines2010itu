@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef sceneNode__H__
+#define sceneNode__H__
+
+#include "globals.h"
 #include <SDL_mutex.h>
 #include <string>
 #include <list>
@@ -73,6 +77,8 @@ class SceneNode
 		void drawGeometry(void);
 		void drawName(void);
 
+
+		string nodeNameString;
 		static unsigned int getNodeCount(void);
 
 	protected:
@@ -120,3 +126,4 @@ class Root : public SceneNode
 
 };
 
+#endif

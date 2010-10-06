@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef assetManager__H__
+#define assetManager__H__
+
 #include <il.h>
 #include <ilu.h>
 #include <ilut.h>
@@ -64,3 +67,5 @@ private:
 	std::map <char *, md2InterfaceContainer> md2_list;
 	std::map <char *, colladaInterfaceContainer> collada_list;
 };
+
+#endif

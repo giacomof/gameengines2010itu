@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef entitySpectator__H__
+#define entitySpectator__H__
+
 #include "sceneObject.h"
 #include "linearAlgebraDLL.h"
 #include "entityCamera.h"
@@ -38,3 +41,5 @@ public:
 	virtual void lookDeltaX(float deltaLook);
 	virtual void lookDeltaY(float deltaLook);
 };
+
+#endif

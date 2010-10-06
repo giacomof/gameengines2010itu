@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef transformation__H__
+#define transformation__H__
+
 #include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
 
@@ -52,3 +55,4 @@ class Transformation
 		Quaternion bbRotation;
 };
 
+#endif

@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef sceneObject__H__
+#define sceneObject__H__
+
 #include <SDL.h>
 #include <il.h>
 #include <ilu.h>
@@ -125,3 +128,5 @@ class ColladaInterface : public SceneObject
 		ColladaFile * mesh;
 		int colladaTexture;
 };
+
+#endif

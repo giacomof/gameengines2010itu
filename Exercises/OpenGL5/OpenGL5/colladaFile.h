@@ -1,5 +1,8 @@
+#pragma once
+
 #ifndef colladaFile__H__
 #define colladaFile__H__
+
 
 #include <iostream>
 #include <sstream>
