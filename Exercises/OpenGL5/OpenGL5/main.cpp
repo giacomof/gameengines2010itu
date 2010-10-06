@@ -319,8 +319,11 @@ int main(int argc, char *argv[])
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
 
+
+	*/
+
 	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
-	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);*/
+	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	/* ---------------------------------------- *
 	 * Physic stuff								*
