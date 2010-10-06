@@ -12,8 +12,8 @@ V+G- Asset Manager
 		1(V+G) - MD2 Manager + MD5 hashing
 		  1(V) - COLLADA Manager
 					0- MD5 hashing	
-	0- Sound Manager
-		0- Sounds without movements freeze
+	S- Sound Manager
+		S- Sounds without movements freeze
 	1(V)- Mutex Manager
 
 G- Physics SDK
