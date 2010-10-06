@@ -17,15 +17,14 @@ ColladaFile::~ColladaFile(void)
 	free(index);
 }
 
-char * ColladaFile::load(const char* filename)
+char * ColladaFile::load(std::string & str)
 {
 	// resets
 	vertexCount = 0;
 	normalCount = 0;
 	indexCount = 0;
 
-	std::ifstream ifs(filename);
-	std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+	
 
 	doc.parse<0>(strdup(str.c_str()));    // 0 means default parse flags
 
