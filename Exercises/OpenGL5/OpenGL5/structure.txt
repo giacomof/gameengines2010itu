@@ -4,7 +4,7 @@ our rootnode? (list file it is in?)
 controller
 (list any other singletons we have)
 
-Atm we don't really a clean system for quitting. A singleton to handle gamestate in general might
+Atm we don't really have a clean system for quitting. A singleton to handle gamestate in general might
 be in order. It could contain the "quit" variable that the thread loops use, and also hold the
 references to all the other game-related objects in one place (references to the scenegraph, etc)
 This might cut down on the total number of singletons we have to use in the end.
