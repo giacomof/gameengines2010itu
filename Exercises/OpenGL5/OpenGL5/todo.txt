@@ -9,8 +9,9 @@ S- Sound Manager
 G- Physics SDK
 0- multi-node collada loader
 0- Compile everything we can as a DLL
-V- A DisplayManager capable of opening a window with an opengl context
+0- A DisplayManager capable of opening a window with an opengl context
 0- attach/detach camera to player model
+0- Quaternions into Math Library
 
 OPTIONALS:
 
@@ -21,6 +22,7 @@ OPTIONALS:
 	0- draw the bounding box or bounding sphere of an object
 	1(V)- draw the name of the SceneNodes
 0- Physics Wrapper? (PAL?)
+0- AutoCalculated Bounding Box
 
 COMPLETED:
 
