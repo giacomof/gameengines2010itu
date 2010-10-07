@@ -4,25 +4,10 @@
 
 GLOBAL TASKS:
 
-V+G- Asset Manager
-	1(V)- make it Singleton
-	1(G)- Texture Manager
-		1(G)- MD5 hashing for checking that each file is loaded only once
-	1(V)- Mesh Manager
-		1(V+G) - MD2 Manager + MD5 hashing
-		  1(V) - COLLADA Manager
-					1(G)- MD5 hashing	
-
-	S- Sound Manager
+S- Sound Manager
 		S- Sounds without movements freeze
-	1(V)- Mutex Manager
-
 G- Physics SDK
-
-1(G+V)- Collada Loader
-	V- multi-node collada loader
-	1(V)- include the Collada in the AssetManager
-
+0- multi-node collada loader
 0- Compile everything we can as a DLL
 0- A DisplayManager capable of opening a window with an opengl context
 0- attach/detach camera to player model
@@ -49,6 +34,18 @@ COMPLETED:
 1(V)- Mutex Bug
 1(S)- Clock Class (class is generic. You call updateFrame() for the clock instance that is keeping track of what you want, then query it anytime for fps or last frame delta)
 	1(S)- fps counter with a sliding frame window (Window title now shows fps average over last 600 frames)
+1(G+V)- Collada Loader
+	1(V)- include the Collada in the AssetManager
+1(V+G)- Asset Manager
+	1(V)- make it Singleton
+	1(G)- Texture Manager
+		1(G)- MD5 hashing for checking that each file is loaded only once
+	1(V)- Mesh Manager
+		1(V+G) - MD2 Manager + MD5 hashing
+		  1(V) - COLLADA Manager
+					1(G)- MD5 hashing	
+	1(V)- Mutex Manager
+
 
 
 Symbology Map:
