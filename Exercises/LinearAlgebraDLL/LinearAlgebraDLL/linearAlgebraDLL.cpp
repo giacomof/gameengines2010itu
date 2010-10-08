@@ -193,33 +193,33 @@ Point::Point(float x, float y, float z)
 // Constructor for quaternions without parameter
 Quaternion::Quaternion(void)
 {
-	vector = Vector(0.0f, 0.0f, 0.0f);
+	vector = Vector();
 	w = 0;
 }
 
-// Constructor for quaternions from a vector and an angle
-Quaternion::Quaternion(Vector axis, float angle)
+// Constructor for quaternions from a vector and an angle in rad
+Quaternion::Quaternion(Vector vector, float angle)
 {
 	float sinAngle;
 	angle *= 0.5f;
 
-	Vector vn = axis.normalize();
+	Vector vn = vector.normalize();
  
-	sinAngle = sin(angle*PI/180);
+	sinAngle = sin(angle);
  
 	vn = vn * sinAngle;
 
 	for (unsigned short i = 0; i < 3; i++) {
 		vector.set(i, vn.get(i));
 	}
-	w = cos(angle*PI/180);
+	w = cos(angle);
 }
 
 Quaternion::Quaternion(float p_x, float p_y, float p_z, float p_w)
 {
-	vector.set(0, p_x);
-	vector.set(1, p_y);
-	vector.set(2, p_z);
+	vector.setX(p_x);
+	vector.setY(p_y);
+	vector.setZ(p_z);
 	w = p_w;
 }
 
@@ -241,17 +241,43 @@ Quaternion Quaternion::operator+(Quaternion &other)
 Quaternion Quaternion::operator*(Quaternion &other)
 {
 	Vector resultVector = Vector();
-	resultVector.set(0, w * other.vector.get(0) + vector.get(0) * other.w + vector.get(1) * other.vector.get(2) - vector.get(2) * other.vector.get(1)); 
-	resultVector.set(1, w * other.vector.get(1) + vector.get(1) * other.w + vector.get(2) * other.vector.get(0) - vector.get(0) * other.vector.get(2)); 
-	resultVector.set(2, w * other.vector.get(2) + vector.get(2) * other.w + vector.get(0) * other.vector.get(1) - vector.get(1) * other.vector.get(0));
+	resultVector.setX(w * other.vector.getX() + vector.getX() * other.w + vector.getY() * other.vector.getZ() - vector.getZ() * other.vector.getY()); 
+	resultVector.setY(w * other.vector.getY() + vector.getY() * other.w + vector.getZ() * other.vector.getX() - vector.getX() * other.vector.getZ()); 
+	resultVector.setZ(w * other.vector.getZ() + vector.getZ() * other.w + vector.getX() * other.vector.getY() - vector.getY() * other.vector.getX());
 
-	float resultW = w * other.w - vector.get(0) * other.vector.get(0) - vector.get(1) * other.vector.get(1) - vector.get(2) * other.vector.get(2);
+	float resultW = w * other.w - vector.getX() * other.vector.getX() - vector.getY() * other.vector.getY() - vector.getZ() * other.vector.getZ();
 
 	Quaternion resultQuaternion = Quaternion();
 	resultQuaternion.vector = resultVector;
 	resultQuaternion.w = resultW;
 
 	return resultQuaternion;
+}
+
+// Operator overload for multiplication between quaternions and vectors
+Vector Quaternion::operator*(Vector &other)
+{
+	Vector temp = other.normalize();
+
+	Quaternion vectorQuaternion = Quaternion();
+	Quaternion multiplicationQuaternion = Quaternion();
+	Vector result = Vector();
+
+	vectorQuaternion.getVector().setX(this->getVector().getX());
+	vectorQuaternion.getVector().setY(this->getVector().getY());
+	vectorQuaternion.getVector().setZ(this->getVector().getZ());
+
+	multiplicationQuaternion = vectorQuaternion * this->getConjugate();
+	multiplicationQuaternion = *this * multiplicationQuaternion;
+
+	result.setX(multiplicationQuaternion.getVector().getX());
+	result.setY(multiplicationQuaternion.getVector().getY());
+	result.setZ(multiplicationQuaternion.getVector().getZ());
+
+	return result;
+
+
+
 }
 
 // Quaternion comparison
@@ -266,6 +292,43 @@ bool Quaternion::operator==(Quaternion &other)
 	}
 
 	return equal;
+}
+
+// Quaternion magnitude calculation
+float Quaternion::getMagnitude(void)
+{
+	float magnitude = vector.getQuadraticMagnitude() + w*w;
+	magnitude = sqrt(magnitude);
+
+	return magnitude;
+}
+
+// Quaternion normalization
+Quaternion Quaternion::normalize(void)
+{
+	Quaternion result = Quaternion();
+
+	float magnitude = this->getMagnitude();
+
+	result.setX(vector.getX() / magnitude);
+	result.setY(vector.getY() / magnitude);
+	result.setZ(vector.getZ() / magnitude);
+	result.setW(w / magnitude);
+
+	return result;
+}
+
+// Quaternion conjugate calculation
+Quaternion Quaternion::getConjugate(void)
+{
+	Quaternion result = Quaternion();
+
+	result.setX(-this->getVector().getX());
+	result.setY(-this->getVector().getY());
+	result.setZ(-this->getVector().getZ());
+	result.setW(this->getW());
+
+	return result;
 }
 
 
@@ -292,17 +355,17 @@ void Quaternion::getAxisAngle(Vector *axis, float *angle)
 
 void Quaternion::setX(float value)
 {
-	vector.set(0, value);
+	vector.setX(value);
 }
 
 void Quaternion::setY(float value)
 {
-	vector.set(1, value);
+	vector.setY(value);
 }
 
 void Quaternion::setZ(float value)
 {
-	vector.set(2, value);
+	vector.setZ(value);
 }
 
 void Quaternion::setW(float value)
@@ -543,7 +606,7 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 }
 
 // Generate a rotation matrix about an arbitrary axes, from a Vector and a float
-Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
+Matrix Matrix::generateAxisRotationMatrix(Vector axis, float degree)
 {
 	Matrix result;
 	float sincos[2];
@@ -553,17 +616,17 @@ Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
 
 	k = 1-sincos[1];
 
-	result.set(0,0,(axes.get(0)*axes.get(0)*k)+sincos[1]);
-	result.set(0,1,(axes.get(0)*axes.get(1)*k)-(axes.get(2)*sincos[0]));
-	result.set(0,2,(axes.get(0)*axes.get(2)*k)+(axes.get(1)*sincos[0]));
+	result.set(0,0,(axis.get(0)*axis.get(0)*k)+sincos[1]);
+	result.set(0,1,(axis.get(0)*axis.get(1)*k)-(axis.get(2)*sincos[0]));
+	result.set(0,2,(axis.get(0)*axis.get(2)*k)+(axis.get(1)*sincos[0]));
 	result.set(0,3,0);
-	result.set(1,0,(axes.get(0)*axes.get(1)*k)+(axes.get(2)*sincos[0]));
-	result.set(1,1,(axes.get(1)*axes.get(1)*k)+sincos[1]);
-	result.set(1,2,(axes.get(1)*axes.get(2)*k)-(axes.get(0)*sincos[0]));
+	result.set(1,0,(axis.get(0)*axis.get(1)*k)+(axis.get(2)*sincos[0]));
+	result.set(1,1,(axis.get(1)*axis.get(1)*k)+sincos[1]);
+	result.set(1,2,(axis.get(1)*axis.get(2)*k)-(axis.get(0)*sincos[0]));
 	result.set(1,3,0);
-	result.set(2,0,(axes.get(0)*axes.get(1)*k)-(axes.get(1)*sincos[0]));
-	result.set(2,1,(axes.get(1)*axes.get(2)*k)+(axes.get(0)*sincos[0]));
-	result.set(2,2,(axes.get(2)*axes.get(2)*k)+sincos[1]);
+	result.set(2,0,(axis.get(0)*axis.get(1)*k)-(axis.get(1)*sincos[0]));
+	result.set(2,1,(axis.get(1)*axis.get(2)*k)+(axis.get(0)*sincos[0]));
+	result.set(2,2,(axis.get(2)*axis.get(2)*k)+sincos[1]);
 	result.set(2,3,0);
 	result.set(3,0,0);
 	result.set(3,1,0);
@@ -576,15 +639,15 @@ Matrix Matrix::generateAxesRotationMatrix(Vector axes, float degree)
 // Generate a rotation matrix from a quaternion
 Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
 {
-	float x2 = q.getVector().get(0) * q.getVector().get(0);
-	float y2 = q.getVector().get(1) * q.getVector().get(1);
-	float z2 = q.getVector().get(2) * q.getVector().get(2);
-	float xy = q.getVector().get(0) * q.getVector().get(1);
-	float xz = q.getVector().get(0) * q.getVector().get(2);
-	float yz = q.getVector().get(1) * q.getVector().get(2);
-	float dx = q.getW() * q.getVector().get(0);
-	float dy = q.getW() * q.getVector().get(1);
-	float dz = q.getW() * q.getVector().get(2);
+	float x2 = q.getVector().getX() * q.getVector().getX();
+	float y2 = q.getVector().getY() * q.getVector().getY();
+	float z2 = q.getVector().getZ() * q.getVector().getZ();
+	float xy = q.getVector().getX() * q.getVector().getY();
+	float xz = q.getVector().getX() * q.getVector().getZ();
+	float yz = q.getVector().getY() * q.getVector().getZ();
+	float dx = q.getW() * q.getVector().getX();
+	float dy = q.getW() * q.getVector().getY();
+	float dz = q.getW() * q.getVector().getZ();
  
 	Matrix result;
 
@@ -632,6 +695,55 @@ Matrix Matrix::generateShearingMatrix(float sXY,float sXZ,float sYX,float sYZ,fl
 	result.set(3,3,1);
 
 	return result;
+}
+
+// Function for returning the quaternion from a matrix
+Quaternion Matrix::getQuaternion(Matrix &mat)
+{
+	Quaternion result = Quaternion();
+	float s;
+	float t = 1 + mat.get(0) + mat.get(5) + mat.get(10);
+
+	if (t > 0) {
+		s = sqrt(t) * 2;
+		result.setX((mat.get(9) - mat.get(6)) / s);
+		result.setY((mat.get(2) - mat.get(8)) / s);
+		result.setZ((mat.get(4) - mat.get(1)) / s);
+		result.setW(0.25 * s);
+
+		return result;
+	}
+
+	if ( mat.get(0) > mat.get(5) && mat.get(0) > mat.get(10))  {
+
+		s  = sqrt( 1.0 + mat.get(0) - mat.get(5) - mat.get(10)) * 2;
+		result.setX(0.25 * s);
+		result.setY((mat.get(4) + mat.get(1)) / s);
+		result.setZ((mat.get(2) + mat.get(8)) / s);
+		result.setW((mat.get(9) - mat.get(6)) / s);
+
+		return result;
+
+    } else if ( mat.get(5) > mat.get(10)) {
+
+		s  = sqrt( 1.0 + mat.get(5) - mat.get(0) - mat.get(10) ) * 2;
+		result.setX((mat.get(4) + mat.get(1)) / s);
+		result.setY(0.25 * s);
+		result.setZ((mat.get(9) + mat.get(6)) / s);
+		result.setW((mat.get(2) - mat.get(8)) / s);
+		
+		return result;
+
+    } else {
+
+		s  = sqrt( 1.0 + mat.get(10) - mat.get(0) - mat.get(5)) * 2;
+		result.setX((mat.get(2) + mat.get(8)) / s);
+		result.setY((mat.get(9) + mat.get(6)) / s);
+		result.setZ(0.25 * s);
+		result.setW((mat.get(4) - mat.get(1)) / s);
+		
+		return result;
+    }
 }
 
 // Operator overload for the * sign between two matrices
