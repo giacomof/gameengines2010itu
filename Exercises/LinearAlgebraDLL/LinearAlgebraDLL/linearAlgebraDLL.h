@@ -39,7 +39,13 @@ class Vector
 		// individual vector elements
 		__declspec(dllexport) float operator[](unsigned short i);
         __declspec(dllexport) float get(int i) const { return data[i]; }
+		__declspec(dllexport) float getX(void) const { return data[0]; }
+		__declspec(dllexport) float getY(void) const { return data[1]; }
+		__declspec(dllexport) float getZ(void) const { return data[2]; }
         __declspec(dllexport) void set(int i, float val) { data[i] = val; }
+		__declspec(dllexport) void setX(float val) { data[0] = val; }
+		__declspec(dllexport) void setY(float val) { data[1] = val; }
+		__declspec(dllexport) void setZ(float val) { data[2] = val; }
 
 		// Print to stream operator
         // This operator needs to return the original stream
@@ -62,17 +68,28 @@ class Quaternion
 	public:
 		// Constructors
         __declspec(dllexport) Quaternion(void);
-        __declspec(dllexport) Quaternion(Vector axis, float angle);
+        __declspec(dllexport) Quaternion(Vector vector, float angle);
 		__declspec(dllexport) Quaternion(float p_x, float p_y, float p_z, float p_w);
 
 		// Operator overload
 		__declspec(dllexport) Quaternion operator+(Quaternion &other);
 		__declspec(dllexport) Quaternion operator*(Quaternion &other);
+		__declspec(dllexport) Vector operator*(Vector &other);
 		// Quaternion comparison
 		__declspec(dllexport) bool operator==(Quaternion &other);
 
+		// Quaternion magnitude calculation
+		__declspec(dllexport) float getMagnitude(void);
+		// Quaternion normalization
+		 __declspec(dllexport) Quaternion normalize(void);
+		 // Quaternion conjugate calculation
+		 __declspec(dllexport) Quaternion getConjugate(void);
+
 		// Get/set functions
 		__declspec(dllexport) Vector getVector(void);
+		__declspec(dllexport) float getX(void){ return vector.getX();};
+		__declspec(dllexport) float getY(void){ return vector.getY();};
+		__declspec(dllexport) float getZ(void){ return vector.getZ();};
 		__declspec(dllexport) float getW(void);
 		__declspec(dllexport) void getAxisAngle(Vector *axis, float *angle);
 		__declspec(dllexport) void setX(float value);
@@ -122,12 +139,15 @@ class Matrix
 		// Generate a rotation matrix about z-axes, from a  float value
 		__declspec(dllexport) static Matrix generateZRotationMatrix(float degree);
 		// Generate a rotation matrix about an arbitrary axes
-		__declspec(dllexport) static Matrix generateAxesRotationMatrix(Vector axes, float degree);
+		__declspec(dllexport) static Matrix generateAxisRotationMatrix(Vector axis, float degree);
 		// Generate a rotation matrix from a quaternion
 		__declspec(dllexport) static Matrix generateQuaternionRotationMatrix(Quaternion q);
 
 		//Generate a shearing matrix
 		__declspec(dllexport) static Matrix generateShearingMatrix(float sXY,float sXZ,float sYX,float sYZ,float sZX,float sZY);
+
+		// Function for returning the quaternion from a matrix
+		__declspec(dllexport) static Quaternion getQuaternion(Matrix &mat);
 
 		// Matrix multiplication
         __declspec(dllexport) Matrix operator*(Matrix &other); 
@@ -150,6 +170,7 @@ class Matrix
         // Functions and operator to access 
 		// individual matrix elements
         __declspec(dllexport) float get(unsigned short row, unsigned short col) const { return data[4*row + col]; }
+		__declspec(dllexport) float get(unsigned short index) const { return data[index]; }
         __declspec(dllexport) void set(unsigned short row, unsigned short col, float val) { data[4*row + col] = val; }
 		__declspec(dllexport) void getMatrix(float* matrix);
 
