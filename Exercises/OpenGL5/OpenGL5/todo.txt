@@ -11,7 +11,6 @@ G- Physics SDK
 0- Compile everything we can as a DLL
 V- A DisplayManager capable of opening a window with an opengl context
 0- attach/detach camera to player model
-G- Quaternions into Math Library
 0- Quaternions for camera rotations
 0- Lighting System
 
@@ -52,6 +51,8 @@ COMPLETED:
 		  1(V) - COLLADA Manager
 					1(G)- MD5 hashing	
 	1(V)- Mutex Manager
+1(G)- Quaternions into Math Library
+1(G)- Update boot test for quaternions
 
 
 
