@@ -15,7 +15,10 @@ namespace linearAlgebraDLL
 Vector::Vector(void)
 {
      // Resize the variable to the right size and set the fourth coordinate to 0 since it is a vector.
-     data[3] = 0;
+	for(unsigned short i = 0; i < 3; i++) {
+		data[i] = 0;
+	}
+	data[3] = 0;
 }
 
 // Constructor for vectors with parameters
@@ -177,6 +180,9 @@ std::ostream & operator<< (std::ostream &os, const Vector &v)
 Point::Point(void)
 {
      // This constructor is called identically to the vector constructor. The fourth coordinate is 1 because we're dealing with a point
+	for(unsigned short i = 0; i < 3; i++) {
+		data[i] = 0;
+	}
      data[3] = 1;
 }
 
@@ -198,21 +204,21 @@ Quaternion::Quaternion(void)
 }
 
 // Constructor for quaternions from a vector and an angle in rad
-Quaternion::Quaternion(Vector vector, float angle)
+Quaternion::Quaternion(Vector axis, float degree)
 {
 	float sinAngle;
-	angle *= 0.5f;
+	degree *= 0.5f;
 
-	Vector vn = vector.normalize();
+	Vector vn = axis.normalize();
  
-	sinAngle = sin(angle);
+	sinAngle = sin(degree*PI/180);
  
 	vn = vn * sinAngle;
 
 	for (unsigned short i = 0; i < 3; i++) {
 		vector.set(i, vn.get(i));
 	}
-	w = cos(angle);
+	w = cos(degree*PI/180);
 }
 
 Quaternion::Quaternion(float p_x, float p_y, float p_z, float p_w)
@@ -263,16 +269,16 @@ Vector Quaternion::operator*(Vector &other)
 	Quaternion multiplicationQuaternion = Quaternion();
 	Vector result = Vector();
 
-	vectorQuaternion.getVector().setX(this->getVector().getX());
-	vectorQuaternion.getVector().setY(this->getVector().getY());
-	vectorQuaternion.getVector().setZ(this->getVector().getZ());
+	vectorQuaternion.setX(this->getX());
+	vectorQuaternion.setY(this->getY());
+	vectorQuaternion.setZ(this->getZ());
 
 	multiplicationQuaternion = vectorQuaternion * this->getConjugate();
 	multiplicationQuaternion = *this * multiplicationQuaternion;
 
-	result.setX(multiplicationQuaternion.getVector().getX());
-	result.setY(multiplicationQuaternion.getVector().getY());
-	result.setZ(multiplicationQuaternion.getVector().getZ());
+	result.setX(multiplicationQuaternion.getX());
+	result.setY(multiplicationQuaternion.getY());
+	result.setZ(multiplicationQuaternion.getZ());
 
 	return result;
 
