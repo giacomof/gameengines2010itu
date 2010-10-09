@@ -8,6 +8,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 
+#define PI = 3.141592
 
 using namespace linearAlgebraDLL;
 using namespace boost::unit_test;
@@ -136,12 +137,25 @@ BOOST_AUTO_TEST_CASE( quaternion_methods )
 	Quaternion q2 = Quaternion(Vector(0.0f, 0.0f, 1.0f), 45.0f);
 	Quaternion q3 = Quaternion(Vector(1.0f, 0.0f, 1.0f), 90.0f);
 
+	// Test for the quaternion getMagnitude() method
+	BOOST_CHECK(q1.getMagnitude() == 1);
+
+	// Test for the quaternion normalize() method
+	Quaternion qTest = Quaternion();
+	qTest.setX(12);
+	qTest.setY(8);
+	qTest.setZ(1);
+	qTest.setW(459.0f);
+	BOOST_CHECK(qTest.getMagnitude() > 1);
+	BOOST_CHECK(qTest.normalize().getMagnitude() == 1);
+
 
 	// Test for the quaternion getVector() method
 	Vector test1 = q1.getVector();
 	BOOST_CHECK_CLOSE( test1.get(0), 0.4999f, 0.1 );
 	BOOST_CHECK_CLOSE( test1.get(1), 0.0f, 0.1 );
 	BOOST_CHECK_CLOSE( test1.get(2), 0.0f, 0.1 );
+	
 	Vector test2 = q3.getVector();
 	BOOST_CHECK_CLOSE( test2.get(0), 0.4999f, 0.1 );
 	BOOST_CHECK_CLOSE( test2.get(1), 0.0f, 0.1 );
@@ -163,8 +177,8 @@ BOOST_AUTO_TEST_CASE( quaternion_methods )
 	// Test for the quaternion setW() method
 	q3.setW(12.0f);
 	BOOST_CHECK(q3.getW() == 12.0f);
-
 }
+
 
 // Test case for operators overload for Quaternion class
 BOOST_AUTO_TEST_CASE( quaternion_operators_overload )
@@ -208,6 +222,13 @@ BOOST_AUTO_TEST_CASE( quaternion_operators_overload )
 	BOOST_CHECK_CLOSE( test4.getVector().get(1), 0.1913f, 0.1 );
 	BOOST_CHECK_CLOSE( test4.getVector().get(2), 0.7325f, 0.1 );
 	BOOST_CHECK_CLOSE( test4.getW(), 0.4619f, 0.1 );
+
+	// Test case for the quaternions and vectors multiplication
+	Vector result = q3 * one;
+	BOOST_CHECK_CLOSE(result.getX(), 0.5f, 0.1);
+	BOOST_CHECK_CLOSE(result.getY(), 0.0f, 0.1);
+	BOOST_CHECK_CLOSE(result.getZ(), 0.5f, 0.1);
+
 
 }
 
@@ -335,7 +356,7 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 	}
 
 	// Test for the generateAxesRotationMatrix() method
-	Matrix generatedAxisRotation = Matrix::generateAxesRotationMatrix(Vector(1.0f, 0.0f, 1.0f), 60.0f);
+	Matrix generatedAxisRotation = Matrix::generateAxisRotationMatrix(Vector(1.0f, 0.0f, 1.0f), 60.0f);
 
 	for(unsigned short r = 0; r < 4; r++) {
 		for(unsigned short c = 0; c < 4; c++) {
@@ -344,6 +365,7 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 		}
 	}
 
+	
 	// Test for the generateQuaternionRotationMatrix() method
 	Matrix generatedQuaternionRotation = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0f, 0.0f, 1.0f), 60.0f));
 
@@ -353,7 +375,7 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 			BOOST_CHECK_SMALL( epsilon, 0.00001 );
 		}
 	}
-
+	
 	// Test for the generateShearingMatrix() method
 	Matrix generatedShearingMatrix = Matrix::generateShearingMatrix(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f);
 
@@ -363,6 +385,16 @@ BOOST_AUTO_TEST_CASE( matrix_methods )
 			BOOST_CHECK_SMALL( epsilon, 0.00001 );
 		}
 	}
+
+
+	// Test for the function for returning the quaternion from a matrix
+	Quaternion quaternionCheck = Quaternion(Vector(1.0f, 0.0f, 1.0f), 60.0f);
+	Quaternion quateternionResult = Matrix::getQuaternion(generatedQuaternionRotation);
+	BOOST_CHECK_CLOSE( quateternionResult.getX(),quaternionCheck.getX(), 0.1 );
+	BOOST_CHECK_CLOSE( quateternionResult.getY(),quaternionCheck.getY(), 0.1 );
+	BOOST_CHECK_CLOSE( quateternionResult.getZ(),quaternionCheck.getZ(), 0.1 );
+	BOOST_CHECK_CLOSE( quateternionResult.getW(),quaternionCheck.getW(), 0.1 );
+
 
 	// Test for the Matrix * Matrix operator
 	BOOST_CHECK( m1 * manualIdentity == m1);
