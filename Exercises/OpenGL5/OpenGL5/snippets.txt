@@ -22,5 +22,4 @@ void drawString3D(const char *str, float pos[3], float color[4], void *font)
 
 2D text onscreen(HUD/UI): http://www.lighthouse3d.com/opengl/glut/index.php?bmpfontortho
 2D Menu: http://www.lighthouse3d.com/opengl/glut/index.php?10
-
-
+DebugDraw: http://irrlicht.sourceforge.net/phpBB2/viewtopic.php?t=38289&sid=ef80657a7e3e4336677f8143823eb46c
