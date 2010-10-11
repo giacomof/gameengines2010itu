@@ -411,6 +411,9 @@
     <ClCompile Include="frameClock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h">
@@ -1134,6 +1137,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

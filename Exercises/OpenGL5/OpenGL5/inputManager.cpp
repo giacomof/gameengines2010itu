@@ -9,10 +9,13 @@ MessagePump messageP = MessagePump::getInstance();
 
 SDL_mutex * inputManager::mutex_event;
 
+bool inputManager::active;
+
 inputManager &inputManager::getInstance()
 {
 	if(count==0) inputManager::mutex_event = SDL_CreateMutex();
 	else count++;
+	active = true;
 	return _instance;
 }
 
@@ -26,21 +29,43 @@ SDL_Event currentEvent;
 		currentEvent = messageP.receiveMessage();
 		AssetManager::unlockMutex( inputManager::mutex_event );
 
-		switch (currentEvent.type)
+		if (currentEvent.type == SDL_ACTIVEEVENT)
 		{
-		case SDL_KEYDOWN:
-		case SDL_KEYUP:
-			keyPress(currentEvent);
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
-			mousePress(currentEvent);
-			break;
-		case SDL_MOUSEMOTION:
-			mouseMotion(currentEvent);
-			break;
-		default:
-			break;
+			if ( currentEvent.active.state & SDL_APPINPUTFOCUS )
+			{
+				if (currentEvent.active.gain==0)
+				{
+					active = false;
+					SDL_WM_GrabInput(SDL_GRAB_OFF);
+					SDL_ShowCursor(SDL_ENABLE);
+				}
+				else
+				{
+					active = true;
+					SDL_ShowCursor(SDL_DISABLE);
+					SDL_WM_GrabInput(SDL_GRAB_ON);
+				}
+			}
+		}
+
+		if (active)
+		{
+			switch (currentEvent.type)
+			{
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+				keyPress(currentEvent);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+				mousePress(currentEvent);
+				break;
+			case SDL_MOUSEMOTION:
+				mouseMotion(currentEvent);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 

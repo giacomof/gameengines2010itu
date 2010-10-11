@@ -210,6 +210,7 @@
     <ClCompile Include="messagePump.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="sceneObject.cpp" />
+    <ClCompile Include="sound.cpp" />
     <ClCompile Include="transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -453,6 +454,7 @@
     <ClInclude Include="messagePump.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="sceneObject.h" />
+    <ClInclude Include="sound.h" />
     <ClInclude Include="transformation.h" />
   </ItemGroup>
   <ItemGroup>
