@@ -83,6 +83,7 @@
     <ClCompile Include="assetManager.cpp" />
     <ClCompile Include="colladaFile.cpp" />
     <ClCompile Include="controller.cpp" />
+    <ClCompile Include="debugDraw.cpp" />
     <ClCompile Include="entityCamera.cpp" />
     <ClCompile Include="entitySpectator.cpp" />
     <ClCompile Include="frameClock.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="assetManager.h" />
     <ClInclude Include="colladaFile.h" />
     <ClInclude Include="controller.h" />
+    <ClInclude Include="debugDraw.h" />
     <ClInclude Include="entityCamera.h" />
     <ClInclude Include="entitySpectator.h" />
     <ClInclude Include="frameClock.h" />
