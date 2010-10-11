@@ -25,6 +25,8 @@ public:
 	static SDL_mutex * mutex_event;
 
 private:
+	static bool active;
+
 	void keyPress(SDL_Event currentEvent);
 	void mousePress(SDL_Event currentEvent);
 	void mouseMotion(SDL_Event currentEvent);

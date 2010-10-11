@@ -17,15 +17,7 @@
 #include "assetManager.h"				// Header File for our Asset Manager
 #include "inputManager.h"				// Header File for our Input Manager
 #include "frameClock.h"					// Header File for our Clock
-
-#define NUM_SOUNDS 2
-
-// Type for Sound data
-struct sample {
-    Uint8 *data;
-    Uint32 dpos;
-    Uint32 dlen;
-} sounds[NUM_SOUNDS];
+#include "sound.h"						// Header File for our Sound
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -39,13 +31,13 @@ static float const PI = 3.14159f;					// PI definition
 
 Uint32 tickFrame = 0;
 
-// Message pump used for passing Events between threads
-MessagePump InputPump;								
+// Message pumps used for passing Events between threads
+MessagePump InputPump;
 
 // Pointer to SDL rendering surface
 SDL_Surface * surface;				
 
-GLuint image;	
+GLuint image;
 
 // Root node and other Scene Node
 Root * rootNodePtr;
@@ -62,12 +54,6 @@ SceneNode * colladaDuck;
 //ColladaFile colladaTest;
 
 SceneNode * testPlane;
-
-// Camera and Movements Definitions
-float camYaw, camPitch, camYawRad, camPitchRad;
-float camPosX, camPosY, camPosZ;
-float camSpeed = 2.0f;
-float rotationSpeed = 0.1f;
 
 // OpenGL Attributes
 Uint32 timeLeft(void);
@@ -92,9 +78,6 @@ GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};
 GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
 GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
 
-// Check for when to quit
-bool quit = false;
-
 /* This thread handles input */
 int threadInput(void *data)
 {
@@ -114,7 +97,7 @@ int threadInput(void *data)
 		SDL_Delay(thread_delay);
 	}
 
-	SDL_ShowCursor(SDL_ENABLE); 
+	SDL_ShowCursor(SDL_ENABLE);
 
 	return 0;
 }
@@ -122,30 +105,24 @@ int threadInput(void *data)
 /* This thread handles audio */
 int threadSound(void *data)
 {
-	// Thread name
 	char *tname = ( char * )data;
 
-	extern void mixaudio(void *unused, Uint8 *stream, int len);
-    SDL_AudioSpec fmt;
+	soundInit();
 
-    /* Set 16-bit stereo audio at 22Khz */
-    fmt.freq = 22050;
-    fmt.format = AUDIO_S16;
-    fmt.channels = 2;
-    fmt.samples = 512;
-    fmt.callback = mixaudio;
-    fmt.userdata = NULL;
+	int testsoundint = 0;
+	while ( !Controller::getInstance().quit )
+	{
+		testsoundint++;
+		if (testsoundint > 300)
+		{
+			soundPlayFile("include/evil_laugh.wav");
+			testsoundint = 0;
+		}
+		SDL_Delay(tick);
+	}
 
-    /* Open the audio device and start playing sound! */
-    if ( SDL_OpenAudio(&fmt, NULL) < 0 ) {
-        fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
-		return 1;
-    }
-    SDL_PauseAudio(0);
+	soundExit();
 
-	// Run the audio handling here
-
-	SDL_CloseAudio();
 	return 0;
 }
 
@@ -443,10 +420,14 @@ int main(int argc, char *argv[])
 			{
 			// Some general events to handle immediately
 			case SDL_ACTIVEEVENT:
-				if (currentEvent.active.gain==0)
-					isActive = FALSE;
-				else
-					isActive = TRUE;
+				InputPump.sendMessage(currentEvent);
+				if (currentEvent.active.state & SDL_APPACTIVE)
+				{
+					if (currentEvent.active.gain==0)
+						isActive = FALSE;
+					else
+						isActive = TRUE;
+				}
 				break;
 			case SDL_VIDEORESIZE:
 				surface = SDL_SetVideoMode(	currentEvent.resize.w, currentEvent.resize.h, screenColorDepth, videoFlags);
@@ -647,62 +628,4 @@ int resizeWindow(int width, int height)
 	glLoadIdentity();
 
 	return TRUE;
-}
-
-// Audio mixer for SDL sounds
-void mixaudio(void *unused, Uint8 *stream, int len)
-{
-    int amount;
-
-    for (int i=0; i<NUM_SOUNDS; ++i ) {
-        amount = (sounds[i].dlen-sounds[i].dpos);
-        if ( amount > len ) {
-            amount = len;
-        }
-        SDL_MixAudio(stream, &sounds[i].data[sounds[i].dpos], amount, SDL_MIX_MAXVOLUME);
-        sounds[i].dpos += amount;
-    }
-}
-
-
-// Function that load a sound, converti it and let it start to play
-void PlaySound(char *file)
-{
-    int index;
-    SDL_AudioSpec wave;
-    Uint8 *data;
-    Uint32 dlen;
-    SDL_AudioCVT cvt;
-
-    /* Look for an empty (or finished) sound slot */
-    for ( index=0; index<NUM_SOUNDS; ++index ) {
-        if ( sounds[index].dpos == sounds[index].dlen ) {
-            break;
-        }
-    }
-    if ( index == NUM_SOUNDS )
-        return;
-
-    /* Load the sound file and convert it to 16-bit stereo at 22kHz */
-    if ( SDL_LoadWAV(file, &wave, &data, &dlen) == NULL ) {
-        fprintf(stderr, "Couldn't load %s: %s\n", file, SDL_GetError());
-        return;
-    }
-    SDL_BuildAudioCVT(&cvt, wave.format, wave.channels, wave.freq,
-                            AUDIO_S16,   2,             22050);
-    cvt.buf = (Uint8 *)malloc(dlen*cvt.len_mult);
-    memcpy(cvt.buf, data, dlen);
-    cvt.len = dlen;
-    SDL_ConvertAudio(&cvt);
-    SDL_FreeWAV(data);
-
-    /* Put the sound data in the slot (it starts playing immediately) */
-    if ( sounds[index].data ) {
-        free(sounds[index].data);
-    }
-    SDL_LockAudio();
-    sounds[index].data = cvt.buf;
-    sounds[index].dlen = cvt.len_cvt;
-    sounds[index].dpos = 0;
-    SDL_UnlockAudio();
 }
