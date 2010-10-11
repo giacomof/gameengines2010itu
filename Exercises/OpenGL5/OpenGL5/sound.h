@@ -4,7 +4,6 @@
 #define sound_H_
 
 #include <SDL.h>
-#include <SDL_thread.h>					// Header File for SDL thread library
 #include <SDL_audio.h>					// Header File for SDL audio library
 
 #define NUM_SOUNDS 2
