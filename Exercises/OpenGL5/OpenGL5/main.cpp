@@ -428,7 +428,7 @@ int main(int argc, char *argv[])
 		
 		// physics simultation
 		dynamicsWorld->stepSimulation(1/120.f, 10);
-		if(drawDebug) dynamicsWorld->debugDrawWorld();	
+		//if(drawDebug) dynamicsWorld->debugDrawWorld();	
 
 		// Actual frame rendering happens here
 		if (window.getActive() && SDL_GetTicks() > (tickFrame + tick) )
@@ -436,8 +436,9 @@ int main(int argc, char *argv[])
 			
 			tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
+			
 			drawGL();
-		
+			
 		}
 
 		// Delay the thread to make room for others on the CPU

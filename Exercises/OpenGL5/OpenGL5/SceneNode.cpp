@@ -344,7 +344,7 @@ void SceneNode::drawName(void)
 {
 	
 	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
-    glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
 
     glColor4f(0.1f, 1.0f, 0.1f, 0.2f);  // set text color
 	float pos[3];
@@ -373,14 +373,12 @@ void SceneNode::drawName(void)
 
 }
 
-SDL_mutex * Root::rootMutex;
 
 // Static member initialization. 
 Root Root::_instance;
 list<SceneNode*> Root::childOfRootList;
+SDL_mutex * Root::rootMutex;
 unsigned int id;
-
-
 
 Root &Root::getInstance()
 {
