@@ -39,7 +39,6 @@ MessagePump InputPump;
 
 // Pointer to SDL rendering surface
 SDL_Surface * surface;				
-
 GLuint image;
 
 // Root node and other Scene Node
@@ -47,15 +46,14 @@ Root * rootNodePtr;
 // Asset manager
 AssetManager * assetManagerPtr;
 
-SceneNode * demon;
-//md2File md2Demon;
-SceneNode * lostSoul;
-//md2File md2LostSoul;
-SceneNode * bossCube;
-//md2File md2BossCube;
-SceneNode * colladaDuck;
-//ColladaFile colladaTest;
+// DebugDrawer Declaration
+DebugDraw debugger;
 
+// SceneNodes Declaration
+SceneNode * demon;
+SceneNode * lostSoul;
+SceneNode * bossCube;
+SceneNode * colladaDuck;
 SceneNode * testPlane;
 
 // OpenGL Attributes
