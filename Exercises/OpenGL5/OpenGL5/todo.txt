@@ -4,8 +4,6 @@
 
 GLOBAL TASKS:
 
-S- Sound Manager
-		S- Sounds without movements freeze
 G- Physics SDK
 0- multi-node collada loader
 0- Compile everything we can as a DLL
@@ -53,7 +51,8 @@ COMPLETED:
 	1(V)- Mutex Manager
 1(G)- Quaternions into Math Library
 1(G)- Update boot test for quaternions
-
+1(S)- Sound Manager
+	1(S)- Sounds without movements freeze
 
 
 Symbology Map:
