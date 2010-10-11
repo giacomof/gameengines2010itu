@@ -8,12 +8,14 @@ G- Physics SDK
 0- multi-node collada loader
 0- Compile everything we can as a DLL
 V- A DisplayManager capable of opening a window with an opengl context
-0- attach/detach camera to player model
+S- attach/detach camera to player model
 0- Quaternions for camera rotations
 0- Lighting System
+S- fix wave file
 
 OPTIONALS:
 
+S- draw class diagram for potential refactoring
 0- logging system with verbosity levels
 0- singleton superclass
 0- mutex created inside the AssetManager
