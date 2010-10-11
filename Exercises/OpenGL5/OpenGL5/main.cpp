@@ -370,9 +370,9 @@ int main(int argc, char *argv[])
 	while(!Controller::getInstance().quit)
 	{
 		
-		//char title[80];
-		//sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
-		//SDL_WM_SetCaption( title, "include/nhe.ico" );
+		char title[80];
+		sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
+		window.setTitle( title, "include/nhe.ico" );
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.20f);
 		
