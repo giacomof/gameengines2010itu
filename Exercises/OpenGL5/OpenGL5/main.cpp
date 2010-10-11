@@ -19,6 +19,7 @@
 #include "frameClock.h"					// Header File for our Clock
 #include "sound.h"						// Header File for our Sound
 #include "windowManager.h"				// Header File for our Window Manager
+#include "debugDraw.h"					// Header File for our Debug Drawer
 
 using namespace std;
 using namespace linearAlgebraDLL;
