@@ -18,16 +18,17 @@
 #include "inputManager.h"				// Header File for our Input Manager
 #include "frameClock.h"					// Header File for our Clock
 #include "sound.h"						// Header File for our Sound
+#include "windowManager.h"				// Header File for our Window Manager
 
 using namespace std;
 using namespace linearAlgebraDLL;
 
-static int const screenWidth		= 800;			// Window Width
-static int const screenHeight		= 600;			// Window Height
-static int const screenColorDepth	= 32;			// Color Depth
-static int const tick				= 16;			// Minimum time between screen frames
-static int const thread_delay		= 3;			// Minimum time between loops
-static float const PI = 3.14159f;					// PI definition
+static int const screenWidth=800;		// Window Width
+static int const screenHeight=600;		// Window Height
+static int const screenColorDepth=32;	// Color Depth
+static int const tick = 16;				// Minimum time between screen frames
+static int const thread_delay = 3;		// Minimum time between loops
+static float const PI = 3.14159f;		// PI definition
 
 Uint32 tickFrame = 0;
 
@@ -58,7 +59,6 @@ SceneNode * testPlane;
 // OpenGL Attributes
 Uint32 timeLeft(void);
 GLuint loadTexture(char* texName);
-int resizeWindow(int width, int height);
 int initGL(void);
 
 // STD/OpenGL Methods
@@ -72,6 +72,9 @@ GLuint	texture[3];
 
 // input manager definition
 inputManager input;
+
+// Window Manager definition
+WindowManager window = WindowManager();
 
 // Define Test Lights Attributes
 GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
@@ -142,57 +145,24 @@ int threadUpdate(void *data)
 	return 0;
 }
 
-/* Application entry point */
+// *************************************************************************
+// ******************* /* Application entry point */ ***********************
+// *************************************************************************
+
 int main(int argc, char *argv[])
 {
 	// start the asset manager
 	assetManagerPtr = new AssetManager();
 	InputPump = MessagePump::getInstance();
+	WindowManager window = WindowManager();
 
-	// SDL/OpenGL data
-	int videoFlags;
-	const SDL_VideoInfo *videoInfo;
-	
-	int isActive = TRUE;
-	
+	// SDL initialization
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
 	{
 		exit(1);
 	}
 
-	videoInfo = SDL_GetVideoInfo();
-	if (!videoInfo)
-	{
-		exit(1);
-	}
-	
-	// Video Flags
-	videoFlags = SDL_OPENGL;
-	videoFlags |= SDL_GL_DOUBLEBUFFER;
-	videoFlags |= SDL_HWPALETTE;
-	videoFlags |= SDL_RESIZABLE;
-	
-	if (videoInfo->hw_available)
-		videoFlags |= SDL_HWSURFACE;
-	else
-		videoFlags |= SDL_SWSURFACE;
-	
-	if (videoInfo->blit_hw)
-		videoFlags |= SDL_HWACCEL;
-	
-	SDL_WM_SetCaption( "Loading Name Here Engine... ", "include/nhe.ico" );
-
-	// Apply Video Flags and Settings
-	surface = SDL_SetVideoMode(	screenWidth,
-								screenHeight,
-								screenColorDepth,
-								videoFlags);
-
-	if (!surface)
-	{
-		
-		exit(1);
-	}
+	window.createWindow(screenWidth, screenHeight, screenColorDepth);
 
 	if (initGL()==FALSE)
 	{
@@ -201,8 +171,8 @@ int main(int argc, char *argv[])
 	}
 	
 	// resizes OpenGL window
-	resizeWindow(screenWidth, screenHeight);
-	
+	window.resizeWindow(screenWidth, screenHeight);
+
 	// Create the root node
 	rootNodePtr = new Root();
 	rootNodePtr->setName("root");
@@ -400,17 +370,11 @@ int main(int argc, char *argv[])
 	while(!Controller::getInstance().quit)
 	{
 		
-		char title[80];
-		sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
-		SDL_WM_SetCaption( title, "include/nhe.ico" );
+		//char title[80];
+		//sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
+		//SDL_WM_SetCaption( title, "include/nhe.ico" );
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.20f);
-
-		//cout << demon->getWorldPosition() << endl;
-
-		//lostSoul->rotateAboutAxis(Vector(0,1,0),0.3f);
-		//bossCube->rotateAboutAxis(Vector(1,0,0),-0.05f);
-		//bossCube->translate(Vector(0.5f,0,0));
 		
 		// Time to take care of the SDL events we have recieved
 		SDL_Event currentEvent;
@@ -424,19 +388,19 @@ int main(int argc, char *argv[])
 				if (currentEvent.active.state & SDL_APPACTIVE)
 				{
 					if (currentEvent.active.gain==0)
-						isActive = FALSE;
+						window.setActive(FALSE);
 					else
-						isActive = TRUE;
+						window.setActive(TRUE);
 				}
 				break;
 			case SDL_VIDEORESIZE:
-				surface = SDL_SetVideoMode(	currentEvent.resize.w, currentEvent.resize.h, screenColorDepth, videoFlags);
+				surface = SDL_SetVideoMode(	currentEvent.resize.w, currentEvent.resize.h, screenColorDepth, window.getVideoFlags());
 				if (!surface)
 				{
 					delete assetManagerPtr;
 					exit(1);
 				}
-				resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
+				window.resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
 				break;
 			case SDL_QUIT:
 				Controller::getInstance().quit = true;
@@ -461,7 +425,7 @@ int main(int argc, char *argv[])
 		dynamicsWorld->stepSimulation(1/120.f, 10);
 
 		// Actual frame rendering happens here
-		if (isActive && SDL_GetTicks() > (tickFrame + tick) )
+		if (window.getActive() && SDL_GetTicks() > (tickFrame + tick) )
 		{
 
 			tickFrame = SDL_GetTicks();
@@ -523,11 +487,10 @@ int initGL(void)
 {
 	// Clears color buffer
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	
 	// sets the matrix stack as the projection matrix stack
 	glMatrixMode(GL_PROJECTION);
 	// creates the viewport
-	glViewport(0,0,screenWidth,screenHeight);
+	glViewport(0, 0, screenWidth, screenHeight);
 	glLoadIdentity();
 	// sets the matrix stack as the modelview matrix stack
 	glMatrixMode(GL_MODELVIEW);
@@ -607,25 +570,4 @@ float* getCamera()
 
 	glMultMatrixf(&tranM[0]);
 	return &tranM[0];
-}
-
-/* Resize the window */
-int resizeWindow(int width, int height)
-{
-	GLfloat ratio;
-	if (height==0)
-		height = 1;
-
-	// define the new pixel aspect
-	ratio = (GLfloat)width/(GLfloat)height;
-	glViewport(0,0,(GLint)width,(GLint)height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	
-	// sets the Field of View, pixel ratio, Frustum
-	gluPerspective(60.0f, ratio, 0.1f, 5000.0f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	return TRUE;
 }

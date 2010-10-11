@@ -414,6 +414,9 @@
     <ClCompile Include="sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="windowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h">
@@ -1142,12 +1145,12 @@
     <ClInclude Include="sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="windowManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="snippets.txt">
-      <Filter>textfiles</Filter>
-    </None>
-    <None Include="structure.txt">
       <Filter>textfiles</Filter>
     </None>
     <None Include="todo.txt">
