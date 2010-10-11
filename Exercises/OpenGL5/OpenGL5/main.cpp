@@ -314,6 +314,8 @@ int main(int argc, char *argv[])
 
 			dynamicsWorld->addRigidBody(cubeRigidBody);
 
+			
+
 			bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 			bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
@@ -424,20 +426,20 @@ int main(int argc, char *argv[])
 
 		Controller::getInstance().playerObject->update();
 		
-		//dynamicsWorld->debugDrawWorld(); 
+		// physics simultation
 		dynamicsWorld->stepSimulation(1/120.f, 10);
+		if(drawDebug) dynamicsWorld->debugDrawWorld();	
 
 		// Actual frame rendering happens here
 		if (window.getActive() && SDL_GetTicks() > (tickFrame + tick) )
 		{
-
+			
 			tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
-
 			drawGL();
-			
+		
 		}
-	
+
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
@@ -447,15 +449,6 @@ int main(int argc, char *argv[])
 	SDL_WaitThread ( id2, NULL );
 	SDL_WaitThread ( id3, NULL );
 
-	// Deletes
-	//delete demon;
-	//delete lostSoul; 
-	//delete bossCube;
-	//delete playercamera;
-	//delete player;
-	//delete rootNodePtr;
-	//delete assetManagerPtr;
-	
 	exit(0);  
 }
 
