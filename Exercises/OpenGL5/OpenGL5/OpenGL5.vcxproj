@@ -212,6 +212,7 @@
     <ClCompile Include="sceneObject.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="transformation.cpp" />
+    <ClCompile Include="windowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h" />
@@ -456,6 +457,7 @@
     <ClInclude Include="sceneObject.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="transformation.h" />
+    <ClInclude Include="windowManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DevIL.dll" />
@@ -479,7 +481,6 @@
     <None Include="LinearAlgebraDLL.dll" />
     <None Include="SDL.dll" />
     <None Include="snippets.txt" />
-    <None Include="structure.txt" />
     <None Include="TEAMDETAILS.txt" />
     <None Include="todo.txt" />
   </ItemGroup>
