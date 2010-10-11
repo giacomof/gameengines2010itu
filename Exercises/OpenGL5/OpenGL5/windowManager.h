@@ -13,7 +13,7 @@ public:
 	static WindowManager _instance;
 
 	WindowManager(void) { getInstance(); };
-	~WindowManager(void); {}
+	~WindowManager(void) {};
 
 	// Singleton Methods
 	WindowManager(const WindowManager &getInstance());   
