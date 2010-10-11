@@ -11,6 +11,7 @@ S- fix wave file
 0- Compile everything we can as a DLL
 0- Quaternions for camera rotations
 0- Lighting System
+0- Memory Manager
 
 OPTIONALS:
 
