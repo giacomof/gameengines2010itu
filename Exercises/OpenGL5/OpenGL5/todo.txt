@@ -7,7 +7,7 @@ GLOBAL TASKS:
 G- Physics SDK
 S- attach/detach camera to player model
 S- fix wave file
-0- multi-node collada loader
+1(G+V)- multi-node collada loader
 0- Compile everything we can as a DLL
 0- Quaternions for camera rotations
 0- Lighting System

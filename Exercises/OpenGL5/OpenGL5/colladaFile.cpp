@@ -82,8 +82,9 @@ char * ColladaFile::load(std::string & str)
 						moreMeshes = true;
 						
 						indexCount += atoi(indexNode->first_attribute("count")->value());	
-						indexArray += indexNode->first_node("p")->value();
 						indexArray += " ";
+						indexArray += indexNode->first_node("p")->value();
+						
 					
 					} else { 
 						moreMeshes = false;
@@ -93,6 +94,7 @@ char * ColladaFile::load(std::string & str)
 
 				}
 			}
+			
 		}
 
 		if(!isFinished)  {
@@ -155,6 +157,7 @@ char * ColladaFile::load(std::string & str)
 		i++;
 	}
 
+
 	if(hasTexture) return (char*)textureName.c_str();
 	else return "";
 }
@@ -186,7 +189,7 @@ void ColladaFile::render(void) const
 		if(hasTexture) {
 			firstMap = index[i+2]*2;
 			secondMap = index[i+(offset/3)+2]*2;
-			thirdMap = index[i+((offset/3)*2)+2]*2;
+			thirdMap = (index[i+((offset/3)*2)+2]*2);
 		}
 		
 		glBegin(GL_TRIANGLES);
