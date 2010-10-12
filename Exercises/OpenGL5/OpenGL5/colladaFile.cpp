@@ -24,8 +24,6 @@ char * ColladaFile::load(std::string & str)
 	normalCount = 0;
 	indexCount = 0;
 
-	
-
 	doc.parse<0>(strdup(str.c_str()));    // 0 means default parse flags
 
 	xml_node<>* rootNode = doc.first_node("COLLADA");
@@ -193,15 +191,15 @@ void ColladaFile::render(void) const
 		}
 		
 		glBegin(GL_TRIANGLES);
-		glTexCoord2f( map[firstMap], map[firstMap+1] );
-		glNormal3f( normal[firstNormal], normal[firstNormal+1], normal[firstNormal+2]); 
-		glVertex3f( vertex[firstVertex], vertex[firstVertex+1], vertex[firstVertex+2]);
-		glTexCoord2f( map[secondMap], map[secondMap+1] );
-		glNormal3f( normal[secondNormal], normal[secondNormal+1], normal[secondNormal+2]);
-		glVertex3f( vertex[secondVertex], vertex[secondVertex+1], vertex[secondVertex+2]);
-		glTexCoord2f( map[thirdMap], map[thirdMap+1] );
-		glNormal3f( normal[thirdNormal], normal[thirdNormal+1], normal[thirdNormal+2]);
-		glVertex3f( vertex[thirdVertex], vertex[thirdVertex+1], vertex[thirdVertex+2]);
+			glTexCoord2f( map[firstMap], map[firstMap+1] );
+			glNormal3f( normal[firstNormal], normal[firstNormal+1], normal[firstNormal+2]); 
+			glVertex3f( vertex[firstVertex], vertex[firstVertex+1], vertex[firstVertex+2]);
+			glTexCoord2f( map[secondMap], map[secondMap+1] );
+			glNormal3f( normal[secondNormal], normal[secondNormal+1], normal[secondNormal+2]);
+			glVertex3f( vertex[secondVertex], vertex[secondVertex+1], vertex[secondVertex+2]);
+			glTexCoord2f( map[thirdMap], map[thirdMap+1] );
+			glNormal3f( normal[thirdNormal], normal[thirdNormal+1], normal[thirdNormal+2]);
+			glVertex3f( vertex[thirdVertex], vertex[thirdVertex+1], vertex[thirdVertex+2]);
 		glEnd();
 	}
 	
