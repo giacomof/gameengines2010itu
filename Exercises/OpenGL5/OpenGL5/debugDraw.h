@@ -1,6 +1,8 @@
 #pragma once
 
 #include <btBulletCollisionCommon.h>
+#include "SDL_opengl.h"
+#include <iostream>
 
 class DebugDraw : public btIDebugDraw 
 {

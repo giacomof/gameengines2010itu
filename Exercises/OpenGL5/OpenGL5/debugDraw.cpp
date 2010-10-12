@@ -1,5 +1,5 @@
 #include "debugDraw.h"
-#include "SDL_opengl.h"
+
 
 DebugDraw::DebugDraw(void)
 {
@@ -41,7 +41,7 @@ void DebugDraw::drawContactPoint(const btVector3& PointOnB, const btVector3& nor
 
 void DebugDraw::reportErrorWarning(const char* text) 
 { 
-	// do nothing for now 
+	std::cout << text << std::endl;
 } 
 
 void DebugDraw::draw3dText(const btVector3& location, const char* text) 
