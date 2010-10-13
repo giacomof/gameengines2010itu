@@ -479,6 +479,7 @@
     <None Include="include\glut.def" />
     <None Include="include\lostsoul.jpg" />
     <None Include="include\Lostsoul.md2" />
+    <None Include="include\MENULOOP.WAV" />
     <None Include="include\nhe.ico" />
     <None Include="include\snippets.txt" />
     <None Include="LinearAlgebraDLL.dll" />
