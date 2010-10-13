@@ -114,13 +114,13 @@ int threadSound(void *data)
 
 	soundInit();
 
-	int testsoundint = 0;
+	int testsoundint = 500;
 	while ( !Controller::getInstance().quit )
 	{
 		testsoundint++;
-		if (testsoundint > 300)
+		if (testsoundint > 600)
 		{
-			soundPlayFile("include/evil_laugh.wav");
+			soundPlayFile("include/MENULOOP.WAV");
 			testsoundint = 0;
 		}
 		SDL_Delay(tick);
