@@ -151,7 +151,7 @@ bool md2File::checkFile(void) {
 void md2File::Update(float dt) {
 	if(!m_data)
 		return;
-
+	
 	m_AnimTime += dt;
 
 	// get pointer to animation reference

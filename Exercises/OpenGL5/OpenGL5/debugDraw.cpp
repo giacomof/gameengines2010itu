@@ -13,18 +13,18 @@ DebugDraw::~DebugDraw(void)
 
 void DebugDraw::drawLine(const btVector3& from, const btVector3& to, const btVector3 &color) 
 { 
-	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT);	// lighting and color mask
-	glDisable(GL_LIGHTING);							// need to disable lighting for proper text color
-															// not sure about lines
+	glDisable(GL_TEXTURE_2D);
+		glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT);	// lighting and color mask
+																// need to disable lighting for proper text color
+																// not sure about lines
+			glColor3f(0.0f, 1.0f, 0.0f); 
+			glBegin(GL_LINES);
+				glVertex3f(from.getX(), from.getY(), from.getZ());
+				glVertex3f(to.getX(), to.getY(), to.getZ());
+			glEnd();
 
-	glColor4f(0.1f, 1.0f, 0.1f, 0.2f); 
-	glBegin(GL_LINES);
-		glVertex3f(from.getX(), from.getY(), from.getZ());
-		glVertex3f(to.getX(), to.getY(), to.getZ());
-	glEnd();
-
-	glEnable(GL_LIGHTING);
-	glPopAttrib();
+		glPopAttrib();
+	glEnable(GL_TEXTURE_2D);
 } 
 
 void DebugDraw::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color) 
