@@ -19,13 +19,13 @@ OPTIONALS:
 
 V- debug draw system
 	V- axis of rotation of an object via line draws
-	V- draw the bounding box or bounding sphere of an object
+	1(V+Ga)- draw the bounding box or bounding sphere of an object
 	1(V)- draw the name of the SceneNodes
 S- draw class diagram for potential refactoring
 0- logging system with verbosity levels
 0- singleton superclass
 0- mutex created inside the AssetManager
-0- Physics Wrapper? (PAL?)
+0- Physics Wrapper?
 0- AutoCalculated Bounding Box
 0- Shadows: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27
 0- Multiple Viewports: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42
