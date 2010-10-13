@@ -6,7 +6,7 @@ MessagePump MessagePump::_instance;
 SDL_mutex * MessagePump::mutex_event;
 unsigned int MessagePump::count=0;
 
-MessagePump MessagePump::getInstance()
+MessagePump & MessagePump::getInstance()
 {
 	if(count==0) MessagePump::mutex_event = SDL_CreateMutex();
 	else count++;

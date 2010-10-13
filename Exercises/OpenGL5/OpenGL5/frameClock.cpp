@@ -2,6 +2,7 @@
 
 void frameClock::frameUpdate()
 {
+	
 	lastTime = currentTime;
 	currentTime = SDL_GetTicks();
 

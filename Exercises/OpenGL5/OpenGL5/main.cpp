@@ -1,7 +1,7 @@
+// Used for checking memory leaks
 //#define _CRTDBG_MAP_ALLOC
 //#include <stdlib.h>
 //#include <crtdbg.h>
-
 
 
 #include <iostream>						// Header File For the basic Input/Output system
@@ -34,7 +34,7 @@ static int const screenWidth=800;		// Window Width
 static int const screenHeight=600;		// Window Height
 static int const screenColorDepth=32;	// Color Depth
 
-static int const tick = 16;				// Minimum time between screen frames
+static int const tick = 1000;				// Minimum time between screen frames
 static int const thread_delay = 3;		// Minimum time between loops
 static float const PI = 3.14159f;		// PI definition
 
@@ -101,7 +101,7 @@ int threadInput(void *data)
 	// Binds mouse and keyboard input to the OpenGL window
 	SDL_WM_GrabInput(SDL_GRAB_ON); 
 
-	while ( !Controller::getInstance().quit ) {
+	while ( !Controller::quit ) {
 		input.update();
 
 		// Delay the thread to make room for others on the CPU
@@ -121,7 +121,7 @@ int threadSound(void *data)
 	soundInit();
 
 	int testsoundint = 500;
-	while ( !Controller::getInstance().quit )
+	while ( !Controller::quit )
 	{
 		testsoundint++;
 		if (testsoundint > 600)
@@ -143,7 +143,7 @@ int threadUpdate(void *data)
 	// Thread name
 	char *tname = ( char * )data;
 
-	while ( !Controller::getInstance().quit ) {
+	while ( !Controller::quit ) {
 		// Runs the update method here
 
 		// physics simultation
@@ -162,8 +162,9 @@ int threadUpdate(void *data)
 
 int main(int argc, char *argv[])
 {
-	/*_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-	_crtBreakAlloc = 953;*/
+	// Used for checking memory leaks
+	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	//_crtBreakAlloc = 920;
 
 
 	// start the asset manager
@@ -213,9 +214,9 @@ int main(int argc, char *argv[])
 	dynamicsWorld->setDebugDrawer(&debugger); 
 	
 
-	/* ---------------------------------------- *
-	 * Graph and asset testing stuff start here *
-	 * ---------------------------------------- */
+	//* ---------------------------------------- *
+	// * Graph and asset testing stuff start here *
+	// * ---------------------------------------- */
 
 
 	// Create the plane with the collision shape
@@ -271,16 +272,16 @@ int main(int argc, char *argv[])
 	/*md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
+*/
 
-
-	*/
+	
 
 	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
 	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	/* ---------------------------------------- *
-	 * Physic stuff								*
-	 * ---------------------------------------- */
+	///* ---------------------------------------- *
+	// * Physic stuff								*
+	// * ---------------------------------------- */
 
 	btCollisionShape* cubeShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
@@ -359,7 +360,7 @@ int main(int argc, char *argv[])
 
 
 
-	/* ---------------------------------------- *
+	/* ------------------------------------------ *
 	 * Graph and asset testing stuff ends here  *
 	 * ---------------------------------------- */
 
@@ -384,17 +385,22 @@ int main(int argc, char *argv[])
 	id2 = SDL_CreateThread ( threadSound, tnames[1] );
 	id3 = SDL_CreateThread ( threadInput, tnames[2] );
 
-	while(!Controller::getInstance().quit)
+	char title[80];
+	SDL_Event currentEvent;
+
+	while(!Controller::quit)
 	{
 		
-		char title[80];
+		
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.30f);
+
+
 		
+
 		// Time to take care of the SDL events we have recieved
-		SDL_Event currentEvent;
 		while(SDL_PollEvent(&currentEvent))
 		{
 			switch(currentEvent.type)
@@ -420,7 +426,7 @@ int main(int argc, char *argv[])
 				window.resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
 				break;
 			case SDL_QUIT:
-				Controller::getInstance().quit = true;
+				Controller::quit = true;
 				break;
 			// Input events coming below. They are all just passed on to the input pump
 			case SDL_KEYDOWN:
@@ -436,23 +442,32 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		Controller::getInstance().playerObject->update();
+		
+
+
+		Controller::playerObject->update();
 		
 		
 		
 		// Actual frame rendering happens here
-		if (window.getActive() && SDL_GetTicks() > (tickFrame + tick) )
+		if (window.getActive() )
 		{
 			
-			tickFrame = SDL_GetTicks();
+
+			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
+		
 			
 			drawGL();
+
+			
 			
 		}		
 		//dynamicsWorld->stepSimulation(1/120.f, 10);
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
+
+		//_CrtMemDumpStatistics( &s1 );
 	}
 
 	//wait for the threads to exit
@@ -557,7 +572,7 @@ float* getCamera()
 {		
 	glMatrixMode(GL_MODELVIEW);
 
-	entityCamera *currentCamera = Controller::getInstance().playerObject->getCamera();
+	entityCamera *currentCamera = Controller::playerObject->getCamera();
 
 	float tranM[16] = {	1, 0, 0, 0,
 						0, 1, 0, 0,

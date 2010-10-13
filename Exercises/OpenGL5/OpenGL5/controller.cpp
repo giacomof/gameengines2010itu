@@ -4,11 +4,13 @@
 Controller Controller::_instance;
 SDL_mutex * Controller::mutex_controller;
 entitySpectator * Controller::playerObject;
-bool Controller::quit;
+unsigned int Controller::count=0;
+bool Controller::quit=false;
 
 Controller &Controller::getInstance()
 {
-	mutex_controller = SDL_CreateMutex();
+	if(count==0) Controller::mutex_controller = SDL_CreateMutex();
+	else count=1;
 	return _instance;
 }
 
