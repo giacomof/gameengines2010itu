@@ -72,7 +72,7 @@ SDL_Event currentEvent;
 	return 0;
 }
 
-void inputManager::keyPress(SDL_Event currentEvent)
+void inputManager::keyPress(SDL_Event &currentEvent)
 {
 	switch (currentEvent.key.keysym.sym)
 	{
@@ -110,12 +110,12 @@ void inputManager::keyPress(SDL_Event currentEvent)
 	}
 }
 
-void inputManager::mousePress(SDL_Event currentEvent)
+void inputManager::mousePress(SDL_Event &currentEvent)
 {
 	// Do nothing at this time
 }
 
-void inputManager::mouseMotion(SDL_Event currentEvent)
+void inputManager::mouseMotion(SDL_Event &currentEvent)
 {
 	float deltaX = currentEvent.motion.xrel * mouse_sensitivity;
 	float deltaY = currentEvent.motion.yrel * mouse_sensitivity;

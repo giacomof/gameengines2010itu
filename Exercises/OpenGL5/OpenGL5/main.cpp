@@ -1,3 +1,9 @@
+//#define _CRTDBG_MAP_ALLOC
+//#include <stdlib.h>
+//#include <crtdbg.h>
+
+
+
 #include <iostream>						// Header File For the basic Input/Output system
 #include <windows.h>					// Header File For Windows
 #include <stdio.h>						// Header File For Standard Input/Output
@@ -110,7 +116,7 @@ int threadInput(void *data)
 /* This thread handles audio */
 int threadSound(void *data)
 {
-	char *tname = ( char * )data;
+	/*char *tname = ( char * )data;
 
 	soundInit();
 
@@ -127,7 +133,7 @@ int threadSound(void *data)
 	}
 
 	soundExit();
-
+*/
 	return 0;
 }
 
@@ -156,6 +162,10 @@ int threadUpdate(void *data)
 
 int main(int argc, char *argv[])
 {
+	/*_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	_crtBreakAlloc = 953;*/
+
+
 	// start the asset manager
 	assetManagerPtr = new AssetManager();
 	InputPump = MessagePump::getInstance();
@@ -558,8 +568,8 @@ float* getCamera()
 	{
 		AssetManager::lockMutex( currentCamera->mutex_object );
 
-		Matrix transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),currentCamera->pitch).getTranspose();
-		transformationMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),currentCamera->yaw).getTranspose() * transformationMatrix;
+		Matrix transformationMatrix = Matrix::generateAxisRotationMatrix(Vector(1.0,0.0,0.0),currentCamera->pitch).getTranspose();
+		transformationMatrix = Matrix::generateAxisRotationMatrix(Vector(0.0,1.0,0.0),currentCamera->yaw).getTranspose() * transformationMatrix;
 		transformationMatrix = Matrix::generateTranslationMatrix(	currentCamera->vPosition[0],
 																	currentCamera->vPosition[1],
 																	currentCamera->vPosition[2]).getTranspose() * transformationMatrix;

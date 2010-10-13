@@ -156,7 +156,7 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 
 	if (exist == false) {
 
-		md2File * temp = (md2File *)malloc(sizeof(md2File));
+		md2File * temp;
 		temp = new md2File();
 		temp->Load(m_data, data_size);
 
@@ -198,7 +198,7 @@ char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 	}
 
 	if (exist == false) {
-		ColladaFile * tempCollada = (ColladaFile*) malloc(sizeof(ColladaFile));
+		ColladaFile * tempCollada;
 		tempCollada = new ColladaFile();
 		char * tempName = tempCollada->load(str);
 		collada_list[colladaNameChar].colladaMesh = tempCollada;
