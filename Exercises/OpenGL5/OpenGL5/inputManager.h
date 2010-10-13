@@ -27,9 +27,9 @@ public:
 private:
 	static bool active;
 
-	void keyPress(SDL_Event currentEvent);
-	void mousePress(SDL_Event currentEvent);
-	void mouseMotion(SDL_Event currentEvent);
+	void keyPress(SDL_Event &currentEvent);
+	void mousePress(SDL_Event &currentEvent);
+	void mouseMotion(SDL_Event &currentEvent);
 };
 
 #endif

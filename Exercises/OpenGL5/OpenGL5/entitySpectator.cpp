@@ -56,8 +56,8 @@ void entitySpectator::update()
 	
 	// Calculate rotation matrix from pitch and yaw
 	Matrix oMatrix;
-	oMatrix = Matrix::generateAxesRotationMatrix(Vector(1.0,0.0,0.0),pitch).getTranspose();
-	oMatrix = Matrix::generateAxesRotationMatrix(Vector(0.0,1.0,0.0),yaw).getTranspose() * oMatrix;
+	oMatrix = Matrix::generateAxisRotationMatrix(Vector(1.0,0.0,0.0),pitch).getTranspose();
+	oMatrix = Matrix::generateAxisRotationMatrix(Vector(0.0,1.0,0.0),yaw).getTranspose() * oMatrix;
 	
 	// Calculate the orientation vectors
 	vForward = oMatrix * vForward;

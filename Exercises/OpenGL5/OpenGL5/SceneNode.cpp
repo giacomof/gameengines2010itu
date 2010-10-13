@@ -163,7 +163,7 @@ void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 		btVector3 btActualPosition = physicsGeometry->getWorldTransform().getOrigin();
 		Vector actualPosition = Vector(btActualPosition.getX(), btActualPosition.getY(), btActualPosition.getZ());
 
-		Vector newPosition = Matrix::generateAxesRotationMatrix(p_Axis, p_Degree) * actualPosition;
+		Vector newPosition = Matrix::generateAxisRotationMatrix(p_Axis, p_Degree) * actualPosition;
 
 		btVector3 btNewPosition = btVector3(newPosition.get(0), newPosition.get(1), newPosition.get(2));
 

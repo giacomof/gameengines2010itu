@@ -20,7 +20,10 @@ private:
 	deque<Uint32> frameDeltaList;
 	Uint32 currentTime;
 	Uint32 lastTime;
+	Uint32 frameDelta;
 	int fps;
+	float deltaSum;
+	float averageDelta;
 };
 
 #endif

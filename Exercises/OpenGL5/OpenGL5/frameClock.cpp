@@ -5,7 +5,7 @@ void frameClock::frameUpdate()
 	lastTime = currentTime;
 	currentTime = SDL_GetTicks();
 
-	Uint32 frameDelta = currentTime - lastTime;
+	frameDelta = currentTime - lastTime;
 
 	if (lastTime > 200) // If this is the very first frame update, we don't want to save the time yet
 	{
@@ -17,8 +17,7 @@ void frameClock::frameUpdate()
 
 	if (frameDeltaList.size() > 0)
 	{
-		float deltaSum = 0.0f;
-		float averageDelta;
+		deltaSum = 0.0f;
 		
 		for (int i = 0; i < frameDeltaList.size(); i++)
 		{
