@@ -46,6 +46,8 @@ Root * rootNodePtr;
 // Asset manager
 AssetManager * assetManagerPtr;
 
+btDiscreteDynamicsWorld * dynamicsWorld;
+
 // DebugDrawer Declaration
 DebugDraw debugger;
 
@@ -188,7 +190,7 @@ int main(int argc, char *argv[])
  
     btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
  
-    btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
  
     dynamicsWorld->setGravity(btVector3(0,-25,0));
 
@@ -248,7 +250,7 @@ int main(int argc, char *argv[])
 	btCollisionShape* demonBB = new btBoxShape(btVector3(50.0f, 115.0f, 50.0f));
 
 	btDefaultMotionState* demonMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,115,500)));
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,116,500)));
 
 	btScalar demonMass = 0;
 	btVector3 demonInertia(0,0,0);
@@ -303,9 +305,9 @@ int main(int argc, char *argv[])
 		for(int j = 0; j < 8; j++)
 		{
 			if ( (i+j)%2 == 0) {
-				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,200,-100*j)));
+				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,15,-100*j)));
 			} else {
-				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(1,0,1),1.57),btVector3(100 * i,300,-100*j)));
+				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(1,0,1),1.57),btVector3(100 * i,15,-100*j)));
 			}
 
 			cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
@@ -379,7 +381,7 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.20f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.30f);
 		
 		// Time to take care of the SDL events we have recieved
 		SDL_Event currentEvent;
@@ -428,8 +430,7 @@ int main(int argc, char *argv[])
 		
 		// physics simultation
 		dynamicsWorld->stepSimulation(1/120.f, 10);
-		//if(drawDebug) dynamicsWorld->debugDrawWorld();	
-
+		
 		// Actual frame rendering happens here
 		if (window.getActive() && SDL_GetTicks() > (tickFrame + tick) )
 		{
@@ -439,8 +440,8 @@ int main(int argc, char *argv[])
 			
 			drawGL();
 			
-		}
-
+		}		
+		//dynamicsWorld->stepSimulation(1/120.f, 10);
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
@@ -461,6 +462,8 @@ void drawGL(void)
 
 	// Set the camera
 	float *CamTransform = getCamera();
+
+	if(drawDebug) dynamicsWorld->debugDrawWorld();	
 
 	//Root::drawGeometry();
 	AssetManager::lockMutex( rootNodePtr->mutex_node );
