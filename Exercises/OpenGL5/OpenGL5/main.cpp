@@ -503,7 +503,7 @@ int initGL(void)
 	// enables the Z-buffer
 	glEnable(GL_DEPTH_TEST);
 	// enables the texture rendering
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	// enables smooth shading (garaud)
 	glShadeModel(GL_SMOOTH);
 	// frontfacing culling
