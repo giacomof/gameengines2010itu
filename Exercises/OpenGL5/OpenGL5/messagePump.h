@@ -18,12 +18,12 @@ public:
 	static MessagePump _instance;
 	static SDL_mutex * mutex_event;
  
-	MessagePump() { getInstance(); }
+	MessagePump() { &getInstance(); }
 	~MessagePump() {} 
-	MessagePump(const MessagePump &getInstance());   
+	MessagePump(const MessagePump & getInstance());   
 	
-	MessagePump & operator=(MessagePump getInstance());
-	static MessagePump getInstance();
+	MessagePump & operator=(MessagePump & getInstance());
+	static MessagePump & getInstance();
 	
 	static bool empty();
 	static void sendMessage(SDL_Event msg);

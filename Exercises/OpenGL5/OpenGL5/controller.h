@@ -16,11 +16,12 @@ public:
 	static bool quit;
  
 	Controller() { &getInstance(); }
-	~Controller() { SDL_DestroyMutex( mutex_controller ); } 
+	~Controller() { /*SDL_DestroyMutex( mutex_controller );*/ } 
 	Controller(const Controller &getInstance());
 	
 	Controller & operator=(Controller &getInstance());
-	static Controller &getInstance();
+	static Controller & getInstance();
+
 	static void setPlayerObject(entitySpectator *player);
 	static void moveForward(bool shouldMove);
 	static void moveBackward(bool shouldMove);
@@ -29,6 +30,7 @@ public:
 	static void lookDeltaX(float deltaLook);
 	static void lookDeltaY(float deltaLook);
 
+	static unsigned int count;
 };
 
 #endif
