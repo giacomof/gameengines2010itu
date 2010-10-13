@@ -128,7 +128,7 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 	fseek(fp,0,SEEK_END);
 	data_size = ftell(fp);
 	m_data = new unsigned char[data_size];
-	assert(m_data);
+	//assert(m_data);
 
 	rewind(fp);
 
