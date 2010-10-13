@@ -116,7 +116,7 @@ int threadInput(void *data)
 /* This thread handles audio */
 int threadSound(void *data)
 {
-	/*char *tname = ( char * )data;
+	char *tname = ( char * )data;
 
 	soundInit();
 
@@ -133,7 +133,7 @@ int threadSound(void *data)
 	}
 
 	soundExit();
-*/
+
 	return 0;
 }
 
