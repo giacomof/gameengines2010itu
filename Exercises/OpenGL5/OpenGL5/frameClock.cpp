@@ -7,9 +7,9 @@ void frameClock::frameUpdate()
 
 	Uint32 frameDelta = currentTime - lastTime;
 
-	if (lastTime != 0) // If this is the very first frame update, we don't want to save the time yet
+	if (lastTime > 200) // If this is the very first frame update, we don't want to save the time yet
 	{
-		if (frameDeltaList.size() >= 600)
+		if (frameDeltaList.size() >= 200)
 			frameDeltaList.pop_back();
 
 		frameDeltaList.push_front(frameDelta);
@@ -41,7 +41,7 @@ Uint32 frameClock::getFrameDelta()
 		return 0;
 }
 
-float frameClock::getFPS()
+int frameClock::getFPS()
 {
 	return fps;
 }

@@ -382,7 +382,7 @@ int main(int argc, char *argv[])
 	{
 		
 		char title[80];
-		sprintf_s(title, "Name Here Engine | %f FPS", renderClock.getFPS() );
+		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.30f);

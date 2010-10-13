@@ -14,13 +14,13 @@ public:
 	frameClock() { float fps = 0.0f; currentTime = 0; };
 	void frameUpdate();
 	Uint32 getFrameDelta();
-	float getFPS();
+	int getFPS();
 
 private:
 	deque<Uint32> frameDeltaList;
 	Uint32 currentTime;
 	Uint32 lastTime;
-	float fps;
+	int fps;
 };
 
 #endif
