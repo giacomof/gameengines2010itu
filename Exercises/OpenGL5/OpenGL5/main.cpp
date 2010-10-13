@@ -34,7 +34,7 @@ static int const screenWidth=800;		// Window Width
 static int const screenHeight=600;		// Window Height
 static int const screenColorDepth=32;	// Color Depth
 
-static int const tick = 1000;				// Minimum time between screen frames
+static int const tick = 16;				// Minimum time between screen frames
 static int const thread_delay = 3;		// Minimum time between loops
 static float const PI = 3.14159f;		// PI definition
 
