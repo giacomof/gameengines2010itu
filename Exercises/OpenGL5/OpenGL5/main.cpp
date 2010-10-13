@@ -207,10 +207,6 @@ int main(int argc, char *argv[])
 	 * Graph and asset testing stuff start here *
 	 * ---------------------------------------- */
 
-	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
-	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
-	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
-
 
 	// Create the plane with the collision shape
 	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 10.0f, 1000.0f));
