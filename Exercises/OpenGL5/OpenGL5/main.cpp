@@ -140,6 +140,9 @@ int threadUpdate(void *data)
 	while ( !Controller::getInstance().quit ) {
 		// Runs the update method here
 
+		// physics simultation
+		dynamicsWorld->stepSimulation(1/120.f, 10);
+
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 	}
@@ -199,16 +202,6 @@ int main(int argc, char *argv[])
 	// set debugger
 	dynamicsWorld->setDebugDrawer(&debugger); 
 	
-	// Create the thread handles and assign names
-	SDL_Thread *id1;
-	SDL_Thread *id2;
-	SDL_Thread *id3;
-	char *tnames[] = { "General Update", "Sound Manager", "Input"};
-
-	// Create the threads
-	id1 = SDL_CreateThread ( threadUpdate, tnames[0] );
-	id2 = SDL_CreateThread ( threadSound, tnames[1] );
-	id3 = SDL_CreateThread ( threadInput, tnames[2] );
 
 	/* ---------------------------------------- *
 	 * Graph and asset testing stuff start here *
@@ -305,18 +298,18 @@ int main(int argc, char *argv[])
 		for(int j = 0; j < 8; j++)
 		{
 			if ( (i+j)%2 == 0) {
-				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,15,-100*j)));
+				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,300,-100*j)));
 			} else {
-				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(1,0,1),1.57),btVector3(100 * i,15,-100*j)));
+				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(1,0,1),1.57),btVector3(100 * i,350,-100*j)));
 			}
 
 			cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
 
 			cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
 
-			dynamicsWorld->addRigidBody(cubeRigidBody);
+			cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
 
-			
+			dynamicsWorld->addRigidBody(cubeRigidBody);
 
 			bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 			bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
@@ -374,6 +367,17 @@ int main(int argc, char *argv[])
 	// Set up fps clock
 	frameClock renderClock;
 
+	// Create the thread handles and assign names
+	SDL_Thread *id1;
+	SDL_Thread *id2;
+	SDL_Thread *id3;
+	char *tnames[] = { "General Update", "Sound Manager", "Input"};
+
+	// Create the threads
+	id1 = SDL_CreateThread ( threadUpdate, tnames[0] );
+	id2 = SDL_CreateThread ( threadSound, tnames[1] );
+	id3 = SDL_CreateThread ( threadInput, tnames[2] );
+
 	while(!Controller::getInstance().quit)
 	{
 		
@@ -428,8 +432,7 @@ int main(int argc, char *argv[])
 
 		Controller::getInstance().playerObject->update();
 		
-		// physics simultation
-		dynamicsWorld->stepSimulation(1/120.f, 10);
+		
 		
 		// Actual frame rendering happens here
 		if (window.getActive() && SDL_GetTicks() > (tickFrame + tick) )
