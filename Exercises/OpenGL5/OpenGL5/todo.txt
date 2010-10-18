@@ -5,16 +5,15 @@
 GLOBAL TASKS:
 
 G- Physics SDK
-S- attach/detach camera to player model
-S- fix wave file
+
 1(G+V)- multi-node collada Loader
 	G- Multi-Geometry Collada Loader
 V- Use Clock Class into updates/draws/synchs
 0- Compile everything we can as a DLL
 0- Quaternions for camera rotations
 0- Lighting System
-0- Memory Manager
-0- Skeletal Animation
+V- Memory Manager
+S- Skeletal Animation
 
 OPTIONALS:
 
@@ -22,7 +21,6 @@ V- debug draw system
 	V- axis of rotation of an object via line draws
 	1(V)- draw the bounding box or bounding sphere of an object
 	1(V)- draw the name of the SceneNodes
-S- draw class diagram for potential refactoring
 0- logging system with verbosity levels
 0- singleton superclass
 0- mutex created inside the AssetManager
@@ -30,6 +28,7 @@ S- draw class diagram for potential refactoring
 0- AutoCalculated Bounding Box
 0- Shadows: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27
 0- Multiple Viewports: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42
+S- attach/detach camera to player model
 
 COMPLETED:
 
@@ -60,6 +59,7 @@ COMPLETED:
 	1(V)- WindowManager as Singleton
 1(S)- Sound Manager
 	1(S)- Sounds without movements freeze
+	1(S)- fix wave file
 
 
 Symbology Map:
