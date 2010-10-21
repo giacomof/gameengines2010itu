@@ -6,7 +6,7 @@ GLOBAL TASKS:
 
 G- Physics SDK
 	G- Rewrite methods of the Transformation Class in order to work properly with physics
-G- Quaternions for camera rotations
+1(G)- Quaternions for camera rotations
 G- Lighting System
 G- attach/detach camera to player model
 V- Use Clock Class into updates/draws/synchs
