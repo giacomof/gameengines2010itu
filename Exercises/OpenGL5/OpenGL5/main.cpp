@@ -58,7 +58,7 @@ btDiscreteDynamicsWorld * dynamicsWorld;
 DebugDraw debugger;
 
 // SceneNodes Declaration
-SceneNode * demon;
+SceneNode * battleDroid;
 SceneNode * lostSoul;
 SceneNode * bossCube;
 SceneNode * colladaDuck;
@@ -222,8 +222,6 @@ int main(int argc, char *argv[])
 	// Create the plane with the collision shape
 	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 10.0f, 1000.0f));
 
-	//Quaternion testQ = Quaternion(Vector(0,1,0), 0);
-
 	btDefaultMotionState* groundMotionState =
 		new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f),btVector3(0.0f, -10.0f, 0.0f)));
 
@@ -238,36 +236,39 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(groundRigidBody);
 
 	Plane testPlaneGeom(2000.0f, 2000.0f);
-	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 10.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
+	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
+	testPlane->getTransformation()->setBBTranslation(Vector(0, 10, 0));
+	testPlane->setVisible(false);
+
 	
 
-	// Create demon "rotationabout" node
+
+	// Create character "rotationabout" node
 	Sphere rotation_sphere = Sphere(50, 30, 30, true);
-	SceneNode rotationCenter(rootNodePtr, "rotationCenter", &rotation_sphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	rotationCenter.setVisible(0);
+	SceneNode rotationCenter(rootNodePtr, "rotationCenter", &rotation_sphere, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	rotationCenter.setVisible(true);
 
 
-	btCollisionShape* demonBB = new btBoxShape(btVector3(50.0f, 115.0f, 50.0f));
+	btCollisionShape* droidBB = new btBoxShape(btVector3(20.0f, 25.0f, 20.0f));
 
-	btDefaultMotionState* demonMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,116,500)));
+	btDefaultMotionState* droidMotionState =
+                new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,25,500)));
 
-	btScalar demonMass = 0;
-	btVector3 demonInertia(0,0,0);
-	demonBB->calculateLocalInertia(demonMass,demonInertia);
+	btScalar droidMass = 0;
+	btVector3 droidInertia(0,0,0);
+	droidBB->calculateLocalInertia(droidMass,droidInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo demonRigidBodyCI(demonMass, demonMotionState, demonBB, demonInertia);
+	btRigidBody::btRigidBodyConstructionInfo demonRigidBodyCI(droidMass, droidMotionState, droidBB, droidInertia);
 
-	btRigidBody* demonRigidBody = new btRigidBody(demonRigidBodyCI);
-	dynamicsWorld->addRigidBody(demonRigidBody);
+	btRigidBody* battleDroidRigidBody = new btRigidBody(demonRigidBodyCI);
+	dynamicsWorld->addRigidBody(battleDroidRigidBody);
 
-	md2Interface doomDemon = md2Interface(assetManagerPtr->getMd2Mesh("md2Demon"), assetManagerPtr->getTexture("doomDemonTx"));
-	demon = new SceneNode(&rotationCenter, "Doom Demon", &doomDemon, Vector(0.0f, -115.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, demonRigidBody);
-	demon->setVisible(true);
-	demon->scale(1.0f, 1.0f, 1.0f);
-	assetManagerPtr->getMd2Mesh("md2Demon")->SetAnim(1);
+	md2Interface battleDroidMesh = md2Interface(assetManagerPtr->getMd2Mesh("battleDroid"), assetManagerPtr->getTexture("battleDroidTx"));
+	battleDroid = new SceneNode(&rotationCenter, "Battle Droid", &battleDroidMesh, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, battleDroidRigidBody);
+	battleDroid->setVisible(true);
+	battleDroid->scale(1.0f, 1.0f, 1.0f);
+	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
-	//demon->scale(0.8, 0.8, 0.8);
 	
 	/*md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
@@ -276,87 +277,36 @@ int main(int argc, char *argv[])
 
 	
 
-	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
-	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	///* ---------------------------------------- *
-	// * Physic stuff								*
-	// * ---------------------------------------- */
+
+	/*Sphere rotation_sphere2 = Sphere(10, 10, 10, true);
+	SceneNode rotationCenter2(battleDroid, "rotationCenter2", &rotation_sphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	rotationCenter.setVisible(true);*/
 
 	btCollisionShape* cubeShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
 	btDefaultMotionState* cubeMotionState;
 
-	btScalar cubeMass = 10;
+	btScalar cubeMass = 0;
 	btVector3 cubeInertia(0,0,0);
 	cubeShape->calculateLocalInertia(cubeMass,cubeInertia);
 
 	btRigidBody::btRigidBodyConstructionInfo * cubeRigidBodyCI;
 
 	btRigidBody* cubeRigidBody;
-	//dynamicsWorld->addRigidBody(fallRigidBody);
+
+	
+	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,-15,100)));
+	cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
+
+	cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
+
+	cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+	dynamicsWorld->addRigidBody(cubeRigidBody);
 
 	md2Interface * bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	//bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallRigidBody);
-
-
-	for(int i = 2; i < 6; i++)
-	{
-		for(int j = 0; j < 8; j++)
-		{
-			if ( (i+j)%2 == 0) {
-				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100 * i,300,-100*j)));
-			} else {
-				cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(1,0,1),1.57),btVector3(100 * i,350,-100*j)));
-			}
-
-			cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
-
-			cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
-
-			cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-			dynamicsWorld->addRigidBody(cubeRigidBody);
-
-			bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-			bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
-
-
-		}
-	}
-
-	//btCollisionShape* duckShape = cubeShape;/*new btBoxShape(btVector3(20.0f, 20.0f, 20.0f));*/
-
-	//btDefaultMotionState* duckMotionState;
-
-	//btScalar duckMass = 50;
-	//btVector3 duckInertia(0,0,0);
-	//duckShape->calculateLocalInertia(duckMass,duckInertia);
-
-	//btRigidBody::btRigidBodyConstructionInfo * duckRigidBodyCI;
-
-	//btRigidBody* duckRigidBody;
-
-	//ColladaInterface * duck_g = new ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
-
-
-	//for(int i = 0; i < 10; i++)
-	//{
-	//	for(int j = 0; j < 2; j++)
-	//	{
-	//		duckMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(500 * i,500,-500 * j)));
-
-	//		duckRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(duckMass,duckMotionState,duckShape,duckInertia);
-
-	//		duckRigidBody = new btRigidBody(*duckRigidBodyCI);
-
-	//		dynamicsWorld->addRigidBody(duckRigidBody);
-
-	//		/*duck_g = new ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));*/
-	//		colladaDuck = new SceneNode(rootNodePtr, "duck_node", duck_g, Vector(0.0f, -35.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
-	//		colladaDuck->scale(0.2f, 0.2f, 0.2f);
-	//	}
-	//}
+	bossCube = new SceneNode(battleDroid, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 
@@ -388,6 +338,7 @@ int main(int argc, char *argv[])
 	char title[80];
 	SDL_Event currentEvent;
 
+
 	while(!Controller::quit)
 	{
 		
@@ -395,7 +346,11 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.30f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.05f);
+		rotationCenter.translate(Vector(0,0,0.1));
+		battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
+		bossCube->rotateAboutAxis(Vector(0,1,0),0.05f);
+		//rotationCenter2.rotateAboutAxis(Vector(0,1,0),-0.25f);
 
 
 		
@@ -463,7 +418,6 @@ int main(int argc, char *argv[])
 			
 			
 		}		
-		//dynamicsWorld->stepSimulation(1/120.f, 10);
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 
@@ -545,12 +499,14 @@ int initGL(void)
 	//// ******************************
 	//// ******** LOADING POINT *******
 	//// ******************************
-	assetManagerPtr->loadMd2("include/Cyber.md2", "md2Demon");
+	//assetManagerPtr->loadMd2("include/Cyber.md2", "md2Demon");
+	assetManagerPtr->loadMd2("include/battledroid.md2", "battleDroid");
 	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
 	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
 	assetManagerPtr->loadCollada("include/duck.dae", "duck");
 
-	assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
+	//assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
+	assetManagerPtr->loadTexture("include/battledroid.png", "battleDroidTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 	assetManagerPtr->loadTexture("include/duckCM.tga", "duckCM.tga");
@@ -560,7 +516,8 @@ int initGL(void)
 	//// ******************************
 	
 	// write memory usage
-	std::cout << "memory usage demon " << (assetManagerPtr->getMd2Mesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
+	//std::cout << "memory usage demon " << (assetManagerPtr->getMd2Mesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage battle droid " << (assetManagerPtr->getMd2Mesh("battleDroid")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";

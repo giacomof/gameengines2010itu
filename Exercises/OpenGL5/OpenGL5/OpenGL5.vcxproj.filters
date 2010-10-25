@@ -1226,6 +1226,12 @@
     <None Include="include\MENULOOP.WAV">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="include\battledroid.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="include\battledroid.png">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\BulletCollision.lib">
