@@ -139,79 +139,45 @@ SceneObject * SceneNode::getSceneObject()
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
-	/* OLD CODE
-	btTransform trans;
-	physicsGeometry->getMotionState()->getWorldTransform(trans);
-	btQuaternion actualRotation = trans.getRotation();
-	btQuaternion newRotation = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree);
-	btQuaternion final = newRotation * actualRotation;
-	physicsGeometry->getWorldTransform().setRotation(final);
-	*/
-
-	if (physicsGeometry != 0) {
-		//btTransform trans;
-		//physicsGeometry->getMotionState()->getWorldTransform(trans);
-
-		//btQuaternion final = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree) * trans.getRotation();
-		//physicsGeometry->getWorldTransform().setRotation(final);
-
-		//btVector3 test = btVector3(this->getWorldPosition().get(0), this->getWorldPosition().get(1), this->getWorldPosition().get(2));
-
-		btTransform trans;
-		physicsGeometry->getMotionState()->getWorldTransform(trans);
-
-		btVector3 btActualPosition = physicsGeometry->getWorldTransform().getOrigin();
-		Vector actualPosition = Vector(btActualPosition.getX(), btActualPosition.getY(), btActualPosition.getZ());
-
-		Vector newPosition = Matrix::generateAxisRotationMatrix(p_Axis, p_Degree) * actualPosition;
-
-		btVector3 btNewPosition = btVector3(newPosition.get(0), newPosition.get(1), newPosition.get(2));
-
-		physicsGeometry->getWorldTransform().setOrigin(btNewPosition);
-
-		btQuaternion actualRotation = trans.getRotation();
-		btQuaternion newRotation = btQuaternion(btVector3(p_Axis.get(0), p_Axis.get(1), p_Axis.get(2)), p_Degree);
-
-		btQuaternion final = newRotation * actualRotation;
-		physicsGeometry->getWorldTransform().setRotation(final);
-
-		//newPosition = Vector(physicsGeometry->getWorldTransform().getOrigin().getX(), physicsGeometry->getWorldTransform().getOrigin().getY(), physicsGeometry->getWorldTransform().getOrigin().getZ());
-		//cout << newPosition << endl;
-
-	}
-
-	list<SceneNode*>::iterator itS;
-	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			//(*itS)->lock();
-			(*itS)->rotateAboutAxis(p_Axis, p_Degree);
-			//(*itS)->unlock();
-	}
-
-
-
+	
 	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
+
+	//if (physicsGeometry != 0) {
+
+	//	Quaternion worldOrientation = this->getWorldOrientation();
+	//	physicsGeometry->getWorldTransform().setRotation(btQuaternion(worldOrientation.getX(), worldOrientation.getY(), worldOrientation.getZ(), worldOrientation.getW()));
+	//}
+
 }
 
 // Translate the node
 void SceneNode::translate(Vector translateVector) 
 {	
-	/* OLD CODE
-	btTransform trans;
-	physicsGeometry->getMotionState()->getWorldTransform(trans);
-	btVector3 originalPosition = trans.getOrigin();
-	btVector3 newPosition = btVector3(translateVector.get(0), translateVector.get(1), translateVector.get(1));
-	btVector3 final = originalPosition + newPosition;
-	physicsGeometry->getWorldTransform().setOrigin(final);
-	*/
-
-	if (physicsGeometry != 0) {
-		btTransform trans;
-		physicsGeometry->getMotionState()->getWorldTransform(trans);
-		btVector3 final = trans.getOrigin() + btVector3(translateVector.get(0), translateVector.get(1), translateVector.get(1));	
-		physicsGeometry->getWorldTransform().setOrigin(final);
-	}
 
 	nodeTransformation.addTranslation(translateVector);
+
+	//if (physicsGeometry != 0) {
+	//	Vector worldPosition = this->getWorldPosition();
+	//	physicsGeometry->getWorldTransform().setOrigin(btVector3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ()));
+	//}
+
+}
+
+void SceneNode::updateRigidBody(void) 
+{	
+
+	if (physicsGeometry != 0) {
+		Vector worldPosition = this->getWorldPosition();
+		Quaternion worldOrientation = this->getWorldOrientation();
+		physicsGeometry->getWorldTransform().setOrigin(btVector3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ()));
+		physicsGeometry->getWorldTransform().setRotation(btQuaternion(worldOrientation.getX(), worldOrientation.getY(), worldOrientation.getZ(), worldOrientation.getW()));
+	}
+
+	list<SceneNode*>::iterator itS;
+	for(itS = childList.begin(); itS != childList.end(); itS++) {
+			(*itS)->updateRigidBody();
+	}
+
 }
 
 // Scale the node
@@ -239,20 +205,50 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 Vector SceneNode::getWorldPosition(void)
 {
 	SceneNode * nodePointer = this;
-	Vector worldPosition = nodePointer->getTransformation()->getTranslation();
-	nodePointer = nodePointer->getParent();
-	Quaternion qTemp;
+	Vector worldPosition;
+	Vector temp;
 
+	while(true)
+	{
+		temp = nodePointer->getTransformation()->getTranslation();
 
-	while(nodePointer->getName() != "root") {
-		worldPosition = worldPosition + nodePointer->getTransformation()->getTranslation();
-
-		worldPosition = Matrix::generateQuaternionRotationMatrix(qTemp) * worldPosition;
-
-		nodePointer = nodePointer->getParent();
+		if(nodePointer->getParent()->getName() == "root")
+		{
+			worldPosition = worldPosition + temp;
+			break;
+		}
+		else
+		{
+			nodePointer = nodePointer->getParent();
+			worldPosition = worldPosition + temp;
+			worldPosition = Matrix::generateQuaternionRotationMatrix(nodePointer->getTransformation()->getOrientation()) * worldPosition;
+		}
 	}
 
 	return worldPosition;
+}
+
+Quaternion SceneNode::getWorldOrientation(void)
+{
+	SceneNode * nodePointer = this;
+	Quaternion worldOrientation = Quaternion(0,0,0,1);
+	Quaternion temp;
+
+	worldOrientation = this->getTransformation()->getOrientation() * worldOrientation;
+
+	while(nodePointer->getParent()->getName() != "root")
+	{
+		temp = nodePointer->getTransformation()->getOrientation();
+
+		nodePointer = nodePointer->getParent();
+		temp = nodePointer->getTransformation()->getOrientation();
+		worldOrientation = temp * worldOrientation;
+		
+	}
+
+	
+
+	return worldOrientation;
 }
 
 Transformation * SceneNode::getTransformation()
@@ -264,19 +260,15 @@ Transformation * SceneNode::getTransformation()
 // Apply the trasformation of the node and then draw it
 void SceneNode::drawGeometry()
 {
+	
 	if (physicsGeometry != 0) {
 		btTransform trans;
-	
 		physicsGeometry->getMotionState()->getWorldTransform(trans);
-		Vector local = nodeTransformation.getBBTranslation();
-		Vector physic = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-		Vector final = local + physic;
-		nodeTransformation.setTranslation(final);
 
-		nodeTransformation.setOrientation(Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW()));
-
-		//Vector print = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-		//cout << nodeName << ": " << print << endl;
+		Vector localPosition = nodeTransformation.getBBTranslation();
+		Vector physicPosition = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+		Vector finalPosition = localPosition + physicPosition;
+		nodeTransformation.setTranslation(finalPosition);
 	}
 
 	applyTransformation();
@@ -290,9 +282,7 @@ void SceneNode::drawGeometry()
 
 	list<SceneNode*>::iterator itS;
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			//(*itS)->lock();
 			(*itS)->drawGeometry();
-			//(*itS)->unlock();
 	}
 	glPopMatrix();
 	
@@ -392,6 +382,7 @@ void Root::drawGeometry()
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
 		AssetManager::lockMutex( rootMutex );
+			(*itS)->updateRigidBody();
 			(*itS)->drawGeometry();
 		AssetManager::unlockMutex( rootMutex );
 	}

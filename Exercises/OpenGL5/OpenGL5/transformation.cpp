@@ -9,10 +9,11 @@ Transformation::Transformation(	Vector p_translation,
 	
 	// Initialise all the values
 	rotation = Quaternion(p_axis, p_angle);
-	bbRotation = Quaternion(p_axis, p_angle);
+	bbRotation = Quaternion();
+
 
 	translation = p_translation;
-	bbTranslation = p_translation;
+	bbTranslation = Vector();
 
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
@@ -132,4 +133,14 @@ void Transformation::setTranslation(Vector t)
 void Transformation::setOrientation(Quaternion q)
 {
 	rotation = q;
+}
+
+void Transformation::setBBTranslation(Vector t)
+{
+	bbTranslation = t;
+}
+
+void Transformation::setBBOrientation(Quaternion q)
+{
+	bbRotation = q;
 }

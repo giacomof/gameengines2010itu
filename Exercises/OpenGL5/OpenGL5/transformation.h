@@ -40,6 +40,9 @@ class Transformation
 		
 		void setTranslation(Vector t);
 		void setOrientation(Quaternion q);
+
+		void setBBTranslation(Vector t);
+		void setBBOrientation(Quaternion q);
 		
 
 	private:

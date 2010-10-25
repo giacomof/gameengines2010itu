@@ -69,6 +69,7 @@ class SceneNode
 		void setOrientation(Quaternion q);
 
 		Vector getWorldPosition(void);
+		Quaternion getWorldOrientation(void);
 
 		Transformation * getTransformation();
 
@@ -80,6 +81,7 @@ class SceneNode
 
 		string nodeNameString;
 		static unsigned int getNodeCount(void);
+		void updateRigidBody(void);
 
 	protected:
 		bool visible;							// The node should be drawn or not
@@ -91,6 +93,9 @@ class SceneNode
 		SceneObject * geometry;					// Mesh to render
 
 		btRigidBody * physicsGeometry;			
+
+
+		
 };
 
 

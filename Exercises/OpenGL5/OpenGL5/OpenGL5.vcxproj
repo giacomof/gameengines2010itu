@@ -468,6 +468,8 @@
     <None Include="ILU.dll" />
     <None Include="ILUT.dll" />
     <None Include="include\astroboy.dae" />
+    <None Include="include\battledroid.md2" />
+    <None Include="include\battledroid.png" />
     <None Include="include\bosscube.jpg" />
     <None Include="include\bosscube.md2" />
     <None Include="include\config.h.win" />
