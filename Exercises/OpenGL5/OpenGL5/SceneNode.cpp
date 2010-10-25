@@ -173,10 +173,10 @@ void SceneNode::updateRigidBody(void)
 		physicsGeometry->getWorldTransform().setRotation(btQuaternion(worldOrientation.getX(), worldOrientation.getY(), worldOrientation.getZ(), worldOrientation.getW()));
 	}
 
-	list<SceneNode*>::iterator itS;
-	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			(*itS)->updateRigidBody();
-	}
+	//list<SceneNode*>::iterator itS;
+	//for(itS = childList.begin(); itS != childList.end(); itS++) {
+	//		(*itS)->updateRigidBody();
+	//}
 
 }
 
@@ -262,13 +262,31 @@ void SceneNode::drawGeometry()
 {
 	
 	if (physicsGeometry != 0) {
-		btTransform trans;
-		physicsGeometry->getMotionState()->getWorldTransform(trans);
 
-		Vector localPosition = nodeTransformation.getBBTranslation();
-		Vector physicPosition = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-		Vector finalPosition = localPosition + physicPosition;
-		nodeTransformation.setTranslation(finalPosition);
+		if (this->getParent()->getName() == "root")
+		{
+			btTransform trans;
+	
+			physicsGeometry->getMotionState()->getWorldTransform(trans);
+			Vector local = nodeTransformation.getBBTranslation();
+			Vector physic = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+			Vector final = local + physic;
+			nodeTransformation.setTranslation(final);
+
+			nodeTransformation.setOrientation(Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW()));
+		}
+		else
+		{
+			this->updateRigidBody();
+
+			btTransform trans;
+			physicsGeometry->getMotionState()->getWorldTransform(trans);
+
+			Vector localPosition = nodeTransformation.getBBTranslation();
+			Vector physicPosition = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+			Vector finalPosition = localPosition + physicPosition;
+			nodeTransformation.setTranslation(finalPosition);
+		}
 	}
 
 	applyTransformation();
@@ -382,7 +400,6 @@ void Root::drawGeometry()
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
 		AssetManager::lockMutex( rootMutex );
-			(*itS)->updateRigidBody();
 			(*itS)->drawGeometry();
 		AssetManager::unlockMutex( rootMutex );
 	}

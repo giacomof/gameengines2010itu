@@ -310,6 +310,23 @@ int main(int argc, char *argv[])
 
 
 
+	
+	cubeMass = 10;
+
+	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100,300,-125)));
+		
+	cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
+
+	cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
+
+	cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+	dynamicsWorld->addRigidBody(cubeRigidBody);
+
+	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+	bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+
+
 	/* ------------------------------------------ *
 	 * Graph and asset testing stuff ends here  *
 	 * ---------------------------------------- */
@@ -348,7 +365,7 @@ int main(int argc, char *argv[])
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.05f);
 		rotationCenter.translate(Vector(0,0,0.1));
-		battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
+		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
 		bossCube->rotateAboutAxis(Vector(0,1,0),0.05f);
 		//rotationCenter2.rotateAboutAxis(Vector(0,1,0),-0.25f);
 
