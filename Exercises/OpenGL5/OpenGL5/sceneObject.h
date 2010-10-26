@@ -129,4 +129,16 @@ class ColladaInterface : public SceneObject
 		int colladaTexture;
 };
 
+class Light : public SceneObject
+{
+	public:
+		Light(void);
+		~Light(void);
+
+		void update(void) {};
+		void drawGeometry(void);
+
+};
+
+
 #endif
