@@ -53,30 +53,22 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 void SceneNode::update(float dt) 
 {
 	geometry->update();
-	//drawName();
 
 	list<SceneNode*>::iterator itS;
-
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			//(*itS)->lock();
-			(*itS)->update(dt);
-			//(*itS)->unlock();				
+			(*itS)->update(dt);		
 	}
-	
 }
 
 void SceneNode::destroy(void) 
-{
-		
+{	
 	list<SceneNode*>::iterator i;
 	for(i=childList.begin(); i != childList.end(); ++i) 
 	{ 
-		//(*i)->lock();
 		(*i)->destroy(); 
 	}
 		
 	 this->release();
-
 }
 
 // Add a new child to the node	
@@ -126,7 +118,6 @@ char * SceneNode::getName(void)
 void SceneNode::addSceneObject(SceneObject * g) 
 {
 	geometry = g;
-
 }
 
 // Return the Geometry of the Scene Node
@@ -139,25 +130,51 @@ SceneObject * SceneNode::getSceneObject()
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
+	if (physicsGeometry != 0) 
+	{
+		if (this->getParent()->getName() == "root")
+		{
+
+			btTransform trans;
+			physicsGeometry->getMotionState()->getWorldTransform(trans);
+
+			btVector3 btActualPosition = physicsGeometry->getWorldTransform().getOrigin();
+			Vector actualPosition = Vector(btActualPosition.getX(), btActualPosition.getY(), btActualPosition.getZ());
+			Vector newPosition = Matrix::generateAxisRotationMatrix(p_Axis, p_Degree) * actualPosition;
+			physicsGeometry->getWorldTransform().setOrigin(btVector3(newPosition.getX(), newPosition.getY(), newPosition.getZ()));
+
+			btQuaternion actualRotation = trans.getRotation();
+			btQuaternion newRotation = btQuaternion(btVector3(p_Axis.getX(), p_Axis.getY(), p_Axis.getZ()), p_Degree);
+			physicsGeometry->getWorldTransform().setRotation(newRotation * actualRotation);
+		}
+	}
+
 	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
 }
 
 // Translate the node
 void SceneNode::translate(Vector translateVector) 
 {	
+	if (physicsGeometry != 0) 
+	{
+		if (this->getParent()->getName() == "root")
+		{
+			btTransform trans;
+			physicsGeometry->getMotionState()->getWorldTransform(trans);
+			btVector3 final = trans.getOrigin() + btVector3(translateVector.getX(), translateVector.getY(), translateVector.getZ());	
+			physicsGeometry->getWorldTransform().setOrigin(final);
+		}
+	}
+
 	nodeTransformation.addTranslation(translateVector);
 }
 
 void SceneNode::updateRigidBody(void) 
 {	
-
-	if (physicsGeometry != 0) {
-		Vector worldPosition = this->getWorldPosition();
-		Quaternion worldOrientation = this->getWorldOrientation();
-		physicsGeometry->getWorldTransform().setOrigin(btVector3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ()));
-		physicsGeometry->getWorldTransform().setRotation(btQuaternion(worldOrientation.getX(), worldOrientation.getY(), worldOrientation.getZ(), worldOrientation.getW()));
-	}
-
+	Vector worldPosition = this->getWorldPosition();
+	Quaternion worldOrientation = this->getWorldOrientation();
+	physicsGeometry->getWorldTransform().setOrigin(btVector3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ()));
+	physicsGeometry->getWorldTransform().setRotation(btQuaternion(worldOrientation.getX(), worldOrientation.getY(), worldOrientation.getZ(), worldOrientation.getW()));
 }
 
 // Scale the node
@@ -173,7 +190,6 @@ void SceneNode::scale(float p_sX, float p_sY, float p_sZ)
 	//}
 
 	nodeTransformation.addScaling(p_sX, p_sY, p_sZ);
-
 }
 
 // Apply a shearing to the node
@@ -225,9 +241,6 @@ Quaternion SceneNode::getWorldOrientation(void)
 		worldOrientation = temp * worldOrientation;
 		
 	}
-
-	
-
 	return worldOrientation;
 }
 
@@ -241,14 +254,13 @@ Transformation * SceneNode::getTransformation()
 void SceneNode::drawGeometry()
 {
 
-	
 	if (physicsGeometry != 0) {
 
 		if (this->getParent()->getName() == "root")
 		{
 			btTransform trans;
-	
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
+
 			Vector local = nodeTransformation.getBBTranslation();
 			Vector physic = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			Vector final = local + physic;
@@ -258,8 +270,6 @@ void SceneNode::drawGeometry()
 		}
 		else
 		{
-			this->updateRigidBody();
-
 			btTransform trans;
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
 
@@ -267,12 +277,12 @@ void SceneNode::drawGeometry()
 			Vector physicPosition = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			Vector finalPosition = localPosition + physicPosition;
 			nodeTransformation.setTranslation(finalPosition);
+
+			this->updateRigidBody();
 		}
 	}
 	
-
 	applyTransformation();
-
 
 	if(isVisible()) {
 		geometry->drawGeometry();
@@ -284,8 +294,8 @@ void SceneNode::drawGeometry()
 	for(itS = childList.begin(); itS != childList.end(); itS++) {
 			(*itS)->drawGeometry();
 	}
+
 	glPopMatrix();
-	
 }
 
 // Apply the transformation of the node
@@ -293,23 +303,19 @@ void SceneNode::applyTransformation()
 {
 	float tranM[16];
 	
-
 	nodeTransformation.getTransformation().getMatrix(&tranM[0]);
 	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
-
 }
 
 // Apply the inverse transformation of the node
 void SceneNode::removeTransformation()
 {
 	float tranM[16];
-	
 
 	nodeTransformation.getInverseTransformation().getMatrix(&tranM[0]);
 	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
-
 }
 
 // Return the visibility status of the Scene Node
@@ -319,10 +325,9 @@ bool SceneNode::isVisible(void)
 }
 
 // Change the visibility status of the Scene Node
-void SceneNode::setVisible(bool b) {
-	
+void SceneNode::setVisible(bool b) 
+{
 	visible = b;
-
 }
 
 unsigned int SceneNode::getNodeCount(void) 
@@ -332,7 +337,6 @@ unsigned int SceneNode::getNodeCount(void)
 
 void SceneNode::drawName(void)
 {
-	
 	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
 	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
 
@@ -360,7 +364,6 @@ void SceneNode::drawName(void)
 	
     glEnable(GL_LIGHTING);
     glPopAttrib();
-
 }
 
 
@@ -387,7 +390,6 @@ void Root::drawGeometry()
 	}
 
 	glPopMatrix();
-	
 }
 
 // Update the transformation status of all the child nodes of root
@@ -400,6 +402,5 @@ void Root::update(float dt)
 			(*itS)->update(dt);
 			AssetManager::unlockMutex( rootMutex );				
 	}
-	
 }
 
