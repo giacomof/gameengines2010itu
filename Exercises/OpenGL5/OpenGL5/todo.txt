@@ -7,10 +7,9 @@ GLOBAL TASKS:
 1(G)- Physics SDK
 	1(G)- Rewrite methods of the Transformation Class in order to work properly with physics
 	G- Scaling still incoherent
-1(G)- Quaternions for camera rotations
 G- Lighting System
 G- attach/detach camera to player model
-V- Use Clock Class into updates/draws/synchs
+0- Use Clock Class into updates/draws/synchs
 V- Memory Manager
 S- Skeletal Animation
 0- Compile everything we can as a DLL
@@ -24,7 +23,8 @@ OPTIONALS:
 0- AutoCalculated Bounding Box
 0- Shadows: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27
 0- Multiple Viewports: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42
-0- Transformation to root
+0- possibility to apply transformations to rootnode 
+0- physical children stop moving when collition is detected  
 
 COMPLETED:
 
@@ -62,6 +62,7 @@ COMPLETED:
 	1(V)- axis of rotation of an object via line draws
 	1(V)- draw the bounding box or bounding sphere of an object
 	1(V)- draw the name of the SceneNodes
+1(G)- Quaternions for camera rotations
 
 Symbology Map:
 
