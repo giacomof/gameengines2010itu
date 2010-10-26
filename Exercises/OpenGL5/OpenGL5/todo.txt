@@ -24,6 +24,7 @@ OPTIONALS:
 0- AutoCalculated Bounding Box
 0- Shadows: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27
 0- Multiple Viewports: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42
+0- Transformation to root
 
 COMPLETED:
 
