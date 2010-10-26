@@ -173,11 +173,6 @@ void SceneNode::updateRigidBody(void)
 		physicsGeometry->getWorldTransform().setRotation(btQuaternion(worldOrientation.getX(), worldOrientation.getY(), worldOrientation.getZ(), worldOrientation.getW()));
 	}
 
-	//list<SceneNode*>::iterator itS;
-	//for(itS = childList.begin(); itS != childList.end(); itS++) {
-	//		(*itS)->updateRigidBody();
-	//}
-
 }
 
 // Scale the node
@@ -260,6 +255,7 @@ Transformation * SceneNode::getTransformation()
 // Apply the trasformation of the node and then draw it
 void SceneNode::drawGeometry()
 {
+
 	
 	if (physicsGeometry != 0) {
 
@@ -288,6 +284,7 @@ void SceneNode::drawGeometry()
 			nodeTransformation.setTranslation(finalPosition);
 		}
 	}
+	
 
 	applyTransformation();
 

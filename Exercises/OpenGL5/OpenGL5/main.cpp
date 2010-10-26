@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
  
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
  
-    dynamicsWorld->setGravity(btVector3(0,-25,0));
+    dynamicsWorld->setGravity(btVector3(0,-10,0));
 
 	// initialise the debugDrawer
 	debugger.setDebugMode( btIDebugDraw::DBG_DrawWireframe ); 
@@ -270,10 +270,10 @@ int main(int argc, char *argv[])
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
 	
-	/*md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
-	lostSoul = new SceneNode(&kernel, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
+	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
-*/
+
 
 	
 
@@ -324,7 +324,7 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(cubeRigidBody);
 
 	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 	/* ------------------------------------------ *
@@ -365,8 +365,8 @@ int main(int argc, char *argv[])
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.05f);
 		rotationCenter.translate(Vector(0,0,0.1));
-		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
-		bossCube->rotateAboutAxis(Vector(0,1,0),0.05f);
+		battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
+		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
 		//rotationCenter2.rotateAboutAxis(Vector(0,1,0),-0.25f);
 
 
