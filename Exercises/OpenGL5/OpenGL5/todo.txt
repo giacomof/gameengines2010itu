@@ -4,8 +4,9 @@
 
 GLOBAL TASKS:
 
-G- Physics SDK
-	G- Rewrite methods of the Transformation Class in order to work properly with physics
+1(G)- Physics SDK
+	1(G)- Rewrite methods of the Transformation Class in order to work properly with physics
+	G- Scaling still incoherent
 1(G)- Quaternions for camera rotations
 G- Lighting System
 G- attach/detach camera to player model
