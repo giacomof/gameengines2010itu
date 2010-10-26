@@ -81,7 +81,7 @@ class SceneNode
 
 		string nodeNameString;
 		static unsigned int getNodeCount(void);
-		void updateRigidBody(void);
+		
 
 	protected:
 		bool visible;							// The node should be drawn or not
@@ -92,7 +92,8 @@ class SceneNode
 		Transformation nodeTransformation;		// Transformation of the Node
 		SceneObject * geometry;					// Mesh to render
 
-		btRigidBody * physicsGeometry;			
+		btRigidBody * physicsGeometry;		
+		void updateRigidBody(void);
 
 
 		
