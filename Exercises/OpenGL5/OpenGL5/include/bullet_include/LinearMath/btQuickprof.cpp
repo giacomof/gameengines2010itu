@@ -15,6 +15,8 @@
 
 #include "btQuickprof.h"
 
+//Comment nex line to activate profiling
+#define BT_NO_PROFILE 1
 #ifndef BT_NO_PROFILE
 
 

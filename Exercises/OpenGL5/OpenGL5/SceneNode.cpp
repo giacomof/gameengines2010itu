@@ -139,28 +139,13 @@ SceneObject * SceneNode::getSceneObject()
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
-	
 	nodeTransformation.addQuaternionRotation(Quaternion(p_Axis, p_Degree));
-
-	//if (physicsGeometry != 0) {
-
-	//	Quaternion worldOrientation = this->getWorldOrientation();
-	//	physicsGeometry->getWorldTransform().setRotation(btQuaternion(worldOrientation.getX(), worldOrientation.getY(), worldOrientation.getZ(), worldOrientation.getW()));
-	//}
-
 }
 
 // Translate the node
 void SceneNode::translate(Vector translateVector) 
 {	
-
 	nodeTransformation.addTranslation(translateVector);
-
-	//if (physicsGeometry != 0) {
-	//	Vector worldPosition = this->getWorldPosition();
-	//	physicsGeometry->getWorldTransform().setOrigin(btVector3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ()));
-	//}
-
 }
 
 void SceneNode::updateRigidBody(void) 
