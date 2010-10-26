@@ -258,15 +258,14 @@ int main(int argc, char *argv[])
 	btVector3 droidInertia(0,0,0);
 	droidBB->calculateLocalInertia(droidMass,droidInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo demonRigidBodyCI(droidMass, droidMotionState, droidBB, droidInertia);
+	btRigidBody::btRigidBodyConstructionInfo battleDroidRigidBodyCI(droidMass, droidMotionState, droidBB, droidInertia);
 
-	btRigidBody* battleDroidRigidBody = new btRigidBody(demonRigidBodyCI);
+	btRigidBody* battleDroidRigidBody = new btRigidBody(battleDroidRigidBodyCI);
 	dynamicsWorld->addRigidBody(battleDroidRigidBody);
 
 	md2Interface battleDroidMesh = md2Interface(assetManagerPtr->getMd2Mesh("battleDroid"), assetManagerPtr->getTexture("battleDroidTx"));
 	battleDroid = new SceneNode(&rotationCenter, "Battle Droid", &battleDroidMesh, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, battleDroidRigidBody);
 	battleDroid->setVisible(true);
-	battleDroid->scale(1.0f, 1.0f, 1.0f);
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
 	
@@ -324,7 +323,7 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(cubeRigidBody);
 
 	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "falling boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 	/* ------------------------------------------ *
@@ -367,6 +366,8 @@ int main(int argc, char *argv[])
 		rotationCenter.translate(Vector(0,0,0.1));
 		battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
 		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
+		bossCube2->rotateAboutAxis(Vector(0,0,1),0.02f);
+		bossCube2->translate(Vector(0.1f,0,0));
 		//rotationCenter2.rotateAboutAxis(Vector(0,1,0),-0.25f);
 
 
@@ -438,7 +439,6 @@ int main(int argc, char *argv[])
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
 
-		//_CrtMemDumpStatistics( &s1 );
 	}
 
 	//wait for the threads to exit
@@ -548,17 +548,16 @@ float* getCamera()
 
 	entityCamera *currentCamera = Controller::playerObject->getCamera();
 
-	float tranM[16] = {	1, 0, 0, 0,
-						0, 1, 0, 0,
-						0, 0, 1, 0,
-						0, 0, 0, 0};
+	float tranM[16];
+
+	Matrix::generateIdentityMatrix().getMatrix(&tranM[0]);
 
 	if ( currentCamera != NULL )
 	{
 		AssetManager::lockMutex( currentCamera->mutex_object );
 
-		Matrix transformationMatrix = Matrix::generateAxisRotationMatrix(Vector(1.0,0.0,0.0),currentCamera->pitch).getTranspose();
-		transformationMatrix = Matrix::generateAxisRotationMatrix(Vector(0.0,1.0,0.0),currentCamera->yaw).getTranspose() * transformationMatrix;
+		Matrix transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0,0.0,0.0),currentCamera->pitch)).getTranspose();
+		transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(0.0,1.0,0.0),currentCamera->yaw)).getTranspose() * transformationMatrix;
 		transformationMatrix = Matrix::generateTranslationMatrix(	currentCamera->vPosition[0],
 																	currentCamera->vPosition[1],
 																	currentCamera->vPosition[2]).getTranspose() * transformationMatrix;
