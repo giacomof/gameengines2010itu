@@ -342,8 +342,8 @@ void SceneNode::drawName(void)
 
     glColor4f(0.1f, 1.0f, 0.1f, 0.2f);  // set text color
 	float pos[3];
-	pos[1] = nodeTransformation.getBBTranslation().get(1);
-	pos[2] = nodeTransformation.getBBTranslation().get(2);
+	pos[1] = 0;
+	pos[2] = 0;
 
 	char * tempName = (char *)nodeNameString.c_str();
 	
@@ -355,7 +355,7 @@ void SceneNode::drawName(void)
 	// loop all characters in the string
 	while(*tempName)
     {
-		pos[0] = nodeTransformation.getBBTranslation().get(0)+i;
+		pos[0] = i;
 		glRasterPos3fv(pos);        // place text position
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *tempName);
         ++tempName;
