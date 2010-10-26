@@ -415,30 +415,17 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		
-
-
 		Controller::playerObject->update();
-		
-		
 		
 		// Actual frame rendering happens here
 		if (window.getActive() )
 		{
-			
-
 			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
-		
-			
 			drawGL();
-
-			
-			
 		}		
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
-
 	}
 
 	//wait for the threads to exit
