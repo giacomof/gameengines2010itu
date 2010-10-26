@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
 
 	cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
 
-	cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
+	//cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
 
 	dynamicsWorld->addRigidBody(cubeRigidBody);
 
