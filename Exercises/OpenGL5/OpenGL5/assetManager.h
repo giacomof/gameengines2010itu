@@ -39,12 +39,12 @@ public:
 	// Singleton Statements
 	static AssetManager _instance;
 
-	AssetManager(void) { &getInstance(); }
+	AssetManager(void) { & getInstance(); }
 	~AssetManager(void);
-	AssetManager(const AssetManager &getInstance()); 
+	AssetManager(const AssetManager & getInstance()); 
 
-	AssetManager & operator=(AssetManager &getInstance());
-	AssetManager &getInstance();
+	AssetManager & operator=(AssetManager & getInstance());
+	AssetManager & getInstance();
 
 	// texture methods
 	void loadTexture(char * fileDirectory, char * textureName);

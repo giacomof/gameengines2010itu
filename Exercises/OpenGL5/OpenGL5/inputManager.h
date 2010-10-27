@@ -14,12 +14,12 @@ public:
 	static inputManager _instance;
 	int update(void);
 
-	inputManager() { &getInstance(); }
-	~inputManager() { /*SDL_DestroyMutex( inputManager::mutex_event );*/  } 
-	inputManager(const inputManager &getInstance());   
+	inputManager() { & getInstance(); }
+	~inputManager() {}; 
+	inputManager(const inputManager & getInstance());   
 	
-	inputManager & operator=(inputManager &getInstance());
-	static inputManager &getInstance();
+	inputManager & operator=(inputManager & getInstance());
+	static inputManager & getInstance();
 
 	static unsigned int count;
 	static SDL_mutex * mutex_event;
@@ -27,9 +27,9 @@ public:
 private:
 	static bool active;
 
-	void keyPress(SDL_Event &currentEvent);
-	void mousePress(SDL_Event &currentEvent);
-	void mouseMotion(SDL_Event &currentEvent);
+	void keyPress(SDL_Event & currentEvent);
+	void mousePress(SDL_Event & currentEvent);
+	void mouseMotion(SDL_Event & currentEvent);
 };
 
 #endif

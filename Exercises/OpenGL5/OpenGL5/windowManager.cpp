@@ -2,7 +2,7 @@
 
 WindowManager WindowManager::_instance;
 
-WindowManager WindowManager::getInstance()
+WindowManager & WindowManager::getInstance()
 {
 	return _instance;
 }
