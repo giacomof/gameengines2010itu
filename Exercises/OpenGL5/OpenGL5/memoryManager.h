@@ -23,13 +23,17 @@ public:
 	MemoryManager & operator=(MemoryManager & getInstance(void));
 	static MemoryManager & getInstance(void);
 
-	// methods
+	// Stack Allocator
+	// used for load-and-stay-residend data
+	typedef unsigned long Marker;				// marker that will contain the pointer to the marker location 
 
-	
+	MemoryManager * MemoryManager::allocate(unsigned long stackSize_bytes);
+	Marker MemoryManager::getMarker(void);
+	void MemoryManager::freeToMarker(Marker marker);
+	void MemoryManager::clear(void);
 
-	
-	//// class variables
-	//typedef U32 Marker;
+	// Teacher's Template
+ //	 typedef U32 Marker;
  //   explicit MemoryManager allocate(U32 stackSize_bytes);
  //   void * allocate (U32 size_bytes);
  //   Marker getMarker();
