@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
 	Plane testPlaneGeom(2000.0f, 2000.0f);
 	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
 	testPlane->getTransformation()->setBBTranslation(Vector(0, 10, 0));
-	testPlane->setVisible(false);
+	testPlane->setVisible(true);
 
 	
 
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 
 	
 	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
-	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(200.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(200.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
 
 
@@ -364,7 +364,7 @@ int main(int argc, char *argv[])
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.05f);
 		rotationCenter.translate(Vector(0,0,0.1));
-		battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
+		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
 		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
 		bossCube2->rotateAboutAxis(Vector(0,0,1),0.02f);
 		bossCube2->translate(Vector(0.1f,0,0));
@@ -422,6 +422,17 @@ int main(int argc, char *argv[])
 		{
 			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
+
+
+			// enable light0
+			glEnable(GL_LIGHT0);
+
+			// sets ambient and diffuse components of light0
+			glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
+			glLightfv(GL_LIGHT0, GL_POSITION, Position);
+
+
 			drawGL();
 		}		
 		// Delay the thread to make room for others on the CPU
@@ -486,19 +497,13 @@ int initGL(void)
 	// enables smooth shading (garaud)
 	glShadeModel(GL_SMOOTH);
 	// frontfacing culling
-	/*glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);*/
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 	// enables lighting
 	glEnable(GL_LIGHTING);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 	
-	// enable light0
-	glEnable(GL_LIGHT0);
-
-	// sets ambient and diffuse components of light0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
 		
 	//// ******************************
 	//// ******** LOADING POINT *******
