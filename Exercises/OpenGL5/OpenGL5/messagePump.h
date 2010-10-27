@@ -19,7 +19,7 @@ public:
 	static SDL_mutex * mutex_event;
  
 	MessagePump() { &getInstance(); }
-	~MessagePump() {} 
+	~MessagePump() {};
 	MessagePump(const MessagePump & getInstance());   
 	
 	MessagePump & operator=(MessagePump & getInstance());
