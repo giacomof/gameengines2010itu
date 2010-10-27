@@ -7,10 +7,10 @@ entitySpectator * Controller::playerObject;
 unsigned int Controller::count=0;
 bool Controller::quit=false;
 
-Controller &Controller::getInstance()
+Controller & Controller::getInstance()
 {
 	if(count==0) Controller::mutex_controller = SDL_CreateMutex();
-	else count=1;
+	else count++;
 	return _instance;
 }
 

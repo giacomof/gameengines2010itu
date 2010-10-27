@@ -9,7 +9,7 @@ AssetManager::~AssetManager(void)
 	}
 }
 
-AssetManager &AssetManager::getInstance()
+AssetManager & AssetManager::getInstance()
 {
   return _instance;
 }

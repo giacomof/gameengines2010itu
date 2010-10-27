@@ -15,14 +15,14 @@ public:
 	static entitySpectator *playerObject;
 	static bool quit;
  
-	Controller() { &getInstance(); }
-	~Controller() { /*SDL_DestroyMutex( mutex_controller );*/ } 
-	Controller(const Controller &getInstance());
+	Controller() { & getInstance(); }
+	~Controller() {}; 
+	Controller(const Controller & getInstance());
 	
-	Controller & operator=(Controller &getInstance());
+	Controller & operator=(Controller & getInstance());
 	static Controller & getInstance();
 
-	static void setPlayerObject(entitySpectator *player);
+	static void setPlayerObject(entitySpectator * player);
 	static void moveForward(bool shouldMove);
 	static void moveBackward(bool shouldMove);
 	static void strafeLeft(bool shouldMove);

@@ -12,13 +12,13 @@ public:
 
 	static WindowManager _instance;
 
-	WindowManager(void) { getInstance(); };
+	WindowManager(void) { &getInstance(); };
 	~WindowManager(void) {};
 
 	// Singleton Methods
-	WindowManager(const WindowManager &getInstance());   
-	WindowManager & operator=(WindowManager getInstance());
-	static WindowManager getInstance();
+	WindowManager(const WindowManager & getInstance());   
+	WindowManager & operator=(WindowManager & getInstance());
+	static WindowManager & getInstance();
 
 	void WindowManager::createWindow(int w, int h, int b);
 	int WindowManager::resizeWindow(int width, int height);

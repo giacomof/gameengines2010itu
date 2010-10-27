@@ -2,16 +2,12 @@
 
 unsigned int inputManager::count=0;
 const float mouse_sensitivity = 0.3;
-
 inputManager inputManager::_instance;
-
 MessagePump messageP = MessagePump::getInstance();
-
 SDL_mutex * inputManager::mutex_event;
-
 bool inputManager::active;
 
-inputManager &inputManager::getInstance()
+inputManager & inputManager::getInstance()
 {
 	if(count==0) inputManager::mutex_event = SDL_CreateMutex();
 	else count++;
