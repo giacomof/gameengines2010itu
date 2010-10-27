@@ -11,6 +11,10 @@ G- Lighting System
 G- attach/detach camera to player model
 0- Use Clock Class into updates/draws/synchs
 V- Memory Manager
+	V- Stack Allocator
+	0- Pool or Double Edge Allocator
+	1(V)- Singleton
+	V- thread Safe
 S- Skeletal Animation
 0- Compile everything we can as a DLL
 
