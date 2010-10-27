@@ -5,24 +5,37 @@
 
 #include "assetManager.h"
 #include <SDL.h>
+#include <stdlib.h>
 
 class MemoryManager
 {
 public:
+
+	// external static declaration
 	static MemoryManager _instance;
 	static SDL_mutex * mutex_event;
- 
+	static unsigned int count;
+
 	// Singleton Definitions
-	MemoryManager();
-	~MemoryManager(); 
-	MemoryManager(const MemoryManager & getInstance());   
-	MemoryManager & operator=(MemoryManager & getInstance());
-	static MemoryManager & getInstance();
+	MemoryManager(void);
+	~MemoryManager(void); 
+	MemoryManager(const MemoryManager & getInstance(void));   
+	MemoryManager & operator=(MemoryManager & getInstance(void));
+	static MemoryManager & getInstance(void);
 
 	// methods
 
-	// external declaration
-	static unsigned int count;
+	
+
+	
+	//// class variables
+	//typedef U32 Marker;
+ //   explicit MemoryManager allocate(U32 stackSize_bytes);
+ //   void * allocate (U32 size_bytes);
+ //   Marker getMarker();
+ //   void freeToMarker(Marker marker);
+ //   void clear();
+
 };
 
 #endif
