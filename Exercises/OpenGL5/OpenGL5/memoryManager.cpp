@@ -20,4 +20,8 @@ MemoryManager & MemoryManager::getInstance()
 	return _instance;
 }
 
+Marker MemoryManager::getMarker(void) {
+	return 
+}
+
 

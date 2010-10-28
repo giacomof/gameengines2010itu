@@ -11,10 +11,14 @@ class MemoryManager
 {
 public:
 
+	// marker that will contain the pointer to the marker location 
+	typedef unsigned int Marker;				
+
 	// external static declaration
 	static MemoryManager _instance;
 	static SDL_mutex * mutex_event;
 	static unsigned int count;
+	static Marker mark;
 
 	// Singleton Definitions
 	MemoryManager(void);
@@ -25,15 +29,13 @@ public:
 
 	// Stack Allocator
 	// used for load-and-stay-residend data
-	typedef unsigned long Marker;				// marker that will contain the pointer to the marker location 
-
-	MemoryManager * MemoryManager::allocate(unsigned long stackSize_bytes);
+	MemoryManager * MemoryManager::allocate(unsigned int stackSize_bytes);
 	Marker MemoryManager::getMarker(void);
-	void MemoryManager::freeToMarker(Marker marker);
+	void MemoryManager::freeToMarker(Marker m);
 	void MemoryManager::clear(void);
 
-	// Teacher's Template
- //	 typedef U32 Marker;
+ //  //Teacher's Template
+ //	  typedef U32 Marker;
  //   explicit MemoryManager allocate(U32 stackSize_bytes);
  //   void * allocate (U32 size_bytes);
  //   Marker getMarker();
