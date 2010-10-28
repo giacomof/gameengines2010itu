@@ -501,8 +501,8 @@ int initGL(void)
 	// enables smooth shading (garaud)
 	glShadeModel(GL_SMOOTH);
 	// frontfacing culling
-	/*glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);*/
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_FRONT);
 	// enables lighting
 	glEnable(GL_LIGHTING);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);

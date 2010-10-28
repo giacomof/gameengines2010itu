@@ -12,7 +12,7 @@
 #include <glut.h>
 
 // sets the frames per second for the animations
-#define MD2_FRAMES_PER_SEC 5
+#define MD2_FRAMES_PER_SEC 2
 
 class md2File {
 public:
