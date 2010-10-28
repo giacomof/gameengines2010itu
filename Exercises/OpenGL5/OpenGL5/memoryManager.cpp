@@ -1,9 +1,13 @@
 #include "memoryManager.h"
 
+typedef unsigned int Marker;
+
 // Static Definitions
 MemoryManager MemoryManager::_instance;
 SDL_mutex * MemoryManager::mutex_event;
 unsigned int MemoryManager::count=0;
+Marker MemoryManager::mark;
+	
 
 MemoryManager::MemoryManager(void) { &getInstance(); }
 
@@ -21,7 +25,7 @@ MemoryManager & MemoryManager::getInstance()
 }
 
 Marker MemoryManager::getMarker(void) {
-	return 
+	return mark;
 }
 
 
