@@ -242,3 +242,28 @@ void Line::drawGeometry(void)
 	glEnd();
 	glEnable(GL_TEXTURE_2D);
 }
+
+// ************************************* //
+// ******** LIGHT ********************** //
+// ************************************* //
+Light::Light(void)
+{
+	color[0] = 1.0f;
+	color[1] = 1.0f;
+	color[2] = 1.0f;
+
+	lightPos[0] = 0.0f;
+	lightPos[1] = 0.0f;
+	lightPos[2] = 0.0f;
+	lightPos[3] = 1.0f;
+}
+
+void Light::drawGeometry(void)
+{
+	// enable light0
+	glEnable(GL_LIGHT0);
+
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, color);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+}

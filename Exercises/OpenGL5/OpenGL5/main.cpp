@@ -268,7 +268,11 @@ int main(int argc, char *argv[])
 	battleDroid->setVisible(true);
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
-	
+	Light * testLight = new Light();
+
+	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
+
 	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(200.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
@@ -325,6 +329,8 @@ int main(int argc, char *argv[])
 	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "falling boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
+	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
+	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	/* ------------------------------------------ *
 	 * Graph and asset testing stuff ends here  *
@@ -362,8 +368,8 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.05f);
-		rotationCenter.translate(Vector(0,0,0.1));
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),3.05f);
+		//rotationCenter.translate(Vector(0,0,0.1));
 		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
 		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
 		bossCube2->rotateAboutAxis(Vector(0,0,1),0.02f);
@@ -422,15 +428,6 @@ int main(int argc, char *argv[])
 		{
 			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
-
-
-			// enable light0
-			glEnable(GL_LIGHT0);
-
-			// sets ambient and diffuse components of light0
-			glLightfv(GL_LIGHT0, GL_AMBIENT, Ambient);
-			glLightfv(GL_LIGHT0, GL_DIFFUSE, Diffuse);
-			glLightfv(GL_LIGHT0, GL_POSITION, Position);
 
 
 			drawGL();
@@ -497,8 +494,8 @@ int initGL(void)
 	// enables smooth shading (garaud)
 	glShadeModel(GL_SMOOTH);
 	// frontfacing culling
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+	/*glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);*/
 	// enables lighting
 	glEnable(GL_LIGHTING);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);

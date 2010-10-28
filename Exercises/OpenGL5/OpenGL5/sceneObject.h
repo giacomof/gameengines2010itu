@@ -133,10 +133,15 @@ class Light : public SceneObject
 {
 	public:
 		Light(void);
-		~Light(void);
+		//~Light(void);
 
 		void update(void) {};
 		void drawGeometry(void);
+
+		char * lightName;
+
+		float color[3];
+		float lightPos[4];
 
 };
 
