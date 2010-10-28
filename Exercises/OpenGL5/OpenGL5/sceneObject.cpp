@@ -253,17 +253,26 @@ Light::Light(void)
 	color[2] = 1.0f;
 
 	lightPos[0] = 0.0f;
-	lightPos[1] = 0.0f;
-	lightPos[2] = 0.0f;
-	lightPos[3] = 1.0f;
+	lightPos[1] = 1.0f;
+	lightPos[2] = -1.0f;
+	lightPos[3] = 0.0f;
+
+	// enable light0
+	glEnable(GL_LIGHT0);
 }
 
 void Light::drawGeometry(void)
 {
-	// enable light0
-	glEnable(GL_LIGHT0);
+	
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, color);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+}
+
+void Light::setPosition(Vector position)
+{
+	lightPos[0] = position.getX();
+	lightPos[1] = position.getY();
+	lightPos[2] = position.getZ();
 }
