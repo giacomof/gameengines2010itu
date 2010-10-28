@@ -137,6 +137,7 @@ class Light : public SceneObject
 
 		void update(void) {};
 		void drawGeometry(void);
+		void setPosition(Vector position);
 
 		char * lightName;
 

@@ -219,6 +219,10 @@ int main(int argc, char *argv[])
 	// * ---------------------------------------- */
 
 
+	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
+	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
+
 	// Create the plane with the collision shape
 	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 10.0f, 1000.0f));
 
@@ -270,7 +274,7 @@ int main(int argc, char *argv[])
 
 	Light * testLight = new Light();
 
-	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
@@ -308,8 +312,10 @@ int main(int argc, char *argv[])
 
 	dynamicsWorld->addRigidBody(cubeRigidBody);
 
+
 	md2Interface * bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(battleDroid, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	//bossCube = new SceneNode(battleDroid, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	bossCube = new SceneNode(battleDroid, "boss cube", &duck_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 
@@ -329,8 +335,7 @@ int main(int argc, char *argv[])
 	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "falling boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
-	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
-	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
 
 	/* ------------------------------------------ *
 	 * Graph and asset testing stuff ends here  *
@@ -368,7 +373,7 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),3.05f);
+		//rotationCenter.rotateAboutAxis(Vector(0,1,0),0.1f);
 		//rotationCenter.translate(Vector(0,0,0.1));
 		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
 		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
@@ -429,6 +434,8 @@ int main(int argc, char *argv[])
 			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
 
+			//testLight->setPosition(battleDroid->getWorldPosition());
+			//testLight->drawGeometry();
 
 			drawGL();
 		}		
