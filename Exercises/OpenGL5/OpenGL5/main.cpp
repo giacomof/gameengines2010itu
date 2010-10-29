@@ -273,15 +273,18 @@ int main(int argc, char *argv[])
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
 	Light * testLight = new Light();
+	Light * testLight1 = new Light(true, false, 0,0,0,0,0,1,0,0,1);
+	Light * testLight2 = new Light(true, false, 0,0,0,0,1,0,0,1,0);
 
-	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode1 = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
 
 
 	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
 	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(200.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	lostSoul->scale(1, 1, 1);
 
-
+	
 	
 
 
@@ -314,15 +317,15 @@ int main(int argc, char *argv[])
 
 
 	md2Interface * bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	//bossCube = new SceneNode(battleDroid, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
-	bossCube = new SceneNode(battleDroid, "boss cube", &duck_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	bossCube = new SceneNode(battleDroid, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	//bossCube = new SceneNode(battleDroid, "boss cube", &duck_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 
 	
 	cubeMass = 10;
 
-	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100,300,-125)));
+	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100,500,-125)));
 		
 	cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
 
@@ -334,8 +337,6 @@ int main(int argc, char *argv[])
 
 	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "falling boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
-
-
 
 	/* ------------------------------------------ *
 	 * Graph and asset testing stuff ends here  *
@@ -364,7 +365,7 @@ int main(int argc, char *argv[])
 
 	char title[80];
 	SDL_Event currentEvent;
-
+	
 
 	while(!Controller::quit)
 	{
@@ -373,7 +374,7 @@ int main(int argc, char *argv[])
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
-		//rotationCenter.rotateAboutAxis(Vector(0,1,0),0.1f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.1f);
 		//rotationCenter.translate(Vector(0,0,0.1));
 		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
 		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
@@ -433,9 +434,6 @@ int main(int argc, char *argv[])
 		{
 			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
-
-			//testLight->setPosition(battleDroid->getWorldPosition());
-			//testLight->drawGeometry();
 
 			drawGL();
 		}		
@@ -505,7 +503,7 @@ int initGL(void)
 	//glCullFace(GL_FRONT);
 	// enables lighting
 	glEnable(GL_LIGHTING);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 	
 		

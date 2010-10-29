@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+//#include <vector>
 #include "md5wrapper.h"
 #include "sceneObject.h"
 
@@ -57,6 +58,9 @@ public:
 	// COLLADA methods
 	char * loadCollada(char * filePath, char * colladaNameChar);
 	ColladaFile * getColladaMesh(char * colladaNameChar);
+
+	// light methods
+	//Light * newLight(void);
 
 	// mutex methods
 	static void lockMutex( SDL_mutex * m );

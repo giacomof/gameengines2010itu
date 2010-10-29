@@ -44,13 +44,13 @@ void MemoryManager::deallocate(unsigned int * stack_ptr)
 	stack_ptr = NULL;
 }
 
-void * MemoryManager::operator new(size_t size)
-{
-    void *storage = malloc(size);
-    if(NULL == storage) {
-            throw "allocation fail : no free memory";
-    }
-}
+//void * MemoryManager::operator new(size_t size)
+//{
+//    void *storage = malloc(size);
+//    if(NULL == storage) {
+//            throw "allocation fail : no free memory";
+//    }
+//}
 
 
 

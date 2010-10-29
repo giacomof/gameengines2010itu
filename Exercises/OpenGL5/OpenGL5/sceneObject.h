@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef sceneObject__H__
 #define sceneObject__H__
 
@@ -133,18 +131,27 @@ class Light : public SceneObject
 {
 	public:
 		Light(void);
+		Light(	bool enabled, bool directional = false,
+				float ambientR = 0, float ambientG = 0, float ambientB = 0,
+				float diffuseR = 1, float diffuseG = 1, float diffuseB = 1,
+				float specularR = 1, float specularG = 1, float specularB = 1);
 		//~Light(void);
 
 		void update(void) {};
 		void drawGeometry(void);
-		void setPosition(Vector position);
+		void setDirection(Vector position);		
+		bool isEnabled;
 
-		char * lightName;
+	protected:
+		static unsigned short lightCount;
 
-		float color[3];
-		float lightPos[4];
+		int lightReference;
 
+		float ambientColor[3];
+		float diffuseColor[3];
+		float specularColor[3];
+		float direction[4];
+	
 };
-
 
 #endif

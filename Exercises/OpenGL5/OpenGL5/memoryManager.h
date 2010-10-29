@@ -37,8 +37,8 @@ public:
 	void MemoryManager::clear(void);
 
 	// new and delete overload
-	void* operator new(size_t);
-	void operator delete(void*);
+	/*void* operator new(size_t);
+	void operator delete(void*);*/
 
 
 
