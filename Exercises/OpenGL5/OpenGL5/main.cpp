@@ -277,10 +277,12 @@ int main(int argc, char *argv[])
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
 	Light * testLight = new Light();
-	Light * testLight1 = new Light(true, false, 0,0,0,0,0,1,0,0,1);
-	Light * testLight2 = new Light(true, false, 0,0,0,0,1,0,0,1,0);
+	Light * testLight1 = new Light(true, true, 1,1,1,0,0,0,0.4f,0.4f,0.4f);
+	testLight1->setDirection(Vector(0, 1, 0));
 
-	SceneNode * testLightNode1 = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 
@@ -369,7 +371,15 @@ int main(int argc, char *argv[])
 
 	char title[80];
 	SDL_Event currentEvent;
-	
+
+	GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
+	GLfloat diffuse[] = {1.0, 0.8, 0.0, 1.0};
+	GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
+	GLfloat shine = 100.0;
+	glMaterialf(GL_FRONT_AND_BACK, GL_AMBIENT, ambient[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
 
 	while(!Controller::quit)
 	{
@@ -499,7 +509,7 @@ int initGL(void)
 	// enables the Z-buffer
 	glEnable(GL_DEPTH_TEST);
 	// enables the texture rendering
-	//glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 	// enables smooth shading (garaud)
 	glShadeModel(GL_SMOOTH);
 	// frontfacing culling
@@ -507,7 +517,8 @@ int initGL(void)
 	//glCullFace(GL_FRONT);
 	// enables lighting
 	glEnable(GL_LIGHTING);
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_SPECULAR);
 	glEnable(GL_COLOR_MATERIAL);
 	
 		

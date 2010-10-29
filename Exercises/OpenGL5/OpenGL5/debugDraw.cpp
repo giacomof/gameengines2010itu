@@ -14,6 +14,7 @@ DebugDraw::~DebugDraw(void)
 void DebugDraw::drawLine(const btVector3& from, const btVector3& to, const btVector3 &color) 
 { 
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
 		glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT);	// lighting and color mask
 																// need to disable lighting for proper text color
 																// not sure about lines
@@ -25,6 +26,7 @@ void DebugDraw::drawLine(const btVector3& from, const btVector3& to, const btVec
 
 		glPopAttrib();
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
 } 
 
 void DebugDraw::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime, const btVector3& color) 
