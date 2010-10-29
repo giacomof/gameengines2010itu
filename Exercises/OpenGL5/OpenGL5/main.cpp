@@ -15,6 +15,7 @@
 #include <glut.h>						// Header File for glut commands
 #include <btBulletDynamicsCommon.h>		// Header File for Bullet Physics
 
+#include "memoryManager.h"				// Header File for our Memory Manager
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "sceneNode.h"					// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"				// Header File for the SceneObject container
@@ -162,6 +163,9 @@ int threadUpdate(void *data)
 
 int main(int argc, char *argv[])
 {
+	// Start the MemoryManager
+	MemoryManager * memMgr = new MemoryManager();
+	
 	// Used for checking memory leaks
 	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_crtBreakAlloc = 920;
