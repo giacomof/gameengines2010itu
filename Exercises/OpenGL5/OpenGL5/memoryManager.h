@@ -19,6 +19,7 @@ public:
 	static SDL_mutex * mutex_event;
 	static unsigned int count;
 	static Marker mark;
+	static unsigned int const dataToAllocate = 200000000; // 200Mb
 
 	// Singleton Definitions
 	MemoryManager(void);
@@ -29,8 +30,8 @@ public:
 
 	// Stack Allocator
 	// used for load-and-stay-residend data
-	void * MemoryManager::allocate(unsigned int stackSize_bytes);
-	void MemoryManager::deallocate(unsigned int * stack_ptr);
+	void * MemoryManager::allocate(unsigned const int stackSize_bytes);
+	void MemoryManager::deallocate(void * stack_ptr);
 
 	Marker MemoryManager::getMarker(void);
 	void MemoryManager::freeToMarker(Marker m);
