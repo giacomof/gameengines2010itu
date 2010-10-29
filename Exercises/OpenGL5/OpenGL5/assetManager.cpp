@@ -223,6 +223,17 @@ ColladaFile * AssetManager::getColladaMesh(char * colladaNameChar)
 	return collada_list[colladaNameChar].colladaMesh;
 }
 
+//Light * AssetManager::newLight()
+//{
+//	if ( light_list.size() < GL_MAX_LIGHTS - 1)
+//	{
+//		Light temp;
+//		light_list.push_back(temp);
+//		return & temp;
+//	}
+//	return NULL;
+//}
+
 void AssetManager::lockMutex( SDL_mutex * m ) 
 {
 	SDL_mutexP(m);

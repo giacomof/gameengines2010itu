@@ -246,33 +246,84 @@ void Line::drawGeometry(void)
 // ************************************* //
 // ******** LIGHT ********************** //
 // ************************************* //
+
+unsigned short Light::lightCount = 0;
+
 Light::Light(void)
 {
-	color[0] = 1.0f;
-	color[1] = 1.0f;
-	color[2] = 1.0f;
+	lightReference = GL_LIGHT0 + Light::lightCount;
 
-	lightPos[0] = 0.0f;
-	lightPos[1] = 1.0f;
-	lightPos[2] = -1.0f;
-	lightPos[3] = 0.0f;
+	for(unsigned short i = 0; i < 3; i++)
+	{
+		ambientColor[i] = 0;
+		diffuseColor[i] = 1;
+		specularColor[i] = 1;
+		direction[i] = 0;
+	}
+	direction[4] = 1.0f;
+	isEnabled = true;
 
-	// enable light0
-	glEnable(GL_LIGHT0);
+	Light::lightCount++;
+}
+
+Light::Light(	bool enabled, bool directional,
+				float ambientR, float ambientG, float ambientB,
+				float diffuseR, float diffuseG, float diffuseB,
+				float specularR, float specularG, float specularB)
+{
+	lightReference = GL_LIGHT0 + Light::lightCount;
+
+	isEnabled = enabled;
+	if (directional) 
+	{
+		direction[4] = 0.0f;
+	}
+	else
+	{
+		for(unsigned short i = 0; i < 3; i++)
+		{
+			direction[i] = 0.0f;
+		}
+		direction[4] = 1.0f;
+	}
+
+	ambientColor[0] = ambientR;
+	ambientColor[1] = ambientG;
+	ambientColor[2] = ambientB;
+
+	diffuseColor[0] = diffuseR;
+	diffuseColor[1] = diffuseG;
+	diffuseColor[2] = diffuseB;
+
+	specularColor[0] = specularR;
+	specularColor[1] = specularG;
+	specularColor[2] = specularB;
+
+	Light::lightCount++;
 }
 
 void Light::drawGeometry(void)
 {
-	
+	// enable light0
+	if (isEnabled) 
+	{
+		glEnable(lightReference);
 
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, color);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, color);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+		glLightfv(lightReference, GL_AMBIENT, ambientColor);
+		glLightfv(lightReference, GL_DIFFUSE, diffuseColor);
+		glLightfv(lightReference, GL_SPECULAR, specularColor);
+
+		glLightfv(lightReference, GL_POSITION, direction);
+	}
+	else
+	{
+		glDisable(lightReference);
+	}
 }
-
-void Light::setPosition(Vector position)
+	
+void Light::setDirection(Vector position)
 {
-	lightPos[0] = position.getX();
-	lightPos[1] = position.getY();
-	lightPos[2] = position.getZ();
+	direction[0] = position.getX();
+	direction[1] = position.getY();
+	direction[2] = position.getZ();
 }
