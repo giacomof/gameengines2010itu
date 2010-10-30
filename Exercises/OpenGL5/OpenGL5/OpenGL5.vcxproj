@@ -227,6 +227,7 @@
     <ClInclude Include="entitySpectator.h" />
     <ClInclude Include="frameClock.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="include\anorms.h" />
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\bullet_include\btBulletCollisionCommon.h" />
     <ClInclude Include="include\bullet_include\btBulletDynamicsCommon.h" />

@@ -4,10 +4,7 @@
 
 GLOBAL TASKS:
 
-1(G)- Physics SDK
-	1(G)- Rewrite methods of the Transformation Class in order to work properly with physics
-	G- Scaling still incoherent
-G- Lighting System
+
 G- attach/detach camera to player model
 0- Use Clock Class into updates/draws/synchs
 V- Memory Manager
@@ -30,6 +27,7 @@ OPTIONALS:
 0- Multiple Viewports: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42
 0- possibility to apply transformations to rootnode 
 0- physical children stop moving when collition is detected  
+0- Scaling still incoherent
 
 COMPLETED:
 
@@ -69,6 +67,10 @@ COMPLETED:
 	1(V)- draw the name of the SceneNodes
 1(G)- Quaternions for camera rotations
 1(V)- DoubleCheck each Singleton for possible memory leak or performance optimization
+1(G)- Physics SDK
+	1(G)- Rewrite methods of the Transformation Class in order to work properly with physics
+1(G)- Lighting System
+
 
 Symbology Map:
 

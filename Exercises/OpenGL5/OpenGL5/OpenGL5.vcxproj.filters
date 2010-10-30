@@ -1163,6 +1163,9 @@
     <ClInclude Include="memoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\anorms.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="snippets.txt">

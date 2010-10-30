@@ -10,9 +10,12 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <glut.h>
+#include <linearAlgebraDLL.h>
 
 // sets the frames per second for the animations
 #define MD2_FRAMES_PER_SEC 2
+
+typedef float vec3[3];
 
 class md2File {
 public:
@@ -178,6 +181,9 @@ protected:
 		
 	// references for the animation cycles
 	std::vector<AnimRef> m_Anims;
+
+
+	static vec3 anorms[162];
 };
 
 #endif
