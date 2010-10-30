@@ -139,10 +139,12 @@ void Plane::drawGeometry()
 {
 	glDisable(GL_TEXTURE_2D);	
 	glBegin(GL_QUADS);
-		glVertex3f( width/2, 0.0f, height/2);			
+		glVertex3f( width/2, 0.0f, height/2);	
+		glVertex3f( width/2, 0.0f,-height/2);
+		glVertex3f(-width/2, 0.0f,-height/2);
 		glVertex3f(-width/2, 0.0f, height/2);			
-		glVertex3f(-width/2, 0.0f,-height/2);			
-		glVertex3f( width/2, 0.0f,-height/2);	
+					
+			
 	glEnd();
 	glEnable(GL_TEXTURE_2D);
 }
