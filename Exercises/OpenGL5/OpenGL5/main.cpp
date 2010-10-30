@@ -28,6 +28,8 @@
 #include "windowManager.h"				// Header File for our Window Manager
 #include "debugDraw.h"					// Header File for our Debug Drawer
 
+//#include "globalOverloading.cpp"		// Global Overloading for new, delete, allocations and free
+
 using namespace std;
 using namespace linearAlgebraDLL;
 

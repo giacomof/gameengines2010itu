@@ -30,9 +30,13 @@ Marker MemoryManager::getMarker(void) {
 	return mark;
 }
 
-void * MemoryManager::allocate(unsigned int stackSize_bytes) 
+void MemoryManager::setMarker(unsigned int m) {
+	mark = m;
+}
+
+void * MemoryManager::allocate(unsigned int s) 
 {
-	void * storage = malloc(stackSize_bytes);
+	void * storage = malloc(s);
 	if(NULL == storage) {
         throw "allocation fail : no free memory";
     }
@@ -46,35 +50,3 @@ void MemoryManager::deallocate(void * stack_ptr)
 	stack_ptr = NULL;
 }
 
-template <class T>
-void * operator new(size_t size)
-{
-    void *storage = malloc(size);
-    if(NULL == storage) {
-            throw "allocation fail : no free memory";
-    }
-}
-
-template <class T>
-inline void newDelete(T & ptr)
-{
-	{assert(ptr != NULL);}
-    delete ptr; // call the destructor
-    ptr = NULL; // always remember to reset the pointer to null
-}
-
-template <class T>
-inline void deleteArray(T & ptrArray)
-{
-    {assert(ptrArray != NULL);}
-    delete [] ptrArray; // call the destructor
-    ptrArray = NULL;	// always remember to reset the pointer to null
-}
-
-template <class T>
-inline void * newMalloc(size_t size, const std::string caller) 
-{
-	void * result;
-	result = malloc(size);
-	return result;
-}

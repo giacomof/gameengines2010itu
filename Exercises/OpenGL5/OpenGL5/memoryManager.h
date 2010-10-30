@@ -30,18 +30,13 @@ public:
 
 	// Stack Allocator
 	// used for load-and-stay-residend data
-	void * MemoryManager::allocate(unsigned const int stackSize_bytes);
-	void MemoryManager::deallocate(void * stack_ptr);
+	static void * allocate(unsigned const int stackSize_bytes);
+	static void MemoryManager::deallocate(void * stack_ptr);
 
-	Marker MemoryManager::getMarker(void);
-	void MemoryManager::freeToMarker(Marker m);
-	void MemoryManager::clear(void);
-
-	// new and delete overload
-	/*void* operator new(size_t);
-	void operator delete(void*);*/
-
-
+	static Marker MemoryManager::getMarker(void);
+	static void MemoryManager::setMarker(unsigned int m);
+	static void MemoryManager::freeToMarker(Marker m);
+	static void MemoryManager::clear(void);
 
  //  //Teacher's Template
  //	  typedef U32 Marker;
