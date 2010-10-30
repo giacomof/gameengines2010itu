@@ -2,6 +2,10 @@
 
 #define MD2_FRAME_RATE (1.0f/MD2_FRAMES_PER_SEC)
 
+vec3 md2File::anorms[] = {
+#include "anorms.h"
+};
+
 // LERP Interpolation
 template< typename InType >
 inline void LERP(float out[],const InType a[],const InType b[],const float interp_t) {
@@ -76,8 +80,6 @@ const char*	md2File::GetSkin(unsigned int num) const {
 // loads the md2 model and allocate proper memory
 bool md2File::Load(unsigned char * p_data, unsigned int p_size ) {
 	Clear();
-
-	
 
 	data_size = p_size;
 	m_data = new unsigned char[data_size];
@@ -259,9 +261,13 @@ void md2File::Render() const {
 				// set UV
 				glTexCoord2sv(puv->data);
 
+				//glNormal3fv(anorms[pvertex.normalIndex]);
+
 				// draw vertex
 				glVertex3fv(pvertex);
 			}
+
+
 		}
 	glEnd();
 		
