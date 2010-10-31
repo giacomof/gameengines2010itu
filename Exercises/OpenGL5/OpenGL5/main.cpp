@@ -64,6 +64,7 @@ SceneNode * battleDroid;
 SceneNode * lostSoul;
 SceneNode * bossCube;
 SceneNode * colladaDuck;
+SceneNode * colladaAstroboy;
 SceneNode * testPlane;
 
 // OpenGL Attributes
@@ -183,7 +184,7 @@ int threadUpdate(void *data)
 	while ( !Controller::quit ) {
 		// Runs the update method here
 
-		// physics simultation
+		// physics simulation
 		dynamicsWorld->stepSimulation(1/120.f, 10);
 
 		// Delay the thread to make room for others on the CPU
@@ -262,6 +263,9 @@ int main(int argc, char *argv[])
 	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
 	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
+	// Create Astroboy for skeletal animation test
+	ColladaInterface astroboy_g = ColladaInterface(assetManagerPtr->getColladaMesh("astroboy"), assetManagerPtr->getTexture("duckCM.tga"));
+	colladaAstroboy = new SceneNode(rootNodePtr, "astroboy", &astroboy_g,  Vector(200.0f, 5.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	// Create the plane with the collision shape
 	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 10.0f, 1000.0f));
@@ -566,6 +570,7 @@ int initGL(void)
 	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
 	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
 	assetManagerPtr->loadCollada("include/duck.dae", "duck");
+	assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
 
 	//assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/battledroid.png", "battleDroidTx");
@@ -583,6 +588,7 @@ int initGL(void)
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 

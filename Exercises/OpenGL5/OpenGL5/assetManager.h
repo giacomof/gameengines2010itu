@@ -31,6 +31,12 @@ struct colladaInterfaceContainer
 	std::string meshMD5;
 };
 
+/*struct colladaSkelInterfaceContainer
+{
+	ColladaSkeleton * colladaSkel;
+	std::string meshMD5;
+};*/
+
 using namespace std;
 
 class AssetManager

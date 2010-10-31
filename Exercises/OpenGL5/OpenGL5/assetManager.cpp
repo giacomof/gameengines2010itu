@@ -206,7 +206,8 @@ char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 	
 		if(tempName!="") {
 			string path = "include/" + (string) tempName;
-			loadTexture( (char*) path.c_str(), tempName );
+			// Had to comment this out so that program doesnt crash if file doesnt exist
+			//loadTexture( (char*) path.c_str(), tempName );
 			return tempName;
 	
 		} else return "";
