@@ -4,14 +4,13 @@
 
 GLOBAL TASKS:
 
-
 G- attach/detach camera to player model
 0- Use Clock Class into updates/draws/synchs
 V- Memory Manager
 	V- Stack Allocator
 	0- Pool or Double Edge Allocator
 	1(V)- Singleton
-	V- thread Safe
+	1(V)- thread Safe
 S- Skeletal Animation
 0- Compile everything we can as a DLL
 
@@ -70,7 +69,6 @@ COMPLETED:
 1(G)- Physics SDK
 	1(G)- Rewrite methods of the Transformation Class in order to work properly with physics
 1(G)- Lighting System
-
 
 Symbology Map:
 
