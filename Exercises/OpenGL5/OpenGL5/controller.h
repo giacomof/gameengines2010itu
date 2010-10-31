@@ -30,6 +30,8 @@ public:
 	static void lookDeltaX(float deltaLook);
 	static void lookDeltaY(float deltaLook);
 
+	static void changeCameraMode(bool following);
+
 	static unsigned int count;
 };
 

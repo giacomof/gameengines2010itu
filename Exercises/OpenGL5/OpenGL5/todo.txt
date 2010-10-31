@@ -4,7 +4,7 @@
 
 GLOBAL TASKS:
 
-G- attach/detach camera to player model
+
 0- Use Clock Class into updates/draws/synchs
 V- Memory Manager
 	V- Stack Allocator
@@ -69,6 +69,7 @@ COMPLETED:
 1(G)- Physics SDK
 	1(G)- Rewrite methods of the Transformation Class in order to work properly with physics
 1(G)- Lighting System
+1(G)- attach/detach camera to player model
 
 Symbology Map:
 

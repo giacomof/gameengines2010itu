@@ -393,6 +393,10 @@ int main(int argc, char *argv[])
 	entityCamera *playercamera = new entityCamera();
 	player->setCamera(playercamera);
 
+	SceneNode * cameraNode = new SceneNode(battleDroid, "Camera Node", playercamera, Vector(-40.0f, 30.0f, 0.0f), Vector(0.0f,1.0f,0.0f), -90.0f);
+	cameraNode->rotateAboutAxis(Vector(0,0,1),-20);
+	playercamera->setSceneNode(cameraNode);
+
 	Controller::getInstance().setPlayerObject(player);
 
 	// Set up fps clock
@@ -606,12 +610,27 @@ float* getCamera()
 	if ( currentCamera != NULL )
 	{
 		AssetManager::lockMutex( currentCamera->mutex_object );
+		Matrix transformationMatrix;
 
-		Matrix transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0,0.0,0.0),currentCamera->pitch)).getTranspose();
-		transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(0.0,1.0,0.0),currentCamera->yaw)).getTranspose() * transformationMatrix;
-		transformationMatrix = Matrix::generateTranslationMatrix(	currentCamera->vPosition[0],
-																	currentCamera->vPosition[1],
-																	currentCamera->vPosition[2]).getTranspose() * transformationMatrix;
+		if(currentCamera->isFollowingNode && currentCamera->positionNode != NULL)
+		{
+			Quaternion orientation = currentCamera->positionNode->getWorldOrientation();
+			Vector position = currentCamera->positionNode->getWorldPosition();
+			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(-orientation.getX(), -orientation.getY(), -orientation.getZ(), orientation.getW())).getTranspose();
+			transformationMatrix = Matrix::generateTranslationMatrix(-position.getX(), -position.getY(), -position.getZ()).getTranspose() * transformationMatrix;
+		}
+		else
+		{
+
+			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0,0.0,0.0),currentCamera->pitch)).getTranspose();
+			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(0.0,1.0,0.0),currentCamera->yaw)).getTranspose() * transformationMatrix;
+			transformationMatrix = Matrix::generateTranslationMatrix(	currentCamera->vPosition[0],
+																		currentCamera->vPosition[1],
+																		currentCamera->vPosition[2]).getTranspose() * transformationMatrix;			
+		}
+
+
+
 		transformationMatrix.getMatrix(&tranM[0]);
 
 		AssetManager::unlockMutex( currentCamera->mutex_object );

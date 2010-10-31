@@ -101,6 +101,18 @@ void inputManager::keyPress(SDL_Event &currentEvent)
 		else
 			Controller::getInstance().strafeRight(false);
 		break;
+
+	case SDLK_c:
+		if (currentEvent.type == SDL_KEYDOWN)
+			Controller::getInstance().changeCameraMode(false);
+		break;
+
+	case SDLK_v:
+		if (currentEvent.type == SDL_KEYDOWN)
+			Controller::getInstance().changeCameraMode(true);
+		break;
+
+
 	default:
 		break;
 	}
