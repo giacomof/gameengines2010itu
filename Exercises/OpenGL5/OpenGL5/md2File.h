@@ -40,7 +40,7 @@ public:
 	void Update(float dt) ;
 
 	// renders the md2 model using triangles or triangles strips 
-	void Render() const;
+	void Render();
 
 	// use an animation
 	void SetAnim(unsigned short);
@@ -53,6 +53,10 @@ public:
 
 	// returns the total size of the model in kb
 	unsigned int GetDataSize() const;
+
+	unsigned short currentFrame;
+
+	
 
 protected:
 
@@ -184,6 +188,8 @@ protected:
 
 
 	static vec3 anorms[162];
+
+	triangle * triangles;
 };
 
 #endif
