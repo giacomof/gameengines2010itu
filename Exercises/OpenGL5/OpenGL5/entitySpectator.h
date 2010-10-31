@@ -13,6 +13,7 @@ class entitySpectator : public SceneObject
 private:
 	entityCamera *camera;
 	
+	
 	float position[3];
 	float yaw;
 	float pitch;
@@ -31,6 +32,7 @@ public:
 	
 	virtual void update();
 	virtual void setCamera(entityCamera *newCamera);
+
 	
 	virtual entityCamera* getCamera();
 	
@@ -40,6 +42,8 @@ public:
 	virtual void strafeRight(bool shouldMove);
 	virtual void lookDeltaX(float deltaLook);
 	virtual void lookDeltaY(float deltaLook);
+
+	
 };
 
 #endif

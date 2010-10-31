@@ -54,3 +54,8 @@ void Controller::lookDeltaY(float deltaLook)
 	if (playerObject != NULL)
 		playerObject->lookDeltaY(deltaLook);
 }
+
+void Controller::changeCameraMode(bool following)
+{
+	playerObject->getCamera()->isFollowingNode = following;
+}

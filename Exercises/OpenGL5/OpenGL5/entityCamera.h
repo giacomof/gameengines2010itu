@@ -4,6 +4,7 @@
 #define entityCamera__H__
 
 #include "sceneObject.h"
+#include "SceneNode.h"
 
 class entityCamera : public SceneObject
 {
@@ -13,6 +14,9 @@ public:
 	float vUp[3];
 	float pitch;
 	float yaw;
+
+	SceneNode * positionNode;
+	bool isFollowingNode;
 	
 	entityCamera(void);
 	~entityCamera(void);
@@ -22,6 +26,11 @@ public:
 	virtual void setForwardVector(float x, float y, float z);
 	virtual void setUpVector(float x, float y, float z);
 	virtual void setPitchYaw(float newpitch, float newyaw);
+
+	virtual void setSceneNode(SceneNode *newSceneNode);
+
+
+	
 
 	SDL_mutex * mutex_camera;
 };
