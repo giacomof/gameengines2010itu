@@ -3,7 +3,6 @@
 //#include <stdlib.h>
 //#include <crtdbg.h>
 
-
 #include <iostream>						// Header File For the basic Input/Output system
 #include <windows.h>					// Header File For Windows
 #include <stdio.h>						// Header File For Standard Input/Output
@@ -28,7 +27,7 @@
 #include "windowManager.h"				// Header File for our Window Manager
 #include "debugDraw.h"					// Header File for our Debug Drawer
 
-//#include "globalOverloading.cpp"		// Global Overloading for new, delete, allocations and free
+//#include "globalOverloading.cpp"
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -76,7 +75,7 @@ int initGL(void);
 void drawGL(void);
 
 // Pointer to the function that moves the camera
-float* getCamera();
+float* getCamera(void);
 
 GLuint	filter;
 GLuint	texture[3];
@@ -91,6 +90,41 @@ WindowManager window = WindowManager();
 GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};  
 GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
 GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
+
+static SDL_mutex * mutex_allocator = SDL_CreateMutex();
+
+/* ********************************************* */
+/* ******* operator new global overload ******** */
+/* ******** just remember to use flags ********* */
+/* ************* from globals.h **************** */
+/* ********************************************* */
+
+void * operator new(size_t size, unsigned short flag)
+{
+	AssetManager::lockMutex(mutex_allocator);
+
+	cout << "NEW WITH FLAG: " << flag << endl;
+
+	void * storage = MemoryManager::allocate(size);
+	if(NULL == storage) {
+            throw "allocation fail : no free memory";
+    }
+	AssetManager::unlockMutex(mutex_allocator);
+
+	return storage;
+}
+
+void operator delete(void * ptr) 
+{
+	free(ptr);
+}
+
+void operator delete(void * ptr, unsigned short flag) 
+{
+	cout << "DELETE WITH FLAG: " << flag << endl;
+	MemoryManager::freeToLastMarker();
+}
+
 
 /* This thread handles input */
 int threadInput(void *data)
@@ -166,7 +200,7 @@ int threadUpdate(void *data)
 int main(int argc, char *argv[])
 {
 	// Start the MemoryManager
-	MemoryManager * memMgr = new MemoryManager();
+	MemoryManager memMgr;
 	
 	// Used for checking memory leaks
 	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
@@ -174,7 +208,7 @@ int main(int argc, char *argv[])
 
 
 	// start the asset manager
-	assetManagerPtr = new AssetManager();
+	assetManagerPtr = new(managersFlag) AssetManager();
 	InputPump = MessagePump::getInstance();
 	WindowManager window = WindowManager();
 
@@ -278,13 +312,13 @@ int main(int argc, char *argv[])
 	battleDroid->setVisible(true);
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
-	Light * testLight = new Light();
-	Light * testLight1 = new Light(true, true, 1,1,1,0,0,0,0.4f,0.4f,0.4f);
-	testLight1->setDirection(Vector(0, 1, 0));
+	Light testLight = Light();
+	Light testLight1 = Light(true, true, 1,1,1,0,0,0,0.4f,0.4f,0.4f);
+	testLight1.setDirection(Vector(0, 1, 0));
 
-	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", &testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 

@@ -4,44 +4,56 @@ typedef unsigned int Marker;
 
 // Static Definitions
 MemoryManager MemoryManager::_instance;
-SDL_mutex * MemoryManager::mutex_event;
 unsigned int MemoryManager::count=0;
-Marker MemoryManager::mark;
+unsigned int MemoryManager::marker=0;
+unsigned int MemoryManager::lastMarker=0;
 
-MemoryManager::MemoryManager(void) { &getInstance(); }
+void * MemoryManager::operator new(size_t s) {
+	
+	void * storage = malloc(s);
+	return storage;
+	
+}
+
+void MemoryManager::operator delete(void *){ }
+
+MemoryManager::MemoryManager(void) { 
+	&getInstance(); 
+}
 
 MemoryManager::~MemoryManager(void) { }
 
 MemoryManager & MemoryManager::getInstance()
 {
 	if(count==0) {
-		// first esecution
-		// so initialize eveything needed
-		MemoryManager::mutex_event = SDL_CreateMutex();
-		// allocate data
-		void * stackAllocated = malloc(dataToAllocate);
-		if(stackAllocated == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
+		marker = lastMarker = (unsigned int) malloc(dataToAllocate);
+		if((void *)marker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
 	}
 	else count++;
 	return _instance;
 }
 
-Marker MemoryManager::getMarker(void) {
-	return mark;
+unsigned int MemoryManager::getMarker(void) {
+	return marker;
 }
 
 void MemoryManager::setMarker(unsigned int m) {
-	mark = m;
+	marker = m;
 }
 
 void * MemoryManager::allocate(unsigned int s) 
 {
-	void * storage = malloc(s);
-	if(NULL == storage) {
-        throw "allocation fail : no free memory";
-    }
+	// save the last marker
+	lastMarker = marker;
+	// add the space required to the marker
+	marker = marker+s;
+	// return the pointer to the position of the marker
+	return (void *) marker;
+}
 
-	return storage;
+void MemoryManager::freeToLastMarker(void) 
+{
+	marker = lastMarker;
 }
 
 void MemoryManager::deallocate(void * stack_ptr)
