@@ -8,7 +8,7 @@ vec3 md2File::anorms[] = {
 
 // LERP Interpolation
 template< typename InType >
-inline void LERP(float out[],const InType a[],const InType b[],const float interp_t) {
+inline void LERP(float out[], const InType a[], const InType b[], const float interp_t) {
 	float inv_interp_t = 1.0f - interp_t;
 	out[0] = a[0]*inv_interp_t + b[0]*interp_t;
 	out[1] = a[1]*inv_interp_t + b[1]*interp_t;
@@ -16,12 +16,14 @@ inline void LERP(float out[],const InType a[],const InType b[],const float inter
 }
 
 // constructor
-md2File::md2File() {
+md2File::md2File() 
+{
 	m_AnimTime=0;
 	m_Verts=0;
 	m_CurrentAnim=0;
 	m_NumAnims=0;
 	currentFrame = 0;
+	interp_t = 0; 
 }
 
 // destructor
@@ -31,7 +33,8 @@ md2File::~md2File() {
 }
 
 // resets all variables and clears animation buffer
-void md2File::Clear() {
+void md2File::Clear() 
+{
 	m_Anims.clear();
 	m_AnimTime=0;
 	m_Verts=0;
@@ -39,17 +42,18 @@ void md2File::Clear() {
 	m_NumAnims=0;
 	m_data=0;
 	currentFrame = 0;
+	interp_t = 0; 
 }
 
 // returns the 3d mesh
-const md2File::model* md2File::GetModel() const {
+const md2File::model* md2File::GetModel() {
 	if(!m_data) return 0;
 	void *p=m_data;
 	return reinterpret_cast<model*>( p );
 }
 
 // returns the data of a single frame of the animation
-const md2File::frame* md2File::GetFrame(unsigned int num) const {
+const md2File::frame* md2File::GetFrame(unsigned int num) {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetFrames + (num*pm->frameSize);
@@ -57,7 +61,7 @@ const md2File::frame* md2File::GetFrame(unsigned int num) const {
 }
 
 // returns the Triangles List
-const md2File::triangle* md2File::GetTriangles() const {
+const md2File::triangle* md2File::GetTriangles() {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetTriangles;
@@ -65,7 +69,7 @@ const md2File::triangle* md2File::GetTriangles() const {
 }
 
 // returns the uv coordinates of the texture (mapped inside the md2)
-const md2File::uv* md2File::GetTexCoords() const {
+const md2File::uv* md2File::GetTexCoords() {
 	if(!m_data) return 0;
 	const model* pm = GetModel();
 	void* ptr = m_data + pm->offsetTexCoords;
@@ -73,7 +77,7 @@ const md2File::uv* md2File::GetTexCoords() const {
 }
 
 
-const char*	md2File::GetSkin(unsigned int num) const {
+const char*	md2File::GetSkin(unsigned int num) {
 	if(!m_data) return 0;
 	void* p = m_data + GetModel()->offsetSkins + num*64;
 	return reinterpret_cast<char*>(p);
@@ -193,10 +197,9 @@ void md2File::Update(float dt) {
 	// get pointers to frames
 	const frame* pf1 = GetFrame(f1);
 	const frame* pf2 = GetFrame(f2);
-	//assert(pf1 && pf2);
 
 	// scale this to 1 to zero for calculation
-	float interp_t = time_between_frames/MD2_FRAME_RATE;
+	interp_t = time_between_frames/MD2_FRAME_RATE;
 
 	// need to interpolate the scale and translation values for the keys
 	float scale[3];
@@ -241,7 +244,7 @@ void md2File::Render() {
 	int maxFrame = GetModel()->numFrames - 1;
 
 	currentFrame++;
-	if(currentFrame >= maxFrame) currentFrame = 0;
+	if(currentFrame > maxFrame) currentFrame = 0;
 
 	// decompress the uv data
 	float uv_scale_s = 1.0f / GetModel()->skinWidth;
@@ -266,6 +269,33 @@ void md2File::Render() {
 			// loop through each vertex on the triangle
 			for(unsigned int j=0;j!=3;++j) 
 			{
+				
+				/* ****************************** */
+				/* *** Normals Interpolation **** */
+				/* ****************************** */
+				
+				//// frameA is the current frame
+				//const frame * frameA = GetFrame(currentFrame);
+				//const frame * frameB;
+				//// frameB is the next frame, or the first one
+				//// if this was the last frame of the animation
+				//if(currentFrame == maxFrame) frameB = GetFrame(0);
+				//else frameB = GetFrame(currentFrame+1);
+
+				//// vertex A is the current vertex
+				//const vertex vertA = frameA->vertices[ triangles[i].vertexIndices[j] ];
+				//const vertex vertB = frameB->vertices[ triangles[i].vertexIndices[j] ];
+
+				//// normA is the current normal, normB is the next one
+				//const GLfloat * normA = anorms[ vertA.normalIndex ];
+				//const GLfloat * normB = anorms[ vertB.normalIndex ];
+				//				
+				////LERP(normal, normA, normB, interp_t);
+
+				//normal[0] = normA[0] + interp_t * (normB[0] - normA[0]);
+				//normal[1] = normA[1] + interp_t * (normB[1] - normA[1]);
+				//normal[2] = normA[2] + interp_t * (normB[2] - normA[2]);
+
 				const float* pvertex = m_Verts + 3*pt[i].vertexIndices[j];
 				const uv*    puv     = GetTexCoords() + pt[i].textureIndices[j];
 				
@@ -299,19 +329,19 @@ void md2File::SetAnim(unsigned short idx) {
 }
 
 // returns the name of the frame of the specified animation we are playing
-const char* md2File::GetAnimName(unsigned short idx) const {
+const char* md2File::GetAnimName(unsigned short idx) {
 	if(idx<GetNumAnims())
 		return GetFrame( m_Anims[idx].m_FrameStart )->name;
 	return 0;
 }
 
 //returns the number of the animations in the md2 file
-unsigned short md2File::GetNumAnims() const {
+unsigned short md2File::GetNumAnims() {
 	return static_cast<unsigned short>(m_Anims.size());
 }
 
 // returns the size of the model
-unsigned int md2File::GetDataSize() const {
+unsigned int md2File::GetDataSize() {
 	return static_cast<unsigned int>(
 		sizeof(md2File) + data_size +
 		m_Anims.size() * sizeof(AnimRef) +

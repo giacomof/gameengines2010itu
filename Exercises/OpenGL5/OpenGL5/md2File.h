@@ -46,25 +46,23 @@ public:
 	void SetAnim(unsigned short);
 
 	//returns the name of the first frame of the specified animation
-	const char* GetAnimName(unsigned short) const;
+	const char* GetAnimName(unsigned short);
 
 	// returns the number of the animation cycles of the md2 file
-	unsigned short GetNumAnims() const;
+	unsigned short GetNumAnims();
 
 	// returns the total size of the model in kb
-	unsigned int GetDataSize() const;
+	unsigned int GetDataSize();
 
 	unsigned short currentFrame;
 
-	
-
 protected:
 
-	unsigned short GetNumVerts() const {
+	unsigned short GetNumVerts() {
 		return GetModel()->numVertices;
 	}
 		
-	unsigned short GetNumTriangles() const {
+	unsigned short GetNumTriangles() {
 		return GetModel()->numTriangles;
 	}
 
@@ -162,11 +160,11 @@ protected:
 	};
 
 	// functions that use pointer offsets to return parts of the currently loaded MD2.
-	const model*		 GetModel() const;
-	const frame*		 GetFrame(unsigned int num) const;
-	const char*			 GetSkin(unsigned int num) const;
-	const triangle*		 GetTriangles() const;
-	const uv*			 GetTexCoords() const;
+	const model*		 GetModel();
+	const frame*		 GetFrame(unsigned int num);
+	const char*			 GetSkin(unsigned int num);
+	const triangle*		 GetTriangles();
+	const uv*			 GetTexCoords();
 
 	unsigned char* m_data;
 	unsigned int data_size;
@@ -186,10 +184,12 @@ protected:
 	// references for the animation cycles
 	std::vector<AnimRef> m_Anims;
 
-
 	static vec3 anorms[162];
-
+	
 	triangle * triangles;
+	float normal[3];
+	float interp_t;
+
 };
 
 #endif
