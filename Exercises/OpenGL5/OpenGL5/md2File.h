@@ -21,13 +21,13 @@ class md2File {
 public:
 
 	// Constructor
-	md2File() ;
+	md2File(void);
 
 	// Destructor
-	~md2File() ;
+	~md2File(void);
 		
 	// Clear the current model
-	void Clear();
+	void Clear(void);
 
 	// loads the specified md2 model
 	// returns true if OK
@@ -40,7 +40,7 @@ public:
 	void Update(float dt) ;
 
 	// renders the md2 model using triangles or triangles strips 
-	void Render();
+	void Render(void);
 
 	// use an animation
 	void SetAnim(unsigned short);
@@ -49,10 +49,10 @@ public:
 	const char* GetAnimName(unsigned short);
 
 	// returns the number of the animation cycles of the md2 file
-	unsigned short GetNumAnims();
+	unsigned short GetNumAnims(void);
 
 	// returns the total size of the model in kb
-	unsigned int GetDataSize();
+	unsigned int GetDataSize(void);
 
 	unsigned short currentFrame;
 

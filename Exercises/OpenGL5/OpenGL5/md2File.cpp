@@ -301,11 +301,14 @@ void md2File::Render() {
 				
 				//const float * normal = anorms[ GetFrame(currentFrame)->vertices[ triangles[i].vertexIndices[j] ].normalIndex ];
 
+				normal[0] = 0;
+				normal[1] = 1;
+				normal[0] = 0;
 
 				// set UV
 				glTexCoord2sv(puv->data);
 				// set normal
-				//glNormal3fv(normal);
+				glNormal3fv(normal);
 				// draw vertex
 				glVertex3fv(pvertex);
 			}
@@ -313,11 +316,13 @@ void md2File::Render() {
 
 		}
 	glEnd();
+
+	
 		
 	glMatrixMode(GL_TEXTURE);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
-	
+
 }
 
 // starts the specified animation
