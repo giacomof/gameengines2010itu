@@ -3,7 +3,7 @@
 #define MD2_FRAME_RATE (1.0f/MD2_FRAMES_PER_SEC)
 
 vec3 md2File::anorms[] = {
-#include "anorms.h"
+	#include "anorms.h"
 };
 
 // LERP Interpolation
@@ -21,6 +21,7 @@ md2File::md2File() {
 	m_Verts=0;
 	m_CurrentAnim=0;
 	m_NumAnims=0;
+	currentFrame = 0;
 }
 
 // destructor
@@ -37,6 +38,7 @@ void md2File::Clear() {
 	m_CurrentAnim=0;
 	m_NumAnims=0;
 	m_data=0;
+	currentFrame = 0;
 }
 
 // returns the 3d mesh
@@ -90,6 +92,9 @@ bool md2File::Load(unsigned char * p_data, unsigned int p_size ) {
 
 	if (!checkFile())
 		return false;
+
+	// Read triangle data
+	triangles = reinterpret_cast<triangle *>(m_data + GetModel()->offsetTriangles);
 
 	// allocate memory for vertex data
 	m_Verts = new float[ 3 * GetNumVerts() ];
@@ -226,11 +231,17 @@ void md2File::Update(float dt) {
 }
 
 // draw the mesh with OpenGL commands
-void md2File::Render() const {
+void md2File::Render() {
 
 	// ensure valid model loaded
 	if(!m_data)
 		return;
+
+	// Compute max frame index
+	int maxFrame = GetModel()->numFrames - 1;
+
+	currentFrame++;
+	if(currentFrame >= maxFrame) currentFrame = 0;
 
 	// decompress the uv data
 	float uv_scale_s = 1.0f / GetModel()->skinWidth;
@@ -257,12 +268,14 @@ void md2File::Render() const {
 			{
 				const float* pvertex = m_Verts + 3*pt[i].vertexIndices[j];
 				const uv*    puv     = GetTexCoords() + pt[i].textureIndices[j];
+				
+				//const float * normal = anorms[ GetFrame(currentFrame)->vertices[ triangles[i].vertexIndices[j] ].normalIndex ];
+
 
 				// set UV
 				glTexCoord2sv(puv->data);
-
-				//glNormal3fv(anorms[pvertex.normalIndex]);
-
+				// set normal
+				//glNormal3fv(normal);
 				// draw vertex
 				glVertex3fv(pvertex);
 			}
