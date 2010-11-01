@@ -260,25 +260,19 @@ int main(int argc, char *argv[])
 	// * ---------------------------------------- */
 
 
-	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
-	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-
-	// Create Astroboy for skeletal animation test
-	ColladaInterface astroboy_g = ColladaInterface(assetManagerPtr->getColladaMesh("astroboy"), assetManagerPtr->getTexture("duckCM.tga"));
-	colladaAstroboy = new SceneNode(rootNodePtr, "astroboy", &astroboy_g,  Vector(200.0f, 5.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-
+	//* ----------------------------------------- *
+	// * Plane with the collision shape			  *
+	// * ---------------------------------------- */
 	// Create the plane with the collision shape
 	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 10.0f, 1000.0f));
 
-	btDefaultMotionState* groundMotionState =
-		new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f),btVector3(0.0f, -10.0f, 0.0f)));
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f),btVector3(0.0f, -10.0f, 0.0f)));
 
 	btScalar groundMass = 0;
 	btVector3 grounInertia(0,0,0);
 	groundShape->calculateLocalInertia(groundMass,grounInertia);
 
-	btRigidBody::btRigidBodyConstructionInfo
-                groundRigidBodyCI(groundMass, groundMotionState, groundShape, grounInertia);
+	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(groundMass, groundMotionState, groundShape, grounInertia);
 	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 
 	dynamicsWorld->addRigidBody(groundRigidBody);
@@ -288,11 +282,34 @@ int main(int argc, char *argv[])
 	testPlane->getTransformation()->setBBTranslation(Vector(0, 10, 0));
 	testPlane->setVisible(true);
 
-	
 
 
+	////* ----------------------------------------- *
+	//// * Second Plane with the collision shape	  *
+	//// * ---------------------------------------- */
+	//// Create the plane with the collision shape
+	//btCollisionShape* groundShape2 = new btBoxShape(btVector3(1000.0f, 10.0f, 200.0f));
+
+	//groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(1.0f, 0.0f, 0.0f, -PI/8),btVector3(0.0f, 210.0f, -500.0f)));
+
+	//groundShape2->calculateLocalInertia(groundMass,grounInertia);
+
+	//btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI2(groundMass, groundMotionState, groundShape2, grounInertia);
+	//groundRigidBody = new btRigidBody(groundRigidBodyCI2);
+
+	//dynamicsWorld->addRigidBody(groundRigidBody);
+
+	//Plane testPlaneGeom2(2000.0f, 400.0f);
+	//SceneNode * testPlane2 = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom2, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
+	//testPlane2->getTransformation()->setBBTranslation(Vector(0, 10, 0));
+	//testPlane2->setVisible(true);
+
+
+	//* ----------------------------------------- *
+	// * Rotation Center for battleDroid		  *
+	// * ---------------------------------------- */
 	// Create character "rotationabout" node
-	Sphere rotation_sphere = Sphere(50, 30, 30, true);
+	Sphere rotation_sphere = Sphere(5, 30, 30, true);
 	SceneNode rotationCenter(rootNodePtr, "rotationCenter", &rotation_sphere, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rotationCenter.setVisible(true);
 
@@ -316,6 +333,11 @@ int main(int argc, char *argv[])
 	battleDroid->setVisible(true);
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
+
+
+	//* ----------------------------------------- *
+	// * Lights Connected to the battleDroid and to root		  *
+	// * ---------------------------------------- */
 	Light testLight = Light();
 	Light testLight1 = Light(true, true, 1,1,1,0,0,0,0.4f,0.4f,0.4f);
 	testLight1.setDirection(Vector(0, 1, 0));
@@ -326,18 +348,87 @@ int main(int argc, char *argv[])
 
 
 
+
+	//* ----------------------------------------- *
+	// * Rotation Center and physics for Skull	  *
+	// * ---------------------------------------- */
+	btCollisionShape* skullShape = new btSphereShape(35.0f);
+
+	btDefaultMotionState* skullMotionState;
+
+	btScalar skullMass = 0;
+	btVector3 skullInertia(0,0,0);
+	skullShape->calculateLocalInertia(skullMass,skullInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo * skullRigidBodyCI;
+
+	btRigidBody* skullRigidBody;
+
+	
+	skullMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,35,150)));
+	skullRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(skullMass,skullMotionState,skullShape,skullInertia);
+
+	skullRigidBody = new btRigidBody(*skullRigidBodyCI);
+
+
+	dynamicsWorld->addRigidBody(skullRigidBody);
+
+
 	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
-	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(200.0f, 100.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	lostSoul->scale(1, 1, 1);
+	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, skullRigidBody);
+
+	//* -----------------------------------------         *
+	// * SceneNode and physics for Skull's horns	      *
+	// * ----------------------------------------         */
+	btCollisionShape* hornShape = new btBoxShape(btVector3(5.0f, 5.0f, 5.0f));
+
+	btDefaultMotionState* hornMotionState;
+
+	btScalar hornMass = 0;
+	btVector3 hornInertia(0,0,0);
+	skullShape->calculateLocalInertia(hornMass,hornInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo * hornRigidBodyCI;
+
+	btRigidBody* hornRigidBody;
 
 	
+	hornMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(3,5,35)));
+	hornRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(hornMass,hornMotionState,hornShape,hornInertia);
+
+	hornRigidBody = new btRigidBody(*hornRigidBodyCI);
+
+
+	dynamicsWorld->addRigidBody(hornRigidBody);
+
+	Sphere hornSphere1 = Sphere(5, 3, 3, true);
+	SceneNode hornNode1(lostSoul, "hornNode", &hornSphere1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, hornRigidBody);
+	hornNode1.setVisible(false);
 	
 
+	//* -----------------------------------------         *
+	// * SceneNode and physics for Skull's horns	      *
+	// * ----------------------------------------         */
+
+	hornMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(3,5,-35)));
+	hornRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(hornMass,hornMotionState,hornShape,hornInertia);
+
+	hornRigidBody = new btRigidBody(*hornRigidBodyCI);
 
 
-	/*Sphere rotation_sphere2 = Sphere(10, 10, 10, true);
-	SceneNode rotationCenter2(battleDroid, "rotationCenter2", &rotation_sphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	rotationCenter.setVisible(true);*/
+	dynamicsWorld->addRigidBody(hornRigidBody);
+
+	Sphere hornSphere2 = Sphere(5, 3, 3, true);
+	SceneNode hornNode2(lostSoul, "hornNode", &hornSphere1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, hornRigidBody);
+	hornNode2.setVisible(false);
+
+
+
+
+
+	//* -----------------------------------------         *
+	// * SceneNodes and physics for the droid cube	      *
+	// * ----------------------------------------         */
 
 	btCollisionShape* cubeShape = new btBoxShape(btVector3(10.0f, 10.0f, 10.0f));
 
@@ -352,26 +443,28 @@ int main(int argc, char *argv[])
 	btRigidBody* cubeRigidBody;
 
 	
-	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,-15,100)));
+	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(0,-15,60)));
 	cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
 
 	cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
-
-	//cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
 
 	dynamicsWorld->addRigidBody(cubeRigidBody);
 
 
 	md2Interface * bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	bossCube = new SceneNode(battleDroid, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
-	//bossCube = new SceneNode(battleDroid, "boss cube", &duck_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	Sphere rotationSphere2 = Sphere(5, 3, 3, true);
+	SceneNode rotationNode2(battleDroid, "rotationNode2", &hornSphere1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	rotationNode2.setVisible(false);
+	bossCube = new SceneNode(&rotationNode2, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 
-	
+	//* -----------------------------------------         *
+	// * SceneNodes and physics for falling cube	      *
+	// * ----------------------------------------         */
 	cubeMass = 10;
 
-	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(100,500,-125)));
+	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(50,500,-125)));
 		
 	cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
 
@@ -384,6 +477,53 @@ int main(int argc, char *argv[])
 	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
 	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "falling boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
+
+
+
+
+	//* -----------------------------------------         *
+	// * SceneNodes and physics for ducks	      *
+	// * ----------------------------------------         */
+	btCollisionShape* duckShape = new btBoxShape(btVector3(15.0f, 15.0f, 15.0f));
+
+	btDefaultMotionState* duckMotionState;
+
+	btScalar duckMass = 25;
+	btVector3 duckInertia(0,0,0);
+	duckShape->calculateLocalInertia(duckMass,duckInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo * duckRigidBodyCI;
+
+	btRigidBody* duckRigidBody;
+
+	
+	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
+
+
+
+	for(int i = 1; i < 3; i++)
+	{
+
+		duckMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(sin(PI/3*i) * 560 ,350,cos(PI/3*i) * 560)));
+		duckRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(duckMass,duckMotionState,duckShape,duckInertia);
+
+		duckRigidBody = new btRigidBody(*duckRigidBodyCI);
+
+		duckRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+		dynamicsWorld->addRigidBody(duckRigidBody);
+
+
+		colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
+		colladaDuck->getTransformation()->setBBTranslation(Vector(-2, -17, 0));
+
+	}
+
+
+
+	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(25.0f,0.0f,25.0f), 0.0f);
+
+
 	/* ------------------------------------------ *
 	 * Graph and asset testing stuff ends here  *
 	 * ---------------------------------------- */
@@ -393,9 +533,10 @@ int main(int argc, char *argv[])
 	entityCamera *playercamera = new entityCamera();
 	player->setCamera(playercamera);
 
-	SceneNode * cameraNode = new SceneNode(battleDroid, "Camera Node", playercamera, Vector(-40.0f, 30.0f, 0.0f), Vector(0.0f,1.0f,0.0f), -90.0f);
+	SceneNode * cameraNode = new SceneNode(battleDroid, "Camera Node", playercamera, Vector(-40.0f, 30.0f, 0.0f), Vector(0.0f,1.0f,0.0f), -90.0f );
 	cameraNode->rotateAboutAxis(Vector(0,0,1),-20);
 	playercamera->setSceneNode(cameraNode);
+	playercamera->isFollowingNode = false;
 
 	Controller::getInstance().setPlayerObject(player);
 
@@ -434,6 +575,7 @@ int main(int argc, char *argv[])
 		
 		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.1f);
 		//rotationCenter.translate(Vector(0,0,0.1));
+		rotationNode2.rotateAboutAxis(Vector(0,1,0),-1.0f);
 		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
 		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
 		bossCube2->rotateAboutAxis(Vector(0,0,1),0.02f);
@@ -574,13 +716,14 @@ int initGL(void)
 	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
 	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
 	assetManagerPtr->loadCollada("include/duck.dae", "duck");
-	assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
+	//assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
 
 	//assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/battledroid.png", "battleDroidTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 	assetManagerPtr->loadTexture("include/duckCM.tga", "duckCM.tga");
+	//assetManagerPtr->loadTexture("include/boy_10.tga", "boy_10.jpg");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
@@ -592,7 +735,7 @@ int initGL(void)
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
+	//std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 
@@ -618,6 +761,8 @@ float* getCamera()
 			Vector position = currentCamera->positionNode->getWorldPosition();
 			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(-orientation.getX(), -orientation.getY(), -orientation.getZ(), orientation.getW())).getTranspose();
 			transformationMatrix = Matrix::generateTranslationMatrix(-position.getX(), -position.getY(), -position.getZ()).getTranspose() * transformationMatrix;
+
+
 		}
 		else
 		{

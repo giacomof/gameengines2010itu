@@ -7,7 +7,7 @@ entitySpectator::entitySpectator(void)
 	yaw = 0.0f;
 	pitch = 0.0f;
 	position[0] = 0.0f;
-	position[1] = 0.0f;
+	position[1] = -300.0f;
 	position[2] = 0.0f;
 	shouldMoveForward = false;
 	shouldMoveBackward = false;
