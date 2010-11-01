@@ -426,6 +426,9 @@
     <ClCompile Include="globalOverloading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="colladaSkeleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assetManager.h">
@@ -1165,6 +1168,9 @@
     </ClInclude>
     <ClInclude Include="include\anorms.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="colladaSkeleton.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

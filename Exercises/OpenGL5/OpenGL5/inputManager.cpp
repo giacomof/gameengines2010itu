@@ -112,7 +112,6 @@ void inputManager::keyPress(SDL_Event &currentEvent)
 			Controller::getInstance().changeCameraMode(true);
 		break;
 
-
 	default:
 		break;
 	}
