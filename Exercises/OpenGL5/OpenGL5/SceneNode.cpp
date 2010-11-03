@@ -406,9 +406,9 @@ void Root::update(float dt)
 	list<SceneNode*>::iterator itS;
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
-			AssetManager::lockMutex( rootMutex );
+			//AssetManager::lockMutex( rootMutex );
 			(*itS)->update(dt);
-			AssetManager::unlockMutex( rootMutex );				
+			//AssetManager::unlockMutex( rootMutex );				
 	}
 }
 

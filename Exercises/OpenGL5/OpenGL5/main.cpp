@@ -27,6 +27,7 @@
 #include "windowManager.h"				// Header File for our Window Manager
 #include "debugDraw.h"					// Header File for our Debug Drawer
 
+
 //#include "globalOverloading.cpp"
 
 using namespace std;
@@ -286,27 +287,6 @@ int main(int argc, char *argv[])
 
 
 
-	////* ----------------------------------------- *
-	//// * Second Plane with the collision shape	  *
-	//// * ---------------------------------------- */
-	//// Create the plane with the collision shape
-	//btCollisionShape* groundShape2 = new btBoxShape(btVector3(1000.0f, 10.0f, 200.0f));
-
-	//groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(1.0f, 0.0f, 0.0f, -PI/8),btVector3(0.0f, 210.0f, -500.0f)));
-
-	//groundShape2->calculateLocalInertia(groundMass,grounInertia);
-
-	//btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI2(groundMass, groundMotionState, groundShape2, grounInertia);
-	//groundRigidBody = new btRigidBody(groundRigidBodyCI2);
-
-	//dynamicsWorld->addRigidBody(groundRigidBody);
-
-	//Plane testPlaneGeom2(2000.0f, 400.0f);
-	//SceneNode * testPlane2 = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom2, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
-	//testPlane2->getTransformation()->setBBTranslation(Vector(0, 10, 0));
-	//testPlane2->setVisible(true);
-
-
 	//* ----------------------------------------- *
 	// * Rotation Center for battleDroid		  *
 	// * ---------------------------------------- */
@@ -344,7 +324,7 @@ int main(int argc, char *argv[])
 	Light testLight1 = Light(true, true, 1,1,1,0,0,0,0.5f,0.5f,0.5f);
 	testLight1.setDirection(Vector(0, 1, 0));
 
-	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 1000.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", &testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
@@ -640,7 +620,7 @@ int main(int argc, char *argv[])
 			drawGL();
 		}		
 		// Delay the thread to make room for others on the CPU
-		//SDL_Delay(thread_delay);
+		SDL_Delay(thread_delay);
 	}
 
 	//wait for the threads to exit
