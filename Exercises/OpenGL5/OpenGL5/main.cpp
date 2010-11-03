@@ -504,7 +504,7 @@ int main(int argc, char *argv[])
 	for(int i = 1; i < 3; i++)
 	{
 
-		duckMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,1,0),0),btVector3(sin(PI/3*i) * 560 ,350,cos(PI/3*i) * 560)));
+		duckMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,0,1),0.0f),btVector3(sin(PI/3*i) * 560 ,350,cos(PI/3*i) * 560)));
 		duckRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(duckMass,duckMotionState,duckShape,duckInertia);
 
 		duckRigidBody = new btRigidBody(*duckRigidBodyCI);

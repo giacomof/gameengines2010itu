@@ -261,10 +261,14 @@ void SceneNode::drawGeometry()
 			btTransform trans;
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
 
-			Vector local = nodeTransformation.getBBTranslation();
-			Vector physic = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
-			Vector final = local + physic;
-			nodeTransformation.setTranslation(final);
+			Vector localPosition = nodeTransformation.getBBTranslation();
+			Vector physicPosition = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
+
+			Quaternion orientation = Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW());
+			localPosition = Matrix::generateQuaternionRotationMatrix(orientation) * localPosition;
+
+			Vector finalPosition = localPosition + physicPosition;
+			nodeTransformation.setTranslation(finalPosition);
 
 			nodeTransformation.setOrientation(Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW()));
 		}
@@ -274,6 +278,10 @@ void SceneNode::drawGeometry()
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
 
 			Vector localPosition = nodeTransformation.getBBTranslation();
+
+			Quaternion orientation = Quaternion(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW());
+			localPosition = Matrix::generateQuaternionRotationMatrix(orientation) * localPosition;
+
 			Vector physicPosition = Vector(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ());
 			Vector finalPosition = localPosition + physicPosition;
 			nodeTransformation.setTranslation(finalPosition);
