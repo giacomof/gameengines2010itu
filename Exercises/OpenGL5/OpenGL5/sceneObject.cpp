@@ -137,15 +137,41 @@ Plane::~Plane(void)
 
 void Plane::drawGeometry() 
 {
-	glDisable(GL_TEXTURE_2D);	
-	glBegin(GL_QUADS);
+	glDisable(GL_TEXTURE_2D);
+
+	float dividedWidth = width/100;
+	float dividedHeight = height/100;
+
+	float halfWidth = width/2;
+	float halfHeight = height/2;
+
+	for(int i = 0; i < 100; i++)
+	{
+		for(int j = 0; j < 100; j++)
+		{
+			glBegin(GL_QUADS);
+				glNormal3f(0,1,0);
+				glVertex3f( -halfWidth+dividedWidth*(i+1), 0.0f, halfHeight-(dividedWidth*j));	
+				glNormal3f(0,1,0);
+				glVertex3f(-halfWidth+dividedWidth*(i+1), 0.0f, halfHeight-(dividedWidth*(j+1)));
+				glNormal3f(0,1,0);
+				glVertex3f(-halfWidth+dividedWidth*i, 0.0f, halfHeight-(dividedWidth*(j+1)));
+				glNormal3f(0,1,0);
+				glVertex3f(-halfWidth+dividedWidth*i, 0.0f, halfHeight-(dividedWidth*j));			
+			glEnd();
+		}
+	}
+
+	/*glBegin(GL_QUADS);
+		glNormal3f(0,1,0);
 		glVertex3f( width/2, 0.0f, height/2);	
+		glNormal3f(0,1,0);
 		glVertex3f( width/2, 0.0f,-height/2);
+		glNormal3f(0,1,0);
 		glVertex3f(-width/2, 0.0f,-height/2);
+		glNormal3f(0,1,0);
 		glVertex3f(-width/2, 0.0f, height/2);			
-					
-			
-	glEnd();
+	glEnd();*/
 	glEnable(GL_TEXTURE_2D);
 }
 
@@ -262,7 +288,8 @@ Light::Light(void)
 		specularColor[i] = 1;
 		direction[i] = 0;
 	}
-	direction[4] = 1.0f;
+	direction[1] = 0.0f;
+	direction[3] = 1.0f;
 	isEnabled = true;
 
 	Light::lightCount++;
@@ -278,7 +305,7 @@ Light::Light(	bool enabled, bool directional,
 	isEnabled = enabled;
 	if (directional) 
 	{
-		direction[4] = 0.0f;
+		direction[3] = 0.0f;
 	}
 	else
 	{
@@ -286,7 +313,7 @@ Light::Light(	bool enabled, bool directional,
 		{
 			direction[i] = 0.0f;
 		}
-		direction[4] = 1.0f;
+		direction[3] = 1.0f;
 	}
 
 	ambientColor[0] = ambientR;

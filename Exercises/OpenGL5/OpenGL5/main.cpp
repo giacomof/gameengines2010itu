@@ -339,10 +339,10 @@ int main(int argc, char *argv[])
 	// * Lights Connected to the battleDroid and to root		  *
 	// * ---------------------------------------- */
 	Light testLight = Light();
-	Light testLight1 = Light(true, true, 1,1,1,0,0,0,0.4f,0.4f,0.4f);
+	Light testLight1 = Light(true, true, 1,1,1,0,0,0,0.5f,0.5f,0.5f);
 	testLight1.setDirection(Vector(0, 1, 0));
 
-	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 1000.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", &testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
