@@ -9,7 +9,7 @@ bool Controller::quit=false;
 
 Controller & Controller::getInstance()
 {
-	if(count==0) Controller::mutex_controller = SDL_CreateMutex();
+	if(count==0) mutex_controller = SDL_CreateMutex();
 	else count++;
 	return _instance;
 }

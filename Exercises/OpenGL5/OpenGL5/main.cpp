@@ -83,6 +83,7 @@ GLuint	texture[3];
 
 // input manager definition
 inputManager input;
+Controller controller;
 
 // Window Manager definition
 WindowManager window = WindowManager();
@@ -139,7 +140,7 @@ int threadInput(void *data)
 	// Binds mouse and keyboard input to the OpenGL window
 	SDL_WM_GrabInput(SDL_GRAB_ON); 
 
-	while ( !Controller::quit ) {
+	while ( !controller.quit ) {
 		input.update();
 
 		// Delay the thread to make room for others on the CPU
@@ -159,7 +160,7 @@ int threadSound(void *data)
 	soundInit();
 
 	int testsoundint = 500;
-	while ( !Controller::quit )
+	while ( !controller.quit )
 	{
 		testsoundint++;
 		if (testsoundint > 600)
@@ -167,7 +168,7 @@ int threadSound(void *data)
 			soundPlayFile("include/MENULOOP.WAV");
 			testsoundint = 0;
 		}
-		SDL_Delay(tick);
+		SDL_Delay(thread_delay);
 	}
 
 	soundExit();
@@ -181,7 +182,7 @@ int threadUpdate(void *data)
 	// Thread name
 	char *tname = ( char * )data;
 
-	while ( !Controller::quit ) {
+	while ( !controller.quit ) {
 		// Runs the update method here
 
 		// physics simulation
@@ -212,6 +213,7 @@ int main(int argc, char *argv[])
 	assetManagerPtr = new(managersFlag) AssetManager();
 	InputPump = MessagePump::getInstance();
 	WindowManager window = WindowManager();
+	controller = Controller();
 
 	// SDL initialization
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
@@ -538,7 +540,7 @@ int main(int argc, char *argv[])
 	playercamera->setSceneNode(cameraNode);
 	playercamera->isFollowingNode = false;
 
-	Controller::getInstance().setPlayerObject(player);
+	controller.setPlayerObject(player);
 
 	// Set up fps clock
 	frameClock renderClock;
@@ -566,7 +568,7 @@ int main(int argc, char *argv[])
 	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
 
-	while(!Controller::quit)
+	while(!controller.quit)
 	{
 		
 		
@@ -611,7 +613,7 @@ int main(int argc, char *argv[])
 				window.resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
 				break;
 			case SDL_QUIT:
-				Controller::quit = true;
+				controller.quit = true;
 				break;
 			// Input events coming below. They are all just passed on to the input pump
 			case SDL_KEYDOWN:
@@ -627,7 +629,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		Controller::playerObject->update();
+		controller.playerObject->update();
 		
 		// Actual frame rendering happens here
 		if (window.getActive() )
@@ -638,7 +640,7 @@ int main(int argc, char *argv[])
 			drawGL();
 		}		
 		// Delay the thread to make room for others on the CPU
-		SDL_Delay(thread_delay);
+		//SDL_Delay(thread_delay);
 	}
 
 	//wait for the threads to exit
@@ -661,18 +663,18 @@ void drawGL(void)
 	if(drawDebug) dynamicsWorld->debugDrawWorld();	
 
 	//Root::drawGeometry();
-	AssetManager::lockMutex( rootNodePtr->mutex_node );
+	//AssetManager::lockMutex( rootNodePtr->mutex_node );
 	rootNodePtr->drawGeometry();
-	AssetManager::unlockMutex( rootNodePtr->mutex_node );
+	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// ********************
 	// *** UPDATE POINT *** 
 	// ********************
 
 	// draw the animation
-	AssetManager::lockMutex( rootNodePtr->mutex_node );
+	//AssetManager::lockMutex( rootNodePtr->mutex_node );
 	rootNodePtr->update(0.06);
-	AssetManager::unlockMutex( rootNodePtr->mutex_node );
+	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
@@ -744,7 +746,7 @@ float* getCamera()
 {		
 	glMatrixMode(GL_MODELVIEW);
 
-	entityCamera *currentCamera = Controller::playerObject->getCamera();
+	entityCamera *currentCamera = controller.playerObject->getCamera();
 
 	float tranM[16];
 
