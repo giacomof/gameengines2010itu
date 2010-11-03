@@ -3,7 +3,7 @@
 #ifndef colladaSkeleton__H__
 #define colladaSkeleton__H__
 
-
+#include <vector>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -45,13 +45,11 @@ public:
 	// returns the total size of the skeleton in bytes
 	unsigned int getDataSize() const;
 
-	// *****************************************************
-	// ******************* Variables ***********************
-	// *****************************************************
+private:
+	void parseChildJoint(xml_node<>* currentNode, int parentIndex);
 
-	// character type defaults to char
-	xml_document<> doc; 
-	xml_node<>* tempNode;
+	vector<Joint> JointArray;
+	unsigned int JointNumber;
 };
 
 #endif
