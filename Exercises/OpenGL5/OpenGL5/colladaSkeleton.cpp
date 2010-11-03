@@ -13,11 +13,18 @@ ColladaSkeleton::~ColladaSkeleton(void)
 
 bool ColladaSkeleton::load(std::string & str)
 {
+	// Prepare array
+	JointArray.clear();
+	JointNumber = 0;
+
 	// Vars
 	bool isFinished = false;
 	string rootNodeName = "";
 
 	// Open file
+	xml_document<> doc; 
+	xml_node<>* tempNode;
+
 	doc.parse<0>(strdup(str.c_str()));    // 0 means default parse flags
 	xml_node<>* rootNode = doc.first_node("COLLADA");
 	tempNode = rootNode->first_node();
@@ -33,6 +40,7 @@ bool ColladaSkeleton::load(std::string & str)
 
 			// Find the node with the instance controllers
 			xml_node<>* currentNode = visualSceneNode->first_node("node");
+			xml_node<>* rootNode;
 			bool nodeFound = false;
 			while (!nodeFound)
 			{
@@ -51,7 +59,7 @@ bool ColladaSkeleton::load(std::string & str)
 				else
 				{
 					// Haven't found it and we're out of nodes
-					break;
+					return false;
 				}
 			}
 
@@ -69,7 +77,7 @@ bool ColladaSkeleton::load(std::string & str)
 				if ( currentNode->first_node("node")->first_attribute("id")->value() == rootNodeName)
 				{
 					// We've found the node
-					currentNode = currentNode->first_node("node");
+					rootNode = currentNode->first_node("node");
 					nodeFound = true;
 				}
 				else if (currentNode->next_sibling() != 0)
@@ -80,7 +88,7 @@ bool ColladaSkeleton::load(std::string & str)
 				else
 				{
 					// Haven't found it and we're out of nodes
-					break;
+					return false;
 				}
 			}
 
@@ -90,6 +98,10 @@ bool ColladaSkeleton::load(std::string & str)
 
 			// We should have the root node of the skeleton stored in currentNode at this point
 			// Start building skeleton
+			bool skeletonDone = false;
+
+			// Repeat for every child node of root
+			currentNode = rootNode;
 		}
 
 		if(!isFinished)  {
@@ -104,6 +116,42 @@ bool ColladaSkeleton::load(std::string & str)
 	}
 
 	return false;
+}
+
+void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
+{
+	// Make the joint
+	Joint currentJoint;
+	currentJoint.jParentIndex = parentIndex;
+	currentJoint.jName = currentNode->name();
+
+	// Temp string for storing float array in
+	string matrixArray;
+	// Get the matrix values
+	matrixArray = currentNode->first_node("matrix")->value();
+	// Token used for splitting matrixArray string
+	string token;
+	// Tokenize and convert the matrix string
+	std::istringstream isM(matrixArray);
+	// Parse tokens and insert value in matrix
+	for (int row = 0; row < 4; row++)
+	{
+		for (int col = 0; col < 4; col++)
+		{
+			if ( getline(isM, token, ' ') )
+			{
+				currentJoint.inversePose.set(row, col, atof(token.c_str()) );
+			}
+			else
+				break;
+		}
+	}
+
+	// Joint should be complete at this point, add it to the array
+	JointArray.push_back(currentJoint);
+
+	// Search children of this node and call this function on them too
+
 }
 
 void ColladaSkeleton::render(void) const
