@@ -31,7 +31,9 @@ bool ColladaSkeleton::load(std::string & str)
 
 	while(!isFinished)
 	{
-		// load the skeleton
+		//////////////////////////////////////////
+		/*			Load Skeleton				*/
+		//////////////////////////////////////////
 		if(tempNodeName == "library_visual_scenes") 
 		{
 			// set the visual scene node that we work from
@@ -105,6 +107,9 @@ bool ColladaSkeleton::load(std::string & str)
 			std::cout << "Joint Array has " << JointArray.size() << " joints.\n";
 		}
 
+		//////////////////////////////////////////
+		/*			Load Animations				*/
+		//////////////////////////////////////////
 		if(tempNodeName == "library_animations")
 		{
 			// Load and store animations
