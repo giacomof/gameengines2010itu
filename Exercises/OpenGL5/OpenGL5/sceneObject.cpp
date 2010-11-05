@@ -56,8 +56,9 @@ void  md2Interface::update(void) {
 // ******** COLLADA INTERFACE ********** //
 // ************************************* //
 
-ColladaInterface::ColladaInterface(ColladaFile * c, unsigned int texture)
+ColladaInterface::ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s)
 {
+	skeleton = s;
 	mesh = c;
 	colladaTexture = texture;
 }
@@ -66,8 +67,9 @@ ColladaInterface::~ColladaInterface(void)
 {
 }
 
-void ColladaInterface::drawGeometry(void) {
-		
+void ColladaInterface::drawGeometry(void)
+{
+	// Simon will expand this function to call a function on mesh that skins it to a pose instead, if a pose exists
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, colladaTexture);
 	mesh->render();
@@ -75,9 +77,9 @@ void ColladaInterface::drawGeometry(void) {
 
 }
 
-void  ColladaInterface::update(void) {
-	// update the animation
-	// if any
+void  ColladaInterface::update(void)
+{
+	// Simon will fix this function to create a new pose for the mesh sometime!
 }
 
 // ************************************* //

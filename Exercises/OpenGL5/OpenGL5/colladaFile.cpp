@@ -189,19 +189,17 @@ void ColladaFile::render(void) const
 			secondMap = index[i+(offset/3)+2]*2;
 			thirdMap = (index[i+((offset/3)*2)+2]*2);
 		}
-		
-		// HARDCODED SCALING FOR THE PRESENTATION
 
 		glBegin(GL_TRIANGLES);
 			glTexCoord2f( map[firstMap], map[firstMap+1] );
 			glNormal3f( normal[firstNormal], normal[firstNormal+1], normal[firstNormal+2]); 
-			glVertex3f( vertex[firstVertex]*0.2f, vertex[firstVertex+1]*0.2f, vertex[firstVertex+2]*0.2f);
+			glVertex3f( vertex[firstVertex], vertex[firstVertex+1], vertex[firstVertex+2]);
 			glTexCoord2f( map[secondMap], map[secondMap+1] );
 			glNormal3f( normal[secondNormal], normal[secondNormal+1], normal[secondNormal+2]);
-			glVertex3f( vertex[secondVertex]*0.2f, vertex[secondVertex+1]*0.2f, vertex[secondVertex+2]*0.2f);
+			glVertex3f( vertex[secondVertex], vertex[secondVertex+1], vertex[secondVertex+2]);
 			glTexCoord2f( map[thirdMap], map[thirdMap+1] );
 			glNormal3f( normal[thirdNormal], normal[thirdNormal+1], normal[thirdNormal+2]);
-			glVertex3f( vertex[thirdVertex]*0.2f, vertex[thirdVertex+1]*0.2f, vertex[thirdVertex+2]*0.2f);
+			glVertex3f( vertex[thirdVertex], vertex[thirdVertex+1], vertex[thirdVertex+2]);
 		glEnd();
 	}
 	
