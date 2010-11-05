@@ -466,7 +466,7 @@ int main(int argc, char *argv[])
 
 	btDefaultMotionState* duckMotionState;
 
-	btScalar duckMass = 25;
+	btScalar duckMass = 1;
 	btVector3 duckInertia(0,0,0);
 	duckShape->calculateLocalInertia(duckMass,duckInertia);
 
@@ -536,13 +536,14 @@ int main(int argc, char *argv[])
 	SDL_Event currentEvent;
 
 	GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
-	GLfloat diffuse[] = {1.0, 0.8, 0.0, 1.0};
+	GLfloat diffuse[] = {0.8, 0.8, 0.8, 1.0};
 	GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
 	GLfloat shine = 100.0;
 	glMaterialf(GL_FRONT_AND_BACK, GL_AMBIENT, ambient[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
+
 
 	while(!controller.quit)
 	{
@@ -616,7 +617,7 @@ int main(int argc, char *argv[])
 			drawGL();
 		}		
 		// Delay the thread to make room for others on the CPU
-		SDL_Delay(thread_delay);
+		//SDL_Delay(thread_delay);
 	}
 
 	//wait for the threads to exit
