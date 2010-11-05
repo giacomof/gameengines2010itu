@@ -71,7 +71,7 @@ GLuint loadTexture(char* texName);
 int initGL(void);
 
 // STD/OpenGL Methods
-void drawGL(void);
+void drawGL(int frameDelta);
 
 // Pointer to the function that moves the camera
 float* getCamera(void);
@@ -544,22 +544,20 @@ int main(int argc, char *argv[])
 	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
 
+	int frameDelta;
 
 	while(!controller.quit)
 	{
 		
-		
+		frameDelta = renderClock.getFrameDelta();
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
-		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.1f);
-		//rotationCenter.translate(Vector(0,0,0.1));
-		rotationNode2.rotateAboutAxis(Vector(0,1,0),-1.0f);
-		//battleDroid->rotateAboutAxis(Vector(1,0,0),0.05f);
-		bossCube->rotateAboutAxis(Vector(0,1,0),2.05f);
-		bossCube2->rotateAboutAxis(Vector(0,0,1),0.02f);
-		bossCube2->translate(Vector(0.1f,0,0));
-		//rotationCenter2.rotateAboutAxis(Vector(0,1,0),-0.25f);
+		rotationCenter.rotateAboutAxis(Vector(0,1,0),0.01f*frameDelta);
+		rotationNode2.rotateAboutAxis(Vector(0,1,0),-0.1f*frameDelta);
+		bossCube->rotateAboutAxis(Vector(0,1,0),0.205f*frameDelta);
+		bossCube2->rotateAboutAxis(Vector(0,0,1),0.002f*frameDelta);
+		bossCube2->translate(Vector(0.01f*frameDelta,0,0));
 
 
 		
@@ -614,7 +612,7 @@ int main(int argc, char *argv[])
 			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
 
-			drawGL();
+			drawGL( frameDelta );
 		}		
 		// Delay the thread to make room for others on the CPU
 		//SDL_Delay(thread_delay);
@@ -629,7 +627,7 @@ int main(int argc, char *argv[])
 }
 
 /* Draw the scene */
-void drawGL(void)
+void drawGL(int frameDelta)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
 	glLoadIdentity();
@@ -650,7 +648,7 @@ void drawGL(void)
 
 	// draw the animation
 	//AssetManager::lockMutex( rootNodePtr->mutex_node );
-	rootNodePtr->update(0.06);
+	rootNodePtr->update(0.006*frameDelta);
 	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// Swaps the buffers
