@@ -321,9 +321,8 @@ int main(int argc, char *argv[])
 	// * Lights Connected to the battleDroid and to root		  *
 	// * ---------------------------------------- */
 	Light testLight = Light();
-	testLight.isEnabled = false;
-	Light testLight1 = Light(true, true, 1.0f,1.0f,1.0f,0.8f,0.8f,0.8f,0.5f,0.5f,0.5f);
-	testLight1.setDirection(Vector(-1, 0, 0));
+	Light testLight1 = Light(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
+	testLight1.setDirection(Vector(0, -1, 0));
 
 	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
