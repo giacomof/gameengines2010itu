@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
 	// * ---------------------------------------- */
 	// Create character "rotationabout" node
 	Sphere rotation_sphere = Sphere(5, 30, 30, true);
-	SceneNode rotationCenter(rootNodePtr, "rotationCenter", &rotation_sphere, Vector(100.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode rotationCenter(rootNodePtr, "rotationCenter", &rotation_sphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rotationCenter.setVisible(true);
 
 
@@ -479,10 +479,10 @@ int main(int argc, char *argv[])
 
 
 
-	for(int i = 1; i < 3; i++)
+	for(int i = 0; i < 6; i++)
 	{
 
-		duckMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,0,1),0.0f),btVector3(sin(PI/3*i) * 560 ,350,cos(PI/3*i) * 560)));
+		duckMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(0,0,1),0.0f),btVector3(sin(PI/3*i) * 500 ,350,cos(PI/3*i) * 500)));
 		duckRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(duckMass,duckMotionState,duckShape,duckInertia);
 
 		duckRigidBody = new btRigidBody(*duckRigidBodyCI);
