@@ -423,9 +423,6 @@
     <ClCompile Include="memoryManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="globalOverloading.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="colladaSkeleton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

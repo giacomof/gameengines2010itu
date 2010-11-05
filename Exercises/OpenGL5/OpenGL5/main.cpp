@@ -25,10 +25,7 @@
 #include "frameClock.h"					// Header File for our Clock
 #include "sound.h"						// Header File for our Sound
 #include "windowManager.h"				// Header File for our Window Manager
-#include "debugDraw.h"					// Header File for our Debug Drawer
-
-
-//#include "globalOverloading.cpp"
+#include "debugDraw.h"					// Header File for our Debug Drawer 
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -127,7 +124,6 @@ void operator delete(void * ptr, unsigned short flag)
 	cout << "DELETE WITH FLAG: " << flag << endl;
 	MemoryManager::freeToLastMarker();
 }
-
 
 /* This thread handles input */
 int threadInput(void *data)
