@@ -8,10 +8,14 @@ GLOBAL TASKS:
 0- Use Clock Class into updates/draws/synchs
 V- Memory Manager
 	V- Stack Allocator
-	0- Pool or Double Edge Allocator
+	0- Pool Allocator
 	1(V)- Singleton
 	1(V)- thread Safe
 S- Skeletal Animation
+G- better thread synch and use
+0- V8 Javascript Scripting Integration
+0- Shaders
+0- Engine Abstraction (setupScene, frameStarted, frameEnded)
 0- Compile everything we can as a DLL
 
 OPTIONALS:
@@ -48,9 +52,10 @@ COMPLETED:
 	1(G)- Texture Manager
 		1(G)- MD5 hashing for checking that each file is loaded only once
 	1(V)- Mesh Manager
-		1(V+G) - MD2 Manager + MD5 hashing
-		  1(V) - COLLADA Manager
-					1(G)- MD5 hashing	
+		1(V) - MD2 Manager 
+			1(G) - MD5 hashing
+		1(V) - COLLADA Manager
+			1(G)- MD5 hashing	
 	1(V)- Mutex Manager
 1(G)- Quaternions into Math Library
 1(G)- Update boost test for quaternions
