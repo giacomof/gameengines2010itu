@@ -190,6 +190,7 @@ protected:
 	float normal[3];
 	float interp_t;
 
+
 };
 
 #endif

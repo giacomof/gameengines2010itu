@@ -75,6 +75,7 @@ COMPLETED:
 	1(G)- Rewrite methods of the Transformation Class in order to work properly with physics
 1(G)- Lighting System
 1(G)- attach/detach camera to player model
+1(V+G)- MD2 normals fixed enough
 
 Symbology Map:
 

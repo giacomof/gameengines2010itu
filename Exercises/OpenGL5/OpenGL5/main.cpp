@@ -38,7 +38,7 @@ static int const screenHeight=600;		// Window Height
 static int const screenColorDepth=32;	// Color Depth
 
 static int const tick = 16;				// Minimum time between screen frames
-static int const thread_delay = 3;		// Minimum time between loops
+static int const thread_delay = 1;		// Minimum time between loops
 static float const PI = 3.14159f;		// PI definition
 
 Uint32 tickFrame = 0;
@@ -321,8 +321,9 @@ int main(int argc, char *argv[])
 	// * Lights Connected to the battleDroid and to root		  *
 	// * ---------------------------------------- */
 	Light testLight = Light();
-	Light testLight1 = Light(true, true, 1,1,1,0,0,0,0.5f,0.5f,0.5f);
-	testLight1.setDirection(Vector(0, 1, 0));
+	testLight.isEnabled = false;
+	Light testLight1 = Light(true, true, 1.0f,1.0f,1.0f,0.8f,0.8f,0.8f,0.5f,0.5f,0.5f);
+	testLight1.setDirection(Vector(-1, 0, 0));
 
 	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
