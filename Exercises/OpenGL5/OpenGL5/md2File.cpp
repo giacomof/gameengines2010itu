@@ -260,7 +260,7 @@ void md2File::Render() {
 	glPushMatrix();
 	glScalef(uv_scale_s,uv_scale_t,1.0f);
 	glMatrixMode(GL_MODELVIEW);
-
+	glCullFace(GL_FRONT);
 	// draw each triangle
 	glBegin(GL_TRIANGLES);
 		// get num of triangles in mesh
@@ -325,7 +325,7 @@ void md2File::Render() {
 		}
 	glEnd();
 
-	
+	glCullFace(GL_BACK);
 		
 	glMatrixMode(GL_TEXTURE);
 	glPopMatrix();
