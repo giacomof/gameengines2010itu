@@ -31,11 +31,11 @@ struct colladaInterfaceContainer
 	std::string meshMD5;
 };
 
-/*struct colladaSkelInterfaceContainer
+struct colladaSkelInterfaceContainer
 {
 	ColladaSkeleton * colladaSkel;
-	std::string meshMD5;
-};*/
+	std::string skelMD5;
+};
 
 using namespace std;
 
@@ -64,6 +64,8 @@ public:
 	// COLLADA methods
 	char * loadCollada(char * filePath, char * colladaNameChar);
 	ColladaFile * getColladaMesh(char * colladaNameChar);
+	bool loadColladaSkeleton(char * filePath, char * colladaNameChar);
+	ColladaSkeleton * getColladaSkeleton(char * colladaNameChar);
 
 	// light methods
 	//Light * newLight(void);
@@ -76,6 +78,7 @@ private:
 	std::map <char *, textureContainer> texture_list;
 	std::map <char *, md2InterfaceContainer> md2_list;
 	std::map <char *, colladaInterfaceContainer> collada_list;
+	std::map <char *, colladaSkelInterfaceContainer> colladaskel_list;
 };
 
 #endif

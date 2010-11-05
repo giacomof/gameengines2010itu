@@ -63,10 +63,6 @@ bool ColladaSkeleton::load(std::string & str)
 				}
 			}
 
-			// If node wasn't found, abort
-			if (!nodeFound)
-				break;
-
 			// reset variable for reuse
 			nodeFound = false;
 			currentNode = visualSceneNode->first_node("node");
@@ -92,16 +88,8 @@ bool ColladaSkeleton::load(std::string & str)
 				}
 			}
 
-			// If node wasn't found, abort
-			if (!nodeFound)
-				break;
-
-			// We should have the root node of the skeleton stored in currentNode at this point
-			// Start building skeleton
-			bool skeletonDone = false;
-
-			// Repeat for every child node of root
-			currentNode = rootNode;
+			// Start recursively building the skeleton
+			parseChildJoint(rootNode, -1);
 		}
 
 		if(!isFinished)  {
@@ -149,9 +137,24 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 
 	// Joint should be complete at this point, add it to the array
 	JointArray.push_back(currentJoint);
+	int currentIndex = JointArray.size() - 1;
 
+	bool did_all_children = false;
+	xml_node<>* childNode = currentNode->first_node("node");
 	// Search children of this node and call this function on them too
+	while (!did_all_children)
+	{
+		if (childNode != 0)
+		{
+			parseChildJoint(childNode, currentIndex);
 
+			childNode->next_sibling("node");
+		}
+		else
+		{
+			did_all_children = true;
+		}
+	}
 }
 
 void ColladaSkeleton::render(void) const
