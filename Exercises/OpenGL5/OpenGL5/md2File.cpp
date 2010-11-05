@@ -1,6 +1,8 @@
 #include "md2File.h"
 
+
 #define MD2_FRAME_RATE (1.0f/MD2_FRAMES_PER_SEC)
+
 
 vec3 md2File::anorms[] = {
 	#include "anorms.h"
@@ -24,6 +26,7 @@ md2File::md2File()
 	m_NumAnims=0;
 	currentFrame = 0;
 	interp_t = 0; 
+
 }
 
 // destructor
@@ -163,6 +166,9 @@ void md2File::Update(float dt) {
 	if(!m_data)
 		return;
 	
+	// Compute max frame index
+	int maxFrame = GetModel()->numFrames - 1;
+
 	m_AnimTime += dt;
 
 	// get pointer to animation reference
@@ -192,7 +198,10 @@ void md2File::Update(float dt) {
 	int f2 = panimref->m_FrameStart;
 	if( f1 < (panimref->m_FrameStart+panimref->m_FrameCount-1) ) {
 		f2 = f1+1;
+		
 	}
+
+	currentFrame = f2;
 
 	// get pointers to frames
 	const frame* pf1 = GetFrame(f1);
@@ -243,9 +252,6 @@ void md2File::Render() {
 	// Compute max frame index
 	int maxFrame = GetModel()->numFrames - 1;
 
-	currentFrame++;
-	if(currentFrame > maxFrame) currentFrame = 0;
-
 	// decompress the uv data
 	float uv_scale_s = 1.0f / GetModel()->skinWidth;
 	float uv_scale_t = 1.0f / GetModel()->skinHeight;
@@ -274,41 +280,43 @@ void md2File::Render() {
 				/* *** Normals Interpolation **** */
 				/* ****************************** */
 				
-				//// frameA is the current frame
-				//const frame * frameA = GetFrame(currentFrame);
-				//const frame * frameB;
-				//// frameB is the next frame, or the first one
-				//// if this was the last frame of the animation
-				//if(currentFrame == maxFrame) frameB = GetFrame(0);
-				//else frameB = GetFrame(currentFrame+1);
+				//frameA is the current frame
+				const frame * frameA = GetFrame(currentFrame);
+				const frame * frameB;
+				// frameB is the next frame, or the first one
+				// if this was the last frame of the animation
+				if(currentFrame == 0) frameB = GetFrame(maxFrame);
+				else frameB = GetFrame(currentFrame-1);
 
-				//// vertex A is the current vertex
-				//const vertex vertA = frameA->vertices[ triangles[i].vertexIndices[j] ];
-				//const vertex vertB = frameB->vertices[ triangles[i].vertexIndices[j] ];
+				// vertex A is the current vertex
+				const vertex vertA = frameA->vertices[ triangles[i].vertexIndices[j] ];
+				const vertex vertB = frameB->vertices[ triangles[i].vertexIndices[j] ];
 
-				//// normA is the current normal, normB is the next one
-				//const GLfloat * normA = anorms[ vertA.normalIndex ];
-				//const GLfloat * normB = anorms[ vertB.normalIndex ];
-				//				
-				////LERP(normal, normA, normB, interp_t);
+				// normA is the current normal, normB is the next one
+				const GLfloat * normA = anorms[ vertA.normalIndex ];
+				const GLfloat * normB = anorms[ vertB.normalIndex ];
+								
+				//LERP(normal, normA, normB, interp_t);
 
-				//normal[0] = normA[0] + interp_t * (normB[0] - normA[0]);
-				//normal[1] = normA[1] + interp_t * (normB[1] - normA[1]);
-				//normal[2] = normA[2] + interp_t * (normB[2] - normA[2]);
+				normal[0] = normA[0] + interp_t * (normB[0] - normA[0]);
+				normal[1] = normA[1] + interp_t * (normB[1] - normA[1]);
+				normal[2] = normA[2] + interp_t * (normB[2] - normA[2]);
 
 				const float* pvertex = m_Verts + 3*pt[i].vertexIndices[j];
 				const uv*    puv     = GetTexCoords() + pt[i].textureIndices[j];
 				
 				//const float * normal = anorms[ GetFrame(currentFrame)->vertices[ triangles[i].vertexIndices[j] ].normalIndex ];
 
-				normal[0] = 0;
-				normal[1] = 1;
-				normal[0] = 0;
+				//normal[0] = 0;
+				//normal[1] = 1;
+				//normal[0] = 0;
 
 				// set UV
 				glTexCoord2sv(puv->data);
+							
 				// set normal
 				glNormal3fv(normal);
+
 				// draw vertex
 				glVertex3fv(pvertex);
 			}
