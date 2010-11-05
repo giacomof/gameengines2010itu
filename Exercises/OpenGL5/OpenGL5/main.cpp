@@ -659,6 +659,9 @@ void drawGL(int frameDelta)
 /* Initialize OpenGL */
 int initGL(void)
 {
+
+	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 	// Clears color buffer
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	// sets the matrix stack as the projection matrix stack
