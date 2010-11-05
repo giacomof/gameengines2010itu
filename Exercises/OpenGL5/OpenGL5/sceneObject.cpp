@@ -126,10 +126,17 @@ int Sphere::getSphereStacks(void)
 // ************** Plane **************** //
 // ************************************* //
 
-Plane::Plane(float w, float h) 
+Plane::Plane(float w, float h, int sideSubdivisions) 
 {
 	width = w;
 	height = h;
+	subdivisions = sideSubdivisions;
+
+	dividedWidth = width/subdivisions;
+	dividedHeight = height/subdivisions;
+
+	halfWidth = width/2;
+	halfHeight = height/2;
 }
 Plane::~Plane(void) 
 {
@@ -139,39 +146,40 @@ void Plane::drawGeometry()
 {
 	glDisable(GL_TEXTURE_2D);
 
-	float dividedWidth = width/100;
-	float dividedHeight = height/100;
-
-	float halfWidth = width/2;
-	float halfHeight = height/2;
-
-	for(int i = 0; i < 100; i++)
+	if(subdivisions == 0) 
 	{
-		for(int j = 0; j < 100; j++)
+		glBegin(GL_QUADS);
+			glNormal3f(0,1,0);
+			glVertex3f( halfWidth, 0.0f, halfHeight);	
+			glNormal3f(0,1,0);
+			glVertex3f( halfWidth, 0.0f,-halfHeight);
+			glNormal3f(0,1,0);
+			glVertex3f(-halfWidth, 0.0f,-halfHeight);
+			glNormal3f(0,1,0);
+			glVertex3f(-halfWidth, 0.0f, halfHeight);			
+		glEnd();
+
+	}
+	else
+	{
+		for(int i = 0; i < subdivisions; i++)
 		{
-			glBegin(GL_QUADS);
-				glNormal3f(0,1,0);
-				glVertex3f( -halfWidth+dividedWidth*(i+1), 0.0f, halfHeight-(dividedWidth*j));	
-				glNormal3f(0,1,0);
-				glVertex3f(-halfWidth+dividedWidth*(i+1), 0.0f, halfHeight-(dividedWidth*(j+1)));
-				glNormal3f(0,1,0);
-				glVertex3f(-halfWidth+dividedWidth*i, 0.0f, halfHeight-(dividedWidth*(j+1)));
-				glNormal3f(0,1,0);
-				glVertex3f(-halfWidth+dividedWidth*i, 0.0f, halfHeight-(dividedWidth*j));			
-			glEnd();
+			for(int j = 0; j < subdivisions; j++)
+			{
+				glBegin(GL_QUADS);
+					glNormal3f(0,1,0);
+					glVertex3f( -halfWidth+dividedWidth*(i+1), 0.0f, halfHeight-(dividedWidth*j));	
+					glNormal3f(0,1,0);
+					glVertex3f(-halfWidth+dividedWidth*(i+1), 0.0f, halfHeight-(dividedWidth*(j+1)));
+					glNormal3f(0,1,0);
+					glVertex3f(-halfWidth+dividedWidth*i, 0.0f, halfHeight-(dividedWidth*(j+1)));
+					glNormal3f(0,1,0);
+					glVertex3f(-halfWidth+dividedWidth*i, 0.0f, halfHeight-(dividedWidth*j));			
+				glEnd();
+			}
 		}
 	}
 
-	/*glBegin(GL_QUADS);
-		glNormal3f(0,1,0);
-		glVertex3f( width/2, 0.0f, height/2);	
-		glNormal3f(0,1,0);
-		glVertex3f( width/2, 0.0f,-height/2);
-		glNormal3f(0,1,0);
-		glVertex3f(-width/2, 0.0f,-height/2);
-		glNormal3f(0,1,0);
-		glVertex3f(-width/2, 0.0f, height/2);			
-	glEnd();*/
 	glEnable(GL_TEXTURE_2D);
 }
 
