@@ -182,20 +182,20 @@ char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 	hash = md5.getHashFromFilePtr((FILE *)str.c_str(), (int) str.length());
 
 	// use const_iterator to walk through elements of pairs
-	for ( std::map<char *, colladaInterfaceContainer>::const_iterator iter = collada_list.begin(); iter != collada_list.end(); ++iter ) {
+	//for ( std::map<char *, colladaInterfaceContainer>::const_iterator iter = collada_list.begin(); iter != collada_list.end(); ++iter ) {
 
-		if (iter->second.meshMD5 == hash) {
-			if (iter->first == colladaNameChar) {
-				exist = true;
-				break;
-			} else {
-				collada_list[colladaNameChar].colladaMesh = iter->second.colladaMesh;
-				collada_list[colladaNameChar].meshMD5 = iter->second.meshMD5;
-				exist = true;
-				break;
-			}
-		}
-	}
+	//	if (iter->second.meshMD5 == hash) {
+	//		if (iter->first == colladaNameChar) {
+	//			exist = true;
+	//			break;
+	//		} else {
+	//			collada_list[colladaNameChar].colladaMesh = iter->second.colladaMesh;
+	//			collada_list[colladaNameChar].meshMD5 = iter->second.meshMD5;
+	//			exist = true;
+	//			break;
+	//		}
+	//	}
+	//}
 
 	if (exist == false) {
 		ColladaFile * tempCollada;
@@ -214,6 +214,50 @@ char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 	}
 }
 
+bool AssetManager::loadColladaSkeleton(char * filePath, char * colladaNameChar)
+{
+	bool exist = false;
+	unsigned char * m_data;
+	std::string hash;
+	md5wrapper md5;
+
+	std::ifstream ifs(filePath);
+	std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+
+	hash = md5.getHashFromFilePtr((FILE *)str.c_str(), (int) str.length());
+
+	// use const_iterator to walk through elements of pairs
+	//for ( std::map<char *, colladaSkelInterfaceContainer>::const_iterator iter = colladaskel_list.begin(); iter != colladaskel_list.end(); ++iter ) {
+
+	//	if (iter->second.meshMD5 == hash) {
+	//		if (iter->first == colladaNameChar) {
+	//			exist = true;
+	//			break;
+	//		} else {
+	//			colladaskel_list[colladaNameChar].colladaSkel = iter->second.colladaSkel;
+	//			colladaskel_list[colladaNameChar].skelMD5 = iter->second.meshMD5;
+	//			exist = true;
+	//			break;
+	//		}
+	//	}
+	//}
+
+	if (exist == false) {
+		ColladaSkeleton * tempCollada;
+		tempCollada = new ColladaSkeleton();
+		bool success = tempCollada->load(str);
+		if (success) {
+			colladaskel_list[colladaNameChar].colladaSkel = tempCollada;
+			colladaskel_list[colladaNameChar].skelMD5 = hash;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
 md2File * AssetManager::getMd2Mesh(char * md2NameChar) 
 {
 	return md2_list[md2NameChar].md2Mesh;
@@ -222,6 +266,11 @@ md2File * AssetManager::getMd2Mesh(char * md2NameChar)
 ColladaFile * AssetManager::getColladaMesh(char * colladaNameChar) 
 {
 	return collada_list[colladaNameChar].colladaMesh;
+}
+
+ColladaSkeleton * AssetManager::getColladaSkeleton(char * colladaNameChar) 
+{
+	return colladaskel_list[colladaNameChar].colladaSkel;
 }
 
 //Light * AssetManager::newLight()

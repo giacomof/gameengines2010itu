@@ -9,6 +9,7 @@
 #include "linearAlgebraDLL.h"
 #include "md2File.h"
 #include "colladaFile.h"
+#include "colladaSkeleton.h"
 #include "assetManager.h"
 
 using namespace std;
