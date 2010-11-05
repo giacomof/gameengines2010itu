@@ -63,7 +63,7 @@ class Sphere : public SceneObject
 class Plane : public SceneObject 
 {
 	public:
-		Plane(float w, float h);
+		Plane(float w, float h, int sideSubdivisions = 0);
 		~Plane(void);
 
 		void drawGeometry(void);
@@ -72,6 +72,12 @@ class Plane : public SceneObject
 		void setDimensions(float w, float h);
 
 		float width, height;
+		float dividedWidth;
+		float dividedHeight;
+		float halfWidth;
+		float halfHeight;
+
+		int subdivisions;
 };
 
 class Cube : public SceneObject

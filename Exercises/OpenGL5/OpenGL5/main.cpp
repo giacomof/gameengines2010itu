@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 
 	dynamicsWorld->addRigidBody(groundRigidBody);
 
-	Plane testPlaneGeom(2000.0f, 2000.0f);
+	Plane testPlaneGeom(2000.0f, 2000.0f, 200);
 	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
 	testPlane->getTransformation()->setBBTranslation(Vector(0, 10, 0));
 	testPlane->setVisible(true);
@@ -550,6 +550,7 @@ int main(int argc, char *argv[])
 	{
 		
 		frameDelta = renderClock.getFrameDelta();
+
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
@@ -648,7 +649,7 @@ void drawGL(int frameDelta)
 
 	// draw the animation
 	//AssetManager::lockMutex( rootNodePtr->mutex_node );
-	rootNodePtr->update(0.006*frameDelta);
+	rootNodePtr->update(frameDelta);
 	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// Swaps the buffers
