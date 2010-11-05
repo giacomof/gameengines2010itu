@@ -90,7 +90,6 @@
     <ClCompile Include="entityCamera.cpp" />
     <ClCompile Include="entitySpectator.cpp" />
     <ClCompile Include="frameClock.cpp" />
-    <ClCompile Include="globalOverloading.cpp" />
     <ClCompile Include="include\bullet_include\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />
     <ClCompile Include="include\bullet_include\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp" />
     <ClCompile Include="include\bullet_include\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp" />
