@@ -250,7 +250,7 @@ Transformation * SceneNode::getTransformation()
 }
 
 
-// Apply the trasformation of the node and then draw it
+// Apply the transformation of the node and then draw it
 void SceneNode::drawGeometry()
 {
 

@@ -15,7 +15,6 @@ bool ColladaSkeleton::load(std::string & str)
 {
 	// Prepare array
 	JointArray.clear();
-	JointNumber = 0;
 
 	// Vars
 	bool isFinished = false;
@@ -69,27 +68,46 @@ bool ColladaSkeleton::load(std::string & str)
 			// find the root node
 			while (!nodeFound)
 			{
-				// Replace name check with an id check against rootNodeName later
-				if ( currentNode->first_node("node")->first_attribute("id")->value() == rootNodeName)
+				// Wrote this in a bit of an adhoc way. apologies
+				if ( currentNode->first_node("node") != 0 )
 				{
-					// We've found the node
-					rootNode = currentNode->first_node("node");
-					nodeFound = true;
+					if ( currentNode->first_node("node")->first_attribute("id") != 0 )
+					{
+						string tempString = currentNode->first_node("node")->first_attribute("id")->value();
+						//std::cout << "Found a subnode with name \"" << tempString << "\", comparing against \"" << rootNodeName << "\"\n";
+						if ( rootNodeName.compare(1, rootNodeName.size() - 1, tempString) == 0)
+						{
+							// We've found the node
+							//std::cout << "Node matched!\n";
+							rootNode = currentNode->first_node("node");
+							nodeFound = true;
+						}
+					}
 				}
-				else if (currentNode->next_sibling() != 0)
+				
+				if ( !nodeFound && currentNode->next_sibling() != 0)
 				{
 					// Check the next node
 					currentNode = currentNode->next_sibling();
 				}
-				else
+				else if ( !nodeFound )
 				{
 					// Haven't found it and we're out of nodes
+					std::cout << "Skeleton load failed - Couldn't find a node matching root name!\n";
 					return false;
 				}
 			}
 
 			// Start recursively building the skeleton
 			parseChildJoint(rootNode, -1);
+
+			// JointArray should be full now
+			std::cout << "Joint Array has " << JointArray.size() << " joints.\n";
+		}
+
+		if(tempNodeName == "library_animations")
+		{
+			// Load and store animations
 		}
 
 		if(!isFinished)  {
@@ -103,7 +121,7 @@ bool ColladaSkeleton::load(std::string & str)
 		}
 	}
 
-	return false;
+	return true;
 }
 
 void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
@@ -111,7 +129,13 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	// Make the joint
 	Joint currentJoint;
 	currentJoint.jParentIndex = parentIndex;
-	currentJoint.jName = currentNode->name();
+	currentJoint.jName = currentNode->first_attribute("name")->value();
+
+	// get the bone ID, if any
+	if ( currentNode->first_attribute("sid") != 0 )
+		currentJoint.jBoneID = currentNode->first_attribute("sid")->value();
+	else
+		currentJoint.jBoneID = "";
 
 	// Temp string for storing float array in
 	string matrixArray;
@@ -139,30 +163,33 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	JointArray.push_back(currentJoint);
 	int currentIndex = JointArray.size() - 1;
 
-	bool did_all_children = false;
-	xml_node<>* childNode = currentNode->first_node("node");
+	std::cout << "Joint Name: \"" << currentJoint.jName << "\", Index: " << currentIndex << ", BoneID: " << currentJoint.jBoneID << ", Parent Index: " << currentJoint.jParentIndex << "\n";
+
 	// Search children of this node and call this function on them too
-	while (!did_all_children)
+	if (currentNode->first_node("node") != 0)
 	{
-		if (childNode != 0)
-		{
+		bool didChildren = false;
+		xml_node<>* childNode = currentNode->first_node("node");
+
+		do {
 			parseChildJoint(childNode, currentIndex);
 
-			childNode->next_sibling("node");
-		}
-		else
-		{
-			did_all_children = true;
-		}
+			if ( childNode->next_sibling("node") != 0)
+				childNode = childNode->next_sibling("node");
+			else
+				didChildren = true;
+
+		} while (!didChildren);
 	}
 }
 
-void ColladaSkeleton::render(void) const
+unsigned int ColladaSkeleton::getJointCount()
 {
-	
+	return JointArray.size();
 }
 
-unsigned int ColladaSkeleton::getDataSize() const 
+unsigned int ColladaSkeleton::getDataSize()
 {
-	return static_cast<unsigned int>(/*vertexCount*sizeof(float) + */sizeof(ColladaSkeleton));
+	// Very inaccurate. Leaves out a lot of stuff
+	return static_cast<unsigned int>( ( JointArray.size() * sizeof(Joint) ) + sizeof(ColladaSkeleton) );
 }

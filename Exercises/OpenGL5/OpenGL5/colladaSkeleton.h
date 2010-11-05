@@ -24,6 +24,7 @@ struct Joint
 {
 	Matrix inversePose;			// the inverse of the joint pose
 	const char * jName;			// joint name
+	const char * jBoneID;		// joint bone ID, if any
 	int jParentIndex;			// the index of the parent
 };
 
@@ -39,17 +40,16 @@ public:
 	// load the skeleton
 	bool load(std::string & str);
 
-	// not done yet.
-	void render(void) const;
+	// returns number of joints (for anticipating array sizes)
+	unsigned int getJointCount();
 
 	// returns the total size of the skeleton in bytes
-	unsigned int getDataSize() const;
+	unsigned int getDataSize();
 
 private:
 	void parseChildJoint(xml_node<>* currentNode, int parentIndex);
 
 	vector<Joint> JointArray;
-	unsigned int JointNumber;
 };
 
 #endif
