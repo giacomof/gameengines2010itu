@@ -1,12 +1,12 @@
-#pragma once
+#define entityCamera_D __declspec(dllimport)
 
-#ifndef entityCamera__H__
-#define entityCamera__H__
+#ifndef entityCamera__H
+#define entityCamera__H
 
 #include "sceneObject.h"
 #include "SceneNode.h"
 
-class entityCamera : public SceneObject
+class entityCamera_D entityCamera : public SceneObject
 {
 public:
 	float vPosition[3];

@@ -1,7 +1,7 @@
-#pragma once
+#define md2File_D __declspec(dllimport)
 
-#ifndef md2File__H__
-#define md2File__H__
+#ifndef md2File__H
+#define md2File__H
 
 #include <vector>
 #include <string>
@@ -17,7 +17,7 @@
 
 typedef float vec3[3];
 
-class md2File {
+class md2File_D md2File {
 public:
 
 	// Constructor

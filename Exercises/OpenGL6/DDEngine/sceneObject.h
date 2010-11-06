@@ -1,5 +1,7 @@
-#ifndef sceneObject__H__
-#define sceneObject__H__
+#define sceneObject_D __declspec(dllimport)
+
+#ifndef sceneObject__H
+#define sceneObject__H
 
 #include <SDL.h>
 #include <il.h>
@@ -15,7 +17,7 @@
 using namespace std;
 using namespace linearAlgebraDLL;
 
-class SceneObject
+class sceneObject_D SceneObject
 {
 	public:
 		SDL_mutex *mutex_object;

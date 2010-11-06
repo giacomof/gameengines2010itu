@@ -1,7 +1,7 @@
-#pragma once
+#define messagePump_D __declspec(dllimport)
 
-#ifndef messagePump__H__
-#define messagePump__H__
+#ifndef messagePump__H
+#define messagePump__H
 
 #include "assetManager.h"
 
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class MessagePump								// Singleton
+class messagePump_D MessagePump								// Singleton
 {
 public:
 	static MessagePump _instance;

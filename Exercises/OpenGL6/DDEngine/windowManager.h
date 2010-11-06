@@ -1,12 +1,12 @@
-#pragma once
+#define WindowManager_D __declspec(dllimport)
 
-#ifndef WindowManager__H__
-#define WindowManager__H__
+#ifndef WindowManager__H
+#define WindowManager__H
 
 #include <SDL.h>						// Header File for the SDL library
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
 
-class WindowManager
+class WindowManager_D WindowManager
 {
 public:
 

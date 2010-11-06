@@ -33,6 +33,8 @@
 
 //---------------------------------------------------------------------- 
 //include protection
+#define MD5_D __declspec(dllimport)
+
 #ifndef MD5_H
 #define MD5_H
 
@@ -57,7 +59,7 @@ typedef struct
 /*
  * MD5 class
  */
-class MD5
+class MD5_D MD5
 {
 
 	private:

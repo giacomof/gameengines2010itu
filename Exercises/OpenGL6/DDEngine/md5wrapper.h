@@ -12,6 +12,8 @@
  */
 
 //include protection
+#define MD5WRAPPER_D __declspec(dllimport)
+
 #ifndef MD5WRAPPER_H
 #define MD5WRAPPER_H
 
@@ -21,7 +23,7 @@
 //forwards
 class MD5;
 
-class md5wrapper
+class MD5WRAPPER_D md5wrapper
 {
 	private:
 		MD5 *md5;

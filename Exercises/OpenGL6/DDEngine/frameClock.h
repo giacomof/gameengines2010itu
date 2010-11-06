@@ -1,14 +1,14 @@
-#pragma once
+#define frameClock_D __declspec(dllimport)
 
-#ifndef frameClock__H__
-#define frameClock__H__
+#ifndef frameClock__H
+#define frameClock__H
 
 #include <deque>
 #include <SDL.h>
 
 using namespace std;
 
-class frameClock
+class frameClock_D frameClock
 {
 public:
 	frameClock() { float fps = 0.0f; currentTime = 0; };
