@@ -1,7 +1,7 @@
-#pragma once
+#define sound_D __declspec(dllimport)
 
-#ifndef sound_H_
-#define sound_H_
+#ifndef sound_H
+#define sound_H
 
 #include <SDL.h>
 #include <SDL_audio.h>					// Header File for SDL audio library

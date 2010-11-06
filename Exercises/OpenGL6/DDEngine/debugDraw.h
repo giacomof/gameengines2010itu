@@ -1,10 +1,14 @@
-#pragma once
+#define DebugDraw_D __declspec(dllimport)
+
+
+#ifndef DebugDraw__H
+#define DebugDraw__H
 
 #include <btBulletCollisionCommon.h>
 #include "SDL_opengl.h"
 #include <iostream>
 
-class DebugDraw : public btIDebugDraw 
+class DebugDraw_D DebugDraw : public btIDebugDraw 
 {
 public:
 	DebugDraw(void);
@@ -21,3 +25,4 @@ private:
 	int mode; 
 };
 
+#endif

@@ -1,4 +1,4 @@
-#define colladaSkeleton_D __declspec(dllimport)
+#define controller_D __declspec(dllimport)
 
 #ifndef controller__H
 #define controller__H
@@ -7,7 +7,7 @@
 #include "entitySpectator.h"
 #include "assetManager.h"
 
-class colladaSkeleton_D Controller								// Singleton
+class controller_D Controller								// Singleton
 {
 public:
 	static Controller _instance;

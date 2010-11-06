@@ -1,4 +1,4 @@
-#pragma once
+#define globals_D __declspec(dllimport)
 
 #ifndef globals__H__
 #define globals__H__

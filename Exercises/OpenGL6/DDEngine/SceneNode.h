@@ -1,7 +1,7 @@
-#pragma once
+#define sceneNode_D __declspec(dllimport)
 
-#ifndef sceneNode__H__
-#define sceneNode__H__
+#ifndef sceneNode__H
+#define sceneNode__H
 
 #include "globals.h"
 #include <SDL_mutex.h>
@@ -19,7 +19,7 @@ using namespace linearAlgebraDLL;
 using namespace std;
 
 
-class SceneNode 
+class sceneNode_D SceneNode 
 {
 	public:
 

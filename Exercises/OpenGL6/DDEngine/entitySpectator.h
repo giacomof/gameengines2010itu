@@ -1,14 +1,14 @@
-#pragma once
+#define entitySpectator_D __declspec(dllimport)
 
-#ifndef entitySpectator__H__
-#define entitySpectator__H__
+#ifndef entitySpectator__H
+#define entitySpectator__H
 
 #include "sceneObject.h"
 #include "linearAlgebraDLL.h"
 #include "entityCamera.h"
 #include "assetManager.h"
 
-class entitySpectator : public SceneObject
+class entitySpectator_D entitySpectator : public SceneObject
 {
 private:
 	entityCamera *camera;

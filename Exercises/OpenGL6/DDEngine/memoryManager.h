@@ -1,12 +1,12 @@
-#pragma once
+#define MemoryManager_D __declspec(dllimport)
 
-#ifndef MemoryManager__H__
-#define MemoryManager__H__
+#ifndef MemoryManager__H
+#define MemoryManager__H
 
 #include "assetManager.h"
 #include <stdlib.h>
 
-class MemoryManager
+class MemoryManager_D MemoryManager
 {
 public:
 

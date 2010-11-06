@@ -1,14 +1,14 @@
-#pragma once
+#define inputManager_D __declspec(dllimport)
 
-#ifndef inputManager__H__
-#define inputManager__H__
+#ifndef inputManager__H
+#define inputManager__H
 
 #include <SDL.h>
 #include "messagePump.h"
 #include "controller.h"
 #include "assetManager.h"
 
-class inputManager
+class inputManager_D inputManager
 {
 public:
 	static inputManager _instance;
