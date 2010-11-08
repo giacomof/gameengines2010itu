@@ -1,4 +1,4 @@
-#define colladaSkeleton_D __declspec(dllimport)
+#define colladaSkeleton_D __declspec(dllexport)
 
 #ifndef colladaSkeleton__H
 #define colladaSkeleton__H

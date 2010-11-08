@@ -1,4 +1,4 @@
-#define controller_D __declspec(dllimport)
+#define controller_D __declspec(dllexport)
 
 #ifndef controller__H
 #define controller__H

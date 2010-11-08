@@ -1,4 +1,4 @@
-#define md2File_D __declspec(dllimport)
+#define md2File_D __declspec(dllexport)
 
 #ifndef md2File__H
 #define md2File__H
@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <glut.h>
 #include <linearAlgebraDLL.h>
+
+#pragma warning(disable: 4251)
 
 // sets the frames per second for the animations
 #define MD2_FRAMES_PER_SEC 2

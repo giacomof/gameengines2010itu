@@ -1,4 +1,4 @@
-#define transformation_D __declspec(dllimport)
+#define transformation_D __declspec(dllexport)
 
 #ifndef transformation__H
 #define transformation__H
@@ -6,9 +6,9 @@
 #include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
 
+#pragma warning(disable: 4251)
+
 using namespace linearAlgebraDLL;
-
-
 using namespace std;
 
 class transformation_D Transformation 

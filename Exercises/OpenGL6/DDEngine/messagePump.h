@@ -1,4 +1,4 @@
-#define messagePump_D __declspec(dllimport)
+#define messagePump_D __declspec(dllexport)
 
 #ifndef messagePump__H
 #define messagePump__H

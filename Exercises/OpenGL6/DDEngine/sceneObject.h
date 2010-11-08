@@ -1,4 +1,4 @@
-#define sceneObject_D __declspec(dllimport)
+#define sceneObject_D __declspec(dllexport)
 
 #ifndef sceneObject__H
 #define sceneObject__H

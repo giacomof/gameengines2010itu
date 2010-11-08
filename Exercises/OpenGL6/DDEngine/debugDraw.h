@@ -1,4 +1,4 @@
-#define DebugDraw_D __declspec(dllimport)
+#define DebugDraw_D __declspec(dllexport)
 
 
 #ifndef DebugDraw__H
@@ -7,6 +7,8 @@
 #include <btBulletCollisionCommon.h>
 #include "SDL_opengl.h"
 #include <iostream>
+
+#pragma warning(disable: 4251)
 
 class DebugDraw_D DebugDraw : public btIDebugDraw 
 {
