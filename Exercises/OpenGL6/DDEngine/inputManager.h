@@ -1,4 +1,8 @@
-#define inputManager_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define inputManager_D __declspec(dllexport)
+#else
+#    define inputManager_D __declspec(dllimport)
+#endif
 
 #ifndef inputManager__H
 #define inputManager__H

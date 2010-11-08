@@ -1,4 +1,8 @@
-#define colladaFile_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define colladaFile_D __declspec(dllexport)
+#else
+#    define colladaFile_D __declspec(dllimport)
+#endif
 
 #ifndef colladaFile_H
 #define colladaFile_H

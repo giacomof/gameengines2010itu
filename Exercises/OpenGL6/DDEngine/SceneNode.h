@@ -1,4 +1,8 @@
-#define sceneNode_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define sceneNode_D __declspec(dllexport)
+#else
+#    define sceneNode_D __declspec(dllimport)
+#endif
 
 #ifndef sceneNode__H
 #define sceneNode__H

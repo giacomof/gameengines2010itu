@@ -1,4 +1,8 @@
-#define globals_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define globals_D __declspec(dllexport)
+#else
+#    define globals_D __declspec(dllimport)
+#endif
 
 #ifndef globals__H__
 #define globals__H__

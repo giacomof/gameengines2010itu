@@ -1,4 +1,8 @@
-#define sound_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define sound_D __declspec(dllexport)
+#else
+#    define sound_D __declspec(dllimport)
+#endif
 
 #ifndef sound_H
 #define sound_H

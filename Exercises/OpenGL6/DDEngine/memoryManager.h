@@ -1,4 +1,8 @@
-#define MemoryManager_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define MemoryManager_D __declspec(dllexport)
+#else
+#    define MemoryManager_D __declspec(dllimport)
+#endif
 
 #ifndef MemoryManager__H
 #define MemoryManager__H

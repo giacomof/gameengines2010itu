@@ -1,4 +1,8 @@
-#define assetManager_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define assetManager_D __declspec(dllexport)
+#else
+#    define assetManager_D __declspec(dllimport)
+#endif
 
 #ifndef assetManager__H 
 #define assetManager__H

@@ -1,4 +1,8 @@
-#define entityCamera_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define entityCamera_D __declspec(dllexport)
+#else
+#    define entityCamera_D __declspec(dllimport)
+#endif
 
 #ifndef entityCamera__H
 #define entityCamera__H
