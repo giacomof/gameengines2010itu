@@ -1,4 +1,4 @@
-#define entityCamera_D __declspec(dllimport)
+#define entityCamera_D __declspec(dllexport)
 
 #ifndef entityCamera__H
 #define entityCamera__H

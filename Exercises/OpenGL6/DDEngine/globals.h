@@ -1,4 +1,4 @@
-#define globals_D __declspec(dllimport)
+#define globals_D __declspec(dllexport)
 
 #ifndef globals__H__
 #define globals__H__

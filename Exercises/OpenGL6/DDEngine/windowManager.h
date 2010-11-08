@@ -1,4 +1,4 @@
-#define WindowManager_D __declspec(dllimport)
+#define WindowManager_D __declspec(dllexport)
 
 #ifndef WindowManager__H
 #define WindowManager__H

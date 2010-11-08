@@ -1,4 +1,4 @@
-#define colladaFile_D __declspec(dllimport)
+#define colladaFile_D __declspec(dllexport)
 
 #ifndef colladaFile_H
 #define colladaFile_H

@@ -1,4 +1,4 @@
-#define frameClock_D __declspec(dllimport)
+#define frameClock_D __declspec(dllexport)
 
 #ifndef frameClock__H
 #define frameClock__H

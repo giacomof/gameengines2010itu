@@ -1,4 +1,4 @@
-#define entitySpectator_D __declspec(dllimport)
+#define entitySpectator_D __declspec(dllexport)
 
 #ifndef entitySpectator__H
 #define entitySpectator__H

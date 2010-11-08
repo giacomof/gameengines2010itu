@@ -33,7 +33,7 @@
 
 //---------------------------------------------------------------------- 
 //include protection
-#define MD5_D __declspec(dllimport)
+#define MD5_D __declspec(dllexport)
 
 #ifndef MD5_H
 #define MD5_H

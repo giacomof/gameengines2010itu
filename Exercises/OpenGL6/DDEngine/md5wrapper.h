@@ -12,7 +12,7 @@
  */
 
 //include protection
-#define MD5WRAPPER_D __declspec(dllimport)
+#define MD5WRAPPER_D __declspec(dllexport)
 
 #ifndef MD5WRAPPER_H
 #define MD5WRAPPER_H
