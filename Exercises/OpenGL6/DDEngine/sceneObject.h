@@ -1,7 +1,7 @@
 #define sceneObject_D __declspec(dllexport)
 
-#ifndef sceneObject__H
-#define sceneObject__H
+#ifndef sceneObject__H__
+#define sceneObject__H__
 
 #include <SDL.h>
 #include <il.h>
@@ -29,21 +29,7 @@ class sceneObject_D SceneObject
 
 };
 
-class Text : public SceneObject 
-{
-	public:
-		Text(char * p_text, int size);
-		~Text(void);
-
-		// delete the {} when rewrite this method
-		void drawGeometry(void) {};
-		void update(void) {};
-
-		void setTextSize(int size);
-		void setText(char p_text);
-};
-
-class Sphere : public SceneObject 
+class sceneObject_D Sphere : public SceneObject 
 {
 	public:
 		Sphere(float rad, int sli, int sta, bool w);
@@ -62,7 +48,7 @@ class Sphere : public SceneObject
 
 };
 
-class Plane : public SceneObject 
+class sceneObject_D Plane : public SceneObject 
 {
 	public:
 		Plane(float w, float h, int sideSubdivisions = 0);
@@ -82,7 +68,7 @@ class Plane : public SceneObject
 		int subdivisions;
 };
 
-class Cube : public SceneObject
+class sceneObject_D Cube : public SceneObject
 {
 	public:
 		Cube(float s);
@@ -96,7 +82,7 @@ class Cube : public SceneObject
 		float side;
 };
 
-class Line : public SceneObject
+class sceneObject_D Line : public SceneObject
 {
 	public:
 		Line(Vector lStart, Vector lEnd);
@@ -110,7 +96,7 @@ class Line : public SceneObject
 		Vector lineStart, lineEnd, lineVector;
 };
 
-class md2Interface : public SceneObject 
+class sceneObject_D md2Interface : public SceneObject 
 {
 	public:
 		md2Interface(md2File * m, unsigned int texture);
@@ -123,20 +109,21 @@ class md2Interface : public SceneObject
 		int md2Texture; 
 };
 
-class ColladaInterface : public SceneObject
+class sceneObject_D ColladaInterface : public SceneObject
 {
 	public:
-		ColladaInterface(ColladaFile * c, unsigned int texture);
+		ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s);
 		~ColladaInterface(void);
 
 		void update(void);
 		void drawGeometry(void);
 
+		ColladaSkeleton * skeleton;
 		ColladaFile * mesh;
 		int colladaTexture;
 };
 
-class Light : public SceneObject
+class sceneObject_D Light : public SceneObject
 {
 	public:
 		Light(void);

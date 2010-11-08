@@ -11,8 +11,10 @@ class controller_D Controller								// Singleton
 {
 public:
 	static Controller _instance;
-	static SDL_mutex *mutex_controller;
-	static entitySpectator *playerObject;
+	static SDL_mutex * mutex_controller;
+	
+	static entitySpectator * playerObject;
+	
 	static bool quit;
  
 	Controller() { & getInstance(); }

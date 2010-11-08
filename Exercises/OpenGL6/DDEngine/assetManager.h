@@ -38,7 +38,7 @@ struct colladaSkelInterfaceContainer
 
 using namespace std;
 
-class assetManager__H AssetManager
+class assetManager_D AssetManager
 {
 
 public:

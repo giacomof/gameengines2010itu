@@ -11,18 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{61DF5915-7482-48C6-BA48-594F602C511C}</ProjectGuid>
+    <ProjectGuid>{1E5DE536-15B0-4E51-81E1-6577648967D8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DDEngine</RootNamespace>
+    <RootNamespace>OPENGL5Main</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -49,14 +49,14 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DDENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\LinearAlgebraDLL;$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Debug;$(SolutionDir)\DDEngine;$(SolutionDir)\LinearAlgebraDLL;$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\include</AdditionalLibraryDirectories>
-      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\include;$(SolutionDir)\Debug;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DDEngine.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -67,11 +67,11 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;DDENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\DDEngine;$(SolutionDir)\LinearAlgebraDLL;$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -80,47 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="assetManager.h" />
-    <ClInclude Include="colladaFile.h" />
-    <ClInclude Include="colladaSkeleton.h" />
-    <ClInclude Include="controller.h" />
-    <ClInclude Include="debugDraw.h" />
-    <ClInclude Include="entityCamera.h" />
-    <ClInclude Include="entitySpectator.h" />
-    <ClInclude Include="frameClock.h" />
-    <ClInclude Include="globals.h" />
-    <ClInclude Include="inputManager.h" />
-    <ClInclude Include="md2File.h" />
-    <ClInclude Include="md5.h" />
-    <ClInclude Include="md5wrapper.h" />
-    <ClInclude Include="memoryManager.h" />
-    <ClInclude Include="messagePump.h" />
-    <ClInclude Include="SceneNode.h" />
-    <ClInclude Include="sceneObject.h" />
-    <ClInclude Include="sound.h" />
-    <ClInclude Include="transformation.h" />
-    <ClInclude Include="windowManager.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="assetManager.cpp" />
-    <ClCompile Include="colladaFile.cpp" />
-    <ClCompile Include="colladaSkeleton.cpp" />
-    <ClCompile Include="controller.cpp" />
-    <ClCompile Include="debugDraw.cpp" />
-    <ClCompile Include="entityCamera.cpp" />
-    <ClCompile Include="entitySpectator.cpp" />
-    <ClCompile Include="frameClock.cpp" />
-    <ClCompile Include="inputManager.cpp" />
-    <ClCompile Include="md2File.cpp" />
-    <ClCompile Include="md5.cpp" />
-    <ClCompile Include="md5wrapper.cpp" />
-    <ClCompile Include="memoryManager.cpp" />
-    <ClCompile Include="messagePump.cpp" />
-    <ClCompile Include="SceneNode.cpp" />
-    <ClCompile Include="sceneObject.cpp" />
-    <ClCompile Include="sound.cpp" />
-    <ClCompile Include="transformation.cpp" />
-    <ClCompile Include="windowManager.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

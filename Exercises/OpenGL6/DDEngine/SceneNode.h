@@ -101,7 +101,7 @@ class sceneNode_D SceneNode
 };
 
 
-class Root : public SceneNode
+class sceneNode_D Root : public SceneNode
 {
 	public: // Singleton
 		static Root _instance;
