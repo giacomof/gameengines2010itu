@@ -1,5 +1,8 @@
-#define DebugDraw_D __declspec(dllexport)
-
+#ifdef __DDEngine
+#    define DebugDraw_D __declspec(dllexport)
+#else
+#    define DebugDraw_D __declspec(dllimport)
+#endif
 
 #ifndef DebugDraw__H
 #define DebugDraw__H

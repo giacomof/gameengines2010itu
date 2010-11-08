@@ -1,4 +1,8 @@
-#define colladaSkeleton_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define colladaSkeleton_D __declspec(dllexport)
+#else
+#    define colladaSkeleton_D __declspec(dllimport)
+#endif
 
 #ifndef colladaSkeleton__H
 #define colladaSkeleton__H

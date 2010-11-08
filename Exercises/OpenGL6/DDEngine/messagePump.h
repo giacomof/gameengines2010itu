@@ -1,4 +1,8 @@
-#define messagePump_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define messagePump_D __declspec(dllexport)
+#else
+#    define messagePump_D __declspec(dllimport)
+#endif
 
 #ifndef messagePump__H
 #define messagePump__H

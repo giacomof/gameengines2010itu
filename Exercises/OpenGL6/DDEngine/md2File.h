@@ -1,4 +1,8 @@
-#define md2File_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define md2File_D __declspec(dllexport)
+#else
+#    define md2File_D __declspec(dllimport)
+#endif
 
 #ifndef md2File__H
 #define md2File__H

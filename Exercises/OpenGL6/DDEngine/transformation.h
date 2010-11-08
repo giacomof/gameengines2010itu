@@ -1,4 +1,8 @@
-#define transformation_D __declspec(dllexport)
+#ifdef __DDEngine
+#    define transformation_D __declspec(dllexport)
+#else
+#    define transformation_D __declspec(dllimport)
+#endif
 
 #ifndef transformation__H
 #define transformation__H
