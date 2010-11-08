@@ -511,7 +511,7 @@ int main(int argc, char *argv[])
 	entityCamera *playercamera = new(sceneGraphFlag) entityCamera();
 	player->setCamera(playercamera);
 
-	SceneNode * cameraNode = new SceneNode(battleDroid, "Camera Node", playercamera, Vector(-40.0f, 30.0f, 0.0f), Vector(0.0f,1.0f,0.0f), -90.0f );
+	SceneNode * cameraNode = new(sceneGraphFlag) SceneNode(battleDroid, "Camera Node", playercamera, Vector(-40.0f, 30.0f, 0.0f), Vector(0.0f,1.0f,0.0f), -90.0f );
 	cameraNode->rotateAboutAxis(Vector(0,0,1),-20);
 	playercamera->setSceneNode(cameraNode);
 	playercamera->isFollowingNode = false;

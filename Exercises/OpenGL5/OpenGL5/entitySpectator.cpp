@@ -113,9 +113,9 @@ void entitySpectator::update()
 
 void entitySpectator::setCamera(entityCamera *newcamera)
 {
-	AssetManager::lockMutex( SceneObject::mutex_object );
+	//AssetManager::lockMutex( SceneObject::mutex_object );
 	camera = newcamera;
-	AssetManager::unlockMutex( SceneObject::mutex_object );
+	//5AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 entityCamera* entitySpectator::getCamera()

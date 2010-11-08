@@ -18,6 +18,7 @@ public:
 	// external static declaration
 	static MemoryManager _instance; // this calls the constructor
 	static unsigned int count;
+	static unsigned int totalAllocatedMemory;
 	static unsigned int marker;
 	static unsigned int lastMarker;
 	static unsigned int const dataToAllocate = 256 * 10000; // 256Mb

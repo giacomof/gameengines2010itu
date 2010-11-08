@@ -7,6 +7,7 @@ MemoryManager MemoryManager::_instance;
 unsigned int MemoryManager::count=0;
 unsigned int MemoryManager::marker=0;
 unsigned int MemoryManager::lastMarker=0;
+unsigned int MemoryManager::totalAllocatedMemory=0;
 list<unsigned int> * MemoryManager::markersList;
 
 void * MemoryManager::operator new(size_t s) {
@@ -29,7 +30,6 @@ MemoryManager & MemoryManager::getInstance()
 	if(MemoryManager::count==0) {
 		markersList = new list<unsigned int>();
 		std::cout << "pointer to list: " << &markersList << std::endl;
-
 		unsigned int tempMark = (unsigned int) malloc(dataToAllocate);
 		markersList->push_back(tempMark);
 		if(markersList->back() == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
@@ -46,7 +46,13 @@ unsigned int MemoryManager::getMarker(void) {
 void * MemoryManager::allocate(unsigned int s) 
 {
 	// add the space required to the marker
-	markersList->push_back(markersList->back()+s);
+	unsigned int temp = markersList->back();
+	temp += s;
+	markersList->push_back(temp);
+	totalAllocatedMemory += s;
+	std::cout << "NOW ALLOCATED: " << s << std::endl;
+	std::cout << "TOTAL ALLOCATED: " << totalAllocatedMemory << std::endl;
+	std::cout << "FREE MEMORY: " << dataToAllocate - totalAllocatedMemory << std::endl;
 	// return the pointer to the position of the marker
 	return (void *) markersList->back();
 }
