@@ -7,7 +7,7 @@
 #include "entitySpectator.h"
 #include "assetManager.h"
 
-class controller_D Controller								// Singleton
+class controller_D Controller	
 {
 public:
 	static Controller _instance;
