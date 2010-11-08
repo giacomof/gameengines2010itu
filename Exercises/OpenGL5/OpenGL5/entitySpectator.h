@@ -11,8 +11,7 @@
 class entitySpectator : public SceneObject
 {
 private:
-	entityCamera *camera;
-	
+	entityCamera * camera;	
 	
 	float position[3];
 	float yaw;

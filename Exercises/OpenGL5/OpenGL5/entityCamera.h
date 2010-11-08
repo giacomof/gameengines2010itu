@@ -26,7 +26,7 @@ public:
 	virtual void setForwardVector(float x, float y, float z);
 	virtual void setUpVector(float x, float y, float z);
 	virtual void setPitchYaw(float newpitch, float newyaw);
-
+	
 	virtual void setSceneNode(SceneNode *newSceneNode);
 
 

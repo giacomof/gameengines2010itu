@@ -293,15 +293,22 @@ void SceneNode::drawGeometry()
 	applyTransformation();
 
 	if(isVisible()) {
-		geometry->drawGeometry();
+		if(geometry != NULL)
+			geometry->drawGeometry();
 		// draw the name of the SceneNode
 		if(drawDebug) drawName();
 	}
 
 	list<SceneNode*>::iterator itS;
-	for(itS = childList.begin(); itS != childList.end(); itS++) {
+
+	if(&childList != NULL && childList.size() != 0) {
+
+		for(itS = childList.begin(); itS != childList.end(); itS++) {
 			(*itS)->drawGeometry();
+		}
 	}
+
+
 
 	glPopMatrix();
 }
