@@ -104,9 +104,6 @@
     <ClCompile Include="inputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="md2File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
