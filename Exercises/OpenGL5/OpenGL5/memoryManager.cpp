@@ -16,7 +16,7 @@ void * MemoryManager::operator new(size_t s) {
 	
 }
 
-void MemoryManager::operator delete(void *){ }
+void MemoryManager::operator delete(void *) { }
 
 MemoryManager::MemoryManager(void) {
 	&getInstance(); 
