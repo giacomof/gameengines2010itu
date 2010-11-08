@@ -1,6 +1,6 @@
 #include "windowManager.h"
 
-WindowManager WindowManager::_instance = 0;
+WindowManager WindowManager::_instance;
 
 WindowManager & WindowManager::getInstance()
 {
