@@ -6,7 +6,6 @@ GLOBAL TASKS:
 
 V- Memory Manager
 	1(V)- Stack Allocator
-		V- Multiple Stacks
 		1(V)- freeToLastMarker() method
 	V- Pool Allocator
 	1(V)- Singleton

@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
 	window.resizeWindow(screenWidth, screenHeight);
 
 	// Create the root node
-	rootNodePtr = new Root();
+	rootNodePtr = new(sceneGraphFlag) Root();
 	rootNodePtr->setName("root");
 
 	// Define the exit of the program in relation to SDL variables
@@ -277,7 +277,7 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(groundRigidBody);
 
 	Plane testPlaneGeom(2000.0f, 2000.0f);
-	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
+	testPlane = new(sceneGraphFlag) SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
 	testPlane->getTransformation()->setBBTranslation(Vector(0, 10, 0));
 	testPlane->setVisible(true);
 
@@ -307,7 +307,7 @@ int main(int argc, char *argv[])
 	dynamicsWorld->addRigidBody(battleDroidRigidBody);
 
 	md2Interface battleDroidMesh = md2Interface(assetManagerPtr->getMd2Mesh("battleDroid"), assetManagerPtr->getTexture("battleDroidTx"));
-	battleDroid = new SceneNode(&rotationCenter, "Battle Droid", &battleDroidMesh, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, battleDroidRigidBody);
+	battleDroid = new(sceneGraphFlag) SceneNode(&rotationCenter, "Battle Droid", &battleDroidMesh, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, battleDroidRigidBody);
 	battleDroid->setVisible(true);
 	assetManagerPtr->getMd2Mesh("battleDroid")->SetAnim(1);
 
@@ -320,9 +320,9 @@ int main(int argc, char *argv[])
 	Light testLight1 = Light(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
 	testLight1.setDirection(Vector(0, -1, 0));
 
-	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode = new(sceneGraphFlag) SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", &testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * testLightNode1 = new(sceneGraphFlag) SceneNode(rootNodePtr, "Light Node", &testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 
@@ -353,7 +353,7 @@ int main(int argc, char *argv[])
 
 
 	md2Interface lostSoul_g = md2Interface(assetManagerPtr->getMd2Mesh("md2LostSoul"), assetManagerPtr->getTexture("lostSoulTx"));
-	lostSoul = new SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, skullRigidBody);
+	lostSoul = new(sceneGraphFlag) SceneNode(&rotationCenter, "LostSoul", &lostSoul_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, skullRigidBody);
 
 	//* -----------------------------------------         *
 	// * SceneNode and physics for Skull's horns	      *
@@ -433,7 +433,7 @@ int main(int argc, char *argv[])
 	Sphere rotationSphere2 = Sphere(5, 3, 3, true);
 	SceneNode rotationNode2(battleDroid, "rotationNode2", &hornSphere1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	rotationNode2.setVisible(false);
-	bossCube = new SceneNode(&rotationNode2, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	bossCube = new(sceneGraphFlag) SceneNode(&rotationNode2, "boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 
@@ -452,8 +452,8 @@ int main(int argc, char *argv[])
 
 	dynamicsWorld->addRigidBody(cubeRigidBody);
 
-	bossCube_g = new md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
-	SceneNode * bossCube2 = new SceneNode(rootNodePtr, "falling boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
+	bossCube_g = new(GeometryFlag) md2Interface(assetManagerPtr->getMd2Mesh("md2BossCube"), assetManagerPtr->getTexture("bossCubeTx"));
+	SceneNode * bossCube2 = new(sceneGraphFlag) SceneNode(rootNodePtr, "falling boss cube", bossCube_g, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, cubeRigidBody);
 
 
 
@@ -492,14 +492,14 @@ int main(int argc, char *argv[])
 		dynamicsWorld->addRigidBody(duckRigidBody);
 
 
-		colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
+		colladaDuck = new(sceneGraphFlag) SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
 		colladaDuck->getTransformation()->setBBTranslation(Vector(-2, -17, 0));
 
 	}
 
 
 
-	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(25.0f,0.0f,25.0f), 0.0f);
+	colladaDuck = new(sceneGraphFlag) SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(25.0f,0.0f,25.0f), 0.0f);
 
 
 	/* ------------------------------------------ *
@@ -508,7 +508,7 @@ int main(int argc, char *argv[])
 
 	// Set up camera and spectator
 	entitySpectator *player = new entitySpectator();
-	entityCamera *playercamera = new entityCamera();
+	entityCamera *playercamera = new(sceneGraphFlag) entityCamera();
 	player->setCamera(playercamera);
 
 	SceneNode * cameraNode = new SceneNode(battleDroid, "Camera Node", playercamera, Vector(-40.0f, 30.0f, 0.0f), Vector(0.0f,1.0f,0.0f), -90.0f );

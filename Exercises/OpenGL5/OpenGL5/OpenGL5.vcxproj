@@ -478,6 +478,7 @@
     <None Include="include\battledroid.png" />
     <None Include="include\bosscube.jpg" />
     <None Include="include\bosscube.md2" />
+    <None Include="include\boy_10.tga" />
     <None Include="include\config.h.win" />
     <None Include="include\cyber.jpg" />
     <None Include="include\Cyber.md2" />
