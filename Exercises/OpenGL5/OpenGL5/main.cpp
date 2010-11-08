@@ -199,7 +199,7 @@ int threadUpdate(void *data)
 int main(int argc, char *argv[])
 {
 	// Start the MemoryManager
-	MemoryManager memMgr;
+	//MemoryManager memMgr;
 	
 	// Used for checking memory leaks
 	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 
 	dynamicsWorld->addRigidBody(groundRigidBody);
 
-	Plane testPlaneGeom(2000.0f, 2000.0f, 200);
+	Plane testPlaneGeom(2000.0f, 2000.0f);
 	testPlane = new SceneNode(rootNodePtr, "test plane", &testPlaneGeom, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, groundRigidBody);
 	testPlane->getTransformation()->setBBTranslation(Vector(0, 10, 0));
 	testPlane->setVisible(true);
@@ -475,7 +475,7 @@ int main(int argc, char *argv[])
 	btRigidBody* duckRigidBody;
 
 	
-	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"), 0);
+	ColladaInterface duck_g = ColladaInterface(assetManagerPtr->getColladaMesh("duck"), assetManagerPtr->getTexture("duckCM.tga"));
 
 
 
@@ -500,9 +500,6 @@ int main(int argc, char *argv[])
 
 
 	colladaDuck = new SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(25.0f,0.0f,25.0f), 0.0f);
-
-	ColladaInterface astroboy_g = ColladaInterface(assetManagerPtr->getColladaMesh("astroboy"), assetManagerPtr->getTexture("boy_10.tga"), assetManagerPtr->getColladaSkeleton("astroboy_skeleton"));
-	colladaAstroboy = new SceneNode(rootNodePtr, "astroboy", &astroboy_g,  Vector(200.0f, 10.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 
 	/* ------------------------------------------ *
@@ -553,7 +550,6 @@ int main(int argc, char *argv[])
 	{
 		
 		frameDelta = renderClock.getFrameDelta();
-
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
@@ -639,16 +635,20 @@ void drawGL(int frameDelta)
 	// Set the camera
 	float *CamTransform = getCamera();
 
-	if(drawDebug) dynamicsWorld->debugDrawWorld();
-
-	// draw the animation
-	//AssetManager::lockMutex( rootNodePtr->mutex_node );
-	rootNodePtr->update(frameDelta);
-	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
+	if(drawDebug) dynamicsWorld->debugDrawWorld();	
 
 	//Root::drawGeometry();
 	//AssetManager::lockMutex( rootNodePtr->mutex_node );
 	rootNodePtr->drawGeometry();
+	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
+
+	// ********************
+	// *** UPDATE POINT *** 
+	// ********************
+
+	// draw the animation
+	//AssetManager::lockMutex( rootNodePtr->mutex_node );
+	rootNodePtr->update(frameDelta);
 	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// Swaps the buffers
@@ -658,9 +658,6 @@ void drawGL(int frameDelta)
 /* Initialize OpenGL */
 int initGL(void)
 {
-
-	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 	// Clears color buffer
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	// sets the matrix stack as the projection matrix stack
@@ -696,16 +693,14 @@ int initGL(void)
 	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
 	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
 	assetManagerPtr->loadCollada("include/duck.dae", "duck");
-	assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
+	//assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
 
 	//assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/battledroid.png", "battleDroidTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 	assetManagerPtr->loadTexture("include/duckCM.tga", "duckCM.tga");
-	assetManagerPtr->loadTexture("include/boy_10.tga", "boy_10.tga");
-
-	assetManagerPtr->loadColladaSkeleton("include/astroboy.dae", "astroboy_skeleton");
+	//assetManagerPtr->loadTexture("include/boy_10.tga", "boy_10.jpg");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
@@ -717,8 +712,7 @@ int initGL(void)
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA SKELETON astroboy " << (assetManagerPtr->getColladaSkeleton("astroboy_skeleton")->getDataSize()/1024.0f) << "kb\n";
+	//std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 

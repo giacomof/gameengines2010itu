@@ -5,6 +5,7 @@
 
 #include "assetManager.h"
 #include <stdlib.h>
+#include <list>
 
 class MemoryManager
 {
@@ -15,11 +16,12 @@ public:
 	void MemoryManager::operator delete(void *);
 
 	// external static declaration
-	static MemoryManager _instance;
+	static MemoryManager _instance; // this calls the constructor
 	static unsigned int count;
 	static unsigned int marker;
 	static unsigned int lastMarker;
 	static unsigned int const dataToAllocate = 256 * 10000; // 256Mb
+	static list<unsigned int> * markersList;
 
 	// Singleton Definitions
 	MemoryManager(void);
@@ -35,7 +37,6 @@ public:
 	static void MemoryManager::freeToLastMarker(void);
 
 	static unsigned int MemoryManager::getMarker(void);
-	static void MemoryManager::setMarker(unsigned int m);
 	static void MemoryManager::freeToMarker(unsigned int m);
 	static void MemoryManager::clear(void);
 

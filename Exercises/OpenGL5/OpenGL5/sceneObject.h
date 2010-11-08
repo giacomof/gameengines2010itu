@@ -124,7 +124,7 @@ class md2Interface : public SceneObject
 class ColladaInterface : public SceneObject
 {
 	public:
-		ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s);
+		ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s = 0);
 		~ColladaInterface(void);
 
 		void update(void);
