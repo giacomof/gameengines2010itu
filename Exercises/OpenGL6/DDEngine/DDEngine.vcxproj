@@ -314,6 +314,7 @@
     <ClInclude Include="colladaFile.h" />
     <ClInclude Include="colladaSkeleton.h" />
     <ClInclude Include="controller.h" />
+    <ClInclude Include="DDEngine.h" />
     <ClInclude Include="debugDraw.h" />
     <ClInclude Include="entityCamera.h" />
     <ClInclude Include="entitySpectator.h" />
@@ -451,6 +452,7 @@
     <ClCompile Include="colladaFile.cpp" />
     <ClCompile Include="colladaSkeleton.cpp" />
     <ClCompile Include="controller.cpp" />
+    <ClCompile Include="DDEngine.cpp" />
     <ClCompile Include="debugDraw.cpp" />
     <ClCompile Include="entityCamera.cpp" />
     <ClCompile Include="entitySpectator.cpp" />
