@@ -38,7 +38,6 @@ class DDEngine
 {
 public:
 
-
 	DDEngine(int screenWidth, int screenHeight, int colorDepth, Vector gravity);
 	~DDEngine(void);
 
@@ -46,6 +45,10 @@ public:
 	void setupScene();
 	void frameStarted();
 	void frameEnded();
+
+	inline inputManager * getInputManager() { return &input; };
+	inline Controller * getController() { return &controller; };
+	inline btDiscreteDynamicsWorld * getDynamicWorld() { return dynamicsWorld; };
 
 
 private:
@@ -93,9 +96,6 @@ private:
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
-	int threadInput(void *data);				// Thread that handles input
-	int threadSound(void *data);				// Thread that handles sounds
-	int threadPhysics(void *data);				// Thread that handles physics
 
 
 

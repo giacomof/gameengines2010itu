@@ -1,9 +1,78 @@
 #include "DDEngine.h"
-
+					
 static int const thread_delay = 1;				// Minimum time between loops
 static float const PI = 3.14159f;				// PI definition
 
+/* This thread handles input */
+int threadInput(void *data)
+{
+	DDEngine * engine;
+	engine = (DDEngine*) data;
+	inputManager * input = engine->getInputManager();
 
+	// Disable the Windows Cursor
+	SDL_ShowCursor(SDL_DISABLE); 
+	
+	// Binds mouse and keyboard input to the OpenGL window
+	SDL_WM_GrabInput(SDL_GRAB_ON); 
+
+	while ( !engine->getController()->quit ) {
+		input->update();
+
+		// Delay the thread to make room for others on the CPU
+		SDL_Delay(thread_delay);
+	}
+
+	SDL_ShowCursor(SDL_ENABLE);
+
+	return 0;
+}
+
+///* This thread handles audio */
+int threadSound(void *data)
+{
+	DDEngine * engine;
+	engine = (DDEngine*) data;
+	inputManager * input = engine->getInputManager();
+
+	soundInit();
+
+	int testsoundint = 500;
+	while ( !engine->getController()->quit )
+	{
+		testsoundint++;
+		if (testsoundint > 600)
+		{
+			soundPlayFile("assets/MENULOOP.WAV");
+			testsoundint = 0;
+		}
+		SDL_Delay(thread_delay);
+	}
+
+	soundExit();
+
+	return 0;
+}
+
+/* This thread handles physic */
+int threadPhysics(void *data)
+{
+	DDEngine * engine;
+	engine = (DDEngine*) data;
+	btDiscreteDynamicsWorld * dynamicsWorld = engine->getDynamicWorld();
+
+	while ( !engine->getController()->quit ) {
+		// Runs the update method here
+
+		// physics simulation
+		dynamicsWorld->stepSimulation(1/120.f, 10);
+
+		// Delay the thread to make room for others on the CPU
+		SDL_Delay(thread_delay);
+	}
+
+	return 0;
+}
 
 DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, Vector gravity)
 {
@@ -62,7 +131,18 @@ DDEngine::~DDEngine(void)
 
 void DDEngine::run(void)
 {
+	// Create the thread handles and assign names
+	SDL_Thread *id1;
+	SDL_Thread *id2;
+	SDL_Thread *id3;
 
+	// Create the threads
+	id1 = SDL_CreateThread ( threadPhysics, this );
+	id2 = SDL_CreateThread ( threadSound, this );
+	id3 = SDL_CreateThread ( threadInput, this );
+
+	char title[80];
+	SDL_Event currentEvent;
 }
 
 
@@ -123,69 +203,3 @@ int DDEngine::initPhysics(void)
 	return 0;
 }
 
-/* This thread handles input */
-int DDEngine::threadInput(void *data)
-{
-	input = input.getInstance();
-	char *tname = ( char * )data;
-
-	// Disable the Windows Cursor
-	SDL_ShowCursor(SDL_DISABLE); 
-	
-	// Binds mouse and keyboard input to the OpenGL window
-	SDL_WM_GrabInput(SDL_GRAB_ON); 
-
-	while ( !controller.quit ) {
-		input.update();
-
-		// Delay the thread to make room for others on the CPU
-		SDL_Delay(thread_delay);
-	}
-
-	SDL_ShowCursor(SDL_ENABLE);
-
-	return 0;
-}
-
-///* This thread handles audio */
-int DDEngine::threadSound(void *data)
-{
-	char *tname = ( char * )data;
-
-	soundInit();
-
-	int testsoundint = 500;
-	while ( !controller.quit )
-	{
-		testsoundint++;
-		if (testsoundint > 600)
-		{
-			soundPlayFile("assets/MENULOOP.WAV");
-			testsoundint = 0;
-		}
-		SDL_Delay(thread_delay);
-	}
-
-	soundExit();
-
-	return 0;
-}
-
-/* This thread handles physic */
-int DDEngine::threadPhysics(void *data)
-{
-	// Thread name
-	char *tname = ( char * )data;
-
-	while ( !controller.quit ) {
-		// Runs the update method here
-
-		// physics simulation
-		dynamicsWorld->stepSimulation(1/120.f, 10);
-
-		// Delay the thread to make room for others on the CPU
-		SDL_Delay(thread_delay);
-	}
-
-	return 0;
-}
