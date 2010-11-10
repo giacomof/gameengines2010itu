@@ -19,4 +19,51 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\astroboy.dae">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\battledroid.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\battledroid.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\bosscube.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\bosscube.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\boy_10.tga">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\cyber.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\Cyber.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\duck.dae">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\duckCM.tga">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\evil_laugh.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\lostsoul.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\Lostsoul.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\MENULOOP.WAV">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\nhe.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
