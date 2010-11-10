@@ -150,28 +150,28 @@ int threadInput(void *data)
 }
 
 ///* This thread handles audio */
-//int threadSound(void *data)
-//{
-//	char *tname = ( char * )data;
-//
-//	soundInit();
-//
-//	int testsoundint = 500;
-//	while ( !controller.quit )
-//	{
-//		testsoundint++;
-//		if (testsoundint > 600)
-//		{
-//			soundPlayFile("include/MENULOOP.WAV");
-//			testsoundint = 0;
-//		}
-//		SDL_Delay(thread_delay);
-//	}
-//
-//	soundExit();
-//
-//	return 0;
-//}
+int threadSound(void *data)
+{
+	char *tname = ( char * )data;
+
+	soundInit();
+
+	int testsoundint = 500;
+	while ( !controller.quit )
+	{
+		testsoundint++;
+		if (testsoundint > 600)
+		{
+			soundPlayFile("assets/MENULOOP.WAV");
+			testsoundint = 0;
+		}
+		SDL_Delay(thread_delay);
+	}
+
+	soundExit();
+
+	return 0;
+}
 
 /* This thread updates the scene */
 int threadUpdate(void *data)
@@ -532,7 +532,7 @@ int main(int argc, char *argv[])
 
 	// Create the threads
 	id1 = SDL_CreateThread ( threadUpdate, tnames[0] );
-	//id2 = SDL_CreateThread ( threadSound, tnames[1] );
+	id2 = SDL_CreateThread ( threadSound, tnames[1] );
 	id3 = SDL_CreateThread ( threadInput, tnames[2] );
 
 	char title[80];
@@ -624,7 +624,7 @@ int main(int argc, char *argv[])
 
 	//wait for the threads to exit
 	SDL_WaitThread ( id1, NULL );
-	//SDL_WaitThread ( id2, NULL );
+	SDL_WaitThread ( id2, NULL );
 	SDL_WaitThread ( id3, NULL );
 
 	exit(0);  
