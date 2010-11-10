@@ -54,12 +54,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Debug;$(SolutionDir)\DDEngine;$(SolutionDir)\LinearAlgebraDLL;$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;$(SolutionDir)\DDEngine;$(SolutionDir)\LinearAlgebraDLL</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\include;$(SolutionDir)\Debug;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\include;$(SolutionDir)\Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>DDEngine.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -72,15 +72,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\DDEngine;$(SolutionDir)\LinearAlgebraDLL;$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;$(SolutionDir)\DDEngine;$(SolutionDir)\LinearAlgebraDLL</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\include</AdditionalLibraryDirectories>
-      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\include;$(SolutionDir)\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DDEngine.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
