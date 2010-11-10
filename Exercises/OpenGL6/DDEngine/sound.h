@@ -1,8 +1,3 @@
-#ifdef __DDEngine
-#    define sound_D __declspec(dllexport)
-#else
-#    define sound_D __declspec(dllimport)
-#endif
 
 #ifndef sound_H
 #define sound_H
@@ -19,12 +14,12 @@ static struct sample {
     Uint32 dlen;
 } sounds[NUM_SOUNDS];
 
-int soundInit(void);
+__declspec(dllexport) int soundInit(void);
 
-int soundExit(void);
+__declspec(dllexport) int soundExit(void);
 
-void soundPlayFile(char *file);
+__declspec(dllexport) void soundPlayFile(char *file);
 
-void soundMix(void *unused, Uint8 *stream, int len);
+__declspec(dllexport) void soundMix(void *unused, Uint8 *stream, int len);
 
-#endif
+#endif;
