@@ -692,18 +692,18 @@ int initGL(void)
 	//// ******** LOADING POINT *******
 	//// ******************************
 	//assetManagerPtr->loadMd2("include/Cyber.md2", "md2Demon");
-	assetManagerPtr->loadMd2("include/battledroid.md2", "battleDroid");
-	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
-	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
-	assetManagerPtr->loadCollada("include/duck.dae", "duck");
-	assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
+	assetManagerPtr->loadMd2("assets/battledroid.md2", "battleDroid");
+	assetManagerPtr->loadMd2("assets/Lostsoul.md2", "md2LostSoul");
+	assetManagerPtr->loadMd2("assets/bosscube.md2", "md2BossCube");
+	assetManagerPtr->loadCollada("assets/duck.dae", "duck");
+	assetManagerPtr->loadCollada("assets/astroboy.dae", "astroboy");
 
 	//assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
-	assetManagerPtr->loadTexture("include/battledroid.png", "battleDroidTx");
-	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
-	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
-	assetManagerPtr->loadTexture("include/duckCM.tga", "duckCM.tga");
-	assetManagerPtr->loadTexture("include/boy_10.tga", "boy_10.tga");
+	assetManagerPtr->loadTexture("assets/battledroid.png", "battleDroidTx");
+	assetManagerPtr->loadTexture("assets/lostsoul.jpg", "lostSoulTx");
+	assetManagerPtr->loadTexture("assets/bosscube.jpg", "bossCubeTx");
+	assetManagerPtr->loadTexture("assets/duckCM.tga", "duckCM.tga");
+	assetManagerPtr->loadTexture("assets/boy_10.tga", "boy_10.tga");
 
 	//assetManagerPtr->loadColladaSkeleton("include/astroboy.dae", "astroboy_skeleton");
 

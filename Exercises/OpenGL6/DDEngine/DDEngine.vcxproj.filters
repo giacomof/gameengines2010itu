@@ -81,159 +81,6 @@
     <ClInclude Include="..\include\begin_code.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\close_code.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\config.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\devil_internal_exports.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\glut.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\il.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\il_wrap.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ilu.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ilu_region.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ilut.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ilut_config.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\rapidxml.hpp">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_active.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_audio.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_byteorder.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_cdrom.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_amiga.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_dreamcast.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_macos.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_macosx.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_minimal.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_nds.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_os2.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_symbian.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_config_win32.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_copying.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_cpuinfo.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_endian.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_error.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_events.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_getenv.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_joystick.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_keyboard.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_keysym.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_loadso.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_main.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_mouse.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_mutex.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_name.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_opengl.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_platform.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_quit.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_rwops.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_stdinc.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_syswm.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_thread.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_timer.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_types.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_version.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SDL_video.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\bullet_include\btBulletCollisionCommon.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -753,6 +600,159 @@
     <ClInclude Include="..\include\bullet_include\LinearMath\btVector3.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\close_code.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\config.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\devil_internal_exports.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\glut.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\il.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ilu.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ilut.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ilut_config.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ilu_region.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\il_wrap.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\rapidxml.hpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_active.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_audio.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_byteorder.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_cdrom.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_amiga.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_dreamcast.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_macos.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_macosx.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_minimal.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_nds.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_os2.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_symbian.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_config_win32.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_copying.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_cpuinfo.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_endian.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_error.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_events.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_getenv.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_joystick.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_keyboard.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_keysym.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_loadso.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_main.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_mouse.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_mutex.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_name.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_opengl.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_platform.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_quit.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_rwops.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_stdinc.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_syswm.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_thread.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_timer.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_types.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_version.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SDL_video.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp">
@@ -1159,106 +1159,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\include\DevIL.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\glut32.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\ILU.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\ILUT.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\SDL.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\astroboy.dae">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\duck.dae">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\include\glut.def">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\include\nhe.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\bosscube.jpg">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\cyber.jpg">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\lostsoul.jpg">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\battledroid.md2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\bosscube.md2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\Cyber.md2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\Lostsoul.md2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\battledroid.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\snippets.txt">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\boy_10.tga">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\duckCM.tga">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\evil_laugh.wav">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\MENULOOP.WAV">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\include\config.h.win">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\include\BulletCollision.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\BulletDynamics.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\DevIL.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\glut32.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\ILU.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\ILUT.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\LinearAlgebraDLL.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\LinearMath.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\SDL.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\SDLmain.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
   </ItemGroup>
 </Project>

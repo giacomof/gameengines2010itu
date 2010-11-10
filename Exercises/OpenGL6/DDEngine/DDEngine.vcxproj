@@ -468,41 +468,7 @@
     <ClCompile Include="windowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\include\astroboy.dae" />
-    <None Include="..\include\battledroid.md2" />
-    <None Include="..\include\battledroid.png" />
-    <None Include="..\include\bosscube.jpg" />
-    <None Include="..\include\bosscube.md2" />
-    <None Include="..\include\boy_10.tga" />
-    <None Include="..\include\config.h.win" />
-    <None Include="..\include\cyber.jpg" />
-    <None Include="..\include\Cyber.md2" />
-    <None Include="..\include\DevIL.dll" />
-    <None Include="..\include\duck.dae" />
-    <None Include="..\include\duckCM.tga" />
-    <None Include="..\include\evil_laugh.wav" />
     <None Include="..\include\glut.def" />
-    <None Include="..\include\glut32.dll" />
-    <None Include="..\include\ILU.dll" />
-    <None Include="..\include\ILUT.dll" />
-    <None Include="..\include\lostsoul.jpg" />
-    <None Include="..\include\Lostsoul.md2" />
-    <None Include="..\include\MENULOOP.WAV" />
-    <None Include="..\include\nhe.ico" />
-    <None Include="..\include\SDL.dll" />
-    <None Include="..\include\snippets.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\include\BulletCollision.lib" />
-    <Library Include="..\include\BulletDynamics.lib" />
-    <Library Include="..\include\DevIL.lib" />
-    <Library Include="..\include\glut32.lib" />
-    <Library Include="..\include\ILU.lib" />
-    <Library Include="..\include\ILUT.lib" />
-    <Library Include="..\include\LinearAlgebraDLL.lib" />
-    <Library Include="..\include\LinearMath.lib" />
-    <Library Include="..\include\SDL.lib" />
-    <Library Include="..\include\SDLmain.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
