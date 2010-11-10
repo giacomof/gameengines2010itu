@@ -149,29 +149,29 @@ int threadInput(void *data)
 	return 0;
 }
 
-/* This thread handles audio */
-int threadSound(void *data)
-{
-	char *tname = ( char * )data;
-
-	soundInit();
-
-	int testsoundint = 500;
-	while ( !controller.quit )
-	{
-		testsoundint++;
-		if (testsoundint > 600)
-		{
-			soundPlayFile("include/MENULOOP.WAV");
-			testsoundint = 0;
-		}
-		SDL_Delay(thread_delay);
-	}
-
-	soundExit();
-
-	return 0;
-}
+///* This thread handles audio */
+//int threadSound(void *data)
+//{
+//	char *tname = ( char * )data;
+//
+//	soundInit();
+//
+//	int testsoundint = 500;
+//	while ( !controller.quit )
+//	{
+//		testsoundint++;
+//		if (testsoundint > 600)
+//		{
+//			soundPlayFile("include/MENULOOP.WAV");
+//			testsoundint = 0;
+//		}
+//		SDL_Delay(thread_delay);
+//	}
+//
+//	soundExit();
+//
+//	return 0;
+//}
 
 /* This thread updates the scene */
 int threadUpdate(void *data)
@@ -532,7 +532,7 @@ int main(int argc, char *argv[])
 
 	// Create the threads
 	id1 = SDL_CreateThread ( threadUpdate, tnames[0] );
-	id2 = SDL_CreateThread ( threadSound, tnames[1] );
+	//id2 = SDL_CreateThread ( threadSound, tnames[1] );
 	id3 = SDL_CreateThread ( threadInput, tnames[2] );
 
 	char title[80];
@@ -624,7 +624,7 @@ int main(int argc, char *argv[])
 
 	//wait for the threads to exit
 	SDL_WaitThread ( id1, NULL );
-	SDL_WaitThread ( id2, NULL );
+	//SDL_WaitThread ( id2, NULL );
 	SDL_WaitThread ( id3, NULL );
 
 	exit(0);  
@@ -705,7 +705,7 @@ int initGL(void)
 	assetManagerPtr->loadTexture("include/duckCM.tga", "duckCM.tga");
 	assetManagerPtr->loadTexture("include/boy_10.tga", "boy_10.tga");
 
-	assetManagerPtr->loadColladaSkeleton("include/astroboy.dae", "astroboy_skeleton");
+	//assetManagerPtr->loadColladaSkeleton("include/astroboy.dae", "astroboy_skeleton");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
@@ -717,8 +717,8 @@ int initGL(void)
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA SKELETON astroboy " << (assetManagerPtr->getColladaSkeleton("astroboy_skeleton")->getDataSize()/1024.0f) << "kb\n";
+	/*std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage COLLADA SKELETON astroboy " << (assetManagerPtr->getColladaSkeleton("astroboy_skeleton")->getDataSize()/1024.0f) << "kb\n";*/
 	return TRUE;
 }
 

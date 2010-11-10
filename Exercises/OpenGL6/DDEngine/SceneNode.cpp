@@ -106,12 +106,13 @@ SceneNode* SceneNode::getParent(void)
 void SceneNode::setName(char * name) 
 {
 	nodeName = name;
+	nodeNameString = name;
 }
 
 // Return the name of the node
-char * SceneNode::getName(void) 
+std::string SceneNode::getName(void) 
 {
-	return nodeName;
+	return nodeNameString;
 }
 
 // Add a geometry to the Scene Node

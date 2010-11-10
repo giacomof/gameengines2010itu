@@ -57,7 +57,7 @@ class sceneNode_D SceneNode
 		// set the node name
 		void setName(char * name);
 		// get the node name
-		char * getName(void);
+		std::string getName(void);
 
 		bool isVisible(void);
 		void setVisible(bool b);
