@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPENGL5Main", "OPENGL5Main\
 		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA} = {48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DDEngineMain", "DDEngineMain\DDEngineMain.vcxproj", "{F89214A9-3127-42B2-9290-7B9AB1191FAE}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -36,6 +38,10 @@ Global
 		{1E5DE536-15B0-4E51-81E1-6577648967D8}.Debug|Win32.Build.0 = Debug|Win32
 		{1E5DE536-15B0-4E51-81E1-6577648967D8}.Release|Win32.ActiveCfg = Release|Win32
 		{1E5DE536-15B0-4E51-81E1-6577648967D8}.Release|Win32.Build.0 = Release|Win32
+		{F89214A9-3127-42B2-9290-7B9AB1191FAE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F89214A9-3127-42B2-9290-7B9AB1191FAE}.Debug|Win32.Build.0 = Debug|Win32
+		{F89214A9-3127-42B2-9290-7B9AB1191FAE}.Release|Win32.ActiveCfg = Release|Win32
+		{F89214A9-3127-42B2-9290-7B9AB1191FAE}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -562,8 +562,6 @@ int main(int argc, char *argv[])
 		bossCube->rotateAboutAxis(Vector(0,1,0),0.205f*frameDelta);
 		bossCube2->rotateAboutAxis(Vector(0,0,1),0.002f*frameDelta);
 		bossCube2->translate(Vector(0.01f*frameDelta,0,0));
-
-
 		
 
 		// Time to take care of the SDL events we have recieved
