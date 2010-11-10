@@ -38,17 +38,19 @@ class DDEngine
 {
 public:
 
-	DDEngine(int screenWidth, int screenHeight, int colorDepth, Vector gravity);
-	~DDEngine(void);
+	DDEngine() {};
+	//~DDEngine(void);
+
+	void initEngine(int screenWidth, int screenHeight, int colorDepth);
 
 	void run();
 	void setupScene();
 	void frameStarted();
 	void frameEnded();
 
-	inline inputManager * getInputManager() { return &input; };
-	inline Controller * getController() { return &controller; };
-	inline btDiscreteDynamicsWorld * getDynamicWorld() { return dynamicsWorld; };
+	inputManager * getInputManager() { return &input; };
+	Controller * getController() { return &controller; };
+	btDiscreteDynamicsWorld * getDynamicWorld() { return dynamicsWorld; };
 
 
 private:
