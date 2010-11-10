@@ -38,14 +38,22 @@ class DDEngine
 {
 public:
 
-	int screenWidth;							// Window Width
-	int screenHeight;							// Window Height
-	int screenColorDepth;						// Color Depth
 
-	DDEngine(int scrW, int scrH, int colorD);
+	DDEngine(int screenWidth, int screenHeight, int colorDepth, Vector gravity);
 	~DDEngine(void);
 
+	void run();
+	void setupScene();
+	void frameStarted();
+	void frameEnded();
+
+
 private:
+	
+	int screenW;								// Window Width
+	int screenH;								// Window Height
+	int screenCD;								// Color Depth
+	Vector physicGravity;
 
 	// Message pumps used for passing Events between threads
 	MessagePump InputPump;
@@ -56,8 +64,6 @@ private:
 	Root rootNode;
 	// Asset manager
 	AssetManager assetManagerPtr;
-	// Physic world
-	btDiscreteDynamicsWorld dynamicsWorld;
 	// Debug Drawing system
 	DebugDraw debugger;
 	// Input manager and Controller
@@ -68,8 +74,23 @@ private:
 	// Start the MemoryManager
 	MemoryManager memMgr;
 
+	// Physic world
+	btDiscreteDynamicsWorld * dynamicsWorld;
+	// Broadphase
+	btDbvtBroadphase broadphase;
+	// Collision Configuration
+    btDefaultCollisionConfiguration collisionConfiguration;
+	// Collision Dispatcher
+    btCollisionDispatcher * dispatcher;
+	// Constraint Solver
+    btSequentialImpulseConstraintSolver solver;
+
+	// FPS Clock
+	frameClock renderClock;
+
 
 	int initGL(void);							// Initialise the rendering window
+	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
 	int threadInput(void *data);				// Thread that handles input

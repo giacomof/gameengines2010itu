@@ -681,8 +681,8 @@ int initGL(void)
 	//glCullFace(GL_FRONT);
 	// enables lighting
 	glEnable(GL_LIGHTING);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_SPECULAR);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	glColorMaterial(GL_FRONT, GL_SPECULAR);
 	glEnable(GL_COLOR_MATERIAL);
 	
 		
