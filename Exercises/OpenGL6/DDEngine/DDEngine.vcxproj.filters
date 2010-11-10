@@ -1162,5 +1162,20 @@
     <None Include="..\include\glut.def">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Debug\DevIL.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Debug\glut32.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Debug\ILU.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Debug\ILUT.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Debug\SDL.dll">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
