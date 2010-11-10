@@ -74,12 +74,13 @@ int threadPhysics(void *data)
 	return 0;
 }
 
-DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, Vector gravity)
+
+void DDEngine::initEngine(int screenWidth, int screenHeight, int colorDepth)
 {
-	screenW = screenWidth;						// Window Width
-	screenH = screenHeight;						// Window Height
-	screenCD = colorDepth;						// Color Depth
-	physicGravity = gravity;					// Gravity Vector
+	screenW = screenWidth;							// Window Width
+	screenH = screenHeight;							// Window Height
+	screenCD = colorDepth;							// Color Depth
+	physicGravity = Vector(0, -10, 0);				// Gravity Vector
 
 	// Create the asset manager
 	assetManagerPtr = AssetManager();
@@ -121,13 +122,6 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, Vector gra
 
 	renderClock = frameClock();
 }
-
-
-DDEngine::~DDEngine(void)
-{
-
-}
-
 
 void DDEngine::run(void)
 {
