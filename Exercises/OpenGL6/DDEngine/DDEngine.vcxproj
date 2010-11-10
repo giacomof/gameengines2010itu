@@ -468,6 +468,11 @@
     <ClCompile Include="windowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Debug\DevIL.dll" />
+    <None Include="..\Debug\glut32.dll" />
+    <None Include="..\Debug\ILU.dll" />
+    <None Include="..\Debug\ILUT.dll" />
+    <None Include="..\Debug\SDL.dll" />
     <None Include="..\include\glut.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
