@@ -143,6 +143,81 @@ void DDEngine::run(void)
 
 	char title[80];
 	SDL_Event currentEvent;
+
+	GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
+	GLfloat diffuse[] = {0.8, 0.8, 0.8, 1.0};
+	GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
+	GLfloat shine = 100.0;
+	glMaterialf(GL_FRONT_AND_BACK, GL_AMBIENT, ambient[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
+
+	int frameDelta;
+
+	while(!controller.quit)
+	{
+		
+		frameDelta = renderClock.getFrameDelta();
+
+		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
+		window.setTitle( title, "include/nhe.ico" );
+		
+
+		// Time to take care of the SDL events we have recieved
+		while(SDL_PollEvent(&currentEvent))
+		{
+			switch(currentEvent.type)
+			{
+			// Some general events to handle immediately
+			case SDL_ACTIVEEVENT:
+				InputPump.sendMessage(currentEvent);
+				if (currentEvent.active.state & SDL_APPACTIVE)
+				{
+					if (currentEvent.active.gain==0)
+						window.setActive(FALSE);
+					else
+						window.setActive(TRUE);
+				}
+				break;
+			case SDL_VIDEORESIZE:
+				surface = SDL_SetVideoMode(	currentEvent.resize.w, currentEvent.resize.h, screenCD, window.getVideoFlags());
+				if (!surface)
+				{
+					exit(1);
+				}
+				window.resizeWindow( currentEvent.resize.w, currentEvent.resize.h);
+				break;
+			case SDL_QUIT:
+				controller.quit = true;
+				break;
+			// Input events coming below. They are all just passed on to the input pump
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			case SDL_MOUSEMOTION:
+				InputPump.sendMessage(currentEvent);
+				break;
+			// Anything else we don't care about
+			default:
+				break;
+			}
+		}
+		
+		// Actual frame rendering happens here
+		if (window.getActive() )
+		{
+			renderClock.frameUpdate();
+
+			//drawGL( frameDelta );
+		}		
+	}
+
+	//wait for the threads to exit
+	SDL_WaitThread ( id1, NULL );
+	SDL_WaitThread ( id2, NULL );
+	SDL_WaitThread ( id3, NULL );
 }
 
 

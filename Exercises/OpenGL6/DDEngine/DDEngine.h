@@ -61,7 +61,7 @@ private:
 	// Message pumps used for passing Events between threads
 	MessagePump InputPump;
 	// Pointer to SDL rendering surface
-	SDL_Surface surface;				
+	SDL_Surface * surface;				
 	GLuint image;
 	// Root node and other Scene Node
 	Root rootNode;
@@ -96,12 +96,6 @@ private:
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
-
-
-
-
-	
-
 };
 
 #endif;
