@@ -290,3 +290,47 @@ int DDEngine::initPhysics(void)
 	return 1;
 }
 
+btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass)
+{
+	btCollisionShape* cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
+
+	btDefaultMotionState* cubeMotionState;
+
+	btScalar cubeMass = mass;
+	btVector3 cubeInertia(0,0,0);
+	cubeShape->calculateLocalInertia(cubeMass,cubeInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo * cubeRigidBodyCI;
+
+	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
+	cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
+
+	btRigidBody* cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
+
+	dynamicsWorld->addRigidBody(cubeRigidBody);
+
+	return cubeRigidBody;
+}
+
+btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quaternion orientation, float mass)
+{
+	btCollisionShape* sphereShape = new btSphereShape(radius);
+
+	btDefaultMotionState* sphereMotionState;
+
+	btScalar sphereMass = mass;
+	btVector3 sphereInertia(0,0,0);
+	sphereShape->calculateLocalInertia(sphereMass,sphereInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo * sphereRigidBodyCI;
+
+	sphereMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
+	sphereRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(sphereMass,sphereMotionState,sphereShape,sphereInertia);
+
+	btRigidBody* sphereRigidBody = new btRigidBody(*sphereRigidBodyCI);
+
+	dynamicsWorld->addRigidBody(sphereRigidBody);
+
+	return sphereRigidBody;
+}
+
