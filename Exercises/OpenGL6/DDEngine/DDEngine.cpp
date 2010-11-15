@@ -215,13 +215,15 @@ void DDEngine::run(void)
 				break;
 			}
 		}
+
+		controller.playerObject->update();
 		
 		// Actual frame rendering happens here
 		if (window.getActive() )
 		{
 			renderClock.frameUpdate();
 
-			//drawGL( frameDelta );
+			drawGL( frameDelta );
 		}		
 	}
 
@@ -232,6 +234,13 @@ void DDEngine::run(void)
 	SDL_WaitThread ( id3, NULL );
 }
 
+void DDEngine::setupScene()
+{
+	// Set up camera and spectator
+	entitySpectator *player = new entitySpectator();
+	entityCamera *playercamera = new entityCamera();
+	player->setCamera(playercamera);
+}
 
 int DDEngine::initGL(void)
 {
@@ -289,6 +298,76 @@ int DDEngine::initPhysics(void)
 
 	return 1;
 }
+
+void DDEngine::drawGL(int frameDelta)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
+	glLoadIdentity();
+
+	// Set the camera
+	float *CamTransform = getCamera();
+
+	if(drawDebug) dynamicsWorld->debugDrawWorld();
+
+	// draw the animation
+	//AssetManager::lockMutex( rootNodePtr->mutex_node );
+	rootNode.update(frameDelta);
+	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
+
+	//Root::drawGeometry();
+	//AssetManager::lockMutex( rootNodePtr->mutex_node );
+	rootNode.drawGeometry();
+	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
+
+	// Swaps the buffers
+	SDL_GL_SwapBuffers();
+}
+
+float* DDEngine::getCamera()
+{		
+	glMatrixMode(GL_MODELVIEW);
+
+	entityCamera *currentCamera = controller.playerObject->getCamera();
+
+	float tranM[16];
+
+	Matrix::generateIdentityMatrix().getMatrix(&tranM[0]);
+
+	if ( currentCamera != NULL )
+	{
+		AssetManager::lockMutex( currentCamera->mutex_object );
+		Matrix transformationMatrix;
+
+		if(currentCamera->isFollowingNode && currentCamera->positionNode != NULL)
+		{
+			Quaternion orientation = currentCamera->positionNode->getWorldOrientation();
+			Vector position = currentCamera->positionNode->getWorldPosition();
+			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(-orientation.getX(), -orientation.getY(), -orientation.getZ(), orientation.getW())).getTranspose();
+			transformationMatrix = Matrix::generateTranslationMatrix(-position.getX(), -position.getY(), -position.getZ()).getTranspose() * transformationMatrix;
+
+
+		}
+		else
+		{
+
+			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0,0.0,0.0),currentCamera->pitch)).getTranspose();
+			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(0.0,1.0,0.0),currentCamera->yaw)).getTranspose() * transformationMatrix;
+			transformationMatrix = Matrix::generateTranslationMatrix(	currentCamera->vPosition[0],
+																		currentCamera->vPosition[1],
+																		currentCamera->vPosition[2]).getTranspose() * transformationMatrix;			
+		}
+
+
+
+		transformationMatrix.getMatrix(&tranM[0]);
+
+		AssetManager::unlockMutex( currentCamera->mutex_object );
+	}
+
+	glMultMatrixf(&tranM[0]);
+	return &tranM[0];
+}
+
 
 btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass)
 {
