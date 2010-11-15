@@ -34,14 +34,13 @@
 using namespace std;
 using namespace linearAlgebraDLL;
 
-class DDEngine
+class DDEngine_D DDEngine
 {
 public:
 
-	DDEngine() {};
-	//~DDEngine(void);
+	DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physic);
+	~DDEngine(void);
 
-	void initEngine(int screenWidth, int screenHeight, int colorDepth);
 
 	void run();
 	void setupScene();
@@ -58,6 +57,7 @@ private:
 	int screenW;								// Window Width
 	int screenH;								// Window Height
 	int screenCD;								// Color Depth
+	bool hasPhysics;
 	Vector physicGravity;
 
 	// Message pumps used for passing Events between threads
