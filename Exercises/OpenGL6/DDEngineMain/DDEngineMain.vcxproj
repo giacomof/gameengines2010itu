@@ -83,6 +83,23 @@
   <ItemGroup>
     <ClInclude Include="extendedEngine.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\astroboy.dae" />
+    <None Include="assets\battledroid.md2" />
+    <None Include="assets\battledroid.png" />
+    <None Include="assets\bosscube.jpg" />
+    <None Include="assets\bosscube.md2" />
+    <None Include="assets\boy_10.tga" />
+    <None Include="assets\cyber.jpg" />
+    <None Include="assets\Cyber.md2" />
+    <None Include="assets\duck.dae" />
+    <None Include="assets\duckCM.tga" />
+    <None Include="assets\evil_laugh.wav" />
+    <None Include="assets\lostsoul.jpg" />
+    <None Include="assets\Lostsoul.md2" />
+    <None Include="assets\MENULOOP.WAV" />
+    <None Include="assets\nhe.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
