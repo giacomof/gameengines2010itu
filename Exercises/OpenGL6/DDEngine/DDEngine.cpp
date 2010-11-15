@@ -232,7 +232,11 @@ void DDEngine::run(void)
 		{
 			renderClock.frameUpdate();
 
+			frameStarted();
+
 			drawGL( frameDelta );
+
+			frameEnded();
 		}		
 	}
 
@@ -434,8 +438,8 @@ SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool 
 
 SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions)
 {
-	Plane * plane = new Plane(width, height, sideSubdivisions);
-	return (SceneObject*) plane;
+	SceneObject * plane = new Plane(width, height, sideSubdivisions);
+	return  plane;
 }
 
 SceneObject * DDEngine::createCube(float side)

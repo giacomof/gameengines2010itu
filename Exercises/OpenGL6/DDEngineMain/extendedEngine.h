@@ -10,5 +10,11 @@ public:
 	void frameStarted();
 	void frameEnded();
 
+	SceneNode * planeNode;
+	SceneNode * sphereNode;
+	SceneNode * battleDroidNode;
+	SceneNode * light1Node;
+	SceneNode * light2Node;
+
 };
 
