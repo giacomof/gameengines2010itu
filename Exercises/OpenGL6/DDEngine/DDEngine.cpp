@@ -147,6 +147,8 @@ void DDEngine::run(void)
 	player->setCamera(playercamera);
 	controller.setPlayerObject(player);
 
+	setupScene();
+
 	// Create the thread handles and assign names
 	SDL_Thread *id1;
 	SDL_Thread *id2;
