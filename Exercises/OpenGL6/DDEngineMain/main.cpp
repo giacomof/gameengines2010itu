@@ -1,9 +1,9 @@
-#include <DDEngine.h>
+#include "extendedEngine.h"
 
 
 int main(int argc, char *argv[])
 {
-	DDEngine engine = DDEngine(800, 600, 32, true);
+	extendedEngine engine = extendedEngine(800, 600, 32, true);
 	engine.run();
 
 	return 0;

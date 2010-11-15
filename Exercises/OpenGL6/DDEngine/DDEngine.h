@@ -43,9 +43,9 @@ public:
 
 
 	void run();
-	void setupScene();
-	void frameStarted();
-	void frameEnded();
+	virtual void setupScene() = 0;
+	virtual void frameStarted() = 0;
+	virtual void frameEnded() = 0;
 
 	inputManager * getInputManager() { return &input; };
 	Controller * getController() { return &controller; };
@@ -98,6 +98,9 @@ private:
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
+
+	btRigidBody * createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass);
+	btRigidBody * createPhysicalSphere(float radius, Vector Position, Quaternion orientation, float mass);
 };
 
 #endif;
