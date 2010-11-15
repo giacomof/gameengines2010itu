@@ -82,13 +82,13 @@ private:
 	// Physic world
 	btDiscreteDynamicsWorld * dynamicsWorld;
 	// Broadphase
-	btDbvtBroadphase broadphase;
+	btDbvtBroadphase * broadphase;
 	// Collision Configuration
-    btDefaultCollisionConfiguration collisionConfiguration;
+    btDefaultCollisionConfiguration * collisionConfiguration;
 	// Collision Dispatcher
     btCollisionDispatcher * dispatcher;
 	// Constraint Solver
-    btSequentialImpulseConstraintSolver solver;
+    btSequentialImpulseConstraintSolver * solver;
 
 	// FPS Clock
 	frameClock renderClock;

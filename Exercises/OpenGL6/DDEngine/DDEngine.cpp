@@ -131,7 +131,10 @@ DDEngine::~DDEngine(void)
 	if(hasPhysics)
 	{
 		dynamicsWorld->~btDiscreteDynamicsWorld();
+		solver->~btSequentialImpulseConstraintSolver();
 		dispatcher->~btCollisionDispatcher();
+		collisionConfiguration->~btDefaultCollisionConfiguration();
+		broadphase->~btDbvtBroadphase();
 	}
 }
 
@@ -267,15 +270,15 @@ int DDEngine::initGL(void)
 int DDEngine::initPhysics(void)
 {
 	// Broadphase
-	broadphase = btDbvtBroadphase();
+	broadphase = new btDbvtBroadphase();
 	// Collision Configuration
-    collisionConfiguration = btDefaultCollisionConfiguration();
+    collisionConfiguration = new btDefaultCollisionConfiguration();
 	// Collision Dispatcher
-    dispatcher = new btCollisionDispatcher(&collisionConfiguration);
+    dispatcher = new btCollisionDispatcher(collisionConfiguration);
 	// Constraint Solver
-    solver = btSequentialImpulseConstraintSolver();
+    solver = new btSequentialImpulseConstraintSolver();
 	// Initialise the physic world
-	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, &broadphase, &solver, &collisionConfiguration);
+	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 	// Set gravity
 	dynamicsWorld->setGravity(btVector3(physicGravity.getX(),physicGravity.getY(),physicGravity.getZ()));
 
