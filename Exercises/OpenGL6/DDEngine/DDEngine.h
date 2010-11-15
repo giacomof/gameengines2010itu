@@ -43,7 +43,7 @@ public:
 
 
 	void run();
-	virtual void setupScene() = 0;
+	virtual void setupScene();
 	virtual void frameStarted() = 0;
 	virtual void frameEnded() = 0;
 
