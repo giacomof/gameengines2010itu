@@ -16,9 +16,53 @@ void extendedEngine::setupScene()
 	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
 	assetManager.loadTexture("assets/duckCM.tga", "duckCM.tga");
 	assetManager.loadTexture("assets/boy_10.tga", "boy_10.tga");
+
+	//// ******************************
+	//// **** CREATE OBJECTS POINT ****
+	//// ******************************
+
+	// Create the plane with the collision shape
+	btRigidBody * planeRigidBody = this->createPhysicalBox(Vector(1000.0f, 10.0f, 1000.0f), Vector(0.0f, -10.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0);
+	SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 200);
+	planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, planeRigidBody);
+	// Change BB Translation
+	planeNode->getTransformation()->setBBTranslation(Vector(0, 10, 0));
+
+
+	// Create character "rotation center" node
+	SceneObject * sphere = this->createSphere(5, 30, 30, true);
+	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
+
+
+	// Create battle droid + bounding box
+	btRigidBody * battleDroidRigidBody = this->createPhysicalBox(Vector(20.0f, 25.0f, 20.0f), Vector(0.0f, 25.0f, 500.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0);
+	SceneObject * battleDroid = this->createMD2(assetManager.getMd2Mesh("battleDroid"), assetManager.getTexture("battleDroidTx"));
+	battleDroidNode = this->addSceneNode(sphereNode, "Battle Droid", battleDroid, Vector(0, 0, 0), Vector(0, 1, 0), 0, battleDroidRigidBody);
+	assetManager.getMd2Mesh("battleDroid")->SetAnim(1);
+
+
+	Light * light1 = (Light*)this->createLight(true, true, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+	light1Node = this->addSceneNode(battleDroidNode, "Light1 Node", light1, Vector(0, 50, 0), Vector(0, 0, 0), 0);
+
+
+	Light * light2 = (Light*)this->createLight(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
+	light2Node = this->addSceneNode(&rootNode, "Light2 Node", light2, Vector(0, 0, 0), Vector(0, 0, 0), 0);
+	light2->setDirection(Vector(0, 1, 0));
+
+
+	// Lights Connected to the battleDroid and to root		  *
+	/*Light testLight = Light();
+	Light testLight1 = Light(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
+	testLight1.setDirection(Vector(0, -1, 0));
+
+	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", &testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);*/
+
 }
 void extendedEngine::frameStarted()
 {
+	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.2f);
 
 }
 void extendedEngine::frameEnded()
