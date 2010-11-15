@@ -43,7 +43,7 @@ public:
 
 
 	void run();
-	virtual void setupScene();
+	virtual void setupScene() = 0;
 	virtual void frameStarted() = 0;
 	virtual void frameEnded() = 0;
 
@@ -92,8 +92,12 @@ private:
 	Controller controller;
 	// Window Manager definition
 	WindowManager window;
-	// Start the MemoryManager
+	//  the MemoryManager
 	MemoryManager memMgr;
+	// Entity spectator 
+	entitySpectator * player;
+	// Entity camera
+	entityCamera * playercamera;
 
 	// Physic world
 	btDiscreteDynamicsWorld * dynamicsWorld;
