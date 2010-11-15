@@ -52,6 +52,10 @@ public:
 	btDiscreteDynamicsWorld * getDynamicWorld() { return dynamicsWorld; };
 
 
+	btRigidBody * createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass);
+	btRigidBody * createPhysicalSphere(float radius, Vector position, Quaternion orientation, float mass);
+
+
 private:
 	
 	int screenW;								// Window Width
@@ -99,8 +103,6 @@ private:
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
 
-	btRigidBody * createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass);
-	btRigidBody * createPhysicalSphere(float radius, Vector Position, Quaternion orientation, float mass);
 };
 
 #endif;
