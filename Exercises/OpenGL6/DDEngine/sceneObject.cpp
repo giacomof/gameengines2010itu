@@ -199,6 +199,7 @@ Cube::Cube(float s)
 {
 	side = s;
 }
+
 Cube::~Cube(void) 
 {
 }
