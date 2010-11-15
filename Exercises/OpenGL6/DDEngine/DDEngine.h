@@ -68,7 +68,7 @@ public:
 
 	SceneNode * addSceneNode(SceneNode* father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry = 0);
 
-private:
+protected:
 	
 	int screenW;								// Window Width
 	int screenH;								// Window Height
