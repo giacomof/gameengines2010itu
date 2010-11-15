@@ -65,7 +65,7 @@ int threadPhysics(void *data)
 		// Runs the update method here
 
 		// physics simulation
-		dynamicsWorld->stepSimulation(1/120.f, 10);
+		//dynamicsWorld->stepSimulation(1/120.f, 10);
 
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
@@ -74,13 +74,15 @@ int threadPhysics(void *data)
 	return 0;
 }
 
-
-void DDEngine::initEngine(int screenWidth, int screenHeight, int colorDepth)
+DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physics)
 {
 	screenW = screenWidth;							// Window Width
 	screenH = screenHeight;							// Window Height
 	screenCD = colorDepth;							// Color Depth
-	physicGravity = Vector(0, -10, 0);				// Gravity Vector
+
+	hasPhysics = physics;
+	if(hasPhysics)
+		physicGravity = Vector(0, -10, 0);			// Gravity Vector
 
 	// Create the asset manager
 	assetManagerPtr = AssetManager();
@@ -118,10 +120,21 @@ void DDEngine::initEngine(int screenWidth, int screenHeight, int colorDepth)
 	atexit(SDL_Quit);
 
 	// Call the function that initialise the physics
-	initPhysics();
+	if(hasPhysics)
+		initPhysics();
 
 	renderClock = frameClock();
 }
+
+DDEngine::~DDEngine(void)
+{
+	if(hasPhysics)
+	{
+		dynamicsWorld->~btDiscreteDynamicsWorld();
+		dispatcher->~btCollisionDispatcher();
+	}
+}
+
 
 void DDEngine::run(void)
 {
@@ -131,7 +144,8 @@ void DDEngine::run(void)
 	SDL_Thread *id3;
 
 	// Create the threads
-	id1 = SDL_CreateThread ( threadPhysics, this );
+	if(hasPhysics)
+		id1 = SDL_CreateThread ( threadPhysics, this );
 	id2 = SDL_CreateThread ( threadSound, this );
 	id3 = SDL_CreateThread ( threadInput, this );
 
@@ -209,7 +223,8 @@ void DDEngine::run(void)
 	}
 
 	//wait for the threads to exit
-	SDL_WaitThread ( id1, NULL );
+	if(hasPhysics)
+		SDL_WaitThread ( id1, NULL );
 	SDL_WaitThread ( id2, NULL );
 	SDL_WaitThread ( id3, NULL );
 }
@@ -246,7 +261,7 @@ int DDEngine::initGL(void)
 	glColorMaterial(GL_FRONT, GL_SPECULAR);
 	glEnable(GL_COLOR_MATERIAL);
 
-	return 0;
+	return 1;
 }
 
 int DDEngine::initPhysics(void)
@@ -269,6 +284,6 @@ int DDEngine::initPhysics(void)
 	// Bind the debug drawer to the physic world
 	dynamicsWorld->setDebugDrawer(&debugger); 
 
-	return 0;
+	return 1;
 }
 

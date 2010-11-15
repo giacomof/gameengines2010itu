@@ -3,8 +3,8 @@
 
 int main(int argc, char *argv[])
 {
-	DDEngine engine = DDEngine();
-	engine.initEngine(800, 600, 32);
-	
+	DDEngine engine = DDEngine(800, 600, 32, false);
+	engine.run();
+
 	return 0;
 }
