@@ -141,6 +141,12 @@ DDEngine::~DDEngine(void)
 
 void DDEngine::run(void)
 {
+	// Set up camera and spectator
+	player = new entitySpectator();
+	playercamera = new entityCamera();
+	player->setCamera(playercamera);
+	controller.setPlayerObject(player);
+
 	// Create the thread handles and assign names
 	SDL_Thread *id1;
 	SDL_Thread *id2;
@@ -155,6 +161,7 @@ void DDEngine::run(void)
 	char title[80];
 	SDL_Event currentEvent;
 
+	// Set up default material
 	GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
 	GLfloat diffuse[] = {0.8, 0.8, 0.8, 1.0};
 	GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
@@ -232,14 +239,6 @@ void DDEngine::run(void)
 		SDL_WaitThread ( id1, NULL );
 	SDL_WaitThread ( id2, NULL );
 	SDL_WaitThread ( id3, NULL );
-}
-
-void DDEngine::setupScene()
-{
-	// Set up camera and spectator
-	entitySpectator *player = new entitySpectator();
-	entityCamera *playercamera = new entityCamera();
-	player->setCamera(playercamera);
 }
 
 int DDEngine::initGL(void)
