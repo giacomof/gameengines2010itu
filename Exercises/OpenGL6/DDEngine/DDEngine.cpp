@@ -85,7 +85,7 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 		physicGravity = Vector(0, -10, 0);			// Gravity Vector
 
 	// Create the asset manager
-	assetManagerPtr = AssetManager();
+	assetManager = AssetManager();
 	// Create the input pump
 	InputPump = MessagePump();
 	// Create the window manager
@@ -334,3 +334,56 @@ btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quat
 	return sphereRigidBody;
 }
 
+SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture)
+{
+	md2Interface * md2Model = new md2Interface(model, texture);
+	return (SceneObject*) md2Model;
+}
+
+SceneObject * DDEngine::createCollada(ColladaFile * model, unsigned int texture, ColladaSkeleton * skeleton)
+{
+	ColladaInterface * colladaModel = new ColladaInterface(model, texture, skeleton);
+	return (SceneObject*) colladaModel;
+}
+
+SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe)
+{
+	Sphere * sphere = new Sphere(radius, slices, stacks, wireframe);
+	return (SceneObject*) sphere;
+}
+
+SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions)
+{
+	Plane * plane = new Plane(width, height, sideSubdivisions);
+	return (SceneObject*) plane;
+}
+
+SceneObject * DDEngine::createCube(float side)
+{
+	Cube * cube = new Cube(side);
+	return (SceneObject*) cube;
+}
+
+SceneObject * DDEngine::createLine(Vector start, Vector end)
+{
+	Line * line = new Line(start, end);
+	return (SceneObject*) line;
+}
+
+SceneObject * DDEngine::createLight(	bool enabled, bool directional,
+										float ambientR, float ambientG, float ambientB,
+										float diffuseR, float diffuseG, float diffuseB,
+										float specularR, float specularG, float specularB)
+{
+	Light * light = new Light(	enabled, directional, 
+								ambientR, ambientG, ambientB,
+								diffuseR, diffuseG, diffuseB,
+								specularR, specularG, specularB);
+	return (SceneObject*) light;
+}
+
+SceneNode * DDEngine::addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry)
+{
+	SceneNode * sceneNode = new SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
+	return sceneNode;
+}
