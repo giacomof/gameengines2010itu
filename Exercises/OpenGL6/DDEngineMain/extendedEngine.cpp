@@ -23,7 +23,7 @@ void extendedEngine::setupScene()
 
 	// Create the plane with the collision shape
 	btRigidBody * planeRigidBody = this->createPhysicalBox(Vector(1000.0f, 10.0f, 1000.0f), Vector(0.0f, -10.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0);
-	SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 200);
+	SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 100);
 	planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, planeRigidBody);
 	// Change BB Translation
 	planeNode->getTransformation()->setBBTranslation(Vector(0, 10, 0));
@@ -41,7 +41,7 @@ void extendedEngine::setupScene()
 	assetManager.getMd2Mesh("battleDroid")->SetAnim(1);
 
 
-	Light * light1 = (Light*)this->createLight(true, true, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+	Light * light1 = (Light*)this->createLight(true, false, 0, 0, 0, 1, 1, 1, 1, 1, 1);
 	light1Node = this->addSceneNode(battleDroidNode, "Light1 Node", light1, Vector(0, 50, 0), Vector(0, 0, 0), 0);
 
 
@@ -50,14 +50,7 @@ void extendedEngine::setupScene()
 	light2->setDirection(Vector(0, 1, 0));
 
 
-	// Lights Connected to the battleDroid and to root		  *
-	/*Light testLight = Light();
-	Light testLight1 = Light(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
-	testLight1.setDirection(Vector(0, -1, 0));
 
-	SceneNode * testLightNode = new SceneNode(battleDroid, "Light Node", &testLight, Vector(0.0f, 50.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-
-	SceneNode * testLightNode1 = new SceneNode(rootNodePtr, "Light Node", &testLight1, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);*/
 
 }
 void extendedEngine::frameStarted()
