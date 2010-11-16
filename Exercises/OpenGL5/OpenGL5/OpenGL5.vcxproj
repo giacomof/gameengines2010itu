@@ -473,7 +473,9 @@
     <None Include="glut32.dll" />
     <None Include="ILU.dll" />
     <None Include="ILUT.dll" />
-    <None Include="include\astroboy.dae" />
+    <None Include="include\astroboy.dae">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="include\battledroid.md2" />
     <None Include="include\battledroid.png" />
     <None Include="include\bosscube.jpg" />

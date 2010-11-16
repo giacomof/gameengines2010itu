@@ -16,9 +16,10 @@ using namespace std;
 using namespace rapidxml;
 using namespace linearAlgebraDLL;
 
-// library_visual_scenes - skeletal heirachy
-// library_controllers - joint-vertex associations and weights
-// library_animations - animations
+struct JointAnim
+{
+	// Some float arrays here I would guess
+};
 
 struct Joint
 {
@@ -26,6 +27,7 @@ struct Joint
 	const char * jName;			// joint name
 	const char * jBoneID;		// joint bone ID, if any
 	int jParentIndex;			// the index of the parent
+	JointAnim * jAnim;			// Animation data for this joint
 };
 
 class ColladaSkeleton
