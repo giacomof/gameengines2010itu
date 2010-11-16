@@ -17,7 +17,8 @@ bool ColladaSkeleton::load(std::string & str)
 	JointArray.clear();
 
 	// Vars
-	bool isFinished = false;
+	bool isFinishedSkel = false;
+	bool isFinishedAnim = false;
 	string rootNodeName = "";
 
 	// Open file
@@ -29,7 +30,7 @@ bool ColladaSkeleton::load(std::string & str)
 	tempNode = rootNode->first_node();
 	string tempNodeName = tempNode->name();
 
-	while(!isFinished)
+	while(!isFinishedSkel || !isFinishedAnim)
 	{
 		//////////////////////////////////////////
 		/*			Load Skeleton				*/
@@ -104,25 +105,76 @@ bool ColladaSkeleton::load(std::string & str)
 			parseChildJoint(rootNode, -1);
 
 			// JointArray should be full now
-			std::cout << "Joint Array has " << JointArray.size() << " joints.\n";
+			isFinishedSkel = true;
+			// std::cout << "Joint Array has " << JointArray.size() << " joints.\n";
 		}
 
 		//////////////////////////////////////////
 		/*			Load Animations				*/
 		//////////////////////////////////////////
-		if(tempNodeName == "library_animations")
+		if(tempNodeName == "library_animations" && isFinishedSkel)
 		{
 			// Load and store animations
+			// Need to set up a stringstream and append -transform to joint IDs, then search if an animation set exists for the joint.
+			// If set is found, parse channel values to associate a sampler with a matrix position
+			// Parse sampler to identify input, output and interpolation arrays
+			// Parse those and store them
+			xml_node<>* animationsNode = tempNode;
+
+			for (int i=0; i<JointArray.size(); i++)
+			{
+				// Set the current animation joint to the first one under the root
+				xml_node<>* currentAnimationJoint = animationsNode->first_node("animation");
+
+				// Get the current joint's ID.
+				string jointID = JointArray[i].jName;
+
+				// Search for a joint animation matching this joint ID
+				bool matchFound = false;
+				while (!matchFound)
+				{
+					string tempJointID = currentAnimationJoint->first_attribute("id")->value();
+
+					if (tempJointID.compare(0, tempJointID.size() - 10, jointID) == 0)
+					{
+						// We found the animations for this joint.
+						//std::cout << "Found animation data matching \"" << jointID << "\"\n";
+						matchFound = true;
+					}
+					else
+					{
+						if (currentAnimationJoint->next_sibling("animation") != 0)
+						{
+							// Try the next one
+							currentAnimationJoint = currentAnimationJoint->next_sibling("animation");
+						}
+						else
+						{
+							// Out of nodes. No animation exists for this joint
+							break;
+						}
+					}
+				}
+
+				// Only continue if we found the match
+				if (matchFound)
+				{
+					// Nothing so far.
+				}
+			}
+
+			// Animation data should be loaded now
+			isFinishedAnim = true;
 		}
 
-		if(!isFinished)  {
+		if(!isFinishedSkel || !isFinishedAnim)  {
 			// check if there are more libraries to search
-			if (tempNode->next_sibling() != 0) {
+			if (tempNode->next_sibling() != 0)
 				tempNode = tempNode->next_sibling();
-				tempNodeName = tempNode->name();
-			} else {
-				isFinished = true;
-			}
+			else
+				tempNode = rootNode->first_node();
+
+			tempNodeName = tempNode->name();
 		}
 	}
 
@@ -134,7 +186,8 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	// Make the joint
 	Joint currentJoint;
 	currentJoint.jParentIndex = parentIndex;
-	currentJoint.jName = currentNode->first_attribute("name")->value();
+	currentJoint.jName = currentNode->first_attribute("id")->value();
+	currentJoint.jAnim = NULL;
 
 	// get the bone ID, if any
 	if ( currentNode->first_attribute("sid") != 0 )
@@ -168,7 +221,10 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	JointArray.push_back(currentJoint);
 	int currentIndex = JointArray.size() - 1;
 
-	std::cout << "Joint Name: \"" << currentJoint.jName << "\", Index: " << currentIndex << ", BoneID: " << currentJoint.jBoneID << ", Parent Index: " << currentJoint.jParentIndex << "\n";
+	/*if (currentJoint.jBoneID != "")
+	{
+		std::cout << "ID: \"" << currentJoint.jName << "\"\nType: " << currentJoint.jBoneID << ", Index: " << currentIndex << ", Parent: " << currentJoint.jParentIndex << "\n";
+	}*/
 
 	// Search children of this node and call this function on them too
 	if (currentNode->first_node("node") != 0)

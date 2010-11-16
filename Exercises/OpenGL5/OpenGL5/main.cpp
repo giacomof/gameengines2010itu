@@ -156,11 +156,11 @@ int threadSound(void *data)
 
 	soundInit();
 
-	int testsoundint = 500;
+	int testsoundint = -1000;
 	while ( !controller.quit )
 	{
 		testsoundint++;
-		if (testsoundint > 600)
+		if (testsoundint > 7000)
 		{
 			soundPlayFile("include/MENULOOP.WAV");
 			testsoundint = 0;
@@ -693,14 +693,16 @@ int initGL(void)
 	assetManagerPtr->loadMd2("include/Lostsoul.md2", "md2LostSoul");
 	assetManagerPtr->loadMd2("include/bosscube.md2", "md2BossCube");
 	assetManagerPtr->loadCollada("include/duck.dae", "duck");
-	//assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
+	assetManagerPtr->loadCollada("include/astroboy.dae", "astroboy");
+
+	assetManagerPtr->loadColladaSkeleton("include/astroboy.dae", "astroboy_skeleton");
 
 	//assetManagerPtr->loadTexture("include/cyber.jpg", "doomDemonTx");
 	assetManagerPtr->loadTexture("include/battledroid.png", "battleDroidTx");
 	assetManagerPtr->loadTexture("include/lostsoul.jpg", "lostSoulTx");
 	assetManagerPtr->loadTexture("include/bosscube.jpg", "bossCubeTx");
 	assetManagerPtr->loadTexture("include/duckCM.tga", "duckCM.tga");
-	//assetManagerPtr->loadTexture("include/boy_10.tga", "boy_10.jpg");
+	assetManagerPtr->loadTexture("include/boy_10.tga", "boy_10.jpg");
 
 	//// ******************************
 	//// ******** DEBUG INFO **********
@@ -712,7 +714,7 @@ int initGL(void)
 	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
-	//std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 
