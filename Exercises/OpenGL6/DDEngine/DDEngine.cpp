@@ -139,7 +139,6 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	// Set rendering parameters for OpenGL
 	if (initGL()==FALSE)
 	{
-		
 		exit(1);
 	}
 
@@ -160,6 +159,8 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	renderClock = frameClock();
 
 	glewInit();
+
+	if(verbosityLevel>=1) printDebugInfo();
 }
 
 DDEngine::~DDEngine(void)
@@ -174,6 +175,28 @@ DDEngine::~DDEngine(void)
 	}
 }
 
+void DDEngine::printDebugInfo(void) 
+{
+	/*Utils util = Utils();*/
+
+	cout << "*************************************" << endl;
+	cout << "********** WINDOW INFO **************" << endl;
+	cout << "*************************************" << endl << endl;
+	cout << "Width: " << screenW << " - Height: " << screenH << " - Color Depth: " << screenCD << endl << endl;
+
+	cout << "*************************************" << endl;
+	cout << "********** ENGINE INFO **************" << endl;
+	cout << "*************************************" << endl << endl;
+	cout << "Memory Manager: Active - MultiCore: Active" << endl;
+	cout << "Resident Threads: Render, Physics, Input, Sound" << endl;
+	cout << "Number of automatically parallelized Threads: " /*<< util.getNumCores()*/ << endl << endl;
+
+	cout << "*************************************" << endl;
+	cout << "************ GAME INFO **************" << endl;
+	cout << "*************************************" << endl << endl;
+	cout << "Physics: " << hasPhysics << " - Gravity: " << physicGravity << endl << endl;
+
+}
 
 void DDEngine::run(void)
 {

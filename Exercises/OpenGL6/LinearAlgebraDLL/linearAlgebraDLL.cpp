@@ -13,6 +13,16 @@ static const int parallelThreads = omp_get_num_procs()/2;
 namespace linearAlgebraDLL
 {
 
+//Utils::Utils(void)
+//{
+//
+//}
+//
+//const int Utils::getNumCores(void) {
+//	return parallelThreads;
+//}
+
+
 // Constructor for vectors without parameter
 Vector::Vector(void)
 {
@@ -975,4 +985,8 @@ std::ostream & operator<< (std::ostream &os, const Matrix &m)
      return os;
 }
 
+
+
 }
+
+
