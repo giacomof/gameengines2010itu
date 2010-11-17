@@ -52,11 +52,11 @@ public:
 	btDiscreteDynamicsWorld * getDynamicWorld() { return dynamicsWorld; };
 
 
-	btRigidBody * createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass);
-	btRigidBody * createPhysicalSphere(float radius, Vector position, Quaternion orientation, float mass);
+	btRigidBody * createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep = true);
+	btRigidBody * createPhysicalSphere(float radius, Vector position, Quaternion orientation, float mass, bool neverSleep = true);
+	btRigidBody * createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass, bool neverSleep = true);
 	btCollisionShape * createCollisionBox(Vector dimension);
 	btCollisionShape * createCollisionSphere(float radius);
-	btRigidBody * createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass);
 
 	SceneObject * createMD2(md2File * model, unsigned int texture);
 	SceneObject * createCollada(ColladaFile * model, unsigned int texture, ColladaSkeleton * skeleton = 0);
