@@ -45,16 +45,16 @@ public:
 	~DDEngine(void);
 	
 	void run();
+	void printDebugInfo();
 	
 	virtual void setupScene() = 0;
 	virtual void frameStarted(int frameDelta) = 0;
 	virtual void frameEnded(int frameDelta) = 0;
-
+	
 	inputManager * getInputManager() { return &input; };
 	Controller * getController() { return &controller; };
 	btDiscreteDynamicsWorld * getDynamicWorld() { return dynamicsWorld; };
-
-
+	
 	btRigidBody * createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep = true);
 	btRigidBody * createPhysicalSphere(float radius, Vector position, Quaternion orientation, float mass, bool neverSleep = true);
 	btRigidBody * createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass, bool neverSleep = true);
@@ -73,6 +73,8 @@ public:
 								float specularR, float specularG, float specularB);
 
 	SceneNode * addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry = 0);
+
+	
 
 protected:
 	
