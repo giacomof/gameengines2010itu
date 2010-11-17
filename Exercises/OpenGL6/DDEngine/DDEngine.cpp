@@ -10,11 +10,11 @@ SDL_mutex * mutex_allocator;					// Mutex for Thread Synchronization
 /* ************* from globals.h **************** */
 /* ********************************************* */
 
-void * operator new(size_t size, unsigned short typeFlag)
+void * operator new(size_t size, unsigned short typeFlag, unsigned short allocatorFlag)
 {
 	AssetManager::lockMutex(mutex_allocator);
 
-	cout << "NEW WITH FLAG: " << typeFlag << endl;
+	cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING ALLOCATOR: " << allocatorFlag << endl;
 
 	void * storage = MemoryManager::allocate(size);
 	if(NULL == storage) {
@@ -178,8 +178,8 @@ DDEngine::~DDEngine(void)
 void DDEngine::run(void)
 {
 	// Set up camera and spectator
-	player = new(SCENEGRAPH) entitySpectator();
-	playercamera = new(SCENEGRAPH) entityCamera();
+	player = new(SCENEGRAPH, STACK_ALLOCATOR) entitySpectator();
+	playercamera = new(SCENEGRAPH, STACK_ALLOCATOR) entityCamera();
 	player->setCamera(playercamera);
 	controller.setPlayerObject(player);
 
