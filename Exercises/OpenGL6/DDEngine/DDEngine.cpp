@@ -176,8 +176,8 @@ DDEngine::~DDEngine(void)
 void DDEngine::run(void)
 {
 	// Set up camera and spectator
-	player = new entitySpectator();
-	playercamera = new entityCamera();
+	player = new(sceneGraphFlag) entitySpectator();
+	playercamera = new(sceneGraphFlag) entityCamera();
 	player->setCamera(playercamera);
 	controller.setPlayerObject(player);
 
