@@ -18,16 +18,20 @@ using namespace linearAlgebraDLL;
 
 struct JointAnim
 {
-	// Some float arrays here I would guess
+	int ArraySize;
+	float * inputArray;
+	float * outputArray;
+	int * interpolationArray;
 };
 
 struct Joint
 {
-	Matrix inversePose;			// the inverse of the joint pose
-	const char * jName;			// joint name
-	const char * jBoneID;		// joint bone ID, if any
-	int jParentIndex;			// the index of the parent
-	JointAnim * jAnim;			// Animation data for this joint
+	Matrix inversePose;						// the inverse of the joint pose
+	const char * jName;						// joint name
+	const char * jBoneID;					// joint bone ID, if any
+	int jParentIndex;						// the index of the parent
+	bool jAnimated;							// Is this animated?
+	JointAnim ChannelMatrix[4][4];			// Animation data for this joint
 };
 
 class ColladaSkeleton

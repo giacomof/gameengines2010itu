@@ -135,6 +135,7 @@ bool ColladaSkeleton::load(std::string & str)
 				{
 					string tempJointID = currentAnimationJoint->first_attribute("id")->value();
 
+					// this assumes tempJointID is jointID with "-transform" appended. We could make this more robust I guess
 					if (tempJointID.compare(0, tempJointID.size() - 10, jointID) == 0)
 					{
 						// We found the animations for this joint.
@@ -151,6 +152,7 @@ bool ColladaSkeleton::load(std::string & str)
 						else
 						{
 							// Out of nodes. No animation exists for this joint
+							JointArray[i].jAnimated = false;
 							break;
 						}
 					}
@@ -159,8 +161,193 @@ bool ColladaSkeleton::load(std::string & str)
 				// Only continue if we found the match
 				if (matchFound)
 				{
-					// Nothing so far.
+					JointArray[i].jAnimated = true;
+
+					// Go through the channels to find the associated sampler
+					xml_node<>* currentChannel = currentAnimationJoint->first_node("channel");
+
+					bool channelsDone = false;
+					while (!channelsDone)
+					{
+						// Get source (sampler) and target IDs
+						string targetID = currentChannel->first_attribute("target")->value();
+						string samplerID = currentChannel->first_attribute("source")->value();
+
+						// Extract matrix position from target ID (I hope all files have it in this format)
+						int x, y;
+						x = atoi( targetID.substr(targetID.size()-5,1).c_str() );
+						y = atoi( targetID.substr(targetID.size()-2,1).c_str() );
+						//std::cout << targetID << " reads as ( " << x << " , " << y << " )\n";
+
+						// Constrain x and y just to be sure
+						if ( x > 3 || x < 0 ) x = 0;
+						if ( y > 3 || y < 0 ) y = 0;
+
+						// Now get the sample and use it to load the data
+						xml_node<>* currentSampler = currentAnimationJoint->first_node("sampler");
+
+						bool samplerFound = false;
+						while (!samplerFound)
+						{
+							string tempString = currentSampler->first_attribute("id")->value();
+							if ( samplerID.compare(1, samplerID.size() - 1, tempString) == 0 )
+							{
+								samplerFound = true;
+							}
+							else
+							{
+								if ( currentSampler->next_sibling("sampler") != 0 )
+								{
+									currentSampler = currentSampler->next_sibling("sampler");
+								}
+								else
+								{
+									// Uh oh! Here be dragons.
+									std::cout << "Couldn't find sampler \"" << samplerID << "\"\n";
+									JointArray[i].jAnimated = false;
+									break;
+								}
+							}
+						}
+
+						// We have a sampler now, right? We should have if samplerFound is true...
+						if (samplerFound)
+						{
+							// Let's take this guy apart and see where our arrays are
+							xml_node<>* currentInput = currentSampler->first_node("input");
+
+							string inputID = "", outputID = "", interID = "";
+
+							while (true)
+							{
+								string semantic = currentInput->first_attribute("semantic")->value();
+
+								if ( semantic == "INPUT" )
+									inputID = currentInput->first_attribute("source")->value();
+								else if ( semantic == "OUTPUT" )
+									outputID = currentInput->first_attribute("source")->value();
+								else if ( semantic == "INTERPOLATION" )
+									interID = currentInput->first_attribute("source")->value();
+								else
+								{
+									// uhm, whoops. What does this do?
+									std::cout << "Unrecognized input for \"" << samplerID << "\"\n";
+								}
+
+								if (currentInput->next_sibling("input") != 0)
+									currentInput = currentInput->next_sibling("input");
+								else
+									break;
+							}
+
+							if (inputID != "" && outputID != "" && interID != "")
+							{
+								xml_node<>* currentArrayNode = currentAnimationJoint->first_node("source");
+
+								// Let's find and load our arrays
+								string inputString, outputString, interString;
+								int inputCount = 0, outputCount = 0, interCount = 0;
+								while (!inputCount || !outputCount || !interCount)
+								{
+									string tempArrayID = currentArrayNode->first_attribute("id")->value();
+									if ( inputID.compare(1, inputID.size() - 1, tempArrayID) == 0 )
+									{
+										inputCount = atoi(currentArrayNode->first_node("float_array")->first_attribute("count")->value());
+										inputString = currentArrayNode->first_node("float_array")->value();
+									}
+									else if ( outputID.compare(1, outputID.size() - 1, tempArrayID) == 0 )
+									{
+										outputCount = atoi(currentArrayNode->first_node("float_array")->first_attribute("count")->value());
+										outputString = currentArrayNode->first_node("float_array")->value();
+									}
+									else if ( interID.compare(1, interID.size() - 1, tempArrayID) == 0 )
+									{
+										interCount = atoi(currentArrayNode->first_node("Name_array")->first_attribute("count")->value());
+										interString = currentArrayNode->first_node("Name_array")->value();
+									}
+									if (currentArrayNode->next_sibling("source") != 0)
+										currentArrayNode = currentArrayNode->next_sibling("source");
+									else
+										break;
+								}
+
+								// Get the smallest count
+								int count;
+								if (inputCount < outputCount)
+									count = inputCount;
+								else
+									count = outputCount;
+
+								if (interCount < count)
+									count = interCount;
+
+								// Avast! Prepare to be parsed!
+								string token;
+								float * inputArray, * outputArray;
+								int * interArray;
+								
+								inputArray = (float *)malloc(inputCount*sizeof(float));
+								outputArray = (float *)malloc(outputCount*sizeof(float));
+								interArray = (int *)malloc(interCount*sizeof(int));
+
+								// parse the input array
+								std::istringstream inputStream(inputString);
+								while ( getline(inputStream, token, ' ') )
+								{
+									int j = 0;
+									inputArray[j] = atof ( token.c_str() );
+									j++;
+								}
+
+								// parse the output array
+								std::istringstream outputStream(outputString);
+								while ( getline(outputStream, token, ' ') )
+								{
+									int j = 0;
+									outputArray[j] = atof ( token.c_str() );
+									j++;
+								}
+
+								// parse the interpolation
+								std::istringstream interStream(interString);
+								while ( getline(interStream, token, ' ') )
+								{
+									int j = 0;
+									if ( token == "LINEAR" )
+									{
+										interArray[j] = 1;
+										//std::cout << "Interpolation type is \"" << token << "\"\n";
+									}
+									else
+										interArray[j] = 1;
+
+									j++;
+								}
+
+								JointArray[i].ChannelMatrix[x][y].ArraySize = count;
+								JointArray[i].ChannelMatrix[x][y].inputArray = inputArray;
+								JointArray[i].ChannelMatrix[x][y].outputArray = outputArray;
+								JointArray[i].ChannelMatrix[x][y].interpolationArray = interArray;
+								//std::cout << "Filled a channel!\n";
+								// Phew. And that was just one channel, for one joint!
+							}
+							else
+							{
+								JointArray[i].jAnimated = false;
+							}
+						}
+
+						if ( currentChannel->next_sibling("channel") != 0 )
+						{
+							currentChannel = currentChannel->next_sibling("channel");
+						}
+						else
+						{
+							channelsDone = true;
+						}
+					}
 				}
+				//std::cout << "jAnimated on Joint " << i << " is " << JointArray[i].jAnimated << "\n";
 			}
 
 			// Animation data should be loaded now
@@ -187,7 +374,7 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	Joint currentJoint;
 	currentJoint.jParentIndex = parentIndex;
 	currentJoint.jName = currentNode->first_attribute("id")->value();
-	currentJoint.jAnim = NULL;
+	currentJoint.jAnimated = false;
 
 	// get the bone ID, if any
 	if ( currentNode->first_attribute("sid") != 0 )
