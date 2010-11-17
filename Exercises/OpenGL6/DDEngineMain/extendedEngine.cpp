@@ -1,5 +1,7 @@
 #include "extendedEngine.h"
 
+static float const PI = 3.14159f;				// PI definition
+
 void extendedEngine::setupScene()
 {
 	//// ******************************
@@ -81,14 +83,23 @@ void extendedEngine::setupScene()
 	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", droidCube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
 
+	// Ducks
+	btCollisionShape * duckBox = this->createCollisionBox(Vector(15.0f, 15.0f, 15.0f));
+	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"),assetManager.getTexture("duckCM.tga"));
+
+	for(int i = 0; i < 6; i++)
+	{
+		btRigidBody * duckRigidBody = this->createRigidBody(duckBox, Vector(sin(PI/3*i) * 500 ,350,cos(PI/3*i) * 500), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 1);
+		SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck,  Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
+		duckNode->getTransformation()->setBBTranslation(Vector(-2, -17, 0));
+	}
+
 }
 void extendedEngine::frameStarted()
 {
 	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.2f);
 	droidCubeRotationCenter->rotateAboutAxis(Vector(0,1,0),0.205f);
 	droidCubeNode->rotateAboutAxis(Vector(0,1,0),0.205f);
-	//bossCube2->rotateAboutAxis(Vector(0,0,1),0.002f*frameDelta);
-	//bossCube2->translate(Vector(0.01f*frameDelta,0,0));
 
 }
 void extendedEngine::frameEnded()
