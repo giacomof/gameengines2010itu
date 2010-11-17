@@ -11,11 +11,18 @@ static bool drawDebug = true;
 static const int verbosityLevel = 3;
 
 // MemoryManager Flags
-static unsigned short managersFlag = 1;
-static unsigned short sceneGraphFlag = 2;
-static unsigned short PhysicsFlag = 3;
-static unsigned short GeometryFlag = 4;
-static unsigned short UtilityFlag = 5;
+	// Type Flag
+static unsigned short MANAGER	 = 1;
+static unsigned short SCENEGRAPH = 2;
+static unsigned short PHYSICS	 = 3;
+static unsigned short GEOMETRY	 = 4;
+static unsigned short UTILITY	 = 5;
+
+	// Allocator Flag
+static unsigned short AUTO_ALLOCATOR  = 0;
+static unsigned short STACK_ALLOCATOR = 1;
+static unsigned short POOL_ALLOCATOR  = 2;
+
 
 
 #endif

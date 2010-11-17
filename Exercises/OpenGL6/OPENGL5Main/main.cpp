@@ -65,19 +65,12 @@ SceneNode * colladaDuck;
 SceneNode * colladaAstroboy;
 SceneNode * testPlane;
 
-// OpenGL Attributes
-Uint32 timeLeft(void);
-GLuint loadTexture(char* texName);
-int initGL(void);
-
 // STD/OpenGL Methods
 void drawGL(int frameDelta);
+int initGL(void);
 
 // Pointer to the function that moves the camera
 float* getCamera(void);
-
-GLuint	filter;
-GLuint	texture[3];
 
 // input manager definition
 inputManager input;
@@ -91,6 +84,7 @@ GLfloat Ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f};
 GLfloat Diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};  
 GLfloat Position[] = {10.0f, 190.0f, 10.0f, 1.0f}; 
 
+// SDL Mutex for Thread Synchronized access to memory
 static SDL_mutex * mutex_allocator = SDL_CreateMutex();
 
 /* ********************************************* */
@@ -198,19 +192,18 @@ int threadUpdate(void *data)
 
 int main(int argc, char *argv[])
 {
-	// Start the MemoryManager
-	MemoryManager memMgr;
 	
 	// Used for checking memory leaks
 	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//_crtBreakAlloc = 920;
 
 
-	// start the asset manager
-	assetManagerPtr = new(managersFlag) AssetManager();
-	InputPump = MessagePump::getInstance();
+	// Mandatory Initializations
+	MemoryManager memMgr = MemoryManager();
+	assetManagerPtr		 = new(MANAGER) AssetManager();
+	InputPump			 = MessagePump::getInstance();
 	WindowManager window = WindowManager();
-	controller = Controller();
+	controller			 = Controller();
 
 	// SDL initialization
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
@@ -220,9 +213,9 @@ int main(int argc, char *argv[])
 
 	window.createWindow(screenWidth, screenHeight, screenColorDepth);
 
+	// OpenGL Specific Initializations
 	if (initGL()==FALSE)
-	{
-		
+	{		
 		exit(1);
 	}
 	
@@ -238,19 +231,14 @@ int main(int argc, char *argv[])
 
 	// Initialise the physic world
 	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
- 
     btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
     btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
- 
     btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
- 
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
- 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
 
 	// initialise the debugDrawer
 	debugger.setDebugMode( btIDebugDraw::DBG_DrawWireframe ); 
-	// set debugger
 	dynamicsWorld->setDebugDrawer(&debugger); 
 	
 
@@ -262,6 +250,7 @@ int main(int argc, char *argv[])
 	//* ----------------------------------------- *
 	// * Plane with the collision shape			  *
 	// * ---------------------------------------- */
+	
 	// Create the plane with the collision shape
 	btCollisionShape* groundShape = new btBoxShape(btVector3(1000.0f, 10.0f, 1000.0f));
 
@@ -542,12 +531,13 @@ int main(int argc, char *argv[])
 	GLfloat diffuse[] = {0.8, 0.8, 0.8, 1.0};
 	GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
 	GLfloat shine = 100.0;
+
 	glMaterialf(GL_FRONT_AND_BACK, GL_AMBIENT, ambient[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
 
-	int frameDelta;
+	int frameDelta = 0;
 
 	while(!controller.quit)
 	{
@@ -611,13 +601,10 @@ int main(int argc, char *argv[])
 		// Actual frame rendering happens here
 		if (window.getActive() )
 		{
-			//tickFrame = SDL_GetTicks();
 			renderClock.frameUpdate();
-
 			drawGL( frameDelta );
 		}		
-		// Delay the thread to make room for others on the CPU
-		//SDL_Delay(thread_delay);
+
 	}
 
 	//wait for the threads to exit
@@ -631,24 +618,21 @@ int main(int argc, char *argv[])
 /* Draw the scene */
 void drawGL(int frameDelta)
 {
+	// clear the color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
 	glLoadIdentity();
 
 	// Set the camera
-	float *CamTransform = getCamera();
+	float * CamTransform = getCamera();
 
+	// draw the debug drawings if the engine is in debug mode
 	if(drawDebug) dynamicsWorld->debugDrawWorld();
 
-	// draw the animation
-	//AssetManager::lockMutex( rootNodePtr->mutex_node );
+	// update the animations
 	rootNodePtr->update(frameDelta);
-	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
-
-	//Root::drawGeometry();
-	//AssetManager::lockMutex( rootNodePtr->mutex_node );
+	// draw everything
 	rootNodePtr->drawGeometry();
-	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
-
+	
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
 }
@@ -705,18 +689,6 @@ int initGL(void)
 
 	//assetManagerPtr->loadColladaSkeleton("include/astroboy.dae", "astroboy_skeleton");
 
-	//// ******************************
-	//// ******** DEBUG INFO **********
-	//// ******************************
-	
-	// write memory usage
-	//std::cout << "memory usage demon " << (assetManagerPtr->getMd2Mesh("md2Demon")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage battle droid " << (assetManagerPtr->getMd2Mesh("battleDroid")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage lost soul " << (assetManagerPtr->getMd2Mesh("md2LostSoul")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
-	/*std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
-	std::cout << "memory usage COLLADA SKELETON astroboy " << (assetManagerPtr->getColladaSkeleton("astroboy_skeleton")->getDataSize()/1024.0f) << "kb\n";*/
 	return TRUE;
 }
 
@@ -734,7 +706,7 @@ float* getCamera()
 	if ( currentCamera != NULL )
 	{
 		AssetManager::lockMutex( currentCamera->mutex_object );
-		Matrix transformationMatrix;
+		Matrix transformationMatrix = Matrix();
 
 		if(currentCamera->isFollowingNode && currentCamera->positionNode != NULL)
 		{
@@ -744,9 +716,7 @@ float* getCamera()
 			transformationMatrix = Matrix::generateTranslationMatrix(-position.getX(), -position.getY(), -position.getZ()).getTranspose() * transformationMatrix;
 
 
-		}
-		else
-		{
+		} else {
 
 			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0,0.0,0.0),currentCamera->pitch)).getTranspose();
 			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(0.0,1.0,0.0),currentCamera->yaw)).getTranspose() * transformationMatrix;
