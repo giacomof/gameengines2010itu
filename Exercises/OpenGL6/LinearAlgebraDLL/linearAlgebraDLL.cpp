@@ -7,7 +7,8 @@
 using namespace std;
 
 static const float PI = 3.14159f;
-static const int parallelThreads = 2;
+static const int parallelThreads = omp_get_num_procs()/2;
+
 
 namespace linearAlgebraDLL
 {
