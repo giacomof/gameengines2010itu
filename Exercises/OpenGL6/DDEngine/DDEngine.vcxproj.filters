@@ -759,6 +759,15 @@
     <ClInclude Include="DDEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\glew.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\glxew.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wglew.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp">
@@ -1195,5 +1204,13 @@
     <None Include="TEAMDETAILS.txt">
       <Filter>Text Files</Filter>
     </None>
+    <None Include="..\include\glew32.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\include\glew32.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>

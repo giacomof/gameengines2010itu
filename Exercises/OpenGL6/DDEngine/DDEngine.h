@@ -7,12 +7,13 @@
 #ifndef DDEngine__H 
 #define DDEngine__H
 
+#include <glew.h>								// Header File for GLEW library
 #include <iostream>								// Header File For the basic Input/Output system
 #include <windows.h>							// Header File For Windows
 #include <stdio.h>								// Header File For Standard Input/Output
 #include <stdlib.h>								// Header File For the STD library
 #include <SDL.h>								// Header File for the SDL library
-#include <SDL_opengl.h>							// Header File for OpenGL through SDL
+//#include <SDL_opengl.h>							// Header File for OpenGL through SDL
 #include <SDL_thread.h>							// Header File for SDL thread library
 #include <SDL_audio.h>							// Header File for SDL audio library
 #include <glut.h>								// Header File for glut commands
