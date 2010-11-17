@@ -2,7 +2,7 @@
 					
 static int const thread_delay = 1;				// Minimum time between loops
 static float const PI = 3.14159f;				// PI definition
-SDL_mutex * mutex_allocator;	// Mutex for Thread Synchronization
+SDL_mutex * mutex_allocator;					// Mutex for Thread Synchronization
 
 /* ********************************************* */
 /* ******* operator new global overload ******** */
@@ -10,11 +10,11 @@ SDL_mutex * mutex_allocator;	// Mutex for Thread Synchronization
 /* ************* from globals.h **************** */
 /* ********************************************* */
 
-void * operator new(size_t size, unsigned short flag)
+void * operator new(size_t size, unsigned short typeFlag)
 {
 	AssetManager::lockMutex(mutex_allocator);
 
-	cout << "NEW WITH FLAG: " << flag << endl;
+	cout << "NEW WITH FLAG: " << typeFlag << endl;
 
 	void * storage = MemoryManager::allocate(size);
 	if(NULL == storage) {
@@ -178,8 +178,8 @@ DDEngine::~DDEngine(void)
 void DDEngine::run(void)
 {
 	// Set up camera and spectator
-	player = new(sceneGraphFlag) entitySpectator();
-	playercamera = new(sceneGraphFlag) entityCamera();
+	player = new(SCENEGRAPH) entitySpectator();
+	playercamera = new(SCENEGRAPH) entityCamera();
 	player->setCamera(playercamera);
 	controller.setPlayerObject(player);
 
