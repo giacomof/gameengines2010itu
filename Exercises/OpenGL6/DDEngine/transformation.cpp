@@ -5,16 +5,18 @@ Transformation::Transformation(	Vector p_translation,
 								Vector p_axis, float p_angle )
 {
 	// The transformation matrix initially is equal to the identity matrix
-	transformationMatrix = Matrix::generateIdentityMatrix();
+	transformationMatrix = Matrix();
+	transformationMatrix = transformationMatrix.generateIdentityMatrix();
 	
 	// Initialise all the values
-	rotation = Quaternion(p_axis, p_angle);
+	rotation = Quaternion();
 	bbRotation = Quaternion();
-
-
-	translation = p_translation;
+	translation = Vector();
 	bbTranslation = Vector();
 
+	// default inizialitazion values
+	rotation = Quaternion(p_axis, p_angle);
+	translation = p_translation;
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
 	
@@ -23,17 +25,17 @@ Transformation::Transformation(	Vector p_translation,
 // Returns the transpose of the actual transformation matrix
 Matrix Transformation::getTransformation(void)
 {
+	Matrix tempMatrix = Matrix();
 
 	float tranM[16];
-	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
-	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(2)) * transformationMatrix;
-	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
-	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
-	
 
-	
-	transformationMatrix.getMatrix(&tranM[0]);
-	return transformationMatrix.getTranspose();
+	tempMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
+	tempMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(2)) * tempMatrix;
+	tempMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * tempMatrix;
+	tempMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * tempMatrix;
+
+	tempMatrix.getMatrix(&tranM[0]);
+	return tempMatrix.getTranspose();
 }
 
 // Return the inverse of the transposed actual transformation matrix
@@ -41,6 +43,8 @@ Matrix Transformation::getInverseTransformation(void)
 {
 	float tranM[16];
 	
+	transformationMatrix = Matrix();
+
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getInverse();
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
 	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(1)).getInverse() * transformationMatrix;
@@ -60,7 +64,6 @@ void Transformation::addQuaternionRotation(Quaternion q)
 // Apply a translation
 void Transformation::addTranslation(Vector v)
 {
-	
 	translation = translation + v;
 }
 

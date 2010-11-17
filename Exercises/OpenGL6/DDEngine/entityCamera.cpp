@@ -9,12 +9,10 @@ entityCamera::entityCamera(void)
 
 entityCamera::~entityCamera(void)
 {
-	SDL_DestroyMutex ( mutex_camera );
 }
 
-void entityCamera::update()
-{
-	// Do nothing
+void entityCamera::update(void) 
+{ 
 }
 
 void entityCamera::setPosition(float x, float y, float z)

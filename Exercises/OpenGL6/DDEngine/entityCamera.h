@@ -4,8 +4,8 @@
 #    define entityCamera_D __declspec(dllimport)
 #endif
 
-#ifndef entityCamera__H
-#define entityCamera__H
+#ifndef entityCamera__H__
+#define entityCamera__H__
 
 #include "sceneObject.h"
 #include "SceneNode.h"
@@ -18,7 +18,7 @@ public:
 	float vUp[3];
 	float pitch;
 	float yaw;
-
+	SDL_mutex * mutex_camera;
 	SceneNode * positionNode;
 	bool isFollowingNode;
 	
@@ -30,13 +30,8 @@ public:
 	virtual void setForwardVector(float x, float y, float z);
 	virtual void setUpVector(float x, float y, float z);
 	virtual void setPitchYaw(float newpitch, float newyaw);
-
 	virtual void setSceneNode(SceneNode *newSceneNode);
 
-
-	
-
-	SDL_mutex * mutex_camera;
 };
 
 #endif

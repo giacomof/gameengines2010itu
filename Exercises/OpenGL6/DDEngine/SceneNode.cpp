@@ -11,7 +11,7 @@
 
 #include "sceneNode.h"
 
-static int nodeCount=0;
+static int nodeCount = 0;
 
 // Constructor that take a pointer to the parant node, the name of the node
 // the initial position of the node
@@ -22,47 +22,45 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 						btRigidBody * rigidBody )
 {
 	// variables inizialization
-	nodeName = str;
 	nodeNameString = str;
-
 	parentNode = parentNode;
-
-	geometry = g;
-
-	// set parent node
 	parentNode->addChild(this);
+	geometry = g;
+	physicsGeometry = rigidBody;
+	visible = true;
+	tranM = new float[16];
+	btTransform trans = btTransform();
+	mutex_node = SDL_CreateMutex();
 
 	// Initialise the member transformation with the position and orientation parameters
-	nodeTransformation = Transformation(v,
-										p_axis, p_angle);
+	nodeTransformation = Transformation(v, p_axis, p_angle);
 
-	physicsGeometry = rigidBody;
-
-	visible = true;
-	
 	// Define the unique identifier of the node
 	id = nodeCount;
 	nodeCount++;
 
-	mutex_node = SDL_CreateMutex();
-	
 }
 
 // If the geometry is a MD2 model than update his animation status
 // and do so for all his childs
 void SceneNode::update(float dt) 
 {
-	geometry->update();
+	//std::cout << "UPDATING: " << nodeNameString << endl;
+	if(nodeNameString != "Camera Node") geometry->update();
 
-	list<SceneNode*>::iterator itS;
-	for(itS = childList.begin(); itS != childList.end(); itS++) {
-			(*itS)->update(dt);		
+	if (childList.size() != 0) {
+
+		list<SceneNode*>::iterator itS(childList.begin());
+		for(itS = childList.begin(); itS != childList.end(); itS++) {
+				(*itS)->update(dt);		
+		}
+
 	}
 }
 
 void SceneNode::destroy(void) 
 {	
-	list<SceneNode*>::iterator i;
+	list<SceneNode*>::iterator i(childList.begin());
 	for(i=childList.begin(); i != childList.end(); ++i) 
 	{ 
 		(*i)->destroy(); 
@@ -78,14 +76,6 @@ void SceneNode::addChild( SceneNode * cNode )
 	childList.push_front(cNode);
 }
 		
-/*	
-void SceneNode::detachChild( SceneNode & cNode ) 
-{
-	// setParent Root
-	// delete the SceneNode from the childList
-}
-*/
-
 // Set a new parent for the node
 void SceneNode::setParent( SceneNode * cNode ) 
 {
@@ -105,7 +95,6 @@ SceneNode* SceneNode::getParent(void)
 // Change the name of the node
 void SceneNode::setName(char * name) 
 {
-	nodeName = name;
 	nodeNameString = name;
 }
 
@@ -136,7 +125,7 @@ void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 		if (this->getParent()->getName() == "root")
 		{
 
-			btTransform trans;
+			btTransform trans = btTransform();
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
 
 			btVector3 btActualPosition = physicsGeometry->getWorldTransform().getOrigin();
@@ -160,7 +149,6 @@ void SceneNode::translate(Vector translateVector)
 	{
 		if (this->getParent()->getName() == "root")
 		{
-			btTransform trans;
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
 			btVector3 final = trans.getOrigin() + btVector3(translateVector.getX(), translateVector.getY(), translateVector.getZ());	
 			physicsGeometry->getWorldTransform().setOrigin(final);
@@ -202,8 +190,8 @@ void SceneNode::shear(float p_shXY, float p_shXZ, float p_shYX, float p_shYZ, fl
 Vector SceneNode::getWorldPosition(void)
 {
 	SceneNode * nodePointer = this;
-	Vector worldPosition;
-	Vector temp;
+	Vector worldPosition = Vector();
+	Vector temp = Vector();
 
 	while(true)
 	{
@@ -229,7 +217,7 @@ Quaternion SceneNode::getWorldOrientation(void)
 {
 	SceneNode * nodePointer = this;
 	Quaternion worldOrientation = Quaternion(0,0,0,1);
-	Quaternion temp;
+	Quaternion temp = Quaternion();
 
 	worldOrientation = this->getTransformation()->getOrientation() * worldOrientation;
 
@@ -251,7 +239,7 @@ Transformation * SceneNode::getTransformation()
 }
 
 
-// Apply the trasformation of the node and then draw it
+// Apply the transformation of the node and then draw it
 void SceneNode::drawGeometry()
 {
 
@@ -259,7 +247,6 @@ void SceneNode::drawGeometry()
 
 		if (this->getParent()->getName() == "root")
 		{
-			btTransform trans;
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
 
 			Vector localPosition = nodeTransformation.getBBTranslation();
@@ -275,7 +262,6 @@ void SceneNode::drawGeometry()
 		}
 		else
 		{
-			btTransform trans;
 			physicsGeometry->getMotionState()->getWorldTransform(trans);
 
 			Vector localPosition = nodeTransformation.getBBTranslation();
@@ -291,17 +277,24 @@ void SceneNode::drawGeometry()
 		}
 	}
 	
+	//std::cout << "APPLY TRANSFORMATION: " << nodeNameString << endl;
 	applyTransformation();
 
 	if(isVisible()) {
-		geometry->drawGeometry();
+		//std::cout << "RENDERING: " << nodeNameString << endl;
+		if(nodeNameString != "Camera Node") geometry->drawGeometry();
 		// draw the name of the SceneNode
 		if(drawDebug) drawName();
 	}
 
-	list<SceneNode*>::iterator itS;
-	for(itS = childList.begin(); itS != childList.end(); itS++) {
+	
+
+	if(childList.size() != 0) {
+
+		list<SceneNode*>::iterator itS (childList.begin());
+		for(itS = childList.begin(); itS != childList.end(); itS++) {
 			(*itS)->drawGeometry();
+		}
 	}
 
 	glPopMatrix();
@@ -310,8 +303,6 @@ void SceneNode::drawGeometry()
 // Apply the transformation of the node
 void SceneNode::applyTransformation()
 {
-	float tranM[16];
-	
 	nodeTransformation.getTransformation().getMatrix(&tranM[0]);
 	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
@@ -320,8 +311,6 @@ void SceneNode::applyTransformation()
 // Apply the inverse transformation of the node
 void SceneNode::removeTransformation()
 {
-	float tranM[16];
-
 	nodeTransformation.getInverseTransformation().getMatrix(&tranM[0]);
 	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
@@ -350,7 +339,7 @@ void SceneNode::drawName(void)
 	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
 
     glColor4f(0.1f, 1.0f, 0.1f, 0.2f);  // set text color
-	float pos[3];
+	float * pos = new float[3];
 	pos[1] = 0;
 	pos[2] = 0;
 
@@ -380,7 +369,7 @@ void SceneNode::drawName(void)
 Root Root::_instance;
 list<SceneNode*> Root::childOfRootList;
 SDL_mutex * Root::rootMutex;
-unsigned int id;
+unsigned int Root::id;
 
 Root &Root::getInstance()
 {
@@ -390,12 +379,10 @@ Root &Root::getInstance()
 // Method for drawing the entire world moving along the scene graph
 void Root::drawGeometry()
 {
-	list<SceneNode*>::iterator itS;
+	list<SceneNode*>::iterator itS(childOfRootList.begin());
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
-		//AssetManager::lockMutex( rootMutex );
 			(*itS)->drawGeometry();
-		//AssetManager::unlockMutex( rootMutex );
 	}
 
 	glPopMatrix();
@@ -404,12 +391,11 @@ void Root::drawGeometry()
 // Update the transformation status of all the child nodes of root
 void Root::update(float dt)
 {
-	list<SceneNode*>::iterator itS;
+	list<SceneNode*>::iterator itS(childOfRootList.begin());
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
-			//AssetManager::lockMutex( rootMutex );
 			(*itS)->update(dt);
-			//AssetManager::unlockMutex( rootMutex );				
+			
 	}
 }
 

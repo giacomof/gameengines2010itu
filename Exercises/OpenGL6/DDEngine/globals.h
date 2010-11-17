@@ -15,6 +15,7 @@ static unsigned short managersFlag = 1;
 static unsigned short sceneGraphFlag = 2;
 static unsigned short PhysicsFlag = 3;
 static unsigned short GeometryFlag = 4;
+static unsigned short UtilityFlag = 5;
 
 
 #endif

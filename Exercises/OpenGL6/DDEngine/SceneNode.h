@@ -4,8 +4,8 @@
 #    define sceneNode_D __declspec(dllimport)
 #endif
 
-#ifndef sceneNode__H
-#define sceneNode__H
+#ifndef sceneNode__H__
+#define sceneNode__H__
 
 #include "globals.h"
 #include <SDL_mutex.h>
@@ -27,7 +27,7 @@ class sceneNode_D SceneNode
 {
 	public:
 
-		SDL_mutex *mutex_node;					// Mutex for the Node
+		SDL_mutex *mutex_node;					
 		
 		// default constructor
 		SceneNode() { mutex_node = SDL_CreateMutex(); };
@@ -47,9 +47,6 @@ class sceneNode_D SceneNode
 		// add a child
 		void addChild( SceneNode * pNode );
 
-		// detach a child
-		//void detachChild( SceneNode & cNode );
-
 		// set parent node
 		void setParent ( SceneNode * pNode );
 		// get parent node
@@ -63,7 +60,7 @@ class sceneNode_D SceneNode
 		void setVisible(bool b);
 
 		void addSceneObject(SceneObject * g);
-		SceneObject* getSceneObject();
+		SceneObject * getSceneObject();
 
 		void rotateAboutAxis(Vector p_Axis, float p_Degree);
 		void translate(Vector translateVector);
@@ -83,7 +80,8 @@ class sceneNode_D SceneNode
 		void drawGeometry(void);
 		void drawName(void);
 
-
+		float * tranM;
+		btTransform trans;
 		string nodeNameString;
 		static unsigned int getNodeCount(void);
 		
@@ -91,7 +89,6 @@ class sceneNode_D SceneNode
 	protected:
 		bool visible;							// The node should be drawn or not
 		int id;									// Unique id
-		char * nodeName;						// Name
 		SceneNode * parentNode;					// Parent Node
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
@@ -107,19 +104,17 @@ class sceneNode_D SceneNode
 
 class sceneNode_D Root : public SceneNode
 {
-	public: // Singleton
+	public: 
+
+		// Singleton Definitions
 		static Root _instance;
-		
 		static SDL_mutex * rootMutex;
-
 		Root(void) { &getInstance(); }
-		//~Root(void);
-
 		Root(const Root &getInstance());
-
 		Root & operator=(Root &getInstance());
-		
 		static Root &getInstance();
+		
+		
 		// set parent node
 		static void setParent( SceneNode * pNode );
 		// get parent node

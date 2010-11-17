@@ -4,27 +4,27 @@
 #    define controller_D __declspec(dllimport)
 #endif
 
-#ifndef controller__H
-#define controller__H
+#ifndef controller__H__
+#define controller__H__
 
 #include <SDL.h>
 #include "entitySpectator.h"
 #include "assetManager.h"
 
-class controller_D Controller	
+class controller_D Controller
 {
 public:
+	// External Declaration
 	static Controller _instance;
 	static SDL_mutex * mutex_controller;
-	
 	static entitySpectator * playerObject;
-	
 	static bool quit;
- 
+	static unsigned int count;
+
+	// Singleton Definition
 	Controller() { & getInstance(); }
 	~Controller() {}; 
 	Controller(const Controller & getInstance());
-	
 	Controller & operator=(Controller & getInstance());
 	static Controller & getInstance();
 
@@ -35,10 +35,8 @@ public:
 	static void strafeRight(bool shouldMove);
 	static void lookDeltaX(float deltaLook);
 	static void lookDeltaY(float deltaLook);
-
 	static void changeCameraMode(bool following);
-
-	static unsigned int count;
+		
 };
 
 #endif

@@ -4,8 +4,8 @@
 #    define inputManager_D __declspec(dllimport)
 #endif
 
-#ifndef inputManager__H
-#define inputManager__H
+#ifndef inputManager__H__
+#define inputManager__H__
 
 #include <SDL.h>
 #include "messagePump.h"
@@ -15,21 +15,23 @@
 class inputManager_D inputManager
 {
 public:
-	static inputManager _instance;
-	int update(void);
 
+	// External Declarations
+	static unsigned int count;
+	static SDL_mutex * mutex_event;
+	static bool active;
+
+	// Singleton definitions
+	static inputManager _instance;
 	inputManager() { & getInstance(); }
-	~inputManager() {}; 
 	inputManager(const inputManager & getInstance());   
-	
+	~inputManager() {};
 	inputManager & operator=(inputManager & getInstance());
 	static inputManager & getInstance();
 
-	static unsigned int count;
-	static SDL_mutex * mutex_event;
+	int update(void);
 
 private:
-	static bool active;
 
 	void keyPress(SDL_Event & currentEvent);
 	void mousePress(SDL_Event & currentEvent);
