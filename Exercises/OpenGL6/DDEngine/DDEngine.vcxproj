@@ -476,6 +476,9 @@
     <None Include="..\Debug\ILUT.dll" />
     <None Include="..\Debug\SDL.dll" />
     <None Include="..\include\glut.def" />
+    <None Include="snippets.txt" />
+    <None Include="TEAMDETAILS.txt" />
+    <None Include="todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

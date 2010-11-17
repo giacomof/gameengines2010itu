@@ -4,8 +4,8 @@
 #    define messagePump_D __declspec(dllimport)
 #endif
 
-#ifndef messagePump__H
-#define messagePump__H
+#ifndef messagePump__H__
+#define messagePump__H__
 
 #include "assetManager.h"
 
@@ -16,16 +16,20 @@
 
 using namespace std;
 
-class messagePump_D MessagePump								// Singleton
+class messagePump_D MessagePump								
 {
 public:
-	static MessagePump _instance;
+
+	// external declaration
+	static list<SDL_Event> * messageList;
+	static unsigned int count;
 	static SDL_mutex * mutex_event;
- 
+
+	// Singleton Definitions
+	static MessagePump _instance;
 	MessagePump() { &getInstance(); }
 	~MessagePump() {};
 	MessagePump(const MessagePump & getInstance());   
-	
 	MessagePump & operator=(MessagePump & getInstance());
 	static MessagePump & getInstance();
 	
@@ -39,9 +43,7 @@ public:
 	static void deleteMessage();
 	static void deleteLastMessage();
 	
-	// external declaration
-	static list<SDL_Event> messageList;
-	static unsigned int count;
+
 };
 
 #endif

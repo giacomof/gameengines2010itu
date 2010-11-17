@@ -21,10 +21,11 @@
 using namespace std;
 using namespace linearAlgebraDLL;
 
+// father class
 class sceneObject_D SceneObject
 {
 	public:
-		SDL_mutex *mutex_object;
+		SDL_mutex * mutex_object;
 
 		SceneObject(void);
 		virtual ~SceneObject(void);
@@ -116,7 +117,7 @@ class sceneObject_D md2Interface : public SceneObject
 class sceneObject_D ColladaInterface : public SceneObject
 {
 	public:
-		ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s);
+		ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s = 0);
 		~ColladaInterface(void);
 
 		void update(void);
@@ -135,8 +136,7 @@ class sceneObject_D Light : public SceneObject
 				float ambientR = 0, float ambientG = 0, float ambientB = 0,
 				float diffuseR = 1, float diffuseG = 1, float diffuseB = 1,
 				float specularR = 1, float specularG = 1, float specularB = 1);
-		//~Light(void);
-
+		
 		void update(void) {};
 		void drawGeometry(void);
 		void setDirection(Vector position);		

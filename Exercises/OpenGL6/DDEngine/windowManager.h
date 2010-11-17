@@ -4,8 +4,8 @@
 #    define WindowManager_D __declspec(dllimport)
 #endif
 
-#ifndef WindowManager__H
-#define WindowManager__H
+#ifndef WindowManager__H__
+#define WindowManager__H__
 
 #include <SDL.h>						// Header File for the SDL library
 #include <SDL_opengl.h>					// Header File for OpenGL through SDL
@@ -14,12 +14,19 @@ class WindowManager_D WindowManager
 {
 public:
 
-	static WindowManager _instance;
+	int screenWidth;			// Window Width
+	int screenHeight;			// Window Height
+	int screenColorDepth;		// Color Depth
+	int isActive;				// is the window Active?
+	int videoFlags;				// property of the window
+	
+	SDL_Surface * surface;		// Pointer to SDL rendering surface
+	const SDL_VideoInfo *videoInfo; // information retrieved from pc hardware
 
+	// Singleton Definitions
+	static WindowManager _instance;
 	WindowManager(void) { &getInstance(); };
 	~WindowManager(void) {};
-
-	// Singleton Methods
 	WindowManager(const WindowManager & getInstance());   
 	WindowManager & operator=(WindowManager & getInstance());
 	static WindowManager & getInstance();
@@ -33,14 +40,7 @@ public:
 	Uint32 WindowManager::getVideoFlags(void);
 	SDL_Surface * WindowManager::getSurface(void);
 
-	int screenWidth;			// Window Width
-	int screenHeight;			// Window Height
-	int screenColorDepth;		// Color Depth
-	int isActive;				// is the window Active?
-	int videoFlags;				// property of the window
-	
-	SDL_Surface * surface;		// Pointer to SDL rendering surface
-	const SDL_VideoInfo *videoInfo; // information retrieved from pc hardware
+
 
 };
 

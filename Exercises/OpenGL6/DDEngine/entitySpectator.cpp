@@ -19,10 +19,8 @@ entitySpectator::entitySpectator(void)
 
 entitySpectator::~entitySpectator(void)
 {
-	//SDL_DestroyMutex ( mutex_object );
-	/*if (camera != NULL)
-		delete camera;*/
 }
+
 void entitySpectator::update()
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
@@ -49,14 +47,12 @@ void entitySpectator::update()
 		yaw -= 360.0f;
 
 	// Starting camera orientation
-	Vector vForward		(0.0, 0.0, -1.0	);
-	Vector vSideways	(1.0, 0.0, 0.0	);
-	Vector vUp			(0.0, 1.0, 0.0	);
+	Vector vForward		(0.0, 0.0, -1.0);
+	Vector vSideways	(1.0, 0.0, 0.0);
+	Vector vUp			(0.0, 1.0, 0.0);
 	
 	// Calculate rotation matrix from pitch and yaw
-	Matrix oMatrix;
-	//oMatrix = Matrix::generateAxisRotationMatrix(Vector(1.0,0.0,0.0),pitch).getTranspose();
-	//oMatrix = Matrix::generateAxisRotationMatrix(Vector(0.0,1.0,0.0),yaw).getTranspose() * oMatrix;
+	Matrix oMatrix = Matrix(); 
 
 	// New functions using quaternions
 	oMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(Vector(1.0,0.0,0.0),pitch)).getTranspose();
@@ -98,27 +94,25 @@ void entitySpectator::update()
 	// Update camera
 	if (camera != NULL)
 	{
-		//camera->lock();
 		AssetManager::lockMutex( SceneObject::mutex_object );
 		camera->setPosition(position[0],position[1],position[2]);
 		camera->setForwardVector(vForward[0],vForward[1],vForward[2]);
 		camera->setUpVector(vUp[0],vUp[1],vUp[2]);
 		camera->setPitchYaw(pitch, yaw);
 		AssetManager::unlockMutex( SceneObject::mutex_object );
-		//camera->unlock();
 	}
 
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
-void entitySpectator::setCamera(entityCamera *newcamera)
+void entitySpectator::setCamera(entityCamera * newcamera)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
 	camera = newcamera;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
-entityCamera* entitySpectator::getCamera()
+entityCamera * entitySpectator::getCamera()
 {
 	return camera;
 }
