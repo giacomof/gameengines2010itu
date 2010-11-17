@@ -65,7 +65,7 @@ int threadPhysics(void *data)
 		// Runs the update method here
 
 		// physics simulation
-		//dynamicsWorld->stepSimulation(1/120.f, 10);
+		dynamicsWorld->stepSimulation(1/120.f, 10);
 
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
@@ -374,7 +374,7 @@ float* DDEngine::getCamera()
 }
 
 
-btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass)
+btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep)
 {
 	btCollisionShape* cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
 
@@ -391,12 +391,15 @@ btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Qua
 
 	btRigidBody* cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
 
+	if(neverSleep)
+		cubeRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
 	dynamicsWorld->addRigidBody(cubeRigidBody);
 
 	return cubeRigidBody;
 }
 
-btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quaternion orientation, float mass)
+btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quaternion orientation, float mass, bool neverSleep)
 {
 	btCollisionShape* sphereShape = new btSphereShape(radius);
 
@@ -413,24 +416,15 @@ btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quat
 
 	btRigidBody* sphereRigidBody = new btRigidBody(*sphereRigidBodyCI);
 
+	if(neverSleep)
+		sphereRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
 	dynamicsWorld->addRigidBody(sphereRigidBody);
 
 	return sphereRigidBody;
 }
 
-btCollisionShape * DDEngine::createCollisionBox(Vector dimension)
-{
-	btCollisionShape* cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
-	return cubeShape;
-}
-
-btCollisionShape * DDEngine::createCollisionSphere(float radius)
-{
-	btCollisionShape* sphereShape = new btSphereShape(radius);
-	return sphereShape;
-}
-
-btRigidBody * DDEngine::createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass)
+btRigidBody * DDEngine::createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass, bool neverSleep)
 {
 	btDefaultMotionState* shapeMotionState;
 
@@ -445,9 +439,24 @@ btRigidBody * DDEngine::createRigidBody(btCollisionShape * collisionShape, Vecto
 
 	btRigidBody* shapeRigidBody = new btRigidBody(*shapeRigidBodyCI);
 
+	if(neverSleep)
+		shapeRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
 	dynamicsWorld->addRigidBody(shapeRigidBody);
 
 	return shapeRigidBody;
+}
+
+btCollisionShape * DDEngine::createCollisionBox(Vector dimension)
+{
+	btCollisionShape* cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
+	return cubeShape;
+}
+
+btCollisionShape * DDEngine::createCollisionSphere(float radius)
+{
+	btCollisionShape* sphereShape = new btSphereShape(radius);
+	return sphereShape;
 }
 
 SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture)

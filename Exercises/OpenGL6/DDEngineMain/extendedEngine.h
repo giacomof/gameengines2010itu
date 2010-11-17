@@ -20,5 +20,6 @@ public:
 	SceneNode * hornNode2;
 	SceneNode * droidCubeRotationCenter;
 	SceneNode * droidCubeNode;
+	SceneNode * fallingCubeNode;
 };
 
