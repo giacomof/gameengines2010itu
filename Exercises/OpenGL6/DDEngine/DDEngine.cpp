@@ -232,11 +232,11 @@ void DDEngine::run(void)
 		{
 			renderClock.frameUpdate();
 
-			frameStarted();
+			frameStarted( frameDelta );
 
 			drawGL( frameDelta );
 
-			frameEnded();
+			frameEnded( frameDelta );
 		}		
 	}
 

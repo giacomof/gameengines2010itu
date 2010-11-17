@@ -95,14 +95,14 @@ void extendedEngine::setupScene()
 	}
 
 }
-void extendedEngine::frameStarted()
+void extendedEngine::frameStarted(int frameDelta)
 {
-	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.2f);
-	droidCubeRotationCenter->rotateAboutAxis(Vector(0,1,0),0.205f);
-	droidCubeNode->rotateAboutAxis(Vector(0,1,0),0.205f);
+	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.01f * frameDelta);
+	droidCubeRotationCenter->rotateAboutAxis(Vector(0,1,0),-0.1f * frameDelta);
+	droidCubeNode->rotateAboutAxis(Vector(0,1,0),0.205f * frameDelta);
 
 }
-void extendedEngine::frameEnded()
+void extendedEngine::frameEnded(int frameDelta)
 {
 
 }

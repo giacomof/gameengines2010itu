@@ -44,8 +44,8 @@ public:
 
 	void run();
 	virtual void setupScene() = 0;
-	virtual void frameStarted() = 0;
-	virtual void frameEnded() = 0;
+	virtual void frameStarted(int frameDelta) = 0;
+	virtual void frameEnded(int frameDelta) = 0;
 
 	inputManager * getInputManager() { return &input; };
 	Controller * getController() { return &controller; };
