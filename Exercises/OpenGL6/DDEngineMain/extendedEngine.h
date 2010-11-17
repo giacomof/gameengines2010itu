@@ -15,6 +15,10 @@ public:
 	SceneNode * battleDroidNode;
 	SceneNode * light1Node;
 	SceneNode * light2Node;
-
+	SceneNode * skullNode;
+	SceneNode * hornNode1;
+	SceneNode * hornNode2;
+	SceneNode * droidCubeRotationCenter;
+	SceneNode * droidCubeNode;
 };
 

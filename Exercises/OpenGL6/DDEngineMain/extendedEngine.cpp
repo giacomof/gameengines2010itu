@@ -41,21 +41,51 @@ void extendedEngine::setupScene()
 	assetManager.getMd2Mesh("battleDroid")->SetAnim(1);
 
 
-	Light * light1 = (Light*)this->createLight(true, false, 0, 0, 0, 1, 1, 1, 1, 1, 1);
+	// Create Light connected to the battle droid
+	Light * light1 = (Light*)this->createLight(true, false, 0, 0, 0, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
 	light1Node = this->addSceneNode(battleDroidNode, "Light1 Node", light1, Vector(0, 50, 0), Vector(0, 0, 0), 0);
 
-
+	// Create Light connected to root
 	Light * light2 = (Light*)this->createLight(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
 	light2Node = this->addSceneNode(&rootNode, "Light2 Node", light2, Vector(0, 0, 0), Vector(0, 0, 0), 0);
 	light2->setDirection(Vector(0, 1, 0));
 
+	// Rotation Center and physics for Skull	
+	btRigidBody * skullRigidBody = this->createPhysicalSphere(35.0f, Vector(0.0f, 35.0f, 150.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0);
+	SceneObject * skull = this->createMD2(assetManager.getMd2Mesh("md2LostSoul"), assetManager.getTexture("lostSoulTx"));
+	skullNode = this->addSceneNode(sphereNode, "Skull Node", skull, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, skullRigidBody);
 
+	// Horns shape and physic
+	btCollisionShape * hornBox = this->createCollisionBox(Vector(5.0f, 5.0f, 5.0f));
+	btRigidBody * hornBox1 = this->createRigidBody(hornBox, Vector(3.0f, 5.0f, 35.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0);
+	SceneObject * hornSphere = this->createSphere(5, 3, 3, true);
+	hornNode1 = this->addSceneNode(skullNode, "Horn Node 1", hornSphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, hornBox1);
+	hornNode1->setVisible(false);
+
+	btRigidBody * hornBox2 = this->createRigidBody(hornBox, Vector(3.0f, 5.0f, -35.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0);
+	hornNode2 = this->addSceneNode(skullNode, "Horn Node 2", hornSphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, hornBox2);
+	hornNode2->setVisible(false);
+
+
+	// Droid Cube and physic + rotation center
+	btRigidBody * droidCubeBox = this->createPhysicalBox(Vector(10.0f, 10.0f, 10.0f), Vector(0.0f, -15.0f, 60.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0);
+	SceneObject * droidCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), assetManager.getTexture("bossCubeTx"));
+	SceneObject * droidCubeRotationSphere = this->createSphere(5, 3, 3, true);
+	droidCubeRotationCenter = this->addSceneNode(battleDroidNode, "Droid Cube Rotation Center", droidCubeRotationSphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	droidCubeRotationCenter->setVisible(false);
+	droidCubeNode = this->addSceneNode(droidCubeRotationCenter, "Droid Cube Node", droidCube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, droidCubeBox);
+
+	
 
 
 }
 void extendedEngine::frameStarted()
 {
 	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.2f);
+	droidCubeRotationCenter->rotateAboutAxis(Vector(0,1,0),0.205f);
+	droidCubeNode->rotateAboutAxis(Vector(0,1,0),0.205f);
+	//bossCube2->rotateAboutAxis(Vector(0,0,1),0.002f*frameDelta);
+	//bossCube2->translate(Vector(0.01f*frameDelta,0,0));
 
 }
 void extendedEngine::frameEnded()
