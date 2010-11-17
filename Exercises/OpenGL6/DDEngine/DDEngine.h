@@ -38,11 +38,13 @@ class DDEngine_D DDEngine
 {
 public:
 
+	static SDL_mutex * mutex_allocator;
+
 	DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physic);
 	~DDEngine(void);
-
-
+	
 	void run();
+	
 	virtual void setupScene() = 0;
 	virtual void frameStarted(int frameDelta) = 0;
 	virtual void frameEnded(int frameDelta) = 0;
@@ -69,7 +71,7 @@ public:
 								float diffuseR, float diffuseG, float diffuseB,
 								float specularR, float specularG, float specularB);
 
-	SceneNode * addSceneNode(SceneNode* father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry = 0);
+	SceneNode * addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry = 0);
 
 protected:
 	
@@ -83,7 +85,6 @@ protected:
 	MessagePump InputPump;
 	// Pointer to SDL rendering surface
 	SDL_Surface * surface;				
-	GLuint image;
 	// Root node and other Scene Node
 	Root rootNode;
 	// Asset manager
@@ -115,8 +116,7 @@ protected:
 
 	// FPS Clock
 	frameClock renderClock;
-
-
+	
 	int initGL(void);							// Initialise the rendering window
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world

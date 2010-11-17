@@ -2,6 +2,40 @@
 					
 static int const thread_delay = 1;				// Minimum time between loops
 static float const PI = 3.14159f;				// PI definition
+SDL_mutex * mutex_allocator;	// Mutex for Thread Synchronization
+
+/* ********************************************* */
+/* ******* operator new global overload ******** */
+/* ******** just remember to use flags ********* */
+/* ************* from globals.h **************** */
+/* ********************************************* */
+
+void * operator new(size_t size, unsigned short flag)
+{
+	AssetManager::lockMutex(mutex_allocator);
+
+	cout << "NEW WITH FLAG: " << flag << endl;
+
+	void * storage = MemoryManager::allocate(size);
+	if(NULL == storage) {
+            throw "allocation fail : no free memory";
+    }
+	AssetManager::unlockMutex(mutex_allocator);
+
+	return storage;
+}
+
+void operator delete(void * ptr) 
+{
+	free(ptr);
+}
+
+void operator delete(void * ptr, unsigned short flag) 
+{
+	cout << "DELETE WITH FLAG: " << flag << endl;
+	MemoryManager::freeToLastMarker();
+}
+
 
 /* This thread handles input */
 int threadInput(void *data)
