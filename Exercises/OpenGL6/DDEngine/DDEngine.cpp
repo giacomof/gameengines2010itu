@@ -158,6 +158,8 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 		initPhysics();
 
 	renderClock = frameClock();
+
+	glewInit();
 }
 
 DDEngine::~DDEngine(void)

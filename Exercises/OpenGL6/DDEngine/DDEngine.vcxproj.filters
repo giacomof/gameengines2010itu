@@ -1212,5 +1212,38 @@
     <Library Include="..\include\glew32.lib">
       <Filter>Resource Files</Filter>
     </Library>
+    <Library Include="..\include\BulletCollision.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\BulletDynamics.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\DevIL.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\glut32.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\ILU.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\ILUT.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\LinearAlgebraDLL.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\LinearMath.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\SDL.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\SDLmain.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\glew32s.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>
