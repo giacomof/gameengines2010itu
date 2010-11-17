@@ -7,6 +7,7 @@
 using namespace std;
 
 static const float PI = 3.14159f;
+static const int parallelThreads = 2;
 
 namespace linearAlgebraDLL
 {
@@ -757,30 +758,33 @@ Matrix Matrix::operator*(Matrix &other)
 {
      Matrix result;
 
-     // This set of loops will go though each field in the result matrix, 
-	 // then calculate using another loop to resuse code for each multiplication 
-	 // between elements r is row, c is column, i is row for one element 
-	 // of a multiplication and column for the other element of the same multiplication
-     for (unsigned short c = 0; c < 4; c++)
-         for (unsigned short r = 0; r < 4; r++) {
-             float temp = 0;
+	// This set of loops will go though each field in the result matrix, 
+	// then calculate using another loop to resuse code for each multiplication 
+	// between elements r is row, c is column, i is row for one element 
+	// of a multiplication and column for the other element of the same multiplication
+	omp_set_num_threads(parallelThreads); 
+	#pragma omp parallel for
+		for (int c = 0; c < 4; c++)
+			for (unsigned short r = 0; r < 4; r++) {
+				float temp = 0;
              
-             for (unsigned short i = 0; i < 4; i++) {
-                 temp = temp + this->get(r,i) * other.get(i,c);
-             }
+				for (unsigned short i = 0; i < 4; i++) {
+					temp = temp + this->get(r,i) * other.get(i,c);
+				}
              
-             result.set(r,c, temp);
-         }
+				result.set(r,c, temp);
+			}
 
-     return result;
+		return result;
 }
 
 // Operator overload for the * sign between a matrix and a scalar
 Matrix Matrix::operator*(float other)
 {
 	Matrix result;
-
-	for (unsigned short r = 0; r < 4; r++)
+	omp_set_num_threads(parallelThreads); 
+	#pragma omp parallel for
+	for (int r = 0; r < 4; r++)
          for (unsigned short c = 0; c < 4; c++) {             
              
              result.set(r,c, data[4*r + c]*other);
@@ -795,7 +799,9 @@ Vector Matrix::operator*(Vector &other)
      Vector result;
      
      // This reuses the code from the matrix * matrix overload. Here I have removed the column loop since a vector only has one
-     for (unsigned int r = 0; r < 4; r++) {
+	 omp_set_num_threads(parallelThreads); 
+	 #pragma omp parallel for
+     for (int r = 0; r < 4; r++) {
          float temp = 0;
 
          for (unsigned short i = 0; i < 4; i++) {
@@ -816,8 +822,9 @@ Vector Matrix::operator*(Vector &other)
 bool Matrix::operator==(Matrix &other)
 {
 	bool equal = true;
-
-	for (unsigned short r = 0; r < 4; r++) {
+	omp_set_num_threads(parallelThreads); 
+	#pragma omp parallel for
+	for (int r = 0; r < 4; r++) {
 		for (unsigned short c = 0; c < 4; c++) {
 			if(data[r*4 + c] != other.get(r, c)) {
 				equal = false;
@@ -835,7 +842,9 @@ Matrix Matrix::getTranspose()
 	Matrix result;
 
 	// Inversion of row and columns
-	for (unsigned int r = 0; r < 4; r++) {
+	omp_set_num_threads(parallelThreads); 
+	#pragma omp parallel for
+	for (int r = 0; r < 4; r++) {
 		for (unsigned int c = 0; c < 4; c++) {
 			result.set(c,r,this->get(r,c));
 		}
@@ -917,7 +926,7 @@ float Matrix::getDeterminant()
 // Return the matrix inside the float vector received as argument
 void Matrix::getMatrix(float * matrix) {
 
-	for(unsigned short i=0; i<16; i++) {
+	for(int i=0; i<16; i++) {
 		matrix[i]=data[i];
 	}
 }
