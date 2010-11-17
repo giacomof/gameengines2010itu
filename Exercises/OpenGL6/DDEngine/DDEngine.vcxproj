@@ -474,6 +474,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Debug\DevIL.dll" />
+    <None Include="..\Debug\glew32.dll" />
     <None Include="..\Debug\glut32.dll" />
     <None Include="..\Debug\ILU.dll" />
     <None Include="..\Debug\ILUT.dll" />
