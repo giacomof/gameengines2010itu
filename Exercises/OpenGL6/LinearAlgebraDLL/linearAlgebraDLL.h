@@ -2,6 +2,7 @@
 #define __LINEARALGEBRA_H
 
 #include <ostream>
+#include <omp.h>
 
 namespace linearAlgebraDLL
 {
