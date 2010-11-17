@@ -7,7 +7,7 @@ GLOBAL TASKS:
 V- Memory Manager
 	1(V)- Stack Allocator
 		1(V)- freeToLastMarker() method
-		   V- EntitySpectator bug fix 
+		   1(V)- EntitySpectator bug fix 
 	V- Pool Allocator
 	1(V)- Singleton
 	1(V)- thread Safe
@@ -77,6 +77,8 @@ COMPLETED:
 1(V+G)- MD2 normals fixed enough
 1(G)- Use Clock Class into updates/draws/synchs
 1(G)- Compile everything we can as a DLL
+1(G)- OpenMP utilization in for cycles
+
 
 Symbology Map:
 
