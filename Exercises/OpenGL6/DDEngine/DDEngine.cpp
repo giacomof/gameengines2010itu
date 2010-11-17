@@ -418,6 +418,38 @@ btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quat
 	return sphereRigidBody;
 }
 
+btCollisionShape * DDEngine::createCollisionBox(Vector dimension)
+{
+	btCollisionShape* cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
+	return cubeShape;
+}
+
+btCollisionShape * DDEngine::createCollisionSphere(float radius)
+{
+	btCollisionShape* sphereShape = new btSphereShape(radius);
+	return sphereShape;
+}
+
+btRigidBody * DDEngine::createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass)
+{
+	btDefaultMotionState* shapeMotionState;
+
+	btScalar shapeMass = mass;
+	btVector3 shapeInertia(0,0,0);
+	collisionShape->calculateLocalInertia(shapeMass,shapeInertia);
+
+	btRigidBody::btRigidBodyConstructionInfo * shapeRigidBodyCI;
+
+	shapeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
+	shapeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(shapeMass,shapeMotionState,collisionShape,shapeInertia);
+
+	btRigidBody* shapeRigidBody = new btRigidBody(*shapeRigidBodyCI);
+
+	dynamicsWorld->addRigidBody(shapeRigidBody);
+
+	return shapeRigidBody;
+}
+
 SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture)
 {
 	md2Interface * md2Model = new md2Interface(model, texture);
