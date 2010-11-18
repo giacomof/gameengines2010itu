@@ -205,6 +205,7 @@ void DDEngine::run(void)
 	player->setCamera(playercamera);
 	controller.setPlayerObject(player);
 
+	// this method will be overloaded to setup the scene
 	setupScene();
 
 	// Create the thread handles and assign names
@@ -219,6 +220,7 @@ void DDEngine::run(void)
 	id3 = SDL_CreateThread ( threadInput, this );
 
 	char title[80];
+	
 	SDL_Event currentEvent;
 
 	// Set up default material
@@ -367,19 +369,14 @@ void DDEngine::drawGL(int frameDelta)
 	glLoadIdentity();
 
 	// Set the camera
-	float *CamTransform = getCamera();
+	float * CamTransform = getCamera();
 
 	if(drawDebug) dynamicsWorld->debugDrawWorld();
 
-	// draw the animation
-	//AssetManager::lockMutex( rootNodePtr->mutex_node );
+	// update the animation
 	rootNode.update(frameDelta);
-	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
-
-	//Root::drawGeometry();
-	//AssetManager::lockMutex( rootNodePtr->mutex_node );
+	// draw everything
 	rootNode.drawGeometry();
-	//AssetManager::unlockMutex( rootNodePtr->mutex_node );
 
 	// Swaps the buffers
 	SDL_GL_SwapBuffers();
@@ -389,9 +386,9 @@ float* DDEngine::getCamera()
 {		
 	glMatrixMode(GL_MODELVIEW);
 
-	entityCamera *currentCamera = controller.playerObject->getCamera();
+	entityCamera * currentCamera = controller.playerObject->getCamera();
 
-	float tranM[16];
+	float * tranM = new float[16];
 
 	Matrix::generateIdentityMatrix().getMatrix(&tranM[0]);
 
@@ -435,15 +432,13 @@ btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Qua
 {
 	btCollisionShape * cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
 
-	btDefaultMotionState * cubeMotionState;
-
 	btScalar cubeMass = mass;
 	btVector3 cubeInertia(0,0,0);
 	cubeShape->calculateLocalInertia(cubeMass,cubeInertia);
 
 	btRigidBody::btRigidBodyConstructionInfo * cubeRigidBodyCI;
 
-	cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
+	btDefaultMotionState * cubeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
 	cubeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(cubeMass,cubeMotionState,cubeShape,cubeInertia);
 
 	btRigidBody* cubeRigidBody = new btRigidBody(*cubeRigidBodyCI);
@@ -460,15 +455,13 @@ btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quat
 {
 	btCollisionShape* sphereShape = new btSphereShape(radius);
 
-	btDefaultMotionState * sphereMotionState;
-
 	btScalar sphereMass = mass;
 	btVector3 sphereInertia(0,0,0);
 	sphereShape->calculateLocalInertia(sphereMass,sphereInertia);
 
 	btRigidBody::btRigidBodyConstructionInfo * sphereRigidBodyCI;
 
-	sphereMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
+	btDefaultMotionState * sphereMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
 	sphereRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(sphereMass,sphereMotionState,sphereShape,sphereInertia);
 
 	btRigidBody* sphereRigidBody = new btRigidBody(*sphereRigidBodyCI);
@@ -483,15 +476,13 @@ btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quat
 
 btRigidBody * DDEngine::createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass, bool neverSleep)
 {
-	btDefaultMotionState * shapeMotionState;
-
 	btScalar shapeMass = mass;
 	btVector3 shapeInertia(0,0,0);
 	collisionShape->calculateLocalInertia(shapeMass,shapeInertia);
 
 	btRigidBody::btRigidBodyConstructionInfo * shapeRigidBodyCI;
 
-	shapeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
+	btDefaultMotionState * shapeMotionState = new btDefaultMotionState(btTransform(btQuaternion(btVector3(orientation.getX(), orientation.getY(), orientation.getZ()),orientation.getW()),btVector3(position.getX(), position.getY(), position.getZ())));
 	shapeRigidBodyCI = new btRigidBody::btRigidBodyConstructionInfo(shapeMass,shapeMotionState,collisionShape,shapeInertia);
 
 	btRigidBody* shapeRigidBody = new btRigidBody(*shapeRigidBodyCI);
