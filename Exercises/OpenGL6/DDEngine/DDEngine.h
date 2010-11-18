@@ -74,7 +74,8 @@ public:
 
 	SceneNode * addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry = 0);
 
-	
+	// FPS Clock
+	frameClock renderClock;
 
 protected:
 	
@@ -117,8 +118,7 @@ protected:
 	// Constraint Solver
     btSequentialImpulseConstraintSolver * solver;
 
-	// FPS Clock
-	frameClock renderClock;
+	
 	
 	int initGL(void);							// Initialise the rendering window
 	int initPhysics(void);						// Initialise the physic engine
