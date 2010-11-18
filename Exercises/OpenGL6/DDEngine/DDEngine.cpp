@@ -122,7 +122,7 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	// Create the input pump
 	InputPump = MessagePump();
 	// Create the window manager
-	WindowManager window = WindowManager();
+	window = WindowManager();
 	// Create the input abstraction layer
 	controller = Controller();
 
