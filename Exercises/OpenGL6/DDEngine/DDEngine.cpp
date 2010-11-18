@@ -509,7 +509,7 @@ btCollisionShape * DDEngine::createCollisionSphere(float radius)
 
 SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture)
 {
-	md2Interface * md2Model = new md2Interface(model, texture);
+	md2Interface * md2Model = new(GEOMETRY, AUTO_ALLOCATOR) md2Interface(model, texture);
 	return (SceneObject*) md2Model;
 }
 

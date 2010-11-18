@@ -232,7 +232,7 @@ void md2File::Update(float dt) {
 		LERP(temp,pf1->vertices[i].vert,pf2->vertices[i].vert,interp_t);
 
 		// get out vertex
-		float *vert = m_Verts + out_vert_idx;
+		float * vert = m_Verts + out_vert_idx;
 
 		// scale vertex and flip coords
 		vert[0] =    temp[0]*scale[0] + translate[0];
