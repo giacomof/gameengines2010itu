@@ -3,7 +3,7 @@
 entityCamera::entityCamera(void)
 {
 	mutex_camera = SDL_CreateMutex();
-	positionNode = NULL;
+	positionNode = new SceneNode();
 	isFollowingNode = false;
 }
 
@@ -39,7 +39,7 @@ void entityCamera::setUpVector(float x, float y, float z)
 void entityCamera::setPitchYaw(float newpitch, float newyaw)
 {
 	pitch = newpitch;
-	yaw = newyaw;
+	yaw   = newyaw;
 }
 
 void entityCamera::setSceneNode(SceneNode *newSceneNode)
