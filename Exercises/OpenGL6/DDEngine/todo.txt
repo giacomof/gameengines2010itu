@@ -7,7 +7,7 @@ GLOBAL TASKS:
 V- Memory Manager
 	1(V)- Stack Allocator
 		1(V)- freeToLastMarker() method
-		   1(V)- EntitySpectator bug fix 
+		   ?(V)- EntitySpectator bug fix 
 	V- Pool Allocator
 	1(V)- Singleton
 	1(V)- thread Safe
