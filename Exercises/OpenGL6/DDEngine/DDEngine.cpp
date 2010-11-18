@@ -14,7 +14,7 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 {
 	AssetManager::lockMutex(mutex_allocator);
 
-	cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING ALLOCATOR: " << allocatorFlag << endl;
+	if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING ALLOCATOR: " << allocatorFlag << endl;
 
 	void * storage = MemoryManager::allocate(size);
 	if(NULL == storage) {
@@ -32,7 +32,7 @@ void operator delete(void * ptr)
 
 void operator delete(void * ptr, unsigned short flag) 
 {
-	cout << "DELETE WITH FLAG: " << flag << endl;
+	if(verbosityLevel>=3) cout << "DELETE WITH FLAG: " << flag << endl;
 	MemoryManager::freeToLastMarker();
 }
 
@@ -109,8 +109,8 @@ int threadPhysics(void *data)
 
 DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physics)
 {
-	screenW = screenWidth;							// Window Width
-	screenH = screenHeight;							// Window Height
+	screenW  = screenWidth;							// Window Width
+	screenH  = screenHeight;						// Window Height
 	screenCD = colorDepth;							// Color Depth
 
 	hasPhysics = physics;
@@ -353,7 +353,6 @@ int DDEngine::initPhysics(void)
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 	// Set gravity
 	dynamicsWorld->setGravity(btVector3(physicGravity.getX(),physicGravity.getY(),physicGravity.getZ()));
-
 	// Initialise the debugDrawer
 	debugger.setDebugMode( btIDebugDraw::DBG_DrawWireframe ); 
 	// Bind the debug drawer to the physic world
@@ -399,7 +398,7 @@ float* DDEngine::getCamera()
 	if ( currentCamera != NULL )
 	{
 		AssetManager::lockMutex( currentCamera->mutex_object );
-		Matrix transformationMatrix;
+		Matrix transformationMatrix = Matrix();
 
 		if(currentCamera->isFollowingNode && currentCamera->positionNode != NULL)
 		{
@@ -434,9 +433,9 @@ float* DDEngine::getCamera()
 
 btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep)
 {
-	btCollisionShape* cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
+	btCollisionShape * cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));
 
-	btDefaultMotionState* cubeMotionState;
+	btDefaultMotionState * cubeMotionState;
 
 	btScalar cubeMass = mass;
 	btVector3 cubeInertia(0,0,0);
@@ -461,7 +460,7 @@ btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quat
 {
 	btCollisionShape* sphereShape = new btSphereShape(radius);
 
-	btDefaultMotionState* sphereMotionState;
+	btDefaultMotionState * sphereMotionState;
 
 	btScalar sphereMass = mass;
 	btVector3 sphereInertia(0,0,0);
@@ -484,7 +483,7 @@ btRigidBody * DDEngine::createPhysicalSphere(float radius, Vector position, Quat
 
 btRigidBody * DDEngine::createRigidBody(btCollisionShape * collisionShape, Vector position, Quaternion orientation, float mass, bool neverSleep)
 {
-	btDefaultMotionState* shapeMotionState;
+	btDefaultMotionState * shapeMotionState;
 
 	btScalar shapeMass = mass;
 	btVector3 shapeInertia(0,0,0);
@@ -559,14 +558,14 @@ SceneObject * DDEngine::createLight(	bool enabled, bool directional,
 										float specularR, float specularG, float specularB)
 {
 	Light * light = new Light(	enabled, directional, 
-								ambientR, ambientG, ambientB,
-								diffuseR, diffuseG, diffuseB,
-								specularR, specularG, specularB);
+															ambientR, ambientG, ambientB,
+															diffuseR, diffuseG, diffuseB,
+															specularR, specularG, specularB);
 	return (SceneObject*) light;
 }
 
 SceneNode * DDEngine::addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry)
 {
-	SceneNode * sceneNode = new SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
+	SceneNode * sceneNode = new(SCENEGRAPH, AUTO_ALLOCATOR) SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
 	return sceneNode;
 }
