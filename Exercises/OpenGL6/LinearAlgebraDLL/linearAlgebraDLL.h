@@ -7,14 +7,6 @@
 namespace linearAlgebraDLL
 {
 
-//class Utils
-//{
-//	public:
-//		__declspec(dllexport) Utils(void);
-//		__declspec(dllexport) const int getNumCores(void);
-//};
-
-
 // Describe a vector and its standard operations
 class Vector
 {

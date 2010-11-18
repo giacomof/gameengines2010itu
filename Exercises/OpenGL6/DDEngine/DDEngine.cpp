@@ -96,10 +96,9 @@ int threadPhysics(void *data)
 	btDiscreteDynamicsWorld * dynamicsWorld = engine->getDynamicWorld();
 
 	while ( !engine->getController()->quit ) {
-		// Runs the update method here
 
 		// physics simulation
-		dynamicsWorld->stepSimulation(1/120.f, 10);
+		dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 5);
 
 		// Delay the thread to make room for others on the CPU
 		SDL_Delay(thread_delay);
@@ -177,8 +176,6 @@ DDEngine::~DDEngine(void)
 
 void DDEngine::printDebugInfo(void) 
 {
-	/*Utils util = Utils();*/
-
 	cout << "*************************************" << endl;
 	cout << "********** WINDOW INFO **************" << endl;
 	cout << "*************************************" << endl << endl;
@@ -187,14 +184,16 @@ void DDEngine::printDebugInfo(void)
 	cout << "*************************************" << endl;
 	cout << "********** ENGINE INFO **************" << endl;
 	cout << "*************************************" << endl << endl;
-	cout << "Memory Manager: Active - MultiCore: Active" << endl;
+	cout << "Memory Manager: Active - MultiCore: Active - Available Cores: " << omp_get_num_procs() << endl;
 	cout << "Resident Threads: Render, Physics, Input, Sound" << endl;
-	cout << "Number of automatically parallelized Threads: " /*<< util.getNumCores()*/ << endl << endl;
+	cout << "Number of automatically parallelized Threads: 2" << endl << endl;
+
 
 	cout << "*************************************" << endl;
 	cout << "************ GAME INFO **************" << endl;
 	cout << "*************************************" << endl << endl;
-	cout << "Physics: " << hasPhysics << " - Gravity: " << physicGravity << endl << endl;
+	cout << "Physics: " << hasPhysics;
+	if(hasPhysics) cout	<< " - Gravity: " << physicGravity << endl << endl;
 
 }
 
