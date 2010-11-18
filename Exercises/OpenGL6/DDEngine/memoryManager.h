@@ -8,6 +8,7 @@
 #define MemoryManager__H
 
 #include "assetManager.h"
+#include "globals.h"
 #include <stdlib.h>
 
 class MemoryManager_D MemoryManager
@@ -24,6 +25,7 @@ public:
 	static unsigned int marker;
 	static unsigned int lastMarker;
 	static unsigned int const dataToAllocate = 256 * 10000; // 256Mb
+	static unsigned int const guardBytes = 8;
 
 	// Singleton Definitions
 	MemoryManager(void);

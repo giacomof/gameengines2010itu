@@ -43,10 +43,18 @@ void MemoryManager::setMarker(unsigned int m) {
 
 void * MemoryManager::allocate(unsigned int s) 
 {
+	// In this implementation we store the marker position
+	// and we add the size of the object we are trying to
+	// allocate. Then we add some "guard bytes" which detect
+	// if something writes beyond the boundary
+
 	// save the last marker
 	lastMarker = marker;
 	// add the space required to the marker
-	marker = marker+s;
+	marker = marker+s+guardBytes;
+
+	if(verbosityLevel >= 4) cout << "MEMORY MANAGER ALLOCATES: " << s << " bytes, plus GUARD: " << guardBytes << endl;
+
 	// return the pointer to the position of the marker
 	return (void *) marker;
 }
