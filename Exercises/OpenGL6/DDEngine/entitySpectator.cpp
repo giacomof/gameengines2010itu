@@ -95,10 +95,10 @@ void entitySpectator::update()
 	if (camera != NULL)
 	{
 		AssetManager::lockMutex( SceneObject::mutex_object );
-		camera->setPosition(position[0],position[1],position[2]);
-		camera->setForwardVector(vForward[0],vForward[1],vForward[2]);
-		camera->setUpVector(vUp[0],vUp[1],vUp[2]);
-		camera->setPitchYaw(pitch, yaw);
+			camera->setPosition(position[0],position[1],position[2]);
+			camera->setForwardVector(vForward[0],vForward[1],vForward[2]);
+			camera->setUpVector(vUp[0],vUp[1],vUp[2]);
+			camera->setPitchYaw(pitch, yaw);
 		AssetManager::unlockMutex( SceneObject::mutex_object );
 	}
 
@@ -108,7 +108,7 @@ void entitySpectator::update()
 void entitySpectator::setCamera(entityCamera * newcamera)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
-	camera = newcamera;
+		camera = newcamera;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
@@ -120,41 +120,41 @@ entityCamera * entitySpectator::getCamera()
 void entitySpectator::moveForward(bool shouldMove)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
-	shouldMoveForward = shouldMove;
+		shouldMoveForward = shouldMove;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::moveBackward(bool shouldMove)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
-	shouldMoveBackward = shouldMove;
+		shouldMoveBackward = shouldMove;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::strafeLeft(bool shouldMove)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
-	shouldStrafeLeft = shouldMove;
+		shouldStrafeLeft = shouldMove;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::strafeRight(bool shouldMove)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
-	shouldStrafeRight = shouldMove;
+		shouldStrafeRight = shouldMove;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::lookDeltaX(float deltaLook)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
-	lookDeltaXAmount = lookDeltaXAmount + deltaLook;
+		lookDeltaXAmount = lookDeltaXAmount + deltaLook;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
 
 void entitySpectator::lookDeltaY(float deltaLook)
 {
 	AssetManager::lockMutex( SceneObject::mutex_object );
-	lookDeltaYAmount = lookDeltaYAmount + deltaLook;
+		lookDeltaYAmount = lookDeltaYAmount + deltaLook;
 	AssetManager::unlockMutex( SceneObject::mutex_object );
 }
