@@ -101,6 +101,7 @@ void SceneNode::setName(char * name)
 // Return the name of the node
 std::string SceneNode::getName(void) 
 {
+	if(nodeNameString == "") return "No Name";
 	return nodeNameString;
 }
 
