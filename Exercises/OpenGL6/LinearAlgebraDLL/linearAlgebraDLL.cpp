@@ -36,7 +36,7 @@ Vector::Vector(float x, float y, float z)
 // Function to calculate the magnitude of a vector
 float Vector::getMagnitude(void)
 {
-     float magnitude = *this * *this;
+     float magnitude = (*this) * (*this);
      magnitude = sqrt(magnitude);
      // Return the result
      return magnitude;
@@ -45,14 +45,14 @@ float Vector::getMagnitude(void)
 // Returns the quadratic magnitude
 float Vector::getQuadraticMagnitude(void) 
 {	
-	return *this * *this;
+	return (*this) * (*this);
 }
 
 // Function to normalize the vector
 Vector Vector::normalize(void)
 {
      // Create a new vector to store the results
-     Vector result;
+     Vector result = Vector();
      // Calculate the magnitude of the vector
      float magnitude = this->getMagnitude();
 
@@ -85,7 +85,7 @@ Vector Vector::normalize(void)
 Vector Vector::operator+(Vector &other)
 {
      // Create a new vector to store the results
-     Vector result;
+     Vector result = Vector();
      // Calculate the result
      result.set(0, this->get(0) + other.get(0) );
      result.set(1, this->get(1) + other.get(1) );
@@ -104,7 +104,7 @@ Vector Vector::operator+(Vector &other)
 Vector Vector::operator-(Vector &other)
 {
      // Create a new vector to store the results
-     Vector result;
+     Vector result = Vector();
      // Calculate the result
      result.set(0, this->get(0) - other.get(0) );
      result.set(1, this->get(1) - other.get(1) );
@@ -127,7 +127,7 @@ float Vector::operator*(Vector &other)
 // Operator overload for the * sign between a vector and a float
 Vector Vector::operator*(float s)
 {
-	Vector result;
+	Vector result = Vector();
 	// Scale the the vector
 	result.set(0, data[0] * s);
 	result.set(1, data[1] * s);
@@ -138,7 +138,7 @@ Vector Vector::operator*(float s)
 // Vector cross product
 Vector Vector::operator%(Vector &other)
 {
-	Vector result;
+	Vector result = Vector();
 
 	// Scale the the vector
 	result.set(0, data[1] * other.data[2] - data[2] * other.data[1]);
@@ -457,7 +457,7 @@ Matrix Matrix::generateIdentityMatrix(void)
 // Generate a translation matrix from three float values
 Matrix Matrix::generateTranslationMatrix(float tX, float tY, float tZ) 
  {
-	Matrix result;
+	Matrix result = Matrix();
 
 	result.set(0,0,1);
 	result.set(0,1,0);
@@ -482,7 +482,7 @@ Matrix Matrix::generateTranslationMatrix(float tX, float tY, float tZ)
 // Generate a scaling matrix from three float values
 Matrix Matrix::generateScalingMatrix(float sX, float sY, float sZ)
 {
-	Matrix result;
+	Matrix result = Matrix();
 
 	result.set(0,0,sX);
 	result.set(0,1,0);
@@ -507,7 +507,7 @@ Matrix Matrix::generateScalingMatrix(float sX, float sY, float sZ)
 // Generate a uniform scaling matrix from a float value
 Matrix Matrix::generateUniformScalingMatrix(float s)
 {
-	Matrix result;
+	Matrix result = Matrix();
 
 	result.set(0,0,s);
 	result.set(0,1,0);
@@ -532,7 +532,7 @@ Matrix Matrix::generateUniformScalingMatrix(float s)
 // Generate a rotation matrix about x-axes, from a  float value
 Matrix Matrix::generateXRotationMatrix(float degree)
 {
-	Matrix result;
+	Matrix result = Matrix();
 	float sincos[2];
 	sincos[0] = sin(degree*PI/180);
 	sincos[1] = cos(degree*PI/180);
@@ -560,7 +560,7 @@ Matrix Matrix::generateXRotationMatrix(float degree)
 // Generate a rotation matrix about y-axes, from a  float value
 Matrix Matrix::generateYRotationMatrix(float degree)
 {
-	Matrix result;
+	Matrix result = Matrix();
 	float sincos[2];
 	sincos[0] = sin(degree*PI/180);
 	sincos[1] = cos(degree*PI/180);
@@ -588,7 +588,7 @@ Matrix Matrix::generateYRotationMatrix(float degree)
 // Generate a rotation matrix about z-axes, from a  float value
 Matrix Matrix::generateZRotationMatrix(float degree)
 {
-	Matrix result;
+	Matrix result = Matrix();
 	float sincos[2];
 	sincos[0] = sin(degree*PI/180);
 	sincos[1] = cos(degree*PI/180);
@@ -616,7 +616,7 @@ Matrix Matrix::generateZRotationMatrix(float degree)
 // Generate a rotation matrix about an arbitrary axes, from a Vector and a float
 Matrix Matrix::generateAxisRotationMatrix(Vector axis, float degree)
 {
-	Matrix result;
+	Matrix result = Matrix();
 	float sincos[2];
 	float k;
 	sincos[0] = sin(degree*PI/180);
@@ -657,7 +657,7 @@ Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
 	float dy = q.getW() * q.getVector().getY();
 	float dz = q.getW() * q.getVector().getZ();
  
-	Matrix result;
+	Matrix result = Matrix();
 
 	result.set(0,0,(1.0f - 2.0f * (y2 + z2)));
 	result.set(0,1,(2.0f * (xy - dz)));
@@ -683,7 +683,7 @@ Matrix Matrix::generateQuaternionRotationMatrix(Quaternion q)
 // Generate a shearing matrix from six float values 
 Matrix Matrix::generateShearingMatrix(float sXY,float sXZ,float sYX,float sYZ,float sZX,float sZY)
 {
-	Matrix result;
+	Matrix result = Matrix();
 
 	result.set(0,0,1);
 	result.set(0,1,sXY);
@@ -757,7 +757,7 @@ Quaternion Matrix::getQuaternion(Matrix &mat)
 // Operator overload for the * sign between two matrices
 Matrix Matrix::operator*(Matrix &other)
 {
-     Matrix result;
+     Matrix result = Matrix();
 
 	// This set of loops will go though each field in the result matrix, 
 	// then calculate using another loop to resuse code for each multiplication 
@@ -782,7 +782,7 @@ Matrix Matrix::operator*(Matrix &other)
 // Operator overload for the * sign between a matrix and a scalar
 Matrix Matrix::operator*(float other)
 {
-	Matrix result;
+	Matrix result = Matrix();
 	omp_set_num_threads(parallelThreads); 
 	#pragma omp parallel for
 	for (int r = 0; r < 4; r++)
@@ -797,7 +797,7 @@ Matrix Matrix::operator*(float other)
 // Operator overload for the * sign between a matrix and a vector
 Vector Matrix::operator*(Vector &other)
 {
-     Vector result;
+     Vector result = Vector();
      
      // This reuses the code from the matrix * matrix overload. Here I have removed the column loop since a vector only has one
 	 omp_set_num_threads(parallelThreads); 
@@ -840,7 +840,7 @@ bool Matrix::operator==(Matrix &other)
 Matrix Matrix::getTranspose() 
 {
 	// Result matrix
-	Matrix result;
+	Matrix result = Matrix();
 
 	// Inversion of row and columns
 	omp_set_num_threads(parallelThreads); 
@@ -858,7 +858,7 @@ Matrix Matrix::getTranspose()
 // if the determinant is != 0, otherwise return the identity matrix
 Matrix Matrix::getInverse()
 {
-	Matrix result;
+	Matrix result = Matrix();
 
 	float temp0 = data[0]*data[5] - data[1]*data[4];
 	float temp1 = data[0]*data[6] - data[2]*data[4];
@@ -937,7 +937,7 @@ void Matrix::getMatrix(float * matrix) {
 // Return the specified row as vector
 Vector Matrix::getRowAsVector(unsigned short row)
 {
-	 Vector result;
+	 Vector result = Vector();
 
 	 for (unsigned int i = 0; i < 4; i++){
 		 result.set(i,this->get(row,i));
@@ -949,7 +949,7 @@ Vector Matrix::getRowAsVector(unsigned short row)
 // Return the specified column as vector
 Vector Matrix::getColumnAsVector(unsigned short column)
 {
-	 Vector result;
+	 Vector result = Vector();
 
 	for (unsigned int i = 0; i < 4; i++){
 		 result.set(i,this->get(i,column));
