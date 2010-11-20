@@ -160,6 +160,14 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 
 	glewInit();
 
+	if (GLEW_ARB_vertex_shader && GLEW_ARB_fragment_shader)
+		printf("Ready for GLSL\n");
+	else 
+	{
+		printf("Not totally ready :( \n");
+		exit(1);
+	}
+	
 	if(verbosityLevel>=1) printDebugInfo();
 }
 
