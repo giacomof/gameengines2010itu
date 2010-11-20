@@ -33,7 +33,7 @@ MemoryManager & MemoryManager::getInstance()
 
 		if((void *)marker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
 	}
-	else MemoryManager::count++;
+	MemoryManager::count++;
 	return _instance;
 }
 
