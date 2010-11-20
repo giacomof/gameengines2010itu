@@ -25,7 +25,7 @@ public:
 	static unsigned int marker;
 	static unsigned int lastMarker;
 	static unsigned int const dataToAllocate = 256 * 10000; // 256Mb
-	static unsigned int const guardBytes = 8;
+	static unsigned int const guardBytes = 512;
 
 	// Singleton Definitions
 	MemoryManager(void);
@@ -36,14 +36,14 @@ public:
 
 	// Stack Allocator
 	// used for load-and-stay-residend data
-	static void * allocate(unsigned const int stackSize_bytes);
-	static void MemoryManager::deallocate(void * stack_ptr);
-	static void MemoryManager::freeToLastMarker(void);
+	void * allocate(unsigned const int stackSize_bytes);
+	void MemoryManager::deallocate(void * stack_ptr);
+	void MemoryManager::freeToLastMarker(void);
 
-	static unsigned int MemoryManager::getMarker(void);
-	static void MemoryManager::setMarker(unsigned int m);
-	static void MemoryManager::freeToMarker(unsigned int m);
-	static void MemoryManager::clear(void);
+	unsigned int MemoryManager::getMarker(void);
+	void MemoryManager::setMarker(unsigned int m);
+	void MemoryManager::freeToMarker(unsigned int m);
+	void MemoryManager::clear(void);
 
 };
 

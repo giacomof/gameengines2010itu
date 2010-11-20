@@ -3,6 +3,7 @@
 static int const thread_delay = 1;				// Minimum time between loops
 static float const PI = 3.14159f;				// PI definition
 SDL_mutex * mutex_allocator;					// Mutex for Thread Synchronization
+static MemoryManager memMgr = MemoryManager();
 
 /* ********************************************* */
 /* ******* operator new global overload ******** */
@@ -16,7 +17,7 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 
 	if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING ALLOCATOR: " << allocatorFlag << endl;
 
-	void * storage = MemoryManager::allocate(size);
+	void * storage = memMgr.allocate(size);
 	if(NULL == storage) {
             throw "allocation fail : no free memory";
     }
@@ -33,7 +34,7 @@ void operator delete(void * ptr)
 void operator delete(void * ptr, unsigned short flag) 
 {
 	if(verbosityLevel>=3) cout << "DELETE WITH FLAG: " << flag << endl;
-	MemoryManager::freeToLastMarker();
+	memMgr.freeToLastMarker();
 }
 
 
@@ -515,31 +516,31 @@ SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture)
 
 SceneObject * DDEngine::createCollada(ColladaFile * model, unsigned int texture, ColladaSkeleton * skeleton)
 {
-	ColladaInterface * colladaModel = new ColladaInterface(model, texture, skeleton);
+	ColladaInterface * colladaModel = new(GEOMETRY, AUTO_ALLOCATOR) ColladaInterface(model, texture, skeleton);
 	return (SceneObject*) colladaModel;
 }
 
 SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe)
 {
-	Sphere * sphere = new Sphere(radius, slices, stacks, wireframe);
+	Sphere * sphere = new(GEOMETRY, AUTO_ALLOCATOR) Sphere(radius, slices, stacks, wireframe);
 	return (SceneObject*) sphere;
 }
 
 SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions)
 {
-	SceneObject * plane = new Plane(width, height, sideSubdivisions);
+	SceneObject * plane = new(GEOMETRY, AUTO_ALLOCATOR) Plane(width, height, sideSubdivisions);
 	return  plane;
 }
 
 SceneObject * DDEngine::createCube(float side)
 {
-	Cube * cube = new Cube(side);
+	Cube * cube = new(GEOMETRY, AUTO_ALLOCATOR) Cube(side);
 	return (SceneObject*) cube;
 }
 
 SceneObject * DDEngine::createLine(Vector start, Vector end)
 {
-	Line * line = new Line(start, end);
+	Line * line = new(GEOMETRY, AUTO_ALLOCATOR) Line(start, end);
 	return (SceneObject*) line;
 }
 
@@ -548,7 +549,7 @@ SceneObject * DDEngine::createLight(	bool enabled, bool directional,
 										float diffuseR, float diffuseG, float diffuseB,
 										float specularR, float specularG, float specularB)
 {
-	Light * light = new Light(	enabled, directional, 
+	Light * light = new(GEOMETRY, AUTO_ALLOCATOR) Light(	enabled, directional, 
 															ambientR, ambientG, ambientB,
 															diffuseR, diffuseG, diffuseB,
 															specularR, specularG, specularB);

@@ -25,11 +25,15 @@ MemoryManager::~MemoryManager(void) { }
 
 MemoryManager & MemoryManager::getInstance()
 {
-	if(count==0) {
-		marker = lastMarker = (unsigned int) malloc(dataToAllocate);
+	if(MemoryManager::count==0) {
+		marker = (unsigned int) malloc(dataToAllocate);
+		lastMarker = marker;
+
+		cout << "MEMORY MANAGER INIZIALIZED AT: " << marker << " USING " << dataToAllocate << " bytes" << endl;
+
 		if((void *)marker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
 	}
-	else count++;
+	else MemoryManager::count++;
 	return _instance;
 }
 

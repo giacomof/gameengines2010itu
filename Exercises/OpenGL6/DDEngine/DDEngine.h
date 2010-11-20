@@ -100,8 +100,6 @@ protected:
 	Controller controller;
 	// Window Manager definition
 	WindowManager window;
-	//  the MemoryManager
-	MemoryManager memMgr;
 	// Entity spectator 
 	entitySpectator * player;
 	// Entity camera
