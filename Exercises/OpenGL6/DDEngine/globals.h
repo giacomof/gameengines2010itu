@@ -8,7 +8,7 @@
 #define globals__H__
 
 static bool drawDebug = true;
-static const int verbosityLevel = 4;
+static const int verbosityLevel = 3;
 
 // MemoryManager Flags
 	// Type Flag
