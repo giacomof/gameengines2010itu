@@ -3,7 +3,7 @@
 static int const thread_delay = 1;				// Minimum time between loops
 static float const PI = 3.14159f;				// PI definition
 SDL_mutex * mutex_allocator;					// Mutex for Thread Synchronization
-static MemoryManager memMgr = MemoryManager();
+static MemoryManager memMgr;
 
 /* ********************************************* */
 /* ******* operator new global overload ******** */
@@ -159,14 +159,10 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	renderClock = frameClock();
 
 	glewInit();
-
-	if (GLEW_ARB_vertex_shader && GLEW_ARB_fragment_shader)
-		printf("Ready for GLSL\n");
-	else 
-	{
-		printf("Not totally ready :( \n");
+	if (!glewIsSupported("GL_VERSION_2_0"))
 		exit(1);
-	}
+	
+
 	
 	if(verbosityLevel>=1) printDebugInfo();
 }
