@@ -73,5 +73,11 @@
     <None Include="assets\nhe.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\toon.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\toon3.frag">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

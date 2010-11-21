@@ -122,6 +122,12 @@ protected:
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
+	void setShaders();							// Set the shadeing program
+
+char * textFileRead(char *fn);
+
+
+
 
 };
 

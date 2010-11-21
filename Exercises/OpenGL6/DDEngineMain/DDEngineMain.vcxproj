@@ -99,6 +99,8 @@
     <None Include="assets\Lostsoul.md2" />
     <None Include="assets\MENULOOP.WAV" />
     <None Include="assets\nhe.ico" />
+    <None Include="assets\toon.vert" />
+    <None Include="assets\toon3.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
