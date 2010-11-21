@@ -25,7 +25,7 @@ public:
 	static unsigned int marker;
 	static unsigned int lastMarker;
 	static unsigned int const dataToAllocate = 256 * 10000; // 256Mb
-	static unsigned int const guardBytes = 512;
+	static unsigned int const guardBytes = 510;
 
 	// Singleton Definitions
 	MemoryManager(void);

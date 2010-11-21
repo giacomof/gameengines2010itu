@@ -162,7 +162,7 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	if (!glewIsSupported("GL_VERSION_2_0"))
 		exit(1);
 	
-
+	//setShaders();
 	
 	if(verbosityLevel>=1) printDebugInfo();
 }
@@ -430,6 +430,65 @@ float* DDEngine::getCamera()
 
 	glMultMatrixf(&tranM[0]);
 	return &tranM[0];
+}
+
+void DDEngine::setShaders() 
+{	
+		char *vs,*fs;
+	
+		GLuint v = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+		GLuint f = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);	
+	
+		vs = textFileRead("assets/toonf2.vert");
+		fs = textFileRead("assets/toonf2.frag");
+	
+		const char * vv = vs;
+		const char * ff = fs;
+	
+		glShaderSourceARB(v, 1, &vv,NULL);
+		glShaderSourceARB(f, 1, &ff,NULL);
+	
+		free(vs);free(fs);
+	
+		glCompileShaderARB(v);
+		glCompileShaderARB(f);
+	
+		GLuint p = glCreateProgramObjectARB();
+		
+		glAttachObjectARB(p,v);
+		glAttachObjectARB(p,f);
+	
+		glLinkProgramARB(p);
+		glUseProgramObjectARB(p);
+
+}
+
+char * DDEngine::textFileRead(char *fn) {
+
+
+	FILE *fp;
+	char *content = NULL;
+
+	int count=0;
+
+	if (fn != NULL) {
+		fp = fopen(fn,"rt");
+
+		if (fp != NULL) {
+      
+      fseek(fp, 0, SEEK_END);
+      count = ftell(fp);
+      rewind(fp);
+
+			if (count > 0) {
+				content = (char *)malloc(sizeof(char) * (count+1));
+				count = fread(content,sizeof(char),count,fp);
+				content[count] = '\0';
+			}
+			fclose(fp);
+		}
+	}
+	return content;
 }
 
 
