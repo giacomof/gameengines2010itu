@@ -45,7 +45,7 @@ void MemoryManager::setMarker(unsigned int m) {
 	marker = m;
 }
 
-void * MemoryManager::allocate(unsigned int s) 
+void * MemoryManager::allocateOnStack(unsigned int s) 
 {
 	// In this implementation we store the marker position
 	// and we add the size of the object we are trying to
