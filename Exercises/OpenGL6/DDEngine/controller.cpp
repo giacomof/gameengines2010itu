@@ -12,7 +12,7 @@ Controller & Controller::getInstance()
 	if(count==0) { 
 		mutex_controller = SDL_CreateMutex();
 	}
-	else count++;
+	count++;
 	return _instance;
 }
 
