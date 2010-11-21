@@ -36,7 +36,7 @@ public:
 
 	// Stack Allocator
 	// used for load-and-stay-residend data
-	void * allocate(unsigned const int stackSize_bytes);
+	void * MemoryManager::allocateOnStack(unsigned int s);
 	void MemoryManager::deallocate(void * stack_ptr);
 	void MemoryManager::freeToLastMarker(void);
 

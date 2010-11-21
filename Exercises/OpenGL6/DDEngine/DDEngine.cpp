@@ -13,17 +13,50 @@ static MemoryManager memMgr;
 
 void * operator new(size_t size, unsigned short typeFlag, unsigned short allocatorFlag)
 {
-	AssetManager::lockMutex(mutex_allocator);
+	void * storage = NULL;
 
-	if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING ALLOCATOR: " << allocatorFlag << endl;
+	switch(allocatorFlag) {
 
-	void * storage = memMgr.allocate(size);
-	if(NULL == storage) {
-            throw "allocation fail : no free memory";
-    }
-	AssetManager::unlockMutex(mutex_allocator);
+	case STACK_ALLOCATOR:
+
+		AssetManager::lockMutex(mutex_allocator);
+
+		if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING STACK ALLOCATOR" << endl;
+
+		storage = memMgr.allocateOnStack(size);
+		if(NULL == storage)
+			throw "allocation fail : no free memory";
+    
+		AssetManager::unlockMutex(mutex_allocator);
+
+		break;
+
+	case AUTO_ALLOCATOR:
+
+		AssetManager::lockMutex(mutex_allocator);
+
+		if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING AUTO ALLOCATOR" << endl;
+
+		storage = memMgr.allocateOnStack(size);
+		if(NULL == storage)
+			throw "allocation fail : no free memory";
+    
+		AssetManager::unlockMutex(mutex_allocator);
+
+		break;
+
+	case POOL_ALLOCATOR:
+
+		AssetManager::lockMutex(mutex_allocator);
+		if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING POOL ALLOCATOR" << endl;
+
+		AssetManager::unlockMutex(mutex_allocator);
+		break;
+
+	}
 
 	return storage;
+	
 }
 
 void operator delete(void * ptr) 
