@@ -10,6 +10,7 @@
 #include "assetManager.h"
 #include "globals.h"
 #include <stdlib.h>
+#include <list>
 
 class MemoryManager_D MemoryManager
 {
@@ -27,7 +28,6 @@ public:
 	// Pool Allocator declarations
 	static unsigned int const NUM_POOLS = 1024; // number of pools to allocate
 	static unsigned int const POOL_SIZE = 64; // size of a single pool in bytes
-	
 
 	// Common variables declarations
 	static unsigned int const dataToAllocate = 128 * 10000; // 128Mb
