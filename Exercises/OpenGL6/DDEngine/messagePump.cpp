@@ -14,7 +14,7 @@ MessagePump & MessagePump::getInstance()
 		messageList = new list<SDL_Event>();
 		//std::cout << "ADDRESS: " << &messageList << endl;
 	}
-	else MessagePump::count++;
+	MessagePump::count++;
 	return _instance;
 }
 

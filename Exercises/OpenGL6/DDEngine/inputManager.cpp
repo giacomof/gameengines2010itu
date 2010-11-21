@@ -10,7 +10,7 @@ bool inputManager::active;
 inputManager & inputManager::getInstance()
 {
 	if(count==0) inputManager::mutex_event = SDL_CreateMutex();
-	else count++;
+	count++;
 	active = true;
 	return _instance;
 }
