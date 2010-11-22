@@ -20,14 +20,13 @@ G- Shaders
 0- V8 Javascript Scripting Integration
 0- Remove Hard-Coded scaling from ColladaFile
 0- FrameClock Class as a Singleton
+0- mutex created inside the mutexManager
 0- better thread synch and use
 
 OPTIONALS:
 
 0- logging system with verbosity levels
 0- singleton superclass
-0- mutex created inside the AssetManager
-0- Physics Wrapper?
 0- AutoCalculated Bounding Box
 0- Shadows: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27
 0- Multiple Viewports: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42
@@ -81,11 +80,9 @@ COMPLETED:
 1(V+G)- MD2 normals fixed enough
 1(G)- Use Clock Class into updates/draws/synchs
 1(G)- Compile everything we can as a DLL
-<<<<<<< .mine
 1(G)- Engine Abstraction (setupScene, frameStarted, frameEnded)
-=======
 1(G)- OpenMP utilization in for cycles
->>>>>>> .r532
+
 
 
 Symbology Map:
