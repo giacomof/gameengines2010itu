@@ -273,16 +273,67 @@ ColladaSkeleton * AssetManager::getColladaSkeleton(char * colladaNameChar)
 	return colladaskel_list[colladaNameChar].colladaSkel;
 }
 
-//Light * AssetManager::newLight()
-//{
-//	if ( light_list.size() < GL_MAX_LIGHTS - 1)
-//	{
-//		Light temp;
-//		light_list.push_back(temp);
-//		return & temp;
-//	}
-//	return NULL;
-//}
+void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName)
+{
+		char *vs,*fs;
+	
+		GLuint v = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+		GLuint f = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);	
+	
+		vs = textFileRead(vertexShaderPath);
+		fs = textFileRead(fragmentShaderPath);
+	
+		const char * vv = vs;
+		const char * ff = fs;
+	
+		glShaderSourceARB(v, 1, &vv,NULL);
+		glShaderSourceARB(f, 1, &ff,NULL);
+	
+		free(vs);free(fs);
+	
+		glCompileShaderARB(v);
+		glCompileShaderARB(f);
+	
+		GLuint p = glCreateProgramObjectARB();
+		
+		glAttachObjectARB(p,v);
+		glAttachObjectARB(p,f);
+	
+		shadingProgram_list[programName] = p;
+}
+
+char * AssetManager::textFileRead(char * filePath) {
+	FILE *filePtr;
+	char *content = NULL;
+
+	int count=0;
+
+	if (filePath != NULL) {
+		filePtr = fopen(filePath,"rt");
+
+		if (filePtr != NULL) {
+      
+      fseek(filePtr, 0, SEEK_END);
+      count = ftell(filePtr);
+      rewind(filePtr);
+
+			if (count > 0) {
+				content = (char *)malloc(sizeof(char) * (count+1));
+				count = fread(content,sizeof(char),count,filePtr);
+				content[count] = '\0';
+			}
+			fclose(filePtr);
+		}
+	}
+	return content;
+}
+
+void AssetManager::activateShadingProgram(char * shadingProgramName)
+{
+	GLuint p = shadingProgram_list[shadingProgramName];
+	glLinkProgramARB(p);
+	glUseProgramObjectARB(p);
+}
 
 void AssetManager::lockMutex( SDL_mutex * m ) 
 {

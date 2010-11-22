@@ -7,14 +7,19 @@
 #ifndef assetManager__H 
 #define assetManager__H
 
-#include <il.h>
-#include <ilu.h>
-#include <ilut.h>
+#include <glew.h>								// Header File for GLEW library
 #include <iostream>
 #include <fstream>
+#include <SDL_mutex.h>
 #include <map>
 #include "md5wrapper.h"
 #include "sceneObject.h"
+#include <il.h>
+#include <ilu.h>
+#include <ilut.h>
+#include "md2File.h"
+#include "colladaFile.h"
+#include "colladaSkeleton.h"
 
 struct textureContainer 
 {
@@ -70,8 +75,11 @@ public:
 	bool loadColladaSkeleton(char * filePath, char * colladaNameChar);
 	ColladaSkeleton * getColladaSkeleton(char * colladaNameChar);
 
-	// light methods
-	//Light * newLight(void);
+	// Shaders methods
+	void createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName);
+	char * textFileRead(char * filePath);
+	void activateShadingProgram(char * shadingProgramName);
+
 
 	// mutex methods
 	static void lockMutex( SDL_mutex * m );
@@ -82,6 +90,7 @@ private:
 	std::map <char *, md2InterfaceContainer> md2_list;
 	std::map <char *, colladaInterfaceContainer> collada_list;
 	std::map <char *, colladaSkelInterfaceContainer> colladaskel_list;
+	std::map <char *, GLuint> shadingProgram_list;
 };
 
 #endif

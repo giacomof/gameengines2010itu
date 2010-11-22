@@ -7,14 +7,20 @@
 #ifndef sceneNode__H__
 #define sceneNode__H__
 
+#include "assetManager.h"
 #include "globals.h"
-#include <SDL_mutex.h>
-#include <string>
-#include <list>
 #include "linearAlgebraDLL.h"			// Header File for our math library
 #include "transformation.h"
 #include "sceneObject.h"
-#include "assetManager.h"
+#include <string>
+#include <list>
+#include <stdlib.h>
+#include <SDL.h>						// Header File for the SDL library
+#include <SDL_opengl.h>					// Header File for OpenGL through SDL
+#include <SDL_thread.h>
+#include <SDL_mutex.h>
+#include "glut.h"
+
 
 #include <btBulletDynamicsCommon.h>
 

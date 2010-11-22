@@ -7,8 +7,9 @@
 #ifndef entityCamera__H__
 #define entityCamera__H__
 
-#include "sceneObject.h"
 #include "SceneNode.h"
+#include "sceneObject.h"
+
 
 class entityCamera_D entityCamera : public SceneObject
 {

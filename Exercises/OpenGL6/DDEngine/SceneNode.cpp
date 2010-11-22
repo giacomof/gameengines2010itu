@@ -1,13 +1,4 @@
-#include <string>
-#include <list>
 
-#include <stdlib.h>
-#include <SDL.h>						// Header File for the SDL library
-#include <SDL_opengl.h>					// Header File for OpenGL through SDL
-#include <SDL_thread.h>
-#include <SDL_mutex.h>
-
-#include "glut.h"
 
 #include "sceneNode.h"
 

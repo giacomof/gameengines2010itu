@@ -7,9 +7,9 @@
 #ifndef controller__H__
 #define controller__H__
 
+#include "assetManager.h"
 #include <SDL.h>
 #include "entitySpectator.h"
-#include "assetManager.h"
 
 class controller_D Controller
 {

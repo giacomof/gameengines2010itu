@@ -7,16 +7,25 @@
 #ifndef sceneObject__H__
 #define sceneObject__H__
 
+
+
+
+
+#include "assetManager.h"
+
+#include "md2File.h"
+#include "colladaFile.h"
+#include "colladaSkeleton.h"
+
+#include "linearAlgebraDLL.h"
+
 #include <SDL.h>
 #include <il.h>
 #include <ilu.h>
 #include <ilut.h>
 #include <vector>
-#include "linearAlgebraDLL.h"
-#include "md2File.h"
-#include "colladaFile.h"
-#include "colladaSkeleton.h"
-#include "assetManager.h"
+
+
 
 using namespace std;
 using namespace linearAlgebraDLL;
