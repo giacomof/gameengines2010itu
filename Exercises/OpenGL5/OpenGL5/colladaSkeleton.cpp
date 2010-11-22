@@ -171,14 +171,14 @@ bool ColladaSkeleton::load(std::string & str)
 						string samplerID = currentChannel->first_attribute("source")->value();
 
 						// Extract matrix position from target ID (I hope all files have it in this format)
-						int x, y;
-						x = atoi( targetID.substr(targetID.size()-5,1).c_str() );
-						y = atoi( targetID.substr(targetID.size()-2,1).c_str() );
+						int row, col;
+						row = atoi( targetID.substr(targetID.size()-5,1).c_str() );
+						col = atoi( targetID.substr(targetID.size()-2,1).c_str() );
 						//std::cout << targetID << " reads as ( " << x << " , " << y << " )\n";
 
 						// Constrain x and y just to be sure
-						if ( x > 3 || x < 0 ) x = 0;
-						if ( y > 3 || y < 0 ) y = 0;
+						if ( row > 3 || row < 0 ) row = 0;
+						if ( col > 3 || col < 0 ) col = 0;
 
 						// Now get the sample and use it to load the data
 						xml_node<>* currentSampler = currentAnimationJoint->first_node("sampler");
@@ -291,9 +291,9 @@ bool ColladaSkeleton::load(std::string & str)
 									j++;
 								}
 
-								JointArray[i].jChannel[x][y].jkKeyframes = count;
-								JointArray[i].jChannel[x][y].jkTime = inputArray;
-								JointArray[i].jChannel[x][y].jkValues = outputArray;
+								JointArray[i].jChannel[row][col].jkKeyframes = count;
+								JointArray[i].jChannel[row][col].jkTime = inputArray;
+								JointArray[i].jChannel[row][col].jkValues = outputArray;
 
 								//std::cout << "Filled a channel!\n";
 								// Phew. And that was just one channel, for one joint!
@@ -357,13 +357,13 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	// Tokenize and convert the matrix string
 	std::istringstream isM(matrixArray);
 	// Parse tokens and insert value in matrix
-	for (int row = 0; row < 4; row++)
+	for (int col = 0; col < 4; col++)
 	{
-		for (int col = 0; col < 4; col++)
+		for (int row = 0; row < 4; row++)
 		{
 			if ( getline(isM, token, ' ') )
 			{
-				currentJoint.jBindPose.set(col, row, atof(token.c_str()) );
+				currentJoint.jBindPose.set(row, col, atof(token.c_str()) );
 			}
 			else
 				break;
@@ -448,20 +448,19 @@ void ColladaSkeleton::updateSkeleton(poseJoint * currentJoint, float timeCurrent
 		string jName = JointArray[i].jName;
 		if (currentJointName == jName && JointArray[i].jAnimated)
 		{
-			for (int j = 0; j<4; j++)
-				for (int k = 0; k<4; k++)
+			for (int col = 0; col<4; col++)
+				for (int row = 0; row<4; row++)
 				{
-					animationTime = timeCurrent * JointArray[i].jChannel[k][j].jkTime[JointArray[i].jChannel[k][j].jkKeyframes-1];
+					animationTime = timeCurrent * JointArray[i].jChannel[row][col].jkTime[JointArray[i].jChannel[row][col].jkKeyframes-1];
 
 					int keyframe = 0;
-					while (animationTime > JointArray[i].jChannel[k][j].jkTime[keyframe] && keyframe < JointArray[i].jChannel[k][j].jkKeyframes)
+					while (animationTime > JointArray[i].jChannel[row][col].jkTime[keyframe] && keyframe < JointArray[i].jChannel[row][col].jkKeyframes)
 					{
 						keyframe++;
 					}
 
-					//if (currentJoint->jointIndex == 0)
-						//std::cout << "Channel [" << k << "," << j << "] sets keyframe " << keyframe << " at time " << animationTime << " because of keyframe time " << JointArray[i].jChannel[k][j].jkTime[keyframe] << " among " << JointArray[i].jChannel[k][j].jkKeyframes << " keyframes\n";
-					currentJoint->jointTransform.set(j,k,JointArray[i].jChannel[k][j].jkValues[keyframe]);
+					if ( !(row == 3 && col == 3) )
+						currentJoint->jointTransform.set(row,col,JointArray[i].jChannel[row][col].jkValues[keyframe]);
 				}
 		}
 	}
