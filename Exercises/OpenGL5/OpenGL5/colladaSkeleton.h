@@ -17,10 +17,11 @@ using namespace std;
 using namespace rapidxml;
 using namespace linearAlgebraDLL;
 
-struct JointKeyframe
+struct JointKeyframeChannel
 {
-	float jkTime;
-	Matrix jkPose;
+	int jkKeyframes;
+	float * jkTime;
+	float * jkValues;
 };
 
 struct Joint
@@ -29,7 +30,8 @@ struct Joint
 	const char * jName;						// joint name
 	const char * jID;						// joint ID, if any
 	int jParentIndex;						// the index of the parent
-	vector<JointKeyframe> jKeyframes;		// Animation data for this joint
+	bool jAnimated;							// Does this joint have animation data
+	JointKeyframeChannel jChannel[4][4];	// Animation data for this joint
 };
 
 class ColladaSkeleton

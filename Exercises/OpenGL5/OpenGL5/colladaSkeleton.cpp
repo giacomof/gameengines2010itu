@@ -261,36 +261,39 @@ bool ColladaSkeleton::load(std::string & str)
 										break;
 								}
 
-								// Get the smallest count
-								int count;
-								if (inputCount < outputCount)
-									count = inputCount;
-								else
-									count = outputCount;
-
-								if (JointArray[i].jKeyframes.size() != count)
-									JointArray[i].jKeyframes.resize(count);
+								// Get the largest count
+								int count = outputCount;
+								if (inputCount != outputCount)
+									std::cout << "Keyframe number mismatch!\n";
 
 								// Avast! Prepare to be parsed!
 								string token;
 
+								float * inputArray = (float *)malloc(count*sizeof(float));
+								float * outputArray = (float *)malloc(count*sizeof(float));
+
+
 								// parse the input array
 								std::istringstream inputStream(inputString);
+								int j = 0;
 								while ( getline(inputStream, token, ' ') )
 								{
-									int j = 0;
-									JointArray[i].jKeyframes[j].jkTime = atof(token.c_str());
+									inputArray[j] = atof(token.c_str());
 									j++;
 								}
 
 								// parse the output array
 								std::istringstream outputStream(outputString);
+								j = 0;
 								while ( getline(outputStream, token, ' ') )
 								{
-									int j = 0;
-									JointArray[i].jKeyframes[j].jkPose.set(y, x, atof(token.c_str()) );
+									outputArray[j] = atof(token.c_str());
 									j++;
 								}
+
+								JointArray[i].jChannel[x][y].jkKeyframes = count;
+								JointArray[i].jChannel[x][y].jkTime = inputArray;
+								JointArray[i].jChannel[x][y].jkValues = outputArray;
 
 								//std::cout << "Filled a channel!\n";
 								// Phew. And that was just one channel, for one joint!
@@ -307,7 +310,9 @@ bool ColladaSkeleton::load(std::string & str)
 						}
 					}
 
+
 					//std::cout << "Loaded animation data for a joint\n";
+					JointArray[i].jAnimated = true;
 				}
 			}
 
@@ -333,6 +338,7 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 {
 	// Make the joint
 	Joint currentJoint;
+	currentJoint.jAnimated = false;
 	currentJoint.jParentIndex = parentIndex;
 	currentJoint.jName = currentNode->first_attribute("id")->value();
 
@@ -368,11 +374,6 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	JointArray.push_back(currentJoint);
 	int currentIndex = JointArray.size() - 1;
 
-	/*if (currentJoint.jBoneID != "")
-	{
-		std::cout << "ID: \"" << currentJoint.jName << "\"\nType: " << currentJoint.jBoneID << ", Index: " << currentIndex << ", Parent: " << currentJoint.jParentIndex << "\n";
-	}*/
-
 	// Search children of this node and call this function on them too
 	if (currentNode->first_node("node") != 0)
 	{
@@ -393,22 +394,8 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 
 unsigned int ColladaSkeleton::getDataSize()
 {
-	// Very inaccurate. Leaves out a lot of stuff
-	unsigned int size = 0;
-
-	size = size + sizeof(ColladaSkeleton);
-
-	for (int i = 0; i < JointArray.size(); i++)
-	{
-		size = size + sizeof(Joint) + sizeof(Matrix) + 16 * sizeof(float) + sizeof(int);
-
-		if ( JointArray[i].jKeyframes.size() > 0)
-		{
-			size = size + JointArray[i].jKeyframes.size() * ( sizeof(JointKeyframe) + sizeof(Matrix) + 16 * sizeof(float) + sizeof(int) );
-		}
-	}
-
-	return static_cast<unsigned int> (size);
+	// Uncomplete, obviously
+	return static_cast<unsigned int> (0);
 }
 
 poseJoint * ColladaSkeleton::buildSkeleton()
@@ -453,33 +440,29 @@ void ColladaSkeleton::updateSkeleton(poseJoint * currentJoint, float timeCurrent
 {
 	float animationTime;
 
+	string currentJointName = currentJoint->jointName;
+
 	// Keyframe Step animation
 	for (int i = 0; i<JointArray.size(); i++)
 	{
-		if (currentJoint->jointName == JointArray[i].jName && JointArray[i].jKeyframes.size() > 0)
+		string jName = JointArray[i].jName;
+		if (currentJointName == jName && JointArray[i].jAnimated)
 		{
-			animationTime = timeCurrent * JointArray[i].jKeyframes.back().jkTime;
-
-			int j = 0;
-			while (true)
-			{
-				if (animationTime < JointArray[i].jKeyframes[j].jkTime)
+			for (int j = 0; j<4; j++)
+				for (int k = 0; k<4; k++)
 				{
-					break;
-				}
-				else
-				{
-					j++;
-				}
+					animationTime = timeCurrent * JointArray[i].jChannel[k][j].jkTime[JointArray[i].jChannel[k][j].jkKeyframes-1];
 
-				if (j == JointArray[i].jKeyframes.size())
-				{
-					j = 0;
-					break;
-				}
-			}
+					int keyframe = 0;
+					while (animationTime > JointArray[i].jChannel[k][j].jkTime[keyframe] && keyframe < JointArray[i].jChannel[k][j].jkKeyframes)
+					{
+						keyframe++;
+					}
 
-			currentJoint->jointTransform = JointArray[i].jKeyframes[j].jkPose;
+					//if (currentJoint->jointIndex == 0)
+						//std::cout << "Channel [" << k << "," << j << "] sets keyframe " << keyframe << " at time " << animationTime << " because of keyframe time " << JointArray[i].jChannel[k][j].jkTime[keyframe] << " among " << JointArray[i].jChannel[k][j].jkKeyframes << " keyframes\n";
+					currentJoint->jointTransform.set(j,k,JointArray[i].jChannel[k][j].jkValues[keyframe]);
+				}
 		}
 	}
 
