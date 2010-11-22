@@ -51,16 +51,23 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 	
 }
 
-void operator delete(void * ptr) 
-{
-	free(ptr);
-}
-
 void operator delete(void * ptr, unsigned short flag) 
 {
 	if(verbosityLevel>=3) cout << "DELETE WITH FLAG: " << flag << endl;
 	memMgr.freeToLastStackMarker();
 }
+
+void operator delete(void * ptr) 
+{
+	free(ptr);
+}
+
+/* ********************************************* */
+/* ******* malloc & free global overload ******** */
+/* ******** just remember to use flags ********* */
+/* ************* from globals.h **************** */
+/* ********************************************* */
+
 
 
 /* This thread handles input */
