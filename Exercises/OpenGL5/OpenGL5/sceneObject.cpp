@@ -103,7 +103,7 @@ void  ColladaInterface::update(void)
 		if (animationProgress > 1.0f)
 			animationProgress = animationProgress - 1.0f;
 
-		std::cout << "Root matrix before " << animationProgress << " :\n" << currentPose->jointTransform << "\n\n";
+		//std::cout << "Root matrix before " << animationProgress << " :\n" << currentPose->jointTransform << "\n\n";
 
 		skeleton->updateSkeleton(currentPose, animationProgress);
 	}
