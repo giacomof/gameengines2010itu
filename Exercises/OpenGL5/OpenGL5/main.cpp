@@ -715,6 +715,7 @@ int initGL(void)
 	std::cout << "memory usage boss cube " << (assetManagerPtr->getMd2Mesh("md2BossCube")->GetDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA duck " << (assetManagerPtr->getColladaMesh("duck")->getDataSize()/1024.0f) << "kb\n";
 	std::cout << "memory usage COLLADA astroboy " << (assetManagerPtr->getColladaMesh("astroboy")->getDataSize()/1024.0f) << "kb\n";
+	std::cout << "memory usage COLLADA SKELETON astroboy_skeleton " << (assetManagerPtr->getColladaSkeleton("astroboy_skeleton")->getDataSize()/1024.0f) << "kb\n";
 	return TRUE;
 }
 

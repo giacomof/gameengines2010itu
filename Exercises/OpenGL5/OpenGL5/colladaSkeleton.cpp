@@ -439,5 +439,28 @@ unsigned int ColladaSkeleton::getJointCount()
 unsigned int ColladaSkeleton::getDataSize()
 {
 	// Very inaccurate. Leaves out a lot of stuff
-	return static_cast<unsigned int>( ( JointArray.size() * sizeof(Joint) ) + sizeof(ColladaSkeleton) );
+	unsigned int size = 0;
+
+	size = size + sizeof(ColladaSkeleton);
+
+	for (int i = 0; i < JointArray.size(); i++)
+	{
+		size = size + sizeof(Joint);
+
+		size = size + sizeof(Matrix);
+		size = size + sizeof(int);
+		size = size + sizeof(bool);
+		size = size + 32 * sizeof(char);
+
+		if ( JointArray[i].jAnimated )
+		{
+			int arraysize = JointArray[i].ChannelMatrix[0][0].ArraySize;
+
+			size = size + 16 * ( arraysize * 2 * sizeof(float) );
+			size = size + 16 * ( (arraysize + 1) * sizeof(int) );
+		}
+
+	}
+
+	return static_cast<unsigned int> (size);
 }
