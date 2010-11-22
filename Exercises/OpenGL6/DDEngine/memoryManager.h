@@ -42,6 +42,10 @@ public:
 	MemoryManager & operator=(MemoryManager & getInstance(void));
 	static MemoryManager & getInstance(void);
 
+	// newMalloc and newFree definitions
+	static void * MemoryManager::newMalloc(size_t s, unsigned short typeFlag);
+	static void MemoryManager::newFree(void * ptr);
+
 	// Stack Allocator
 		// used for load-and-stay-residend data
 	void * MemoryManager::allocateOnStack(unsigned int s);
@@ -59,7 +63,6 @@ public:
 	void MemoryManager::setSingleFrameAllocatorMarker(unsigned int m);
 	unsigned int MemoryManager::getBaseSingleFrameAllocatorMarker(void);
 	void MemoryManager::setBaseSingleFrameAllocatorMarker(unsigned int m);
-
 
 };
 

@@ -62,14 +62,6 @@ void operator delete(void * ptr)
 	free(ptr);
 }
 
-/* ********************************************* */
-/* ******* malloc & free global overload ******** */
-/* ******** just remember to use flags ********* */
-/* ************* from globals.h **************** */
-/* ********************************************* */
-
-
-
 /* This thread handles input */
 int threadInput(void *data)
 {
@@ -518,7 +510,7 @@ char * DDEngine::textFileRead(char *fn) {
       rewind(fp);
 
 			if (count > 0) {
-				content = (char *)malloc(sizeof(char) * (count+1));
+				content = (char *)MemoryManager::newMalloc(sizeof(char) * (count+1), SHADER );
 				count = fread(content,sizeof(char),count,fp);
 				content[count] = '\0';
 			}

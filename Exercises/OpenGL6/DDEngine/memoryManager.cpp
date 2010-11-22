@@ -15,7 +15,7 @@ unsigned int MemoryManager::baseSingleFrameMarker = 0;
 
 void * MemoryManager::operator new(size_t s) 
 {
-	void * storage = malloc(s);
+	void * storage = MemoryManager::newMalloc(s, MANAGER);
 	return storage;
 }
 
@@ -32,18 +32,34 @@ MemoryManager & MemoryManager::getInstance()
 	if(MemoryManager::count==0) {
 		
 		// Stack Allocator Initializations
-		stackMarker = (unsigned int) malloc(dataToAllocate);
+		stackMarker = (unsigned int) MemoryManager::newMalloc(dataToAllocate, MANAGER);
 		lastStackMarker = stackMarker;
 		if((void *)stackMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE STACK ALLOCATOR" << std::endl;
 
 		// Single Frame Allocator Initializations
-		baseSingleFrameMarker = (unsigned int) malloc(dataToAllocate);
+		baseSingleFrameMarker = (unsigned int) MemoryManager::newMalloc(dataToAllocate, MANAGER);
 		singleFrameMarker = baseSingleFrameMarker;
 		if((void *)baseSingleFrameMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE SINGLE FRAME ALLOCATOR" << std::endl;
 
 	}
 	MemoryManager::count++;
 	return _instance;
+}
+
+// ************************************************************
+// ************** MALLOC AND FREE REDEFINITION ****************
+// ************************************************************
+
+void * MemoryManager::newMalloc(size_t s, unsigned short typeFlag) 
+{
+	if(verbosityLevel >= 4) cout << "NEW MALLOC ALLOCATES: " << s << " bytes" << endl;
+	return malloc(s);
+}
+
+void MemoryManager::newFree(void * ptr)
+{
+	if(verbosityLevel >= 4) cout << "NEW FREE FREES: " << ptr << endl;
+	free(ptr);
 }
 
 // ************************************************************

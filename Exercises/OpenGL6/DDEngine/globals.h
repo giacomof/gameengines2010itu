@@ -18,6 +18,8 @@ static unsigned const short SCENEGRAPH	= 2;
 static unsigned const short PHYSICS		= 3;
 static unsigned const short GEOMETRY	= 4;
 static unsigned const short UTILITY		= 5;
+static unsigned const short SHADER		= 6;
+static unsigned const short SOUND		= 7;
 
 	// Allocator Flag
 static unsigned const short STACK_ALLOCATOR			= 0;
