@@ -501,6 +501,11 @@ int main(int argc, char *argv[])
 
 	colladaDuck = new(sceneGraphFlag) SceneNode(rootNodePtr, "duck", &duck_g,  Vector(0.0f, 10.0f, 0.0f), Vector(25.0f,0.0f,25.0f), 0.0f);
 
+	// For testing skeletal animation
+	ColladaInterface astroboy_g = ColladaInterface(0, 0, assetManagerPtr->getColladaSkeleton("astroboy_skeleton"));
+	colladaAstroboy = new(sceneGraphFlag) SceneNode(rootNodePtr, "astroboy", &astroboy_g,  Vector(20.0f, 0.0f, 0.0f), Vector(1.0f,0.0f,0.0f), -90.0f);
+	colladaAstroboy->scale(15.0, 15.0, 15.0);
+
 
 	/* ------------------------------------------ *
 	 * Graph and asset testing stuff ends here  *

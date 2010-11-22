@@ -1169,6 +1169,9 @@
     <ClInclude Include="colladaSkeleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="poseJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="snippets.txt">

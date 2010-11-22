@@ -397,7 +397,7 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 		{
 			if ( getline(isM, token, ' ') )
 			{
-				currentJoint.inversePose.set(row, col, atof(token.c_str()) );
+				currentJoint.inversePose.set(col, row, atof(token.c_str()) );
 			}
 			else
 				break;
@@ -463,4 +463,72 @@ unsigned int ColladaSkeleton::getDataSize()
 	}
 
 	return static_cast<unsigned int> (size);
+}
+
+poseJoint * ColladaSkeleton::buildSkeleton()
+{
+	poseJoint * rootJoint = new poseJoint;
+
+	rootJoint->jointInversePose = JointArray[0].inversePose;
+	rootJoint->jointID = JointArray[0].jBoneID;
+	rootJoint->jointIndex = 0;
+
+	for (int i = 1; i<JointArray.size(); i++)
+	{
+		if (JointArray[i].jParentIndex == 0)
+		{
+			rootJoint->jointChildren.push_back(new poseJoint);
+			buildChildJoint(rootJoint->jointChildren.back(), i);
+		}
+	}
+
+	return rootJoint;
+}
+
+void ColladaSkeleton::buildChildJoint(poseJoint * currentJoint, int currentIndex)
+{
+	currentJoint->jointInversePose = JointArray[currentIndex].inversePose;
+	currentJoint->jointID = JointArray[currentIndex].jBoneID;
+	currentJoint->jointIndex = currentIndex;
+
+	for (int i = currentIndex + 1; i<JointArray.size(); i++)
+	{
+		if (JointArray[i].jParentIndex == currentIndex)
+		{
+			currentJoint->jointChildren.push_back(new poseJoint);
+			buildChildJoint(currentJoint->jointChildren.back(), i);
+		}
+	}
+}
+
+void ColladaSkeleton::updateSkeleton(poseJoint * rootJoint)
+{
+
+}
+
+void ColladaSkeleton::traceSkeletonJoint(poseJoint * currentJoint)
+{
+	float tranM[16];
+	currentJoint->jointInversePose.getMatrix(&tranM[0]);
+
+	glPushMatrix();
+	glMultMatrixf(&tranM[0]);
+
+	glColor3f(1.0f,1.0f,1.0f);
+	glPointSize(5.0f);
+	glBegin(GL_POINTS);
+		glVertex3f(0.0f,0.0f,0.0f);
+	glEnd();
+
+	for (int i = 0; i<currentJoint->jointChildren.size(); i++)
+	{
+		currentJoint->jointChildren[i]->jointInversePose.getMatrix(&tranM[0]);
+		glBegin(GL_LINES);
+			glVertex3f(0.0f,0.0f,0.0f);
+			glVertex3f(tranM[12], tranM[13], tranM[14]);
+		glEnd();
+		traceSkeletonJoint(currentJoint->jointChildren[i]);
+	}
+
+	glPopMatrix();
 }

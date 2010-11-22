@@ -9,6 +9,7 @@
 #include <fstream>
 #include <glut.h>
 #include "rapidxml.hpp"
+#include "poseJoint.h"
 
 #include "linearAlgebraDLL.h"
 
@@ -52,8 +53,18 @@ public:
 	// returns the total size of the skeleton in bytes
 	unsigned int getDataSize();
 
+	// builds a skeleton of poseJoints and returns pointer to the root
+	poseJoint * buildSkeleton();
+
+	// takes a poseJoint representing the root of a built skeleton, and an animation delta and updates the current animation (more parameters later)
+	void updateSkeleton(poseJoint * rootJoint);
+
+	// takes a poseJoint and traces the skeleton on the screen
+	void traceSkeletonJoint(poseJoint * rootJoint);
+
 private:
 	void parseChildJoint(xml_node<>* currentNode, int parentIndex);
+	void buildChildJoint(poseJoint * currentJoint, int currentIndex);
 
 	vector<Joint> JointArray;
 };

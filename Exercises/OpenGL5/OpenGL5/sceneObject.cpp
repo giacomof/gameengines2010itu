@@ -61,6 +61,12 @@ ColladaInterface::ColladaInterface(ColladaFile * c, unsigned int texture, Collad
 	skeleton = s;
 	mesh = c;
 	colladaTexture = texture;
+	currentPose = NULL;
+
+	if (skeleton != NULL)
+	{
+		currentPose = skeleton->buildSkeleton();
+	}
 }
 
 ColladaInterface::~ColladaInterface(void)
@@ -69,12 +75,20 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void)
 {
-	// Simon will expand this function to call a function on mesh that skins it to a pose instead, if a pose exists
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, colladaTexture);
-	mesh->render();
-	glDisable(GL_TEXTURE_2D);
+	// This will trace the current pose of the skeleton on the screen
+	if (skeleton != NULL && currentPose != NULL)
+	{
+		skeleton->traceSkeletonJoint(currentPose);
+	}
 
+	// Simon will expand this function to call a function on mesh that skins it to a pose instead, if a pose exists
+	else if (mesh != NULL)
+	{
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture (GL_TEXTURE_2D, colladaTexture);
+		mesh->render();
+		glDisable(GL_TEXTURE_2D);
+	}
 }
 
 void  ColladaInterface::update(void)
