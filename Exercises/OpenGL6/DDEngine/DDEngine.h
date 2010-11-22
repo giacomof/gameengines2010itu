@@ -7,7 +7,10 @@
 #ifndef DDEngine__H 
 #define DDEngine__H
 
-#include <glew.h>								// Header File for GLEW library
+
+
+
+#include "assetManager.h"						// Header File for our Asset Manager
 #include <iostream>								// Header File For the basic Input/Output system
 #include <windows.h>							// Header File For Windows
 #include <stdio.h>								// Header File For Standard Input/Output
@@ -19,13 +22,13 @@
 #include <glut.h>								// Header File for glut commands
 #include <btBulletDynamicsCommon.h>				// Header File for Bullet Physics
 
+
 #include "memoryManager.h"						// Header File for our Memory Manager
 #include "linearAlgebraDLL.h"					// Header File for our math library
 #include "sceneNode.h"							// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"						// Header File for the SceneObject container
 #include "md2File.h"							// Header File for our md2 loader
 #include "colladaFile.h"						// Header File for out COLLADA loader
-#include "assetManager.h"						// Header File for our Asset Manager
 #include "inputManager.h"						// Header File for our Input Manager
 #include "frameClock.h"							// Header File for our Clock
 #include "sound.h"								// Header File for our Sound

@@ -7,10 +7,11 @@
 #ifndef entitySpectator__H
 #define entitySpectator__H
 
+#include "assetManager.h"
 #include "sceneObject.h"
 #include "linearAlgebraDLL.h"
 #include "entityCamera.h"
-#include "assetManager.h"
+
 
 class entitySpectator_D entitySpectator : public SceneObject
 {
