@@ -71,6 +71,7 @@ public:
 	SceneObject * createPlane(float width, float height, int sideSubdivisions);
 	SceneObject * createCube(float side);
 	SceneObject * createLine(Vector start, Vector end);
+	SceneObject * createTeapot(float size, bool wireframe);
 	SceneObject * createLight(	bool enabled, bool directional,
 								float ambientR, float ambientG, float ambientB,
 								float diffuseR, float diffuseG, float diffuseB,
