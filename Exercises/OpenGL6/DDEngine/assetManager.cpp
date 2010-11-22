@@ -5,7 +5,7 @@ AssetManager AssetManager::_instance;
 AssetManager::~AssetManager(void)
 {
 	for ( std::map<char *, md2InterfaceContainer>::const_iterator iter = md2_list.begin(); iter != md2_list.end(); ++iter ) {
-		free (iter->second.md2Mesh);
+		MemoryManager::newFree(iter->second.md2Mesh);
 	}
 }
 
@@ -41,7 +41,7 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		// This will store the md5 hash of a file called test.txt in a string hash1
 		hash = md5.getHashFromFilePtr((FILE *)lump, (int) size);
 	} catch (exception&) {
-		free(lump);
+		MemoryManager::newFree(lump);
 		return;
 	}
 
@@ -99,7 +99,7 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		texture_list[textureName].textureMD5 = hash;
 	}
 
-	free(lump);
+	MemoryManager::newFree(lump);
 
 }
 
@@ -289,7 +289,8 @@ void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragment
 		glShaderSourceARB(v, 1, &vv,NULL);
 		glShaderSourceARB(f, 1, &ff,NULL);
 	
-		free(vs);free(fs);
+		MemoryManager::newFree(vs);
+		MemoryManager::newFree(fs);
 	
 		glCompileShaderARB(v);
 		glCompileShaderARB(f);

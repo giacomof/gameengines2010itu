@@ -59,7 +59,7 @@ void operator delete(void * ptr, unsigned short flag)
 
 void operator delete(void * ptr) 
 {
-	free(ptr);
+	MemoryManager::newFree(ptr);
 }
 
 /* This thread handles input */
@@ -477,7 +477,8 @@ void DDEngine::setShaders()
 		glShaderSourceARB(v, 1, &vv,NULL);
 		glShaderSourceARB(f, 1, &ff,NULL);
 	
-		free(vs);free(fs);
+		MemoryManager::newFree(vs);
+		MemoryManager::newFree(fs);
 	
 		glCompileShaderARB(v);
 		glCompileShaderARB(f);
