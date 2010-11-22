@@ -21,13 +21,12 @@ public:
 	void MemoryManager::operator delete(void *);
 
 	// Stack Allocator declarations	
-	static unsigned int marker;
-	static unsigned int lastMarker;
+	static unsigned int stackMarker;
+	static unsigned int lastStackMarker;
 	static unsigned int const guardBytes = 512;
 
-	// Pool Allocator declarations
-	static unsigned int const NUM_POOLS = 1024; // number of pools to allocate
-	static unsigned int const POOL_SIZE = 64; // size of a single pool in bytes
+	// Single Frame Allocator declarations
+
 
 	// Common variables declarations
 	static unsigned int const dataToAllocate = 128 * 10000; // 128Mb
@@ -53,8 +52,9 @@ public:
 	void MemoryManager::freeToMarker(unsigned int m);
 	void MemoryManager::clear(void);
 
-	// Pool Allocator
-		// optimized for small data allocations
+	// Single Frame Allocator
+		// the data is kept for one frame only
+
 
 
 };
