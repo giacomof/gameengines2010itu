@@ -4,6 +4,8 @@
 
 #include <SDL.h>
 #include <SDL_audio.h>					// Header File for SDL audio library
+#include "memoryManager.h"
+#include "globals.h"
 
 #define NUM_SOUNDS 2
 
