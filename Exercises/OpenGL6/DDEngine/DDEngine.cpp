@@ -1,8 +1,9 @@
 #include "DDEngine.h"
 					
-static int const thread_delay = 1;				// Minimum time between loops
-static float const PI = 3.14159f;				// PI definition
-SDL_mutex * mutex_allocator;					// Mutex for Thread Synchronization
+static int const thread_delay = 1;								// Minimum time between loops
+static float const PI = 3.14159f;								// PI definition
+SDL_mutex * mutex_StackAllocator = SDL_CreateMutex();			// Mutex for Stack Thread Synchronization
+SDL_mutex * mutex_SingleFrameAllocator = SDL_CreateMutex();		// Mutex for Single Frame Thread Synchronization
 static MemoryManager memMgr;
 
 /* ********************************************* */
@@ -19,7 +20,7 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 
 		case STACK_ALLOCATOR:
 
-			AssetManager::lockMutex(mutex_allocator);
+			AssetManager::lockMutex(mutex_StackAllocator);
 
 			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING STACK ALLOCATOR" << endl;
 
@@ -27,30 +28,21 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 			if(NULL == storage)
 				throw "allocation fail : no free memory";
     
-			AssetManager::unlockMutex(mutex_allocator);
-
-			break;
-
-		case AUTO_ALLOCATOR:
-
-			AssetManager::lockMutex(mutex_allocator);
-
-			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING AUTO ALLOCATOR" << endl;
-
-			storage = memMgr.allocateOnStack(size);
-			if(NULL == storage)
-				throw "allocation fail : no free memory";
-    
-			AssetManager::unlockMutex(mutex_allocator);
+			AssetManager::unlockMutex(mutex_StackAllocator);
 
 			break;
 
 		case SINGLE_FRAME_ALLOCATOR:
 
-			AssetManager::lockMutex(mutex_allocator);
+			AssetManager::lockMutex(mutex_SingleFrameAllocator);
+			
 			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING THE SINGLE FRAME ALLOCATOR" << endl;
 
-			AssetManager::unlockMutex(mutex_allocator);
+			storage = memMgr.allocateOnSingleFrameAllocator(size);
+			if(NULL == storage)
+				throw "allocation fail : no free memory";
+
+			AssetManager::unlockMutex(mutex_SingleFrameAllocator);
 			break;
 
 	}
@@ -67,7 +59,7 @@ void operator delete(void * ptr)
 void operator delete(void * ptr, unsigned short flag) 
 {
 	if(verbosityLevel>=3) cout << "DELETE WITH FLAG: " << flag << endl;
-	memMgr.freeToLastMarker();
+	memMgr.freeToLastStackMarker();
 }
 
 
@@ -330,11 +322,18 @@ void DDEngine::run(void)
 		{
 			renderClock.frameUpdate();
 
+			memMgr.clearSingleFrameAllocator();
+
 			frameStarted( frameDelta );
 
 			drawGL( frameDelta );
 
 			frameEnded( frameDelta );
+
+			// Uncomment the next line if you want to test
+			// the Single Frame Allocator
+			//SceneNode * temp = new(UTILITY, SINGLE_FRAME_ALLOCATOR) SceneNode();
+
 		}		
 	}
 
@@ -360,7 +359,6 @@ int DDEngine::initGL(void)
 	// sets the matrix stack as the modelview matrix stack
 	glMatrixMode(GL_MODELVIEW);
 	gluPerspective(60.0f, screenW/screenH, 0.1f, 5000.0f);
-
 	// enables the Z-buffer
 	glEnable(GL_DEPTH_TEST);
 	// enables the texture rendering
@@ -437,6 +435,7 @@ float* DDEngine::getCamera()
 
 		if(currentCamera->isFollowingNode && currentCamera->positionNode != NULL)
 		{
+			
 			Quaternion orientation = currentCamera->positionNode->getWorldOrientation();
 			Vector position = currentCamera->positionNode->getWorldPosition();
 			transformationMatrix = Matrix::generateQuaternionRotationMatrix(Quaternion(-orientation.getX(), -orientation.getY(), -orientation.getZ(), orientation.getW())).getTranspose();
@@ -453,8 +452,6 @@ float* DDEngine::getCamera()
 																		currentCamera->vPosition[1],
 																		currentCamera->vPosition[2]).getTranspose() * transformationMatrix;			
 		}
-
-
 
 		transformationMatrix.getMatrix(&tranM[0]);
 
@@ -606,37 +603,37 @@ btCollisionShape * DDEngine::createCollisionSphere(float radius)
 
 SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture)
 {
-	md2Interface * md2Model = new(GEOMETRY, AUTO_ALLOCATOR) md2Interface(model, texture);
+	md2Interface * md2Model = new(GEOMETRY, STACK_ALLOCATOR) md2Interface(model, texture);
 	return (SceneObject*) md2Model;
 }
 
 SceneObject * DDEngine::createCollada(ColladaFile * model, unsigned int texture, ColladaSkeleton * skeleton)
 {
-	ColladaInterface * colladaModel = new(GEOMETRY, AUTO_ALLOCATOR) ColladaInterface(model, texture, skeleton);
+	ColladaInterface * colladaModel = new(GEOMETRY, STACK_ALLOCATOR) ColladaInterface(model, texture, skeleton);
 	return (SceneObject*) colladaModel;
 }
 
 SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe)
 {
-	Sphere * sphere = new(GEOMETRY, AUTO_ALLOCATOR) Sphere(radius, slices, stacks, wireframe);
+	Sphere * sphere = new(GEOMETRY, STACK_ALLOCATOR) Sphere(radius, slices, stacks, wireframe);
 	return (SceneObject*) sphere;
 }
 
 SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions)
 {
-	SceneObject * plane = new(GEOMETRY, AUTO_ALLOCATOR) Plane(width, height, sideSubdivisions);
+	SceneObject * plane = new(GEOMETRY, STACK_ALLOCATOR) Plane(width, height, sideSubdivisions);
 	return  plane;
 }
 
 SceneObject * DDEngine::createCube(float side)
 {
-	Cube * cube = new(GEOMETRY, AUTO_ALLOCATOR) Cube(side);
+	Cube * cube = new(GEOMETRY, STACK_ALLOCATOR) Cube(side);
 	return (SceneObject*) cube;
 }
 
 SceneObject * DDEngine::createLine(Vector start, Vector end)
 {
-	Line * line = new(GEOMETRY, AUTO_ALLOCATOR) Line(start, end);
+	Line * line = new(GEOMETRY, STACK_ALLOCATOR) Line(start, end);
 	return (SceneObject*) line;
 }
 
@@ -645,7 +642,7 @@ SceneObject * DDEngine::createLight(	bool enabled, bool directional,
 										float diffuseR, float diffuseG, float diffuseB,
 										float specularR, float specularG, float specularB)
 {
-	Light * light = new(GEOMETRY, AUTO_ALLOCATOR) Light(	enabled, directional, 
+	Light * light = new(GEOMETRY, STACK_ALLOCATOR) Light(	enabled, directional, 
 															ambientR, ambientG, ambientB,
 															diffuseR, diffuseG, diffuseB,
 															specularR, specularG, specularB);
@@ -654,6 +651,6 @@ SceneObject * DDEngine::createLight(	bool enabled, bool directional,
 
 SceneNode * DDEngine::addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry)
 {
-	SceneNode * sceneNode = new(SCENEGRAPH, AUTO_ALLOCATOR) SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
+	SceneNode * sceneNode = new(SCENEGRAPH, STACK_ALLOCATOR) SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
 	return sceneNode;
 }

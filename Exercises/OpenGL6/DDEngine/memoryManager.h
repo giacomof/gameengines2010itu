@@ -23,13 +23,14 @@ public:
 	// Stack Allocator declarations	
 	static unsigned int stackMarker;
 	static unsigned int lastStackMarker;
-	static unsigned int const guardBytes = 512;
 
 	// Single Frame Allocator declarations
-
+	static unsigned int baseSingleFrameMarker;
+	static unsigned int singleFrameMarker;
 
 	// Common variables declarations
-	static unsigned int const dataToAllocate = 128 * 10000; // 128Mb
+	static unsigned int const dataToAllocate = 128 * 10000;
+	static unsigned int const guardBytes = 512;
 
 	// Singleton Definitions
 	static MemoryManager _instance;
@@ -44,17 +45,20 @@ public:
 	// Stack Allocator
 		// used for load-and-stay-residend data
 	void * MemoryManager::allocateOnStack(unsigned int s);
-	void MemoryManager::deallocate(void * stack_ptr);
-	void MemoryManager::freeToLastMarker(void);
+	void MemoryManager::freeToLastStackMarker(void);
 
-	unsigned int MemoryManager::getMarker(void);
-	void MemoryManager::setMarker(unsigned int m);
-	void MemoryManager::freeToMarker(unsigned int m);
-	void MemoryManager::clear(void);
+	unsigned int MemoryManager::getStackMarker(void);
+	void MemoryManager::setStackMarker(unsigned int m);
 
 	// Single Frame Allocator
 		// the data is kept for one frame only
+	void * MemoryManager::allocateOnSingleFrameAllocator(unsigned int s);
+	void MemoryManager::clearSingleFrameAllocator(void);
 
+	unsigned int MemoryManager::getSingleFrameAllocatorMarker(void);
+	void MemoryManager::setSingleFrameAllocatorMarker(unsigned int m);
+	unsigned int MemoryManager::getBaseSingleFrameAllocatorMarker(void);
+	void MemoryManager::setBaseSingleFrameAllocatorMarker(unsigned int m);
 
 
 };

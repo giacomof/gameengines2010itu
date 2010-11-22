@@ -1,21 +1,25 @@
 #include "memoryManager.h"
 
+// Memory Manager Declarations
 typedef unsigned int Marker;
-
-// Static Definitions
 MemoryManager MemoryManager::_instance;
-unsigned int MemoryManager::count=0;
-unsigned int MemoryManager::stackMarker=0;
-unsigned int MemoryManager::lastStackMarker=0;
+unsigned int MemoryManager::count = 0;
 
-void * MemoryManager::operator new(size_t s) {
-	
+// Stack Allocator External Declarations
+unsigned int MemoryManager::stackMarker		= 0;
+unsigned int MemoryManager::lastStackMarker = 0;
+
+// Single Frame Allocator External Declarations
+unsigned int MemoryManager::singleFrameMarker	  = 0;
+unsigned int MemoryManager::baseSingleFrameMarker = 0;
+
+void * MemoryManager::operator new(size_t s) 
+{
 	void * storage = malloc(s);
 	return storage;
-	
 }
 
-void MemoryManager::operator delete(void *){ }
+void MemoryManager::operator delete(void *) { }
 
 MemoryManager::MemoryManager(void) { 
 	&getInstance(); 
@@ -26,23 +30,31 @@ MemoryManager::~MemoryManager(void) { }
 MemoryManager & MemoryManager::getInstance()
 {
 	if(MemoryManager::count==0) {
+		
 		// Stack Allocator Initializations
 		stackMarker = (unsigned int) malloc(dataToAllocate);
 		lastStackMarker = stackMarker;
-		if((void *)stackMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
+		if((void *)stackMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE STACK ALLOCATOR" << std::endl;
 
-		// Pool Allocator Initializations
+		// Single Frame Allocator Initializations
+		baseSingleFrameMarker = (unsigned int) malloc(dataToAllocate);
+		singleFrameMarker = baseSingleFrameMarker;
+		if((void *)baseSingleFrameMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE SINGLE FRAME ALLOCATOR" << std::endl;
 
 	}
 	MemoryManager::count++;
 	return _instance;
 }
 
-unsigned int MemoryManager::getMarker(void) {
+// ************************************************************
+// ***************** STACK ALLOCATOR METHODS ******************
+// ************************************************************
+
+unsigned int MemoryManager::getStackMarker(void) {
 	return stackMarker;
 }
 
-void MemoryManager::setMarker(unsigned int m) {
+void MemoryManager::setStackMarker(unsigned int m) {
 	stackMarker = m;
 }
 
@@ -58,20 +70,50 @@ void * MemoryManager::allocateOnStack(unsigned int s)
 	// add the space required to the stackMarker
 	stackMarker = stackMarker+s+guardBytes;
 
-	if(verbosityLevel >= 4) cout << "MEMORY MANAGER ALLOCATES: " << s << " bytes, plus GUARD: " << guardBytes << endl;
+	if(verbosityLevel >= 4) cout << "STACK ALLOCATOR ALLOCATES: " << s << " bytes" << endl;
 
 	// return the pointer to the position of the stackMarker
 	return (void *) stackMarker;
 }
 
-void MemoryManager::freeToLastMarker(void) 
+void MemoryManager::freeToLastStackMarker(void) 
 {
 	stackMarker = lastStackMarker;
 }
 
-void MemoryManager::deallocate(void * stack_ptr)
+// ************************************************************
+// ************* SINGLE FRAME ALLOCATOR METHODS ***************
+// ************************************************************
+
+void * MemoryManager::allocateOnSingleFrameAllocator(unsigned int s) 
 {
-	free(stack_ptr);	
-	stack_ptr = NULL;
+
+	singleFrameMarker = singleFrameMarker + s + guardBytes;
+
+	if(verbosityLevel >= 4) cout << "SINGLE FRAME ALLOCATOR ALLOCATES: " << s << " bytes" << endl;
+
+	// return the pointer to the position of the stackMarker
+	return (void *) singleFrameMarker;
 }
 
+void MemoryManager::clearSingleFrameAllocator(void)
+{
+	singleFrameMarker = baseSingleFrameMarker;
+	if(verbosityLevel>=4) cout << "SINGLE FRAME ALLOCATOR CLEARED" << endl;
+}
+
+unsigned int MemoryManager::getSingleFrameAllocatorMarker(void) {
+	return singleFrameMarker;
+}
+
+void MemoryManager::setSingleFrameAllocatorMarker(unsigned int m) {
+	singleFrameMarker = m;
+}
+
+unsigned int MemoryManager::getBaseSingleFrameAllocatorMarker(void) {
+	return baseSingleFrameMarker;
+}
+
+void MemoryManager::setBaseSingleFrameAllocatorMarker(unsigned int m) {
+	baseSingleFrameMarker = m;
+}

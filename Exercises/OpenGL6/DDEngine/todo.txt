@@ -8,7 +8,8 @@ V- Memory Manager
 	1(V)- Stack Allocator
 		1(V)- freeToLastMarker() method
 		1(V)- EntitySpectator bug fix 
-	V- Single-Frame Allocator
+	1(V)- Single-Frame Allocator
+	V- Malloc/Free Overload
 	V- Export data to Excel
 	1(V)- Memory-Categories 
 	1(V)- Singleton
