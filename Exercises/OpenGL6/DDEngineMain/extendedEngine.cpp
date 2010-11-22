@@ -19,6 +19,9 @@ void extendedEngine::setupScene()
 	assetManager.loadTexture("assets/duckCM.tga", "duckCM.tga");
 	assetManager.loadTexture("assets/boy_10.tga", "boy_10.tga");
 
+	assetManager.createShadingProgram("assets/toonf2.vert", "assets/toonf2.frag", "flatGreenShader");
+	//assetManager.activateShadingProgram("flatGreenShader");
+
 	//// ******************************
 	//// **** CREATE OBJECTS POINT ****
 	//// ******************************
