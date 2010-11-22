@@ -11,10 +11,10 @@ ColladaFile::ColladaFile(void)
 
 ColladaFile::~ColladaFile(void)
 {
-	free(vertex);
-	free(normal);
-	if(hasTexture) free(map);
-	free(index);
+	MemoryManager::newFree(vertex);
+	MemoryManager::newFree(normal);
+	if(hasTexture) MemoryManager::newFree(map);
+	MemoryManager::newFree(index);
 }
 
 char * ColladaFile::load(std::string & str)

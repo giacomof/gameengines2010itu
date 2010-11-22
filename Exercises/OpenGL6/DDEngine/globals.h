@@ -9,7 +9,7 @@
 
 // Debug Flags and Variables
 static bool drawDebug = true;
-static const int verbosityLevel = 3;
+static const int verbosityLevel = 2;
 
 // MemoryManager Flags
 	// Type Flag

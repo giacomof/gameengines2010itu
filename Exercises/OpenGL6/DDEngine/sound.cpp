@@ -64,7 +64,7 @@ void soundPlayFile(char *file)
 
     /* Put the sound data in the slot (it starts playing immediately) */
     if ( sounds[index].data ) {
-        free(sounds[index].data);
+        MemoryManager::newFree(sounds[index].data);
     }
     SDL_LockAudio();
     sounds[index].data = cvt.buf;
