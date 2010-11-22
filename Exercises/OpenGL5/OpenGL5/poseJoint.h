@@ -11,9 +11,10 @@ using namespace linearAlgebraDLL;
 
 struct poseJoint
 {
-	Matrix jointInversePose;
+	Matrix jointTransform;
 	int jointIndex;
 	const char * jointID;
+	const char * jointName;
 	vector<poseJoint *> jointChildren;
 };
 

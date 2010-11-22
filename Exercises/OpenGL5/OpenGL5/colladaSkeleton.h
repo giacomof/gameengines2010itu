@@ -17,22 +17,19 @@ using namespace std;
 using namespace rapidxml;
 using namespace linearAlgebraDLL;
 
-struct JointAnim
+struct JointKeyframe
 {
-	int ArraySize;
-	float * inputArray;
-	float * outputArray;
-	int * interpolationArray;
+	float jkTime;
+	Matrix jkPose;
 };
 
 struct Joint
 {
-	Matrix inversePose;						// the inverse of the joint pose
+	Matrix jBindPose;						// the bind pose of this joint
 	const char * jName;						// joint name
-	const char * jBoneID;					// joint bone ID, if any
+	const char * jID;						// joint ID, if any
 	int jParentIndex;						// the index of the parent
-	bool jAnimated;							// Is this animated?
-	JointAnim ChannelMatrix[4][4];			// Animation data for this joint
+	vector<JointKeyframe> jKeyframes;		// Animation data for this joint
 };
 
 class ColladaSkeleton
@@ -47,9 +44,6 @@ public:
 	// load the skeleton
 	bool load(std::string & str);
 
-	// returns number of joints (for anticipating array sizes)
-	unsigned int getJointCount();
-
 	// returns the total size of the skeleton in bytes
 	unsigned int getDataSize();
 
@@ -57,14 +51,14 @@ public:
 	poseJoint * buildSkeleton();
 
 	// takes a poseJoint representing the root of a built skeleton, and an animation delta and updates the current animation (more parameters later)
-	void updateSkeleton(poseJoint * rootJoint);
+	void updateSkeleton(poseJoint * currentJoint, float timeCurrent);
 
 	// takes a poseJoint and traces the skeleton on the screen
 	void traceSkeletonJoint(poseJoint * rootJoint);
 
 private:
 	void parseChildJoint(xml_node<>* currentNode, int parentIndex);
-	void buildChildJoint(poseJoint * currentJoint, int currentIndex);
+	void buildSkeletonJoint(poseJoint * currentJoint, int currentIndex);
 
 	vector<Joint> JointArray;
 };

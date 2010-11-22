@@ -152,7 +152,6 @@ bool ColladaSkeleton::load(std::string & str)
 						else
 						{
 							// Out of nodes. No animation exists for this joint
-							JointArray[i].jAnimated = false;
 							break;
 						}
 					}
@@ -161,8 +160,6 @@ bool ColladaSkeleton::load(std::string & str)
 				// Only continue if we found the match
 				if (matchFound)
 				{
-					JointArray[i].jAnimated = true;
-
 					// Go through the channels to find the associated sampler
 					xml_node<>* currentChannel = currentAnimationJoint->first_node("channel");
 
@@ -204,7 +201,6 @@ bool ColladaSkeleton::load(std::string & str)
 								{
 									// Uh oh! Here be dragons.
 									std::cout << "Couldn't find sampler \"" << samplerID << "\"\n";
-									JointArray[i].jAnimated = false;
 									break;
 								}
 							}
@@ -216,7 +212,7 @@ bool ColladaSkeleton::load(std::string & str)
 							// Let's take this guy apart and see where our arrays are
 							xml_node<>* currentInput = currentSampler->first_node("input");
 
-							string inputID = "", outputID = "", interID = "";
+							string inputID = "", outputID = "";
 
 							while (true)
 							{
@@ -226,12 +222,10 @@ bool ColladaSkeleton::load(std::string & str)
 									inputID = currentInput->first_attribute("source")->value();
 								else if ( semantic == "OUTPUT" )
 									outputID = currentInput->first_attribute("source")->value();
-								else if ( semantic == "INTERPOLATION" )
-									interID = currentInput->first_attribute("source")->value();
-								else
+								else if (semantic != "INTERPOLATION")
 								{
 									// uhm, whoops. What does this do?
-									std::cout << "Unrecognized input for \"" << samplerID << "\"\n";
+									std::cout << "Unrecognized value for \"" << samplerID << "\"\n";
 								}
 
 								if (currentInput->next_sibling("input") != 0)
@@ -240,14 +234,14 @@ bool ColladaSkeleton::load(std::string & str)
 									break;
 							}
 
-							if (inputID != "" && outputID != "" && interID != "")
+							if (inputID != "" && outputID != "")
 							{
 								xml_node<>* currentArrayNode = currentAnimationJoint->first_node("source");
 
 								// Let's find and load our arrays
-								string inputString, outputString, interString;
-								int inputCount = 0, outputCount = 0, interCount = 0;
-								while (!inputCount || !outputCount || !interCount)
+								string inputString, outputString;
+								int inputCount = 0, outputCount = 0;
+								while (!inputCount || !outputCount)
 								{
 									string tempArrayID = currentArrayNode->first_attribute("id")->value();
 									if ( inputID.compare(1, inputID.size() - 1, tempArrayID) == 0 )
@@ -260,11 +254,7 @@ bool ColladaSkeleton::load(std::string & str)
 										outputCount = atoi(currentArrayNode->first_node("float_array")->first_attribute("count")->value());
 										outputString = currentArrayNode->first_node("float_array")->value();
 									}
-									else if ( interID.compare(1, interID.size() - 1, tempArrayID) == 0 )
-									{
-										interCount = atoi(currentArrayNode->first_node("Name_array")->first_attribute("count")->value());
-										interString = currentArrayNode->first_node("Name_array")->value();
-									}
+
 									if (currentArrayNode->next_sibling("source") != 0)
 										currentArrayNode = currentArrayNode->next_sibling("source");
 									else
@@ -278,24 +268,18 @@ bool ColladaSkeleton::load(std::string & str)
 								else
 									count = outputCount;
 
-								if (interCount < count)
-									count = interCount;
+								if (JointArray[i].jKeyframes.size() != count)
+									JointArray[i].jKeyframes.resize(count);
 
 								// Avast! Prepare to be parsed!
 								string token;
-								float * inputArray, * outputArray;
-								int * interArray;
-								
-								inputArray = (float *)malloc(inputCount*sizeof(float));
-								outputArray = (float *)malloc(outputCount*sizeof(float));
-								interArray = (int *)malloc(interCount*sizeof(int));
 
 								// parse the input array
 								std::istringstream inputStream(inputString);
 								while ( getline(inputStream, token, ' ') )
 								{
 									int j = 0;
-									inputArray[j] = atof ( token.c_str() );
+									JointArray[i].jKeyframes[j].jkTime = atof(token.c_str());
 									j++;
 								}
 
@@ -304,36 +288,12 @@ bool ColladaSkeleton::load(std::string & str)
 								while ( getline(outputStream, token, ' ') )
 								{
 									int j = 0;
-									outputArray[j] = atof ( token.c_str() );
+									JointArray[i].jKeyframes[j].jkPose.set(y, x, atof(token.c_str()) );
 									j++;
 								}
 
-								// parse the interpolation
-								std::istringstream interStream(interString);
-								while ( getline(interStream, token, ' ') )
-								{
-									int j = 0;
-									if ( token == "LINEAR" )
-									{
-										interArray[j] = 1;
-										//std::cout << "Interpolation type is \"" << token << "\"\n";
-									}
-									else
-										interArray[j] = 1;
-
-									j++;
-								}
-
-								JointArray[i].ChannelMatrix[x][y].ArraySize = count;
-								JointArray[i].ChannelMatrix[x][y].inputArray = inputArray;
-								JointArray[i].ChannelMatrix[x][y].outputArray = outputArray;
-								JointArray[i].ChannelMatrix[x][y].interpolationArray = interArray;
 								//std::cout << "Filled a channel!\n";
 								// Phew. And that was just one channel, for one joint!
-							}
-							else
-							{
-								JointArray[i].jAnimated = false;
 							}
 						}
 
@@ -346,8 +306,9 @@ bool ColladaSkeleton::load(std::string & str)
 							channelsDone = true;
 						}
 					}
+
+					//std::cout << "Loaded animation data for a joint\n";
 				}
-				//std::cout << "jAnimated on Joint " << i << " is " << JointArray[i].jAnimated << "\n";
 			}
 
 			// Animation data should be loaded now
@@ -374,13 +335,12 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	Joint currentJoint;
 	currentJoint.jParentIndex = parentIndex;
 	currentJoint.jName = currentNode->first_attribute("id")->value();
-	currentJoint.jAnimated = false;
 
 	// get the bone ID, if any
 	if ( currentNode->first_attribute("sid") != 0 )
-		currentJoint.jBoneID = currentNode->first_attribute("sid")->value();
+		currentJoint.jID = currentNode->first_attribute("sid")->value();
 	else
-		currentJoint.jBoneID = "";
+		currentJoint.jID = "";
 
 	// Temp string for storing float array in
 	string matrixArray;
@@ -397,7 +357,7 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 		{
 			if ( getline(isM, token, ' ') )
 			{
-				currentJoint.inversePose.set(col, row, atof(token.c_str()) );
+				currentJoint.jBindPose.set(col, row, atof(token.c_str()) );
 			}
 			else
 				break;
@@ -431,11 +391,6 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	}
 }
 
-unsigned int ColladaSkeleton::getJointCount()
-{
-	return JointArray.size();
-}
-
 unsigned int ColladaSkeleton::getDataSize()
 {
 	// Very inaccurate. Leaves out a lot of stuff
@@ -445,21 +400,12 @@ unsigned int ColladaSkeleton::getDataSize()
 
 	for (int i = 0; i < JointArray.size(); i++)
 	{
-		size = size + sizeof(Joint);
+		size = size + sizeof(Joint) + sizeof(Matrix) + 16 * sizeof(float) + sizeof(int);
 
-		size = size + sizeof(Matrix);
-		size = size + sizeof(int);
-		size = size + sizeof(bool);
-		size = size + 32 * sizeof(char);
-
-		if ( JointArray[i].jAnimated )
+		if ( JointArray[i].jKeyframes.size() > 0)
 		{
-			int arraysize = JointArray[i].ChannelMatrix[0][0].ArraySize;
-
-			size = size + 16 * ( arraysize * 2 * sizeof(float) );
-			size = size + 16 * ( (arraysize + 1) * sizeof(int) );
+			size = size + JointArray[i].jKeyframes.size() * ( sizeof(JointKeyframe) + sizeof(Matrix) + 16 * sizeof(float) + sizeof(int) );
 		}
-
 	}
 
 	return static_cast<unsigned int> (size);
@@ -469,8 +415,9 @@ poseJoint * ColladaSkeleton::buildSkeleton()
 {
 	poseJoint * rootJoint = new poseJoint;
 
-	rootJoint->jointInversePose = JointArray[0].inversePose;
-	rootJoint->jointID = JointArray[0].jBoneID;
+	rootJoint->jointTransform = JointArray[0].jBindPose;
+	rootJoint->jointID = JointArray[0].jID;
+	rootJoint->jointName = JointArray[0].jName;
 	rootJoint->jointIndex = 0;
 
 	for (int i = 1; i<JointArray.size(); i++)
@@ -478,17 +425,18 @@ poseJoint * ColladaSkeleton::buildSkeleton()
 		if (JointArray[i].jParentIndex == 0)
 		{
 			rootJoint->jointChildren.push_back(new poseJoint);
-			buildChildJoint(rootJoint->jointChildren.back(), i);
+			buildSkeletonJoint(rootJoint->jointChildren.back(), i);
 		}
 	}
 
 	return rootJoint;
 }
 
-void ColladaSkeleton::buildChildJoint(poseJoint * currentJoint, int currentIndex)
+void ColladaSkeleton::buildSkeletonJoint(poseJoint * currentJoint, int currentIndex)
 {
-	currentJoint->jointInversePose = JointArray[currentIndex].inversePose;
-	currentJoint->jointID = JointArray[currentIndex].jBoneID;
+	currentJoint->jointTransform = JointArray[currentIndex].jBindPose;
+	currentJoint->jointID = JointArray[currentIndex].jID;
+	currentJoint->jointName = JointArray[currentIndex].jName;
 	currentJoint->jointIndex = currentIndex;
 
 	for (int i = currentIndex + 1; i<JointArray.size(); i++)
@@ -496,20 +444,55 @@ void ColladaSkeleton::buildChildJoint(poseJoint * currentJoint, int currentIndex
 		if (JointArray[i].jParentIndex == currentIndex)
 		{
 			currentJoint->jointChildren.push_back(new poseJoint);
-			buildChildJoint(currentJoint->jointChildren.back(), i);
+			buildSkeletonJoint(currentJoint->jointChildren.back(), i);
 		}
 	}
 }
 
-void ColladaSkeleton::updateSkeleton(poseJoint * rootJoint)
+void ColladaSkeleton::updateSkeleton(poseJoint * currentJoint, float timeCurrent)
 {
+	float animationTime;
 
+	// Keyframe Step animation
+	for (int i = 0; i<JointArray.size(); i++)
+	{
+		if (currentJoint->jointName == JointArray[i].jName && JointArray[i].jKeyframes.size() > 0)
+		{
+			animationTime = timeCurrent * JointArray[i].jKeyframes.back().jkTime;
+
+			int j = 0;
+			while (true)
+			{
+				if (animationTime < JointArray[i].jKeyframes[j].jkTime)
+				{
+					break;
+				}
+				else
+				{
+					j++;
+				}
+
+				if (j == JointArray[i].jKeyframes.size())
+				{
+					j = 0;
+					break;
+				}
+			}
+
+			currentJoint->jointTransform = JointArray[i].jKeyframes[j].jkPose;
+		}
+	}
+
+	for (int i = 0; i<currentJoint->jointChildren.size(); i++)
+	{
+		updateSkeleton(currentJoint->jointChildren[i],timeCurrent);
+	}
 }
 
 void ColladaSkeleton::traceSkeletonJoint(poseJoint * currentJoint)
 {
 	float tranM[16];
-	currentJoint->jointInversePose.getMatrix(&tranM[0]);
+	currentJoint->jointTransform.getMatrix(&tranM[0]);
 
 	glPushMatrix();
 	glMultMatrixf(&tranM[0]);
@@ -522,7 +505,7 @@ void ColladaSkeleton::traceSkeletonJoint(poseJoint * currentJoint)
 
 	for (int i = 0; i<currentJoint->jointChildren.size(); i++)
 	{
-		currentJoint->jointChildren[i]->jointInversePose.getMatrix(&tranM[0]);
+		currentJoint->jointChildren[i]->jointTransform.getMatrix(&tranM[0]);
 		glBegin(GL_LINES);
 			glVertex3f(0.0f,0.0f,0.0f);
 			glVertex3f(tranM[12], tranM[13], tranM[14]);

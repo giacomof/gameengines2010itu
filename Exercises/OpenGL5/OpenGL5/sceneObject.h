@@ -135,6 +135,9 @@ class ColladaInterface : public SceneObject
 		ColladaFile * mesh;
 		int colladaTexture;
 		poseJoint * currentPose;
+
+		float animationProgress;
+		float animationRate;
 };
 
 class Light : public SceneObject
