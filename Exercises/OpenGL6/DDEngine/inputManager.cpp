@@ -21,9 +21,9 @@ SDL_Event currentEvent;
 
 	while ( !messageP.empty() )
 	{
-		AssetManager::lockMutex( inputManager::mutex_event );
+		MutexManager::lockMutex( inputManager::mutex_event );
 		currentEvent = messageP.receiveMessage();
-		AssetManager::unlockMutex( inputManager::mutex_event );
+		MutexManager::unlockMutex( inputManager::mutex_event );
 
 		if (currentEvent.type == SDL_ACTIVEEVENT)
 		{

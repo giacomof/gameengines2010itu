@@ -17,12 +17,13 @@ V- Memory Manager
 	  
 S- Skeletal Animation
 G- Shaders
-0- better thread synch and use
 0- V8 Javascript Scripting Integration
+0- Remove Hard-Coded scaling from ColladaFile
+0- FrameClock Class as a Singleton
+0- better thread synch and use
 
 OPTIONALS:
 
-0- FrameClock Class as a Singleton
 0- logging system with verbosity levels
 0- singleton superclass
 0- mutex created inside the AssetManager

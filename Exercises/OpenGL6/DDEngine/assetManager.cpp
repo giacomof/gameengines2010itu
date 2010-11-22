@@ -34,7 +34,7 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		fseek(file, 0, SEEK_END);
 		size = ftell(file);
 
-		lump = (ILubyte*)malloc(size);
+		lump = (ILubyte*)MemoryManager::newMalloc(size, TEXTURE);
 		fseek(file, 0, SEEK_SET);
 		fread(lump, 1, size, file);
 		fclose(file);
@@ -318,7 +318,7 @@ char * AssetManager::textFileRead(char * filePath) {
       rewind(filePtr);
 
 			if (count > 0) {
-				content = (char *)malloc(sizeof(char) * (count+1));
+				content = (char *)MemoryManager::newMalloc(sizeof(char) * (count+1), SHADER);
 				count = fread(content,sizeof(char),count,filePtr);
 				content[count] = '\0';
 			}
@@ -333,14 +333,4 @@ void AssetManager::activateShadingProgram(char * shadingProgramName)
 	GLuint p = shadingProgram_list[shadingProgramName];
 	glLinkProgramARB(p);
 	glUseProgramObjectARB(p);
-}
-
-void AssetManager::lockMutex( SDL_mutex * m ) 
-{
-	SDL_mutexP(m);
-}
-
-void AssetManager::unlockMutex( SDL_mutex * m )
-{
-	SDL_mutexV(m);
 }

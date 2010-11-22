@@ -25,24 +25,24 @@ bool MessagePump::empty()
 
 void MessagePump::sendMessage(SDL_Event  msg) 
 {
-	AssetManager::lockMutex( mutex_event );
+	MutexManager::lockMutex( mutex_event );
 	messageList->push_back(msg);
-	AssetManager::unlockMutex( mutex_event );
+	MutexManager::unlockMutex( mutex_event );
 }
 
 void MessagePump::sendPriorityMessage(SDL_Event msg) 
 {
-	AssetManager::lockMutex( mutex_event );
+	MutexManager::lockMutex( mutex_event );
 	messageList->push_front(msg);
-	AssetManager::unlockMutex( mutex_event );
+	MutexManager::unlockMutex( mutex_event );
 }
 
 SDL_Event MessagePump::receiveMessage()
 {
-	AssetManager::lockMutex( mutex_event );
+	MutexManager::lockMutex( mutex_event );
 	SDL_Event temp = messageList->front();
 	messageList->pop_front();
-	AssetManager::unlockMutex( mutex_event );
+	MutexManager::unlockMutex( mutex_event );
 
 	return temp;
 
@@ -60,27 +60,27 @@ SDL_Event MessagePump::readLastMessage()
 
 SDL_Event MessagePump::receiveLastMessage()
 {
-	AssetManager::lockMutex( mutex_event );
+	MutexManager::lockMutex( mutex_event );
 	
 	SDL_Event temp = SDL_Event();
 	temp = messageList->back();
 	
 	messageList->pop_back();
-	AssetManager::unlockMutex( mutex_event );
+	MutexManager::unlockMutex( mutex_event );
 
 	return temp;
 }
 
 void MessagePump::deleteMessage()
 {
-	AssetManager::lockMutex( mutex_event );
+	MutexManager::lockMutex( mutex_event );
 	messageList->pop_front();
-	AssetManager::unlockMutex( mutex_event );
+	MutexManager::unlockMutex( mutex_event );
 }
 
 void MessagePump::deleteLastMessage()
 {
-	AssetManager::lockMutex( mutex_event );
+	MutexManager::lockMutex( mutex_event );
 	messageList->pop_back();
-	AssetManager::unlockMutex( mutex_event );
+	MutexManager::unlockMutex( mutex_event );
 }

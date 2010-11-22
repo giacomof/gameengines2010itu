@@ -10,13 +10,14 @@
 #include <glew.h>								// Header File for GLEW library
 #include <iostream>
 #include <fstream>
-#include <SDL_mutex.h>
 #include <map>
-#include "md5wrapper.h"
-#include "sceneObject.h"
 #include <il.h>
 #include <ilu.h>
 #include <ilut.h>
+#include "md5wrapper.h"
+#include "sceneObject.h"
+#include "memoryManager.h"
+#include "globals.h"
 #include "md2File.h"
 #include "colladaFile.h"
 #include "colladaSkeleton.h"
@@ -79,11 +80,6 @@ public:
 	void createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName);
 	char * textFileRead(char * filePath);
 	void activateShadingProgram(char * shadingProgramName);
-
-
-	// mutex methods
-	static void lockMutex( SDL_mutex * m );
-	static void unlockMutex( SDL_mutex * m );
 
 private:
 	std::map <char *, textureContainer> texture_list;

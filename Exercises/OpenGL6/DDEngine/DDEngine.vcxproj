@@ -329,6 +329,7 @@
     <ClInclude Include="md5wrapper.h" />
     <ClInclude Include="memoryManager.h" />
     <ClInclude Include="messagePump.h" />
+    <ClInclude Include="mutexManager.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="sceneObject.h" />
     <ClInclude Include="sound.h" />
@@ -466,6 +467,7 @@
     <ClCompile Include="md5wrapper.cpp" />
     <ClCompile Include="memoryManager.cpp" />
     <ClCompile Include="messagePump.cpp" />
+    <ClCompile Include="mutexManager.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="sceneObject.cpp" />
     <ClCompile Include="sound.cpp" />
