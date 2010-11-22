@@ -11,9 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#ifndef __glut_h__
 #include <glut.h>
-#endif
 #include "rapidxml.hpp"
 
 #include "linearAlgebraDLL.h"
