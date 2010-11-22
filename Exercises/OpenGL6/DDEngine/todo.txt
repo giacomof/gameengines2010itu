@@ -7,10 +7,13 @@ GLOBAL TASKS:
 V- Memory Manager
 	1(V)- Stack Allocator
 		1(V)- freeToLastMarker() method
-		   ?(V)- EntitySpectator bug fix 
-	V- Pool Allocator
+		1(V)- EntitySpectator bug fix 
+	V- Single-Frame Allocator
+	V- Export data to Excel
+	1(V)- Memory-Categories 
 	1(V)- Singleton
 	1(V)- thread Safe
+	  
 S- Skeletal Animation
 G- Shaders
 0- better thread synch and use
