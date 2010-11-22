@@ -43,7 +43,7 @@ Matrix Transformation::getInverseTransformation(void)
 	
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getInverse();
 	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
-	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(1)).getInverse() * transformationMatrix;
+	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(2)).getInverse() * transformationMatrix;
 	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation).getInverse() * transformationMatrix;
 
 	transformationMatrix.getMatrix(&tranM[0]);

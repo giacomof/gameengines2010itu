@@ -11,6 +11,7 @@
 #include "colladaFile.h"
 #include "colladaSkeleton.h"
 #include "assetManager.h"
+#include "poseJoint.h"
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -133,6 +134,7 @@ class ColladaInterface : public SceneObject
 		ColladaSkeleton * skeleton;
 		ColladaFile * mesh;
 		int colladaTexture;
+		poseJoint * currentPose;
 };
 
 class Light : public SceneObject
