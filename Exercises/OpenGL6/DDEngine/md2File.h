@@ -13,9 +13,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
-#ifndef __glut_h__
 #include <glut.h>
-#endif
 #include <linearAlgebraDLL.h>
 
 #pragma warning(disable: 4251)
