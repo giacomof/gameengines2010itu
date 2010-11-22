@@ -63,6 +63,9 @@ ColladaInterface::ColladaInterface(ColladaFile * c, unsigned int texture, Collad
 	colladaTexture = texture;
 	currentPose = NULL;
 
+	animationProgress = 0.0f;
+	animationRate = 1.0f;
+
 	if (skeleton != NULL)
 	{
 		currentPose = skeleton->buildSkeleton();
@@ -75,7 +78,7 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void)
 {
-	// This will trace the current pose of the skeleton on the screen
+	// This will trace the current pose of the skeleton on the screen. Later it will render mesh skinned to skeleton
 	if (skeleton != NULL && currentPose != NULL)
 	{
 		skeleton->traceSkeletonJoint(currentPose);
@@ -93,7 +96,15 @@ void ColladaInterface::drawGeometry(void)
 
 void  ColladaInterface::update(void)
 {
-	// Simon will fix this function to create a new pose for the mesh sometime!
+	if (skeleton != NULL && currentPose != NULL)
+	{
+		float animationDelta = 0.03f;
+		animationProgress = animationProgress + (animationDelta * animationRate);
+		if (animationProgress > 1.0f)
+			animationProgress = animationProgress - 1.0f;
+
+		//skeleton->updateSkeleton(currentPose, animationProgress);
+	}
 }
 
 // ************************************* //
