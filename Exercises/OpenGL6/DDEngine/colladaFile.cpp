@@ -107,10 +107,10 @@ char * ColladaFile::load(std::string & str)
 	}
 
 	// Memory reservation for arrays of float that will contain the data
-	vertex = (float *)malloc(vertexCount*sizeof(float));
-	normal = (float *)malloc(normalCount*sizeof(float));
-	if(hasTexture) map = (float *)malloc(mapCount*sizeof(float));
-	index = (unsigned long *)malloc(indexCount*offset*sizeof(unsigned long));
+	vertex = (float *)MemoryManager::newMalloc(vertexCount*sizeof(float), GEOMETRY);
+	normal = (float *)MemoryManager::newMalloc(normalCount*sizeof(float), GEOMETRY);
+	if(hasTexture) map = (float *)MemoryManager::newMalloc(mapCount*sizeof(float), TEXTURE);
+	index = (unsigned long *)MemoryManager::newMalloc(indexCount*offset*sizeof(unsigned long), UTILITY);
 
 	// Token used for splitting strings
 	string token;

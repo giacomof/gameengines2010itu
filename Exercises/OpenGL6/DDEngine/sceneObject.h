@@ -7,17 +7,11 @@
 #ifndef sceneObject__H__
 #define sceneObject__H__
 
-
-
-
-
-#include "assetManager.h"
-
-#include "md2File.h"
 #include "colladaFile.h"
 #include "colladaSkeleton.h"
-
+#include "md2File.h"
 #include "linearAlgebraDLL.h"
+#include "mutexManager.h"
 
 #include <SDL.h>
 #include <il.h>

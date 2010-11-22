@@ -10,8 +10,12 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <glut.h>
+
 #include "rapidxml.hpp"
+#include "memoryManager.h"
+#include "globals.h"
+
+#include "glut.h"
 
 using namespace std;
 using namespace rapidxml;

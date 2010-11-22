@@ -22,9 +22,9 @@ void extendedEngine::setupScene()
 	assetManager.createShadingProgram("assets/toonf2.vert", "assets/toonf2.frag", "flatGreenShader");
 	//assetManager.activateShadingProgram("flatGreenShader");
 
-	//// ******************************
-	//// **** CREATE OBJECTS POINT ****
-	//// ******************************
+	// ******************************
+	// **** CREATE OBJECTS POINT ****
+	// ******************************
 
 	// Create the plane with the collision shape
 	btRigidBody * planeRigidBody = this->createPhysicalBox(Vector(1000.0f, 10.0f, 1000.0f), Vector(0.0f, -10.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);

@@ -7,10 +7,13 @@
 #ifndef MemoryManager__H
 #define MemoryManager__H
 
-#include "assetManager.h"
 #include "globals.h"
+#include "mutexManager.h"
 #include <stdlib.h>
+#include <iostream>
 #include <list>
+
+using namespace std;
 
 class MemoryManager_D MemoryManager
 {

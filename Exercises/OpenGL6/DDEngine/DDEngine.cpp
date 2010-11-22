@@ -20,7 +20,7 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 
 		case STACK_ALLOCATOR:
 
-			AssetManager::lockMutex(mutex_StackAllocator);
+			MutexManager::lockMutex(mutex_StackAllocator);
 
 			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING STACK ALLOCATOR" << endl;
 
@@ -28,13 +28,13 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 			if(NULL == storage)
 				throw "allocation fail : no free memory";
     
-			AssetManager::unlockMutex(mutex_StackAllocator);
+			MutexManager::unlockMutex(mutex_StackAllocator);
 
 			break;
 
 		case SINGLE_FRAME_ALLOCATOR:
 
-			AssetManager::lockMutex(mutex_SingleFrameAllocator);
+			MutexManager::lockMutex(mutex_SingleFrameAllocator);
 			
 			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING THE SINGLE FRAME ALLOCATOR" << endl;
 
@@ -42,7 +42,7 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 			if(NULL == storage)
 				throw "allocation fail : no free memory";
 
-			AssetManager::unlockMutex(mutex_SingleFrameAllocator);
+			MutexManager::unlockMutex(mutex_SingleFrameAllocator);
 			break;
 
 	}
@@ -429,7 +429,7 @@ float* DDEngine::getCamera()
 
 	if ( currentCamera != NULL )
 	{
-		AssetManager::lockMutex( currentCamera->mutex_object );
+		MutexManager::lockMutex( currentCamera->mutex_object );
 		Matrix transformationMatrix = Matrix();
 
 		if(currentCamera->isFollowingNode && currentCamera->positionNode != NULL)
@@ -454,7 +454,7 @@ float* DDEngine::getCamera()
 
 		transformationMatrix.getMatrix(&tranM[0]);
 
-		AssetManager::unlockMutex( currentCamera->mutex_object );
+		MutexManager::unlockMutex( currentCamera->mutex_object );
 	}
 
 	glMultMatrixf(&tranM[0]);
