@@ -45,10 +45,10 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 
 			break;
 
-		case POOL_ALLOCATOR:
+		case SINGLE_FRAME_ALLOCATOR:
 
 			AssetManager::lockMutex(mutex_allocator);
-			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING POOL ALLOCATOR" << endl;
+			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING THE SINGLE FRAME ALLOCATOR" << endl;
 
 			AssetManager::unlockMutex(mutex_allocator);
 			break;

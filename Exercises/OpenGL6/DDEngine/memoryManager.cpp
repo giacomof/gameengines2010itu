@@ -5,8 +5,8 @@ typedef unsigned int Marker;
 // Static Definitions
 MemoryManager MemoryManager::_instance;
 unsigned int MemoryManager::count=0;
-unsigned int MemoryManager::marker=0;
-unsigned int MemoryManager::lastMarker=0;
+unsigned int MemoryManager::stackMarker=0;
+unsigned int MemoryManager::lastStackMarker=0;
 
 void * MemoryManager::operator new(size_t s) {
 	
@@ -27,9 +27,9 @@ MemoryManager & MemoryManager::getInstance()
 {
 	if(MemoryManager::count==0) {
 		// Stack Allocator Initializations
-		marker = (unsigned int) malloc(dataToAllocate);
-		lastMarker = marker;
-		if((void *)marker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
+		stackMarker = (unsigned int) malloc(dataToAllocate);
+		lastStackMarker = stackMarker;
+		if((void *)stackMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY" << std::endl;
 
 		// Pool Allocator Initializations
 
@@ -39,34 +39,34 @@ MemoryManager & MemoryManager::getInstance()
 }
 
 unsigned int MemoryManager::getMarker(void) {
-	return marker;
+	return stackMarker;
 }
 
 void MemoryManager::setMarker(unsigned int m) {
-	marker = m;
+	stackMarker = m;
 }
 
 void * MemoryManager::allocateOnStack(unsigned int s) 
 {
-	// In this implementation we store the marker position
+	// In this implementation we store the stackMarker position
 	// and we add the size of the object we are trying to
 	// allocate. Then we add some "guard bytes" which detect
 	// if something writes beyond the boundary
 
-	// save the last marker
-	lastMarker = marker;
-	// add the space required to the marker
-	marker = marker+s+guardBytes;
+	// save the last stackMarker
+	lastStackMarker = stackMarker;
+	// add the space required to the stackMarker
+	stackMarker = stackMarker+s+guardBytes;
 
 	if(verbosityLevel >= 4) cout << "MEMORY MANAGER ALLOCATES: " << s << " bytes, plus GUARD: " << guardBytes << endl;
 
-	// return the pointer to the position of the marker
-	return (void *) marker;
+	// return the pointer to the position of the stackMarker
+	return (void *) stackMarker;
 }
 
 void MemoryManager::freeToLastMarker(void) 
 {
-	marker = lastMarker;
+	stackMarker = lastStackMarker;
 }
 
 void MemoryManager::deallocate(void * stack_ptr)
