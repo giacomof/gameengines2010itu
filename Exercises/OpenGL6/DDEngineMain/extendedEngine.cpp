@@ -93,10 +93,14 @@ void extendedEngine::setupScene()
 	for(int i = 0; i < 6; i++)
 	{
 		btRigidBody * duckRigidBody = this->createRigidBody(duckBox, Vector(sin(PI/3*i) * 500 ,350,cos(PI/3*i) * 500), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 1);
-		SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck,  Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
+		SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, duckRigidBody);
 		// Change BB Translation
 		duckNode->getTransformation()->setBBTranslation(Vector(-2, -17, 0));
 	}
+
+
+	SceneObject * teapot = this->createTeapot(50, false);
+	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 200.0f, -500.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 }
 void extendedEngine::frameStarted(int frameDelta)

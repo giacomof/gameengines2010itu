@@ -104,6 +104,21 @@ class sceneObject_D Line : public SceneObject
 		Vector lineStart, lineEnd, lineVector;
 };
 
+class sceneObject_D Teapot : public SceneObject
+{
+	public:
+		Teapot(float size, bool wireframe);
+		
+		void update(void) {};
+		void drawGeometry(void);
+		
+		void setDimension(float size); 
+		float getSize();
+
+		float dimension;
+		bool wire;
+};
+
 class sceneObject_D md2Interface : public SceneObject 
 {
 	public:

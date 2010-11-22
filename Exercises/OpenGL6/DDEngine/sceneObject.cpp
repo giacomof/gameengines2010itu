@@ -344,7 +344,6 @@ Light::Light(	bool enabled, bool directional,
 
 void Light::drawGeometry(void)
 {
-	// enable light0
 	if (isEnabled) 
 	{
 		glEnable(lightReference);
@@ -366,4 +365,40 @@ void Light::setDirection(Vector position)
 	direction[0] = position.getX();
 	direction[1] = position.getY();
 	direction[2] = position.getZ();
+}
+
+
+// ************************************* //
+// ************** Teapot *************** //
+// ************************************* //
+
+Teapot::Teapot(float size, bool wireframe)
+{
+	dimension = size;
+	wire = wireframe;
+}
+
+void Teapot::setDimension(float size)
+{
+	dimension = size;
+}
+
+float Teapot::getSize(void)
+{
+	return dimension;
+}
+
+void Teapot::drawGeometry(void)
+{
+
+	glDisable(GL_TEXTURE_2D);	
+	glDisable(GL_CULL_FACE);
+	
+	if(wire)
+		glutWireTeapot(dimension);
+	else
+		glutSolidTeapot(dimension);
+
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
 }

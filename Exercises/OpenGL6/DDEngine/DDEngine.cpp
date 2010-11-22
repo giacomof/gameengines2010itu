@@ -637,6 +637,12 @@ SceneObject * DDEngine::createLine(Vector start, Vector end)
 	return (SceneObject*) line;
 }
 
+SceneObject * DDEngine::createTeapot(float size, bool wireframe)
+{
+	Teapot * teapot = new(GEOMETRY, STACK_ALLOCATOR) Teapot(size, wireframe);
+	return (SceneObject*) teapot;
+}
+
 SceneObject * DDEngine::createLight(	bool enabled, bool directional,
 										float ambientR, float ambientG, float ambientB,
 										float diffuseR, float diffuseG, float diffuseB,
