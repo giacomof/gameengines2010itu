@@ -19,8 +19,6 @@
 #include <ilut.h>
 #include <vector>
 
-
-
 using namespace std;
 using namespace linearAlgebraDLL;
 
@@ -37,7 +35,7 @@ class sceneObject_D SceneObject
 
 };
 
-class sceneObject_D Sphere : public SceneObject 
+class sceneObject_D Sphere : public SceneObject
 {
 	public:
 		Sphere(float rad, int sli, int sta, bool w);
@@ -144,6 +142,10 @@ class sceneObject_D ColladaInterface : public SceneObject
 		ColladaSkeleton * skeleton;
 		ColladaFile * mesh;
 		int colladaTexture;
+		poseJoint * currentPose;
+
+		float animationProgress;
+		float animationRate;
 };
 
 class sceneObject_D Light : public SceneObject
@@ -154,7 +156,8 @@ class sceneObject_D Light : public SceneObject
 				float ambientR = 0, float ambientG = 0, float ambientB = 0,
 				float diffuseR = 1, float diffuseG = 1, float diffuseB = 1,
 				float specularR = 1, float specularG = 1, float specularB = 1);
-		
+		//~Light(void);
+
 		void update(void) {};
 		void drawGeometry(void);
 		void setDirection(Vector position);		

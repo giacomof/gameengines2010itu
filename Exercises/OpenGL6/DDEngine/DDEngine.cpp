@@ -96,11 +96,11 @@ int threadSound(void *data)
 
 	soundInit();
 
-	int testsoundint = 500;
+	int testsoundint = 4000;
 	while ( !engine->getController()->quit )
 	{
 		testsoundint++;
-		if (testsoundint > 600)
+		if (testsoundint > 7000)
 		{
 			soundPlayFile("assets/MENULOOP.WAV");
 			testsoundint = 0;

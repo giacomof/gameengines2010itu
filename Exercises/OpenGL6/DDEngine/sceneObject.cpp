@@ -61,6 +61,15 @@ ColladaInterface::ColladaInterface(ColladaFile * c, unsigned int texture, Collad
 	skeleton = s;
 	mesh = c;
 	colladaTexture = texture;
+	currentPose = NULL;
+
+	animationProgress = 0.0f;
+	animationRate = 1.0f;
+
+	if (skeleton != NULL)
+	{
+		currentPose = skeleton->buildSkeleton();
+	}
 }
 
 ColladaInterface::~ColladaInterface(void)
@@ -69,17 +78,35 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void)
 {
-	// Simon will expand this function to call a function on mesh that skins it to a pose instead, if a pose exists
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, colladaTexture);
-	mesh->render();
-	glDisable(GL_TEXTURE_2D);
+	// This will trace the current pose of the skeleton on the screen. Later it will render mesh skinned to skeleton
+	if (skeleton != NULL && currentPose != NULL)
+	{
+		skeleton->traceSkeletonJoint(currentPose);
+	}
 
+	// Simon will expand this function to call a function on mesh that skins it to a pose instead, if a pose exists
+	else if (mesh != NULL)
+	{
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture (GL_TEXTURE_2D, colladaTexture);
+		mesh->render();
+		glDisable(GL_TEXTURE_2D);
+	}
 }
 
 void  ColladaInterface::update(void)
 {
-	// Simon will fix this function to create a new pose for the mesh sometime!
+	if (skeleton != NULL && currentPose != NULL)
+	{
+		float animationDelta = 0.03f;
+		animationProgress = animationProgress + (animationDelta * animationRate);
+		if (animationProgress > 1.0f)
+			animationProgress = animationProgress - 1.0f;
+
+		//std::cout << "Root matrix before " << animationProgress << " :\n" << currentPose->jointTransform << "\n\n";
+
+		skeleton->updateSkeleton(currentPose, animationProgress);
+	}
 }
 
 // ************************************* //
@@ -199,7 +226,6 @@ Cube::Cube(float s)
 {
 	side = s;
 }
-
 Cube::~Cube(void) 
 {
 }
@@ -344,6 +370,7 @@ Light::Light(	bool enabled, bool directional,
 
 void Light::drawGeometry(void)
 {
+	// enable light0
 	if (isEnabled) 
 	{
 		glEnable(lightReference);
@@ -366,7 +393,6 @@ void Light::setDirection(Vector position)
 	direction[1] = position.getY();
 	direction[2] = position.getZ();
 }
-
 
 // ************************************* //
 // ************** Teapot *************** //
