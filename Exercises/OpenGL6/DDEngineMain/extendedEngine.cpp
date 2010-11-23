@@ -13,6 +13,8 @@ void extendedEngine::setupScene()
 	assetManager.loadCollada("assets/duck.dae", "duck");
 	assetManager.loadCollada("assets/astroboy.dae", "astroboy");
 
+	assetManager.loadColladaSkeleton("assets/astroboy.dae", "astroboy_skeleton");
+
 	assetManager.loadTexture("assets/battledroid.png", "battleDroidTx");
 	assetManager.loadTexture("assets/lostsoul.jpg", "lostSoulTx");
 	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
@@ -101,6 +103,11 @@ void extendedEngine::setupScene()
 
 	SceneObject * teapot = this->createTeapot(50, false);
 	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 200.0f, -500.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	// Skeletal animated astroboy
+	SceneObject * astroboy = this->createCollada(0,0,assetManager.getColladaSkeleton("astroboy_skeleton"));
+	SceneNode * astroboyNode = this->addSceneNode(&rootNode, "Astroboy Node", astroboy,  Vector(20.0f, 0.0f, 0.0f), Vector(1.0f,0.0f,0.0f), -90.0f);
+	astroboyNode->scale(15.0, 15.0, 15.0);
 
 }
 void extendedEngine::frameStarted(int frameDelta)
