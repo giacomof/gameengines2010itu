@@ -16,9 +16,31 @@ V- Memory Manager
 	1(V)- thread Safe
 	  
 S- Skeletal Animation
+	1(S)- Load Collada Animation Data
+	1(S)- Draw Skeleton
+	1(S)- Draw Animated Skeleton
+	   S- Rig Character to the Skeleton
+	   S- better restart of the loop animation
+	   
+0- Collada
+	0- Texture Bug
+	0- Remove Hard-Coded scaling
+	    
 G- Shaders
+	1(G)- Load vert and frag
+	1(G)- Apply a shader to a whole scene
+	1(G)- Apply a shader to a single object
+	   G- Improve Performance for a single object shader, if possible
+	   G- boh, write something
+	    
 0- V8 Javascript Scripting Integration
-0- Remove Hard-Coded scaling from ColladaFile
+	0- Compile V8
+	0- Integrate V8 into our engine
+	0- Load index file
+	0- Load files from index
+	0- Basic methods
+	0- DDEngine methods
+
 0- FrameClock Class as a Singleton
 0- mutex created inside the mutexManager
 0- better thread synch and use
