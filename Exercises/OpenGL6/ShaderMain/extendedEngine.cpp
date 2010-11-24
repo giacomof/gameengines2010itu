@@ -13,7 +13,7 @@ void extendedEngine::setupScene()
 	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
 	assetManager.loadTexture("assets/duckCM.tga", "duckCM.tga");
 
-	//assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
+	assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
 	assetManager.createShadingProgram("assets/shader1.vert", "assets/shader1.frag", "shader1");
 	assetManager.activateShadingProgram("shader1");
 
