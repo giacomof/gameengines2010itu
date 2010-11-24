@@ -56,6 +56,12 @@
     <None Include="assets\toon.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\phong1Point.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\phong1Point.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h">

@@ -15,8 +15,11 @@ void extendedEngine::setupScene()
 
 	//assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
 	assetManager.createShadingProgram("assets/shader1.vert", "assets/shader1.frag", "shader1");
-	assetManager.activateShadingProgram("shader1");
+	assetManager.createShadingProgram("assets/phong1Point.vert", "assets/phong1Point.frag", "phong1Point");
 	//assetManager.activateShadingProgram("toonShader");
+	//assetManager.activateShadingProgram("shader1");
+	assetManager.activateShadingProgram("phong1Point");
+
 
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
