@@ -118,6 +118,11 @@ void MemoryManager::freeToLastStackMarker(void)
 	stackMarker = lastStackMarker;
 }
 
+void MemoryManager::freeToMarker(void * ptr)
+{
+	stackMarker = (unsigned int)ptr;
+}
+
 // ************************************************************
 // ************* SINGLE FRAME ALLOCATOR METHODS ***************
 // ************************************************************

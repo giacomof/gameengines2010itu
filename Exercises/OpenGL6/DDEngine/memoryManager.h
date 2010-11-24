@@ -55,6 +55,7 @@ public:
 		// used for load-and-stay-residend data
 	void * MemoryManager::allocateOnStack(unsigned int s);
 	void MemoryManager::freeToLastStackMarker(void);
+	void MemoryManager::freeToMarker(void * ptr);
 
 	unsigned int MemoryManager::getStackMarker(void);
 	void MemoryManager::setStackMarker(unsigned int m);
