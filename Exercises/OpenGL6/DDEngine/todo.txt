@@ -4,17 +4,19 @@
 
 GLOBAL TASKS:
 
-V- Memory Manager
+1(V)- Memory Manager
 	1(V)- Stack Allocator
 		1(V)- freeToLastMarker() method
 		1(V)- EntitySpectator bug fix 
 	1(V)- Single-Frame Allocator
 	1(V)- Malloc/Free Overload
-	V- Export data to Excel
-	1(V)- Memory-Categories 
+	1(V)- Export data to Excel
+	1(V)- Memory-Categories
+	1(V)- Track Max Memory Usage 
 	1(V)- Singleton
 	1(V)- thread Safe
 	1(V)- super bug fixed
+
 
 1(V)- Logging system with verbosity levels
 	1(V)- addToLog()
