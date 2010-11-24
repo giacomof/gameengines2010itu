@@ -1204,9 +1204,6 @@
     <None Include="todo.txt">
       <Filter>Text Files</Filter>
     </None>
-    <None Include="snippets.txt">
-      <Filter>Text Files</Filter>
-    </None>
     <None Include="TEAMDETAILS.txt">
       <Filter>Text Files</Filter>
     </None>
