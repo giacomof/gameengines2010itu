@@ -7,9 +7,6 @@
 #ifndef DDEngine__H 
 #define DDEngine__H
 
-
-
-
 #include "assetManager.h"						// Header File for our Asset Manager
 #include <iostream>								// Header File For the basic Input/Output system
 #include <windows.h>							// Header File For Windows
@@ -21,7 +18,6 @@
 #include <SDL_audio.h>							// Header File for SDL audio library
 #include <glut.h>								// Header File for glut commands
 #include <btBulletDynamicsCommon.h>				// Header File for Bullet Physics
-
 
 #include "mutexManager.h"						// Header File for our Mutex Manager
 #include "memoryManager.h"						// Header File for our Memory Manager
@@ -35,6 +31,7 @@
 #include "sound.h"								// Header File for our Sound
 #include "windowManager.h"						// Header File for our Window Manager
 #include "debugDraw.h"							// Header File for our Debug Drawer 
+#include "log.h"								// Header File for our Log Manager
 
 using namespace std;
 using namespace linearAlgebraDLL;
