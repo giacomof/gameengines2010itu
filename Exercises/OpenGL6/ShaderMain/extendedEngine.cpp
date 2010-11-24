@@ -13,8 +13,8 @@ void extendedEngine::setupScene()
 	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
 	assetManager.loadTexture("assets/duckCM.tga", "duckCM.tga");
 
-	assetManager.createShadingProgram("assets/toonf2.vert", "assets/toonf2.frag", "toonShader");
-	//assetManager.activateShadingProgram("flatGreenShader");
+	assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
+	//assetManager.activateShadingProgram("toonShader");
 
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
@@ -37,7 +37,7 @@ void extendedEngine::setupScene()
 
 	// Create the teapot
 	SceneObject * teapot = this->createTeapot(50, false);
-	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 200.0f, -500.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 200.0f, -100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	teapotNode->setShadingProgram("toonShader");
 
 }

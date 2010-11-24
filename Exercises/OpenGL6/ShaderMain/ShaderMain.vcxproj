@@ -88,10 +88,9 @@
     <None Include="assets\duckCM.tga" />
     <None Include="assets\MENULOOP.WAV" />
     <None Include="assets\nhe.ico" />
-    <None Include="assets\toon.vert" />
-    <None Include="assets\toon3.frag" />
-    <None Include="assets\toonf2.frag" />
-    <None Include="assets\toonf2.vert" />
+    <None Include="assets\shader1.frag" />
+    <None Include="assets\shader1.vert" />
+    <None Include="assets\toon.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h" />
