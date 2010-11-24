@@ -62,6 +62,18 @@
     <None Include="assets\phong1Point.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\textureShader1.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\textureShader1.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\textureShader2.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\textureShader2.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h">

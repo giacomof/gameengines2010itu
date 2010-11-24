@@ -92,6 +92,10 @@
     <None Include="assets\phong1Point.vert" />
     <None Include="assets\shader1.frag" />
     <None Include="assets\shader1.vert" />
+    <None Include="assets\textureShader1.frag" />
+    <None Include="assets\textureShader1.vert" />
+    <None Include="assets\textureShader2.frag" />
+    <None Include="assets\textureShader2.vert" />
     <None Include="assets\toon.frag" />
     <None Include="assets\toon.vert" />
   </ItemGroup>
