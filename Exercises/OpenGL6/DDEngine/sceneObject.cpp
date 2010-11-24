@@ -78,19 +78,19 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void)
 {
-	// This will trace the current pose of the skeleton on the screen. Later it will render mesh skinned to skeleton
-	if (skeleton != NULL && currentPose != NULL)
-	{
-		skeleton->traceSkeletonJoint(currentPose);
-	}
-
 	// Simon will expand this function to call a function on mesh that skins it to a pose instead, if a pose exists
-	else if (mesh != NULL)
+	if (mesh != NULL)
 	{
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture (GL_TEXTURE_2D, colladaTexture);
 		mesh->render();
 		glDisable(GL_TEXTURE_2D);
+	}
+	
+	// This will trace the current pose of the skeleton on the screen. Later it will render mesh skinned to skeleton
+	else if (skeleton != NULL && currentPose != NULL)
+	{
+		skeleton->traceSkeletonJoint(currentPose);
 	}
 }
 

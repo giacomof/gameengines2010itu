@@ -48,12 +48,12 @@ public:
 	// Texture file name
 	string textureName;
 	// int for containing the number of vertices, normals and maps
-	unsigned int vertexCount, normalCount, mapCount, indexCount, vertexStride, normalStride, mapStride, offset;
+	unsigned int vertexCount, normalCount, mapCount, indexCount, vertexStride, normalStride, mapStride, indexStride, offset;
 	// string for containing vertices, normals and maps
 	string vertexArray, normalArray, mapArray, indexArray;
 	float * vertex, * normal, * map;
 	unsigned long * index;
-	bool hasTexture, hasMoreNodes, isFinished;
+	bool hasTexture, hasMoreNodes, isFinished, hasSkeletonWeights;
 
 };
 

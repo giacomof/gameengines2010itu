@@ -28,11 +28,7 @@ S- Skeletal Animation
 	1(S)- Draw Animated Skeleton
 	   S- Rig Character to the Skeleton
 	   S- better restart of the loop animation
-	   
-0- Collada
-	0- Texture Bug
-	0- Remove Hard-Coded scaling
-	    
+	   	    
 G- Shaders
 	1(G)- Load vert and frag
 	1(G)- Apply a shader to a whole scene
@@ -47,7 +43,6 @@ G- Shaders
 	0- Load files from index
 	0- Basic methods
 	0- DDEngine methods
-
 0- FrameClock Class as a Singleton
 0- mutex created inside the mutexManager
 0- better thread synch and use
@@ -68,6 +63,9 @@ OPTIONALS:
 
 COMPLETED:
 
+1(S)- Collada
+	1(S)- Texture Bug
+	1(S)- Remove Hard-Coded scaling
 1(S)- Camera as child of sceneObject
 1(V)- Childs of sceneObject
 1(V)- Root as Singleton

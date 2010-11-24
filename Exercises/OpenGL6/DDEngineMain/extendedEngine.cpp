@@ -102,9 +102,14 @@ void extendedEngine::setupScene()
 
 
 	// Skeletal animated astroboy
-	SceneObject * astroboy = this->createCollada(0,0,assetManager.getColladaSkeleton("astroboy_skeleton"));
-	SceneNode * astroboyNode = this->addSceneNode(&rootNode, "Astroboy Node", astroboy,  Vector(20.0f, 0.0f, 0.0f), Vector(1.0f,0.0f,0.0f), -90.0f);
-	astroboyNode->scale(15.0, 15.0, 15.0);
+	SceneObject * astroboySkeleton = this->createCollada(0,0,assetManager.getColladaSkeleton("astroboy_skeleton"));
+	SceneNode * astroboySkeletonNode = this->addSceneNode(&rootNode, "Astroboy Skeleton Node", astroboySkeleton,  Vector(20.0f, 0.0f, 0.0f), Vector(1.0f,0.0f,0.0f), -90.0f);
+	astroboySkeletonNode->scale(15.0, 15.0, 15.0);
+
+	// Skeletal animated astroboy with mesh and texture
+	SceneObject * astroboyMesh = this->createCollada(assetManager.getColladaMesh("astroboy"),assetManager.getTexture("boy_10.tga"),assetManager.getColladaSkeleton("astroboy_skeleton"));
+	SceneNode * astroboyMeshNode = this->addSceneNode(&rootNode, "Astroboy Node", astroboyMesh,  Vector(30.0f, 0.0f, 0.0f), Vector(1.0f,0.0f,0.0f), -90.0f);
+	astroboyMeshNode->scale(15.0, 15.0, 15.0);
 
 }
 void extendedEngine::frameStarted(int frameDelta)
