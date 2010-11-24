@@ -27,17 +27,14 @@ void main()
 		color += att * gl_FrontMaterial.specular * gl_LightSource[0].specular * 
 						pow(NdotHV,gl_FrontMaterial.shininess);
 	}
-
-
-	intensity = max(dot(lightDir,normalize(normal)),0.0);
 		
-	cf = intensity * (gl_FrontMaterial.diffuse).rgb + 
-						gl_FrontMaterial.ambient.rgb;
+	cf =  gl_FrontMaterial.diffuse.rgb + gl_FrontMaterial.ambient.rgb;
 	af = gl_FrontMaterial.diffuse.a;
 		
 	texel = texture2D(tex,gl_TexCoord[0].st);
 	ct = texel.rgb;
 	at = texel.a;
 		
-	gl_FragColor = vec4(ct * cf, at * af);	
+	gl_FragColor = vec4(ct * cf, at * af) * color;	
 }
+
