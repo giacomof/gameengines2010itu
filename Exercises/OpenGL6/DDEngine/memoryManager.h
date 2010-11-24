@@ -34,7 +34,8 @@ public:
 	static unsigned int lastSingleFrameMarker;
 
 	// Common variables declarations
-	static unsigned int const dataToAllocate = 128 * 10000;
+	static const unsigned int dataToAllocate = 128 * 10000;
+	static unsigned int totalMemoryUsage;
 
 	// Singleton Definitions
 	static MemoryManager _instance;
@@ -67,6 +68,9 @@ public:
 	void MemoryManager::setSingleFrameAllocatorMarker(unsigned int m);
 	unsigned int MemoryManager::getBaseSingleFrameAllocatorMarker(void);
 	void MemoryManager::setBaseSingleFrameAllocatorMarker(unsigned int m);
+
+	// Log method used in order to keep track of the max memory usage
+	void MemoryManager::logMaxMemoryUsage(void);
 
 };
 

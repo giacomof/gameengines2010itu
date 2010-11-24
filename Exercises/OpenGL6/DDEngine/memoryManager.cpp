@@ -4,6 +4,7 @@
 typedef unsigned int Marker;
 MemoryManager MemoryManager::_instance;
 unsigned int MemoryManager::count = 0;
+unsigned int MemoryManager::totalMemoryUsage = 0;
 
 // Stack Allocator External Declarations
 unsigned int MemoryManager::stackMarker		= 0;
@@ -26,7 +27,9 @@ MemoryManager::MemoryManager(void) {
 	&getInstance(); 
 }
 
-MemoryManager::~MemoryManager(void) { }
+MemoryManager::~MemoryManager(void) {
+
+}
 
 MemoryManager & MemoryManager::getInstance()
 {
@@ -85,17 +88,20 @@ void MemoryManager::newFree(void * ptr)
 // ***************** STACK ALLOCATOR METHODS ******************
 // ************************************************************
 
-unsigned int MemoryManager::getStackMarker(void) {
+unsigned int MemoryManager::getStackMarker(void) 
+{
 	return stackMarker;
 }
 
-void MemoryManager::setStackMarker(unsigned int m) {
+void MemoryManager::setStackMarker(unsigned int m) 
+{
 	stackMarker = m;
 }
 
 void * MemoryManager::allocateOnStack(unsigned int s) 
 {
-
+	// add the size of this allocation to the max memory usage
+	totalMemoryUsage += s;
 	// save the last stackMarker
 	lastStackMarker = stackMarker;
 	// add the space required to the stackMarker
@@ -118,6 +124,9 @@ void MemoryManager::freeToLastStackMarker(void)
 
 void * MemoryManager::allocateOnSingleFrameAllocator(unsigned int s) 
 {
+	// add the size of this allocation to the max memory usage
+	totalMemoryUsage += s;
+
 	lastSingleFrameMarker = singleFrameMarker;
 	singleFrameMarker = singleFrameMarker + s;
 
@@ -133,18 +142,38 @@ void MemoryManager::clearSingleFrameAllocator(void)
 	if(verbosityLevel>=4) cout << "SINGLE FRAME ALLOCATOR CLEARED" << endl;
 }
 
-unsigned int MemoryManager::getSingleFrameAllocatorMarker(void) {
+unsigned int MemoryManager::getSingleFrameAllocatorMarker(void) 
+{
 	return singleFrameMarker;
 }
 
-void MemoryManager::setSingleFrameAllocatorMarker(unsigned int m) {
+void MemoryManager::setSingleFrameAllocatorMarker(unsigned int m) 
+{
 	singleFrameMarker = m;
 }
 
-unsigned int MemoryManager::getBaseSingleFrameAllocatorMarker(void) {
+unsigned int MemoryManager::getBaseSingleFrameAllocatorMarker(void) 
+{
 	return baseSingleFrameMarker;
 }
 
-void MemoryManager::setBaseSingleFrameAllocatorMarker(unsigned int m) {
+void MemoryManager::setBaseSingleFrameAllocatorMarker(unsigned int m) 
+{
 	baseSingleFrameMarker = m;
+}
+
+void MemoryManager::logMaxMemoryUsage(void) 
+{
+	
+	if(verbosityLog>=1) {
+		
+		Log::addToLog(MEMORYMANAGER_LOGFILE, "\n\n");
+		Log::addToLog(MEMORYMANAGER_LOGFILE, "MAX MEMORY USAGE: ");
+
+		char * sizeAllocated = new char();
+		
+		itoa(totalMemoryUsage, sizeAllocated, 10);
+		Log::addToLog(MEMORYMANAGER_LOGFILE, sizeAllocated);
+
+		}
 }
