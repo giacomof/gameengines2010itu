@@ -23,6 +23,19 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 			MutexManager::lockMutex(mutex_StackAllocator);
 
 			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING STACK ALLOCATOR" << endl;
+			if(verbosityLog>=1) {
+				Log::addToLog(MEMORYMANAGER_LOGFILE, "STACK ALLOCATOR,");
+		
+				char * sizeAllocated = new char();
+				char * flag			 = new char();
+				itoa(size, sizeAllocated, 10);
+				itoa(typeFlag, flag, 10);
+				
+				Log::addToLog(MEMORYMANAGER_LOGFILE, sizeAllocated);
+				Log::addToLog(MEMORYMANAGER_LOGFILE, ",");
+				Log::addToLog(MEMORYMANAGER_LOGFILE, flag);
+				Log::addToLog(MEMORYMANAGER_LOGFILE, "\n");
+			}
 
 			storage = memMgr.allocateOnStack(size);
 			if(NULL == storage)
@@ -37,6 +50,20 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 			MutexManager::lockMutex(mutex_SingleFrameAllocator);
 			
 			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING THE SINGLE FRAME ALLOCATOR" << endl;
+
+			if(verbosityLog>=1) {
+				Log::addToLog(MEMORYMANAGER_LOGFILE, "SINGLE FRAME ALLOCATOR,");
+		
+				char * sizeAllocated = new char();
+				char * flag			 = new char();
+				itoa(size, sizeAllocated, 10);
+				itoa(typeFlag, flag, 10);
+
+				Log::addToLog(MEMORYMANAGER_LOGFILE, sizeAllocated);
+				Log::addToLog(MEMORYMANAGER_LOGFILE, ",");
+				Log::addToLog(MEMORYMANAGER_LOGFILE, flag);
+				Log::addToLog(MEMORYMANAGER_LOGFILE, "\n");
+			}
 
 			storage = memMgr.allocateOnSingleFrameAllocator(size);
 			if(NULL == storage)
@@ -134,6 +161,9 @@ int threadPhysics(void *data)
 
 DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physics)
 {
+	// clear the log
+	Log::clearLog(MEMORYMANAGER_LOGFILE);
+
 	screenW  = screenWidth;							// Window Width
 	screenH  = screenHeight;						// Window Height
 	screenCD = colorDepth;							// Color Depth
