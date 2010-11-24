@@ -33,17 +33,17 @@ MemoryManager & MemoryManager::getInstance()
 	if(MemoryManager::count==0) {
 		
 		// Stack Allocator Initializations
-		stackMarker = (unsigned int) MemoryManager::newMalloc(dataToAllocate, MANAGER);
+		stackMarker = (unsigned int) MemoryManager::newMalloc(dataToAllocate, ALLOCATOR);
 		lastStackMarker = stackMarker;
 		if((void *)stackMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE STACK ALLOCATOR" << std::endl;
 
 		// Single Frame Allocator Initializations
-		baseSingleFrameMarker = (unsigned int) MemoryManager::newMalloc(dataToAllocate, MANAGER);
+		baseSingleFrameMarker = (unsigned int) MemoryManager::newMalloc(dataToAllocate, ALLOCATOR);
 		singleFrameMarker = baseSingleFrameMarker;
 		if((void *)baseSingleFrameMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE SINGLE FRAME ALLOCATOR" << std::endl;
 
 		// clear the log file
-		Log::clearLog(MEMORYMANAGER_LOGFILE);
+		Log::clearLog(MALLOC_LOGFILE);
 
 	}
 	
@@ -59,18 +59,18 @@ MemoryManager & MemoryManager::getInstance()
 void * MemoryManager::newMalloc(size_t s, unsigned short typeFlag) 
 {
 	if(verbosityLevel >= 4) cout << "NEW MALLOC ALLOCATES: " << s << " bytes" << endl;
-	if(verbosityLog>=1) {
-		Log::addToLog(MEMORYMANAGER_LOGFILE, "MALLOC,");
+	if(verbosityLog>=2) {
+		Log::addToLog(MALLOC_LOGFILE, "MALLOC,");
 		
 		char * sizeAllocated = new char();
 		char * flag			 = new char();
 		itoa(s, sizeAllocated, 10);
 		itoa(typeFlag, flag, 10);
 
-		Log::addToLog(MEMORYMANAGER_LOGFILE, sizeAllocated);
-		Log::addToLog(MEMORYMANAGER_LOGFILE, ",");
-		Log::addToLog(MEMORYMANAGER_LOGFILE, flag);
-		Log::addToLog(MEMORYMANAGER_LOGFILE, "\n");
+		Log::addToLog(MALLOC_LOGFILE, sizeAllocated);
+		Log::addToLog(MALLOC_LOGFILE, ",");
+		Log::addToLog(MALLOC_LOGFILE, flag);
+		Log::addToLog(MALLOC_LOGFILE, "\n");
 	}
 	return malloc(s);
 }

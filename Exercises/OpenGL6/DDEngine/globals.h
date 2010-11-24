@@ -17,9 +17,11 @@ static const int verbosityLog	= 10;
 	
 	// Log Files
 static const char * MEMORYMANAGER_LOGFILE = "memorymanager.txt";
+static const char * MALLOC_LOGFILE		  = "malloc.txt";
 
 // MemoryManager Flags
 	// Type Flag
+static const unsigned short ALLOCATOR	= 0;
 static const unsigned short MANAGER		= 1;
 static const unsigned short SCENEGRAPH	= 2;
 static const unsigned short PHYSICS		= 3;
