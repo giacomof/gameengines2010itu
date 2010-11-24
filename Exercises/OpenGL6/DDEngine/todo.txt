@@ -14,6 +14,7 @@ V- Memory Manager
 	1(V)- Memory-Categories 
 	1(V)- Singleton
 	1(V)- thread Safe
+	1(V)- super bug fixed
 
 1(V)- Logging system with verbosity levels
 	1(V)- addToLog()
@@ -51,6 +52,7 @@ G- Shaders
 0- make everything framerate independent
 0- optimizations for the Transformation Class
 0- optimize debug cout and logs with "if define"
+0- store a list of pointers inside the memory manager stack allocator for freeToLastMarker()
 	
 
 OPTIONALS:

@@ -31,6 +31,7 @@ public:
 	// Single Frame Allocator declarations
 	static unsigned int baseSingleFrameMarker;
 	static unsigned int singleFrameMarker;
+	static unsigned int lastSingleFrameMarker;
 
 	// Common variables declarations
 	static unsigned int const dataToAllocate = 128 * 10000;
