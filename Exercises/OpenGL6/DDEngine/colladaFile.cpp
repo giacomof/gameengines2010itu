@@ -5,7 +5,6 @@ ColladaFile::ColladaFile(void)
 	textureName = "";
 	isFinished = false;
 	hasTexture = false;
-	offset = 6;
 }
 
 
@@ -22,7 +21,15 @@ char * ColladaFile::load(std::string & str)
 	// resets
 	vertexCount = 0;
 	normalCount = 0;
+	mapCount = 0;
 	indexCount = 0;
+
+	vertexStride = 0;
+	normalStride = 0;
+	mapStride = 0;
+	indexStride = 0;
+
+	offset = 6;
 
 	doc.parse<0>(strdup(str.c_str()));    // 0 means default parse flags
 
@@ -50,25 +57,26 @@ char * ColladaFile::load(std::string & str)
 			{
 
 				// Mesh
-				xml_node<>* geometryNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source")->first_node("float_array");
-				vertexCount = atoi(geometryNode->first_attribute("count")->value());
-				vertexArray = geometryNode->value();
+				xml_node<>* geometryNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source");
+				vertexArray = geometryNode->first_node("float_array")->value();
+				vertexCount = atoi(geometryNode->first_node("float_array")->first_attribute("count")->value());
+				vertexStride = atoi(geometryNode->first_node("technique_common")->first_node("accessor")->first_attribute("stride")->value());
 				
 				// Normals
-				xml_node<>* normalNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source");
-				normalNode = normalNode->next_sibling();
-				normalCount = atoi(normalNode->first_node("float_array")->first_attribute("count")->value());
+				xml_node<>* normalNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source")->next_sibling("source");
 				normalArray = normalNode->first_node("float_array")->value();
+				normalCount = atoi(normalNode->first_node("float_array")->first_attribute("count")->value());
+				normalStride = atoi(normalNode->first_node("technique_common")->first_node("accessor")->first_attribute("stride")->value());
 				
 				// Get the maps data
-				xml_node<>* mapNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source");
-				mapNode = mapNode->next_sibling()->next_sibling();
-				mapCount = atoi(mapNode->first_node("float_array")->first_attribute("count")->value());
+				xml_node<>* mapNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("source")->next_sibling("source")->next_sibling("source");
 				mapArray = mapNode->first_node("float_array")->value();
+				mapCount = atoi(mapNode->first_node("float_array")->first_attribute("count")->value());
+				mapStride = atoi(mapNode->first_node("technique_common")->first_node("accessor")->first_attribute("stride")->value());
 
 				// Indices
 				xml_node<>* indexNode = tempNode->first_node("geometry")->first_node("mesh")->first_node("triangles");
-				indexCount += atoi(indexNode->first_attribute("count")->value());	
+				indexCount += atoi(indexNode->first_attribute("count")->value());
 				indexArray += indexNode->first_node("p")->value();
 				
 				// check if the collada file is a multinode mesh
@@ -88,11 +96,8 @@ char * ColladaFile::load(std::string & str)
 						moreMeshes = false;
 
 					}
-
-
 				}
 			}
-			
 		}
 
 		if(!isFinished)  {
@@ -155,6 +160,7 @@ char * ColladaFile::load(std::string & str)
 		i++;
 	}
 
+	indexStride = offset / 3;
 
 	if(hasTexture) return (char*)textureName.c_str();
 	else return "";
@@ -162,35 +168,35 @@ char * ColladaFile::load(std::string & str)
 
 void ColladaFile::render(void) const
 {
-		unsigned long firstVertex=0;
-		unsigned long secondVertex=0;
-		unsigned long thirdVertex=0;
+	unsigned long firstVertex=0;
+	unsigned long secondVertex=0;
+	unsigned long thirdVertex=0;
 
-		unsigned long firstNormal=0;
-		unsigned long secondNormal=0;
-		unsigned long thirdNormal=0;
+	unsigned long firstNormal=0;
+	unsigned long secondNormal=0;
+	unsigned long thirdNormal=0;
 
-		unsigned long firstMap=0;
-		unsigned long secondMap=0;
-		unsigned long thirdMap=0;
+	unsigned long firstMap=0;
+	unsigned long secondMap=0;
+	unsigned long thirdMap=0;
 
 	for(unsigned int i=0; i<indexCount*offset; i+=offset) 
 	{
-		firstVertex = index[i]*3;
-		secondVertex = index[i+(offset/3)]*3;
-		thirdVertex = index[i+((offset/3)*2)]*3;
+
+		firstVertex		= index[i					]*vertexStride;
+		secondVertex	= index[i+indexStride		]*vertexStride;
+		thirdVertex		= index[i+indexStride*2		]*vertexStride;
 		
-		firstNormal = index[i+1]*3;
-		secondNormal = index[i+(offset/3)+1]*3;
-		thirdNormal = index[i+((offset/3)*2)+1]*3;
+		firstNormal		= index[i+1					]*normalStride;
+		secondNormal	= index[i+indexStride	+1	]*normalStride;
+		thirdNormal		= index[i+indexStride*2	+1	]*normalStride;
 		
-		if(hasTexture) {
-			firstMap = index[i+2]*2;
-			secondMap = index[i+(offset/3)+2]*2;
-			thirdMap = (index[i+((offset/3)*2)+2]*2);
+		if (hasTexture)
+		{
+			firstMap	= index[i+2					]*mapStride;
+			secondMap	= index[i+indexStride	+2	]*mapStride;
+			thirdMap	= index[i+indexStride*2	+2	]*mapStride;
 		}
-		
-		// HARDCODED SCALING FOR THE PRESENTATION
 
 		glBegin(GL_TRIANGLES);
 			glTexCoord2f( map[firstMap], map[firstMap+1] );
