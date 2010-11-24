@@ -82,6 +82,9 @@ public:
 	static void activateShadingProgram(char * shadingProgramName);
 	static void deactivateShadingProgram();
 
+	void printShaderInfoLog(GLuint obj);
+	void printProgramInfoLog(GLuint obj);
+
 private:
 	std::map <char *, textureContainer> texture_list;
 	std::map <char *, md2InterfaceContainer> md2_list;
