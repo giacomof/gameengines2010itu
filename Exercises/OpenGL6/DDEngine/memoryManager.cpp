@@ -11,6 +11,7 @@ unsigned int MemoryManager::lastStackMarker = 0;
 
 // Single Frame Allocator External Declarations
 unsigned int MemoryManager::singleFrameMarker	  = 0;
+unsigned int MemoryManager::lastSingleFrameMarker = 0;
 unsigned int MemoryManager::baseSingleFrameMarker = 0;
 
 void * MemoryManager::operator new(size_t s) 
@@ -117,13 +118,13 @@ void MemoryManager::freeToLastStackMarker(void)
 
 void * MemoryManager::allocateOnSingleFrameAllocator(unsigned int s) 
 {
-
+	lastSingleFrameMarker = singleFrameMarker;
 	singleFrameMarker = singleFrameMarker + s;
 
 	if(verbosityLevel >= 4) cout << "SINGLE FRAME ALLOCATOR ALLOCATES: " << s << " bytes" << endl;
 
 	// return the pointer to the position of the stackMarker
-	return (void *) singleFrameMarker;
+	return (void *) lastSingleFrameMarker;
 }
 
 void MemoryManager::clearSingleFrameAllocator(void)
