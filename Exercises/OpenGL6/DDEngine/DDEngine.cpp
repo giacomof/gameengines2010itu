@@ -102,7 +102,7 @@ int threadSound(void *data)
 		testsoundint++;
 		if (testsoundint > 7000)
 		{
-			soundPlayFile("assets/MENULOOP.WAV");
+			//soundPlayFile("assets/MENULOOP.WAV");
 			testsoundint = 0;
 		}
 		SDL_Delay(thread_delay);
@@ -406,7 +406,9 @@ void DDEngine::drawGL(int frameDelta)
 	// Set the camera
 	float * CamTransform = getCamera();
 
-	if(drawDebug) dynamicsWorld->debugDrawWorld();
+	if(hasPhysics)
+		if(drawDebug) 
+			dynamicsWorld->debugDrawWorld();
 
 	// update the animation
 	rootNode.update(frameDelta);

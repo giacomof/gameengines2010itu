@@ -86,6 +86,9 @@ class sceneNode_D SceneNode
 		void drawGeometry(void);
 		void drawName(void);
 
+		void setShadingProgram(char * programName);
+		void activateShadingProgram(bool active);
+
 		float * tranM;
 		btTransform trans;
 		string nodeNameString;
@@ -99,6 +102,10 @@ class sceneNode_D SceneNode
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
 		SceneObject * geometry;					// Mesh to render
+//		AssetManager * assetManager;
+
+		char * shadingProgramName;
+		bool shadingIsActive;
 
 		btRigidBody * physicsGeometry;		
 		void updateRigidBody(void);

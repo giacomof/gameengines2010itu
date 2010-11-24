@@ -79,14 +79,15 @@ public:
 	// Shaders methods
 	void createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName);
 	char * textFileRead(char * filePath);
-	void activateShadingProgram(char * shadingProgramName);
+	static void activateShadingProgram(char * shadingProgramName);
+	static void deactivateShadingProgram();
 
 private:
 	std::map <char *, textureContainer> texture_list;
 	std::map <char *, md2InterfaceContainer> md2_list;
 	std::map <char *, colladaInterfaceContainer> collada_list;
 	std::map <char *, colladaSkelInterfaceContainer> colladaskel_list;
-	std::map <char *, GLuint> shadingProgram_list;
+	static std::map <char *, GLuint> shadingProgram_list;
 };
 
 #endif
