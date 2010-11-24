@@ -34,7 +34,6 @@ public:
 
 	// Common variables declarations
 	static unsigned int const dataToAllocate = 128 * 10000;
-	static unsigned int const guardBytes = 512;
 
 	// Singleton Definitions
 	static MemoryManager _instance;

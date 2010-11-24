@@ -50,6 +50,7 @@ G- Shaders
 0- better thread synch and use
 0- make everything framerate independent
 0- optimizations for the Transformation Class
+0- optimize debug cout and logs with "if define"
 	
 
 OPTIONALS:
