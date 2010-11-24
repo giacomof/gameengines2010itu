@@ -91,6 +91,7 @@
     <None Include="assets\shader1.frag" />
     <None Include="assets\shader1.vert" />
     <None Include="assets\toon.frag" />
+    <None Include="assets\toon.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h" />

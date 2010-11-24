@@ -1,10 +1,9 @@
-varying float intensity;
-
+varying vec3 normal;
+	
 void main()
 {
-	vec3 lightDir = normalize(vec3(gl_LightSource[0].position));
-	
-	intensity = dot(lightDir,gl_Normal);
 
+	normal = gl_NormalMatrix * gl_Normal;
+	
 	gl_Position = ftransform();
 } 

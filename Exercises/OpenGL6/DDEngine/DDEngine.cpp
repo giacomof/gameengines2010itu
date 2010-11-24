@@ -254,15 +254,15 @@ void DDEngine::run(void)
 	
 	SDL_Event currentEvent;
 
-	//// Set up default material
-	//GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
-	//GLfloat diffuse[] = {0.8, 0.8, 0.8, 1.0};
-	//GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
-	//GLfloat shine = 100.0;
-	//glMaterialf(GL_FRONT_AND_BACK, GL_AMBIENT, ambient[0]);
-	//glMaterialf(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse[0]);
-	//glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
-	//glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
+	// Set up default material
+	GLfloat ambient[] = {1.0, 1.0, 1.0, 0.2};
+	GLfloat diffuse[] = {1.0, 1.0, 1.0, 0.5};
+	GLfloat specular[] = {1.0, 1.0, 1.0, 0.8};
+	GLfloat shine = 1.0;
+	glMaterialf(GL_FRONT_AND_BACK, GL_AMBIENT, ambient[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
 
 	int frameDelta;
 

@@ -47,13 +47,13 @@
     <None Include="assets\toon.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="assets\toon.vert">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="assets\shader1.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="assets\shader1.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\toon.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
