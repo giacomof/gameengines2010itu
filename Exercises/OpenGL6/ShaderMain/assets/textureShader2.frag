@@ -8,7 +8,7 @@ void main()
 	vec3 ct,cf,n,halfV,viewV,ldir;
 	vec4 texel;
 	vec4 color = ambientGlobal;
-	float intensity,at,af,NdotL,NdotHV,att;
+	float at,af,NdotL,NdotHV,att;
 
 	n = normalize(normal);
 
