@@ -44,16 +44,16 @@
     <None Include="assets\nhe.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\toon.frag">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="assets\toon.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="assets\toon3.frag">
+    <None Include="assets\shader1.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="assets\toonf2.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\toonf2.vert">
+    <None Include="assets\shader1.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
