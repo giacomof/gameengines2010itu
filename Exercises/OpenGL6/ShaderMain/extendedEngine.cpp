@@ -11,14 +11,18 @@ void extendedEngine::setupScene()
 	assetManager.loadCollada("assets/duck.dae", "duck");
 
 	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
-	assetManager.loadTexture("assets/duckCM.tga", "duckCM.tga");
+	assetManager.loadTexture("assets/duckCM.tga", "duckTx");
 
 	//assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
 	assetManager.createShadingProgram("assets/shader1.vert", "assets/shader1.frag", "shader1");
 	assetManager.createShadingProgram("assets/phong1Point.vert", "assets/phong1Point.frag", "phong1Point");
+	assetManager.createShadingProgram("assets/textureShader1.vert", "assets/textureShader1.frag", "textureShader1");
+	assetManager.createShadingProgram("assets/textureShader2.vert", "assets/textureShader2.frag", "textureShader2");
 	//assetManager.activateShadingProgram("toonShader");
 	//assetManager.activateShadingProgram("shader1");
-	assetManager.activateShadingProgram("phong1Point");
+	//assetManager.activateShadingProgram("phong1Point");
+	//assetManager.activateShadingProgram("textureShader1");
+	assetManager.activateShadingProgram("textureShader2");
 
 
 	// ******************************
@@ -47,8 +51,10 @@ void extendedEngine::setupScene()
 	// Create the teapot
 	SceneObject * teapot = this->createTeapot(50, false);
 	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 45.0f, -100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	//teapotNode->setShadingProgram("toonShader");
-	//teapotNode->setShadingProgram("shader1");
+	teapotNode->setVisible(false);
+
+	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"));
+	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(0.0f, 45.0f, 100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 }
 void extendedEngine::frameStarted(int frameDelta)
