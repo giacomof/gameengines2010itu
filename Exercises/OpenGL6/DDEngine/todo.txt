@@ -28,13 +28,14 @@ S- Skeletal Animation
 	1(S)- Draw Animated Skeleton
 	   S- Rig Character to the Skeleton
 	   S- better restart of the loop animation
+	   0- OpenMP integration
 	   	    
 G- Shaders
 	1(G)- Load vert and frag
 	1(G)- Apply a shader to a whole scene
 	1(G)- Apply a shader to a single object
 	   G- Improve Performance for a single object shader, if possible
-	   G- boh, write something
+	   G- Fix names in shader section of asset manager
 	    
 0- V8 Javascript Scripting Integration
 	0- Compile V8
@@ -43,13 +44,13 @@ G- Shaders
 	0- Load files from index
 	0- Basic methods
 	0- DDEngine methods
+
 0- FrameClock Class as a Singleton
 0- mutex created inside the mutexManager
 0- better thread synch and use
-
-
-(GIACOMO STUFF)
-	Fix names in shader section of asset manager
+0- make everything framerate independent
+0- optimizations for the Transformation Class
+	
 
 OPTIONALS:
 
@@ -96,7 +97,6 @@ COMPLETED:
 1(S)- Sound Manager
 	1(S)- Sounds without movements freeze
 	1(S)- fix wave file
-	1(S)- migrate to OpenAL
 1(V)- debug draw system
 	1(V)- axis of rotation of an object via line draws
 	1(V)- draw the bounding box or bounding sphere of an object

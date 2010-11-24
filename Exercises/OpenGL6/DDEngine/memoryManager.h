@@ -36,9 +36,6 @@ public:
 	static unsigned int const dataToAllocate = 128 * 10000;
 	static unsigned int const guardBytes = 512;
 
-	// Log Manager
-	static Log logManager; 
-
 	// Singleton Definitions
 	static MemoryManager _instance;
 	static unsigned int count;
