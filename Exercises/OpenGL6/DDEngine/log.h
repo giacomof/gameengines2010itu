@@ -16,11 +16,8 @@ class log_D Log
 
 public:
 	
-	Log(void);
-	~Log(void);
-
-	void addToLog(const char * filename, const char * stringToAdd);
-	void clearLog(const char * filename);
+	static void Log::addToLog(const char * filename, const char * stringToAdd);
+	static void Log::clearLog(const char * filename);
 
 };
 
