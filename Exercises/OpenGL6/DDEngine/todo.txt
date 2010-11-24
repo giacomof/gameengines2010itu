@@ -45,6 +45,10 @@ G- Shaders
 0- mutex created inside the mutexManager
 0- better thread synch and use
 
+
+(GIACOMO STUFF)
+	Fix names in shader section of asset manager
+
 OPTIONALS:
 
 0- logging system with verbosity levels

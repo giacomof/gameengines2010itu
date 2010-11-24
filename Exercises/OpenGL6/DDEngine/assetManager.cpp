@@ -277,31 +277,6 @@ ColladaSkeleton * AssetManager::getColladaSkeleton(char * colladaNameChar)
 
 void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName)
 {
-		/*char *vs,*fs;
-	
-		GLuint v = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-		GLuint f = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);	
-	
-		vs = textFileRead(vertexShaderPath);
-		fs = textFileRead(fragmentShaderPath);
-	
-		const char * vv = vs;
-		const char * ff = fs;
-	
-		glShaderSourceARB(v, 1, &vv,NULL);
-		glShaderSourceARB(f, 1, &ff,NULL);
-	
-		MemoryManager::newFree(vs);
-		MemoryManager::newFree(fs);
-	
-		glCompileShaderARB(v);
-		glCompileShaderARB(f);
-	
-		GLuint p = glCreateProgramObjectARB();
-		
-		glAttachObjectARB(p,v);
-		glAttachObjectARB(p,f);*/
-
 		char *vs = NULL,*fs = NULL,*fs2 = NULL;
 
 		GLuint v = glCreateShader(GL_VERTEX_SHADER);
@@ -321,6 +296,9 @@ void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragment
 
 		glCompileShader(v);
 		glCompileShader(f);
+		printShaderInfoLog(v);
+		printShaderInfoLog(f);
+
 
 		GLuint p = glCreateProgram();
 		glAttachShader(p,f);
@@ -366,3 +344,37 @@ void AssetManager::deactivateShadingProgram()
 {
 	glUseProgram(0);
 }
+
+	void AssetManager::printShaderInfoLog(GLuint obj)
+	{
+	    int infologLength = 0;
+	    int charsWritten  = 0;
+	    char *infoLog;
+
+		glGetShaderiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+
+	    if (infologLength > 0)
+	    {
+	        infoLog = (char *)malloc(infologLength);
+	        glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
+			printf("%s\n",infoLog);
+	        free(infoLog);
+	    }
+	}
+
+	void AssetManager::printProgramInfoLog(GLuint obj)
+	{
+	    int infologLength = 0;
+	    int charsWritten  = 0;
+	    char *infoLog;
+
+		glGetProgramiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+
+	    if (infologLength > 0)
+	    {
+	        infoLog = (char *)malloc(infologLength);
+	        glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
+			printf("%s\n",infoLog);
+	        free(infoLog);
+	    }
+	}
