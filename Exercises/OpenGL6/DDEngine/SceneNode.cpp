@@ -13,12 +13,14 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 						btRigidBody * rigidBody )
 {
 	// variables inizialization
+//	assetManager = new AssetManager();
 	nodeNameString = str;
 	parentNode = parentNode;
 	parentNode->addChild(this);
 	geometry = g;
 	physicsGeometry = rigidBody;
 	visible = true;
+	shadingIsActive = false;
 	tranM = new float[16];
 	btTransform trans = btTransform();
 	mutex_node = SDL_CreateMutex();
@@ -274,7 +276,17 @@ void SceneNode::drawGeometry()
 
 	if(isVisible()) {
 		//std::cout << "RENDERING: " << nodeNameString << endl;
-		if(nodeNameString != "Camera Node") geometry->drawGeometry();
+		if(nodeNameString != "Camera Node") 
+		{
+			if(shadingIsActive)
+			{
+				AssetManager::activateShadingProgram(shadingProgramName);
+				geometry->drawGeometry();
+				AssetManager::deactivateShadingProgram();
+			}
+			else
+				geometry->drawGeometry();
+		}
 		// draw the name of the SceneNode
 		if(drawDebug) drawName();
 	}
@@ -356,6 +368,16 @@ void SceneNode::drawName(void)
     glPopAttrib();
 }
 
+void SceneNode::setShadingProgram(char * programName)
+{
+	shadingProgramName = programName;
+	shadingIsActive = true;
+}
+
+void SceneNode::activateShadingProgram(bool active)
+{
+	shadingIsActive = active;
+}
 
 // Static member initialization. 
 Root Root::_instance;

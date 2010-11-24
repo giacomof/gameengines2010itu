@@ -1,5 +1,7 @@
 #include "assetManager.h"
 
+std::map <char *, GLuint> AssetManager::shadingProgram_list;
+
 AssetManager AssetManager::_instance;
 
 AssetManager::~AssetManager(void)
@@ -275,7 +277,7 @@ ColladaSkeleton * AssetManager::getColladaSkeleton(char * colladaNameChar)
 
 void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName)
 {
-		char *vs,*fs;
+		/*char *vs,*fs;
 	
 		GLuint v = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
 		GLuint f = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);	
@@ -298,7 +300,31 @@ void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragment
 		GLuint p = glCreateProgramObjectARB();
 		
 		glAttachObjectARB(p,v);
-		glAttachObjectARB(p,f);
+		glAttachObjectARB(p,f);*/
+
+		char *vs = NULL,*fs = NULL,*fs2 = NULL;
+
+		GLuint v = glCreateShader(GL_VERTEX_SHADER);
+		GLuint f = glCreateShader(GL_FRAGMENT_SHADER);
+
+
+		vs = textFileRead(vertexShaderPath);
+		fs = textFileRead(fragmentShaderPath);
+
+		const char * ff = fs;
+		const char * vv = vs;
+
+		glShaderSource(v, 1, &vv,NULL);
+		glShaderSource(f, 1, &ff,NULL);
+
+		free(vs);free(fs);
+
+		glCompileShader(v);
+		glCompileShader(f);
+
+		GLuint p = glCreateProgram();
+		glAttachShader(p,f);
+		glAttachShader(p,v);
 	
 		shadingProgram_list[programName] = p;
 }
@@ -332,6 +358,11 @@ char * AssetManager::textFileRead(char * filePath) {
 void AssetManager::activateShadingProgram(char * shadingProgramName)
 {
 	GLuint p = shadingProgram_list[shadingProgramName];
-	glLinkProgramARB(p);
-	glUseProgramObjectARB(p);
+	glLinkProgram(p);
+	glUseProgram(p);
+}
+
+void AssetManager::deactivateShadingProgram()
+{
+	glUseProgram(0);
 }
