@@ -9,6 +9,7 @@
 
 #include "globals.h"
 #include "mutexManager.h"
+#include "log.h"
 #include <stdlib.h>
 #include <iostream>
 #include <list>
@@ -34,6 +35,9 @@ public:
 	// Common variables declarations
 	static unsigned int const dataToAllocate = 128 * 10000;
 	static unsigned int const guardBytes = 512;
+
+	// Log Manager
+	static Log logManager; 
 
 	// Singleton Definitions
 	static MemoryManager _instance;

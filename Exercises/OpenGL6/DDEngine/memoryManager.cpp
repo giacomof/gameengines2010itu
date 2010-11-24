@@ -13,6 +13,9 @@ unsigned int MemoryManager::lastStackMarker = 0;
 unsigned int MemoryManager::singleFrameMarker	  = 0;
 unsigned int MemoryManager::baseSingleFrameMarker = 0;
 
+// Log Manager External Declarations
+Log MemoryManager::logManager;
+
 void * MemoryManager::operator new(size_t s) 
 {
 	void * storage = MemoryManager::newMalloc(s, MANAGER);
@@ -41,8 +44,15 @@ MemoryManager & MemoryManager::getInstance()
 		singleFrameMarker = baseSingleFrameMarker;
 		if((void *)baseSingleFrameMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE SINGLE FRAME ALLOCATOR" << std::endl;
 
+		// Log Manager Initializations
+		logManager = Log();
+		logManager.clearLog(MEMORYMANAGER_LOGFILE);
+		if(verbosityLog>=1) logManager.addToLog(MEMORYMANAGER_LOGFILE, "MemoryManager inizialized\n"); 
+
 	}
+	
 	MemoryManager::count++;
+	
 	return _instance;
 }
 

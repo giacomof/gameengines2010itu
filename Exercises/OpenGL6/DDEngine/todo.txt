@@ -14,6 +14,13 @@ V- Memory Manager
 	1(V)- Memory-Categories 
 	1(V)- Singleton
 	1(V)- thread Safe
+
+1(V)- Logging system with verbosity levels
+	1(V)- addToLog()
+	1(V)- clearLog()
+	1(V)- VerbosityLevel variable in globals.h
+	1(V)- Logging Files names in globals.h
+	   0- Put logs methods in the Engine
 	  
 S- Skeletal Animation
 	1(S)- Load Collada Animation Data
@@ -51,7 +58,6 @@ G- Shaders
 
 OPTIONALS:
 
-0- logging system with verbosity levels
 0- singleton superclass
 0- AutoCalculated Bounding Box
 0- Shadows: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27

@@ -324,6 +324,7 @@
     <ClInclude Include="frameClock.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="inputManager.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="md2File.h" />
     <ClInclude Include="md5.h" />
     <ClInclude Include="md5wrapper.h" />
@@ -462,6 +463,7 @@
     <ClCompile Include="entitySpectator.cpp" />
     <ClCompile Include="frameClock.cpp" />
     <ClCompile Include="inputManager.cpp" />
+    <ClCompile Include="log.cpp" />
     <ClCompile Include="md2File.cpp" />
     <ClCompile Include="md5.cpp" />
     <ClCompile Include="md5wrapper.cpp" />
