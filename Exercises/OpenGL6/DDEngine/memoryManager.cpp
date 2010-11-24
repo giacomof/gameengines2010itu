@@ -43,7 +43,6 @@ MemoryManager & MemoryManager::getInstance()
 
 		// clear the log file
 		Log::clearLog(MEMORYMANAGER_LOGFILE);
-		if(verbosityLog>=1) Log::addToLog(MEMORYMANAGER_LOGFILE, "MemoryManager inizialized\n"); 
 
 	}
 	
@@ -59,6 +58,19 @@ MemoryManager & MemoryManager::getInstance()
 void * MemoryManager::newMalloc(size_t s, unsigned short typeFlag) 
 {
 	if(verbosityLevel >= 4) cout << "NEW MALLOC ALLOCATES: " << s << " bytes" << endl;
+	if(verbosityLog>=1) {
+		Log::addToLog(MEMORYMANAGER_LOGFILE, "MALLOC,");
+		
+		char * sizeAllocated = new char();
+		char * flag			 = new char();
+		itoa(s, sizeAllocated, 10);
+		itoa(typeFlag, flag, 10);
+
+		Log::addToLog(MEMORYMANAGER_LOGFILE, sizeAllocated);
+		Log::addToLog(MEMORYMANAGER_LOGFILE, ",");
+		Log::addToLog(MEMORYMANAGER_LOGFILE, flag);
+		Log::addToLog(MEMORYMANAGER_LOGFILE, "\n");
+	}
 	return malloc(s);
 }
 
@@ -82,20 +94,16 @@ void MemoryManager::setStackMarker(unsigned int m) {
 
 void * MemoryManager::allocateOnStack(unsigned int s) 
 {
-	// In this implementation we store the stackMarker position
-	// and we add the size of the object we are trying to
-	// allocate. Then we add some "guard bytes" which detect
-	// if something writes beyond the boundary
 
 	// save the last stackMarker
 	lastStackMarker = stackMarker;
 	// add the space required to the stackMarker
-	stackMarker = stackMarker+s+guardBytes;
+	stackMarker = stackMarker+s;
 
 	if(verbosityLevel >= 4) cout << "STACK ALLOCATOR ALLOCATES: " << s << " bytes" << endl;
 
 	// return the pointer to the position of the stackMarker
-	return (void *) stackMarker;
+	return (void *) lastStackMarker;
 }
 
 void MemoryManager::freeToLastStackMarker(void) 
@@ -110,7 +118,7 @@ void MemoryManager::freeToLastStackMarker(void)
 void * MemoryManager::allocateOnSingleFrameAllocator(unsigned int s) 
 {
 
-	singleFrameMarker = singleFrameMarker + s + guardBytes;
+	singleFrameMarker = singleFrameMarker + s;
 
 	if(verbosityLevel >= 4) cout << "SINGLE FRAME ALLOCATOR ALLOCATES: " << s << " bytes" << endl;
 

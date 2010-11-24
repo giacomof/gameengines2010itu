@@ -3,7 +3,7 @@
 void Log::addToLog(const char * filename, const char * stringToAdd)
 {
 	
-	FILE * pFile = fopen ( filename , "a+" );
+	FILE * pFile = fopen ( filename , "a" );
 	fseek(pFile, 0, SEEK_END);
 	fputs ( stringToAdd , pFile );
 
@@ -12,7 +12,7 @@ void Log::addToLog(const char * filename, const char * stringToAdd)
 void Log::clearLog(const char * filename)
 {
 
-	FILE * pFile = fopen ( filename , "a+" );
+	FILE * pFile = fopen ( filename , "w" );
 	fputs ( "" , pFile );
 
 }
