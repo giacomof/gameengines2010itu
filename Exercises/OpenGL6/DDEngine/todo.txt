@@ -25,11 +25,13 @@ G- Shaders
 	    
 V- V8 Javascript Scripting Integration
 	0- Compile V8
-	0- Integrate V8 into our engine
-	0- Load index file
-	0- Load files from index
-	0- Basic methods
-	0- DDEngine methods
+	0- Compile Scripts
+	0- Run Scripts
+	0- Return Values from scripts
+	0- Call global engine functions like log methods from script
+	0- startEngine mode
+	0- stopEngine mode
+	0- move logic into scripts as much as possible
 
 1(V)- Logging system with verbosity levels
 	1(V)- addToLog()
