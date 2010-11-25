@@ -32,6 +32,7 @@
 #include "windowManager.h"						// Header File for our Window Manager
 #include "debugDraw.h"							// Header File for our Debug Drawer 
 #include "log.h"								// Header File for our Log Manager
+#include "scriptHandler.h"						// Header File for our Script Handler
 
 using namespace std;
 using namespace linearAlgebraDLL;
@@ -118,7 +119,8 @@ protected:
 	// Constraint Solver
     btSequentialImpulseConstraintSolver * solver;
 
-	
+	// Script Handler
+	ScriptHandler scriptHandler;
 	
 	int initGL(void);							// Initialise the rendering window
 	int initPhysics(void);						// Initialise the physic engine

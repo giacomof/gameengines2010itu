@@ -46,7 +46,7 @@ MemoryManager & MemoryManager::getInstance()
 		if((void *)baseSingleFrameMarker == NULL) std::cout << "ERROR, NOT ENOUGH MEMORY FOR THE SINGLE FRAME ALLOCATOR" << std::endl;
 
 		// clear the log file
-		Log::clearLog(MALLOC_LOGFILE);
+		if(verbosityLog>=1) Log::clearLog(MALLOC_LOGFILE);
 
 	}
 	

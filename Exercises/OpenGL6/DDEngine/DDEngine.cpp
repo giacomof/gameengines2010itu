@@ -161,8 +161,7 @@ int threadPhysics(void *data)
 
 DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physics)
 {
-	// clear the log
-	Log::clearLog(MEMORYMANAGER_LOGFILE);
+	if(verbosityLog>=1) Log::clearLog(MEMORYMANAGER_LOGFILE);
 
 	screenW  = screenWidth;							// Window Width
 	screenH  = screenHeight;						// Window Height
@@ -180,6 +179,8 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	window = WindowManager();
 	// Create the input abstraction layer
 	controller = Controller();
+	// Create the script handler
+	scriptHandler = ScriptHandler();
 
 	// SDL initialization
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
