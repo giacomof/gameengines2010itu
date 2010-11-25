@@ -20,7 +20,7 @@ class scriptHandler_D ScriptHandler
 public:
 
 	// Variables
-	Persistent<Context> g_context;
+	static Persistent<Context> g_context;
 
 	// Default Cons/Des
 	ScriptHandler::ScriptHandler(void);
@@ -28,6 +28,9 @@ public:
 
 	// Methods
 	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
+	Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
+	Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName);
+	void ScriptHandler::runScript(void);
 
 };
 

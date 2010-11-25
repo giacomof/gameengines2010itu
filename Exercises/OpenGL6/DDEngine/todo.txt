@@ -16,6 +16,7 @@ G- Shaders
 	1(G)- Diffuse Shader
 	1(G)- Diffuse Shader + Highlight
 	1(G)- Use Frag shaders
+	   G- make the highlight "follow" the camera
 	   G- Fix the color of the scenenodes names
 	   G- Fix names in shader section of asset manager
 	   G- Improve Performance for a single object shader, if possible
