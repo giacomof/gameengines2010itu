@@ -774,6 +774,12 @@
     <ClInclude Include="log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scriptHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="v8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp">
@@ -1187,6 +1193,9 @@
     <ClCompile Include="log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scriptHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\glut.def">
@@ -1217,6 +1226,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Debug\glew32.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\include\v8.dll">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -1255,6 +1267,9 @@
       <Filter>Resource Files</Filter>
     </Library>
     <Library Include="..\include\glew32s.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\include\v8.lib">
       <Filter>Resource Files</Filter>
     </Library>
   </ItemGroup>
