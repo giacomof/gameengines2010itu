@@ -286,15 +286,16 @@ void DDEngine::run(void)
 	SDL_Event currentEvent;
 
 	// Set up default material
-	GLfloat ambient[] = {1.0, 1.0, 1.0, 0.2};
-	GLfloat diffuse[] = {1.0, 1.0, 1.0, 0.5};
-	GLfloat specular[] = {1.0, 1.0, 1.0, 0.8};
-	GLfloat shine = 30.0;
-	glMaterialf(GL_FRONT_AND_BACK, GL_AMBIENT, ambient[0]);
-	glMaterialf(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse[0]);
-	glMaterialf(GL_FRONT_AND_BACK, GL_SPECULAR, specular[0]);
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
+	GLfloat ambient[] = {1.0, 1.0, 1.0, 1};
+	GLfloat diffuse[] = {1.0, 1.0, 1.0, 1};
+	GLfloat specular[] = {1.0, 1.0, 1.0, 1};
+	GLfloat shine = 20.0;
 
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine);
+	
 	int frameDelta;
 
 	while(!controller.quit)
@@ -358,6 +359,20 @@ void DDEngine::run(void)
 
 			frameStarted( frameDelta );
 
+			//glEnable(GL_LIGHT0);
+			//// Create light components
+			//GLfloat ambientLight[] = { 1, 1, 1, 1 };
+			//GLfloat diffuseLight[] = { 1, 1, 1, 1 };
+			//GLfloat specularLight[] = { 1, 1, 1, 1 };
+			//GLfloat position[] = { -1.5f, 100.0f, -100.0f, 1.0f };
+
+			//// Assign created components to GL_LIGHT0
+			//glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+			//glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+			//glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+			//glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+
 			drawGL( frameDelta );
 
 			frameEnded( frameDelta );
@@ -394,7 +409,7 @@ int DDEngine::initGL(void)
 	// enables the Z-buffer
 	glEnable(GL_DEPTH_TEST);
 	// enables the texture rendering
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	// enables smooth shading (garaud)
 	glShadeModel(GL_SMOOTH);
 	// frontfacing culling
@@ -402,9 +417,9 @@ int DDEngine::initGL(void)
 	// enables lighting
 	glEnable(GL_LIGHTING);
 	// Define material properties
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	glColorMaterial(GL_FRONT, GL_SPECULAR);
-	glEnable(GL_COLOR_MATERIAL);
+	//glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	//glColorMaterial(GL_FRONT, GL_SPECULAR);
+	//glEnable(GL_COLOR_MATERIAL);
 
 	return 1;
 }

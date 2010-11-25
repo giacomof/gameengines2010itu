@@ -29,17 +29,18 @@ void extendedEngine::setupScene()
 	// **** CREATE OBJECTS POINT ****
 	// ******************************
 
-	// Create the plane with the collision shape
-	SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 0);
-	planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);
+	//// Create the plane with the collision shape
+	//SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 0);
+	//planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);
 
 	// Create character "rotation center" node
 	SceneObject * sphere = this->createSphere(5, 30, 30, true);
 	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
+	sphereNode->setVisible(false);
 
 	// Create Light connected to the battle droid
-	Light * light1 = (Light*)this->createLight(true, false, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 100, -400), Vector(0, 0, 0), 0);
+	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
+	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -200), Vector(0, 0, 0), 0);
 
 
 
