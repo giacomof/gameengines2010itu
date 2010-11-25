@@ -23,7 +23,7 @@ G- Shaders
 	   G- Fix names in shader section of asset manager
 	   G- Improve Performance for a single object shader, if possible
 	    
-0- V8 Javascript Scripting Integration
+V- V8 Javascript Scripting Integration
 	0- Compile V8
 	0- Integrate V8 into our engine
 	0- Load index file
@@ -39,7 +39,6 @@ G- Shaders
 	   0- Put log methods in the Engine
 
 0- FrameClock Class as a Singleton
-0- mutex created inside the mutexManager
 0- better thread synch and use
 0- make everything framerate independent
 0- optimizations for the Transformation Class
@@ -49,6 +48,7 @@ G- Shaders
 OPTIONALS:
 
 0- store a list of pointers inside the memory manager stack allocator for freeToLastMarker()
+0- mutex created inside the mutexManager
 0- singleton superclass
 0- AutoCalculated Bounding Box
 0- Shadows: http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27
