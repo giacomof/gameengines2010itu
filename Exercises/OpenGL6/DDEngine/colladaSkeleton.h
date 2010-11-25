@@ -20,29 +20,39 @@ using namespace std;
 using namespace rapidxml;
 using namespace linearAlgebraDLL;
 
-struct poseJoint
+struct stringContainer
 {
-	Matrix jointTransform;
-	int jointIndex;
-	const char * jointID;
-	vector<poseJoint *> jointChildren;
+	string BoneID;
 };
 
-struct JointKeyframeChannel
+struct matrixContainer
 {
-	int jkKeyframes;
-	float * jkTime;
-	float * jkValues;
+	Matrix InvMatrix;
 };
 
-struct Joint
+struct skelPoseJoint
 {
-	Matrix jBindPose;						// the bind pose of this joint
-	const char * jName;						// joint name
-	const char * jID;						// joint ID, if any
-	int jParentIndex;						// the index of the parent
-	bool jAnimated;							// Does this joint have animation data
-	JointKeyframeChannel jChannel[4][4];	// Animation data for this joint
+	string pjID;
+
+	Matrix pjJointTransform;
+	Matrix pjTempTransform;
+};
+
+struct skelPose
+{
+	vector<skelPoseJoint> skelPoseJoints;
+};
+
+struct skelJoint
+{
+	string jName;								// Joint name
+	string jID;									// Joint ID, if any
+
+	int jParentIndex;							// The index of the parent
+
+	Matrix jBindPose;							// The bind pose matrix of this joint
+	vector<float> jKeyframeTime;				// Keyframe times for this joint
+	vector<matrixContainer> jKeyframeMatrix;	// Keyframe matrices for this joint
 };
 
 class colladaSkeleton_D ColladaSkeleton
@@ -61,19 +71,20 @@ public:
 	unsigned int getDataSize();
 
 	// builds a skeleton of poseJoints and returns pointer to the root
-	poseJoint * buildSkeleton();
+	skelPose * buildSkeleton();
 
 	// takes a poseJoint representing the root of a built skeleton, and an animation delta and updates the current animation (more parameters later)
-	void updateSkeleton(poseJoint * currentJoint, float timeCurrent);
+	void updateSkeleton(skelPose * currentPose, float currentTime);
 
-	// takes a poseJoint and traces the skeleton on the screen
-	void traceSkeletonJoint(poseJoint * rootJoint);
+	// trace the skeletal pose
+	void traceSkeleton(skelPose * currentPose);
 
 private:
-	void parseChildJoint(xml_node<>* currentNode, int parentIndex);
-	void buildSkeletonJoint(poseJoint * currentJoint, int currentIndex);
+	// Variables
+	bool skelAnimated;				// Is there any animation at all for this skeleton?
+	vector<skelJoint> skelJoints;	// Array of the skeleton joins in the bind pose.
 
-	vector<Joint> JointArray;
+	void loadSkelJoint(xml_node<>* currentNode, int parentIndex);
 };
 
 #endif

@@ -14,11 +14,18 @@
 #include "rapidxml.hpp"
 #include "memoryManager.h"
 #include "globals.h"
+#include "colladaSkeleton.h"
 
 #include "glut.h"
 
 using namespace std;
 using namespace rapidxml;
+
+struct vertexInfluence
+{
+	unsigned long vInfluenceCount;
+	vector<unsigned long> vInfluenceIndex;
+};
 
 class colladaFile_D ColladaFile
 {
@@ -34,7 +41,8 @@ public:
 	// and returns the name of the texture
 	char * load(std::string & str);
 	// renders the collada model
-	void render(void) const;
+	void render(void);
+	void render(skelPose * currentPose);
 	// returns the total size of the model in bytes
 	unsigned int getDataSize() const;
 
@@ -47,14 +55,25 @@ public:
 	xml_node<>* tempNode;
 	// Texture file name
 	string textureName;
-	// int for containing the number of vertices, normals and maps
+
+	// Variables for geometry
 	unsigned int vertexCount, normalCount, mapCount, indexCount, vertexStride, normalStride, mapStride, indexStride, offset;
-	// string for containing vertices, normals and maps
-	string vertexArray, normalArray, mapArray, indexArray;
 	float * vertex, * normal, * map;
 	unsigned long * index;
-	bool hasTexture, hasMoreNodes, isFinished, hasSkeletonWeights;
 
+	// Variables for skinning info
+	Matrix skinBindShapeMatrix;
+	vector<matrixContainer> skinInvMatrixArray;
+	vector<stringContainer> skinBoneIDArray;
+	vector<vertexInfluence> skinVertexInfluence;
+	//float * skinWeightsArray, * vertexSkinned, *normalSkinned;
+	//int * skinBoneIndexArray;
+	vector<float> skinWeightsArray;
+	vector<float> vertexSkinned;
+	vector<float> normalSkinned;
+	vector<unsigned int> skinBoneIndexArray;
+
+	bool hasTexture, hasSkeletonWeights;
 };
 
 #endif
