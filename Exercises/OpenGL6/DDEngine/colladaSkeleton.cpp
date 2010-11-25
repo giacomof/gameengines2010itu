@@ -13,363 +13,249 @@ ColladaSkeleton::~ColladaSkeleton(void)
 
 bool ColladaSkeleton::load(std::string & str)
 {
-	// Prepare array
-	JointArray.clear();
+	// Clear the array for loading
+	skelJoints.clear();
 
-	// Vars
-	bool isFinishedSkel = false;
-	bool isFinishedAnim = false;
-	string rootNodeName = "";
+	// Variables to parse xml doc with
+	xml_document<> doc;
+	xml_node<> * rootNode, * libraryNode;
 
-	// Open file
-	xml_document<> doc; 
-	xml_node<>* tempNode;
-
+	// Try to open the xml file
 	doc.parse<0>(strdup(str.c_str()));    // 0 means default parse flags
-	xml_node<>* rootNode = doc.first_node("COLLADA");
-	if (rootNode == NULL)
+
+	// Check if the file opened succesfully
+	if (doc.first_node("COLLADA") != 0)
 	{
-		std::cout << "colladaSkeleton - Could not open xml file\n";
+		rootNode = doc.first_node("COLLADA");
+	}
+	else
+	{
+		std::cout << "colladaSkeleton - Could not open xml file!\n";
 		return false;
 	}
 
-	tempNode = rootNode->first_node();
-	string tempNodeName = tempNode->name();
-
-	while(!isFinishedSkel || !isFinishedAnim)
+	// Check if there is a skeleton library in the file
+	if (rootNode->first_node("library_visual_scenes") != 0)
 	{
-		//////////////////////////////////////////
-		/*			Load Skeleton				*/
-		//////////////////////////////////////////
-		if(tempNodeName == "library_visual_scenes") 
+		libraryNode = rootNode->first_node("library_visual_scenes")->first_node("visual_scene");
+
+		// We need to find the name of the root joint node first
+		string skelRootName;
+		xml_node<>* skelRootNode;
+
+
+		// The name is in a subnode of the instance_controller node. We look for that
+		bool nodeFound = false;
+		xml_node<>* currentNode = libraryNode->first_node("node");
+		while (!nodeFound)
 		{
-			// set the visual scene node that we work from
-			xml_node<>* visualSceneNode = tempNode->first_node("visual_scene");
-
-			// Find the node with the instance controllers
-			xml_node<>* currentNode = visualSceneNode->first_node("node");
-			xml_node<>* rootNode;
-			bool nodeFound = false;
-			while (!nodeFound)
+			if (currentNode->first_node("instance_controller") != 0)
 			{
-				if (currentNode->first_node("instance_controller") != 0)
-				{
-					// We've found the node
-					currentNode = currentNode->first_node("instance_controller")->first_node("skeleton");
-					rootNodeName = currentNode->value();
-					nodeFound = true;
-				}
-				else if (currentNode->next_sibling() != 0)
-				{
-					// Check the next node
-					currentNode = currentNode->next_sibling();
-				}
-				else
-				{
-					// Haven't found it and we're out of nodes
-					return false;
-				}
+				skelRootName = currentNode->first_node("instance_controller")->first_node("skeleton")->value();
+				nodeFound = true;
 			}
-
-			// reset variable for reuse
-			nodeFound = false;
-			currentNode = visualSceneNode->first_node("node");
-			// find the root node
-			while (!nodeFound)
+			
+			// Continue to next node if we haven't found it yet
+			if ( !nodeFound && currentNode->next_sibling() != 0)
 			{
-				// Wrote this in a bit of an adhoc way. apologies
-				if ( currentNode->first_node("node") != 0 )
-				{
-					if ( currentNode->first_node("node")->first_attribute("id") != 0 )
-					{
-						string tempString = currentNode->first_node("node")->first_attribute("id")->value();
-						//std::cout << "Found a subnode with name \"" << tempString << "\", comparing against \"" << rootNodeName << "\"\n";
-						if ( rootNodeName.compare(1, rootNodeName.size() - 1, tempString) == 0)
-						{
-							// We've found the node
-							//std::cout << "Node matched!\n";
-							rootNode = currentNode->first_node("node");
-							nodeFound = true;
-						}
-					}
-				}
-				
-				if ( !nodeFound && currentNode->next_sibling() != 0)
-				{
-					// Check the next node
-					currentNode = currentNode->next_sibling();
-				}
-				else if ( !nodeFound )
-				{
-					// Haven't found it and we're out of nodes
-					std::cout << "Skeleton load failed - Couldn't find a node matching root name!\n";
-					return false;
-				}
+				currentNode = currentNode->next_sibling();
 			}
-
-			// Start recursively building the skeleton
-			parseChildJoint(rootNode, -1);
-
-			// JointArray should be full now
-			isFinishedSkel = true;
-			// std::cout << "Joint Array has " << JointArray.size() << " joints.\n";
+			else if ( !nodeFound )
+			{
+				std::cout << "colladaSkeleton - Could not identify root joint!\n";
+				return false;
+			}
 		}
 
-		//////////////////////////////////////////
-		/*			Load Animations				*/
-		//////////////////////////////////////////
-		if(tempNodeName == "library_animations" && isFinishedSkel)
+		// Now we need to find the node matching the name we've found
+		nodeFound = false;
+		currentNode = libraryNode->first_node("node");
+		while (!nodeFound)
 		{
-			// Load and store animations
-			// Need to set up a stringstream and append -transform to joint IDs, then search if an animation set exists for the joint.
-			// If set is found, parse channel values to associate a sampler with a matrix position
-			// Parse sampler to identify input, output and interpolation arrays
-			// Parse those and store them
-			xml_node<>* animationsNode = tempNode;
-
-			for (int i=0; i<JointArray.size(); i++)
+			if ( currentNode->first_node("node") != 0 )
 			{
-				// Set the current animation joint to the first one under the root
-				xml_node<>* currentAnimationJoint = animationsNode->first_node("animation");
-
-				// Get the current joint's ID.
-				string jointID = JointArray[i].jName;
-
-				// Search for a joint animation matching this joint ID
-				bool matchFound = false;
-				while (!matchFound)
+				if ( currentNode->first_node("node")->first_attribute("id") != 0 )
 				{
-					string tempJointID = currentAnimationJoint->first_attribute("id")->value();
-
-					// this assumes tempJointID is jointID with "-transform" appended. We could make this more robust I guess
-					if (tempJointID.compare(0, tempJointID.size() - 10, jointID) == 0)
+					string tempString = currentNode->first_node("node")->first_attribute("id")->value();
+					if ( skelRootName.compare(1, skelRootName.size() - 1, tempString) == 0)
 					{
-						// We found the animations for this joint.
-						//std::cout << "Found animation data matching \"" << jointID << "\"\n";
-						matchFound = true;
+						skelRootNode = currentNode->first_node("node");
+						nodeFound = true;
+					}
+				}
+			}
+			
+			// Continue to next node if we haven't found it yet
+			if ( !nodeFound && currentNode->next_sibling() != 0)
+			{
+				currentNode = currentNode->next_sibling();
+			}
+			else if ( !nodeFound )
+			{
+				std::cout << "colladaSkeleton - Could not find skeleton root node!\n";
+				return false;
+			}
+		}
+
+		// We have the root skeleton node now. We can now parse the tree and load it into our vector
+		loadSkelJoint(skelRootNode, -1);
+	}
+	else
+	{
+		std::cout << "colladaSkeleton - Could not find library_visual_scenes node!\n";
+		return false;
+	}
+
+	// Check if there is an animation library in the file
+	if (rootNode->first_node("library_animations") != 0)
+	{
+		libraryNode = rootNode->first_node("library_animations");
+
+		// Iterate through the joints we have loaded and load animations for each if possible
+		for (int i=0; i<skelJoints.size(); i++)
+		{
+			// First we need to find the animation node match our current joint
+			xml_node<>* currentAnimationNode = libraryNode->first_node("animation");
+
+			// Get the current joint's ID.
+			string currentJointName = skelJoints[i].jName;
+
+			// Search for a joint animation matching this joint ID
+			bool matchFound = false;
+			while (!matchFound)
+			{
+				string tempJointName = currentAnimationNode->first_attribute("id")->value();
+
+				// this assumes tempJointID is jointID with "-transform" appended. We could make this more robust I guess
+				if (tempJointName.compare(0, tempJointName.size() - 10, currentJointName) == 0)
+				{
+					matchFound = true;
+				}
+
+				if ( !matchFound && currentAnimationNode->next_sibling("animation") != 0)
+				{
+					currentAnimationNode = currentAnimationNode->next_sibling("animation");
+				}
+				else if ( !matchFound )
+				{
+					break;
+				}
+			}
+
+			// Only continue if we found the match
+			if (matchFound)
+			{
+				// Prepare variables for storing data
+				unsigned int currentCount;
+				string currentTimeArray;
+				string currentMatrixArray;
+
+				// Get the time array
+				xml_node<>* currentSource = currentAnimationNode->first_node("source");
+				currentTimeArray = currentSource->first_node("float_array")->value();
+				currentCount = atoi(currentSource->first_node("float_array")->first_attribute("count")->value());
+
+				// Utility variable
+				string token;
+
+				// Put in the time data
+				skelJoints[i].jKeyframeTime.reserve(currentCount);
+				std::istringstream streamTimeArray(currentTimeArray);
+				while ( getline(streamTimeArray, token, ' ') )
+				{
+					skelJoints[i].jKeyframeTime.push_back( atof(token.c_str()) );
+				}
+
+				// Generate empty matrices
+				skelJoints[i].jKeyframeMatrix.resize(skelJoints[i].jKeyframeTime.size());
+
+				// Go down through the matrix channels and put them into the vector
+				currentSource = currentSource->next_sibling("source");
+				for (int channel=0; channel<16; channel++)
+				{
+					currentMatrixArray = currentSource->first_node("float_array")->value();
+					currentCount = atoi(currentSource->first_node("float_array")->first_attribute("count")->value());
+
+					int row = (int) (channel % 4);
+					int col = (int) (channel / 4);
+
+					// Last channel is special case. we want to make sure it's 1
+					if (channel == 15)
+					{
+						for (int j=0; j<skelJoints[i].jKeyframeMatrix.size(); j++)
+						{
+							skelJoints[i].jKeyframeMatrix[j].InvMatrix.set( row, col, 1 );
+						}
+					}
+					// If matrix channel doesnt have a value for each frame, assume the first value is constant
+					else if (currentCount != skelJoints[i].jKeyframeTime.size())
+					{
+						std::istringstream streamMatrixArray(currentMatrixArray);
+						getline(streamMatrixArray, token, ' ');
+						float value = atof(token.c_str());
+						for (int j=0;j<skelJoints[i].jKeyframeTime.size();j++)
+						{
+							skelJoints[i].jKeyframeMatrix[j].InvMatrix.set( row, col, value );
+						}
 					}
 					else
 					{
-						if (currentAnimationJoint->next_sibling("animation") != 0)
+						std::istringstream streamMatrixArray(currentMatrixArray);
+						int j = 0;
+						while ( getline(streamMatrixArray, token, ' ') )
 						{
-							// Try the next one
-							currentAnimationJoint = currentAnimationJoint->next_sibling("animation");
-						}
-						else
-						{
-							// Out of nodes. No animation exists for this joint
-							break;
+							skelJoints[i].jKeyframeMatrix[j].InvMatrix.set( row, col, atof(token.c_str()) );
+							j++;
 						}
 					}
-				}
 
-				// Only continue if we found the match
-				if (matchFound)
-				{
-					// Go through the channels to find the associated sampler
-					xml_node<>* currentChannel = currentAnimationJoint->first_node("channel");
-
-					bool channelsDone = false;
-					while (!channelsDone)
+					if (channel < 15)
 					{
-						// Get source (sampler) and target IDs
-						string targetID = currentChannel->first_attribute("target")->value();
-						string samplerID = currentChannel->first_attribute("source")->value();
-
-						// Extract matrix position from target ID (I hope all files have it in this format)
-						int row, col;
-						row = atoi( targetID.substr(targetID.size()-5,1).c_str() );
-						col = atoi( targetID.substr(targetID.size()-2,1).c_str() );
-						//std::cout << targetID << " reads as ( " << x << " , " << y << " )\n";
-
-						// Constrain x and y just to be sure
-						if ( row > 3 || row < 0 ) row = 0;
-						if ( col > 3 || col < 0 ) col = 0;
-
-						// Now get the sample and use it to load the data
-						xml_node<>* currentSampler = currentAnimationJoint->first_node("sampler");
-
-						bool samplerFound = false;
-						while (!samplerFound)
-						{
-							string tempString = currentSampler->first_attribute("id")->value();
-							if ( samplerID.compare(1, samplerID.size() - 1, tempString) == 0 )
-							{
-								samplerFound = true;
-							}
-							else
-							{
-								if ( currentSampler->next_sibling("sampler") != 0 )
-								{
-									currentSampler = currentSampler->next_sibling("sampler");
-								}
-								else
-								{
-									// Uh oh! Here be dragons.
-									std::cout << "Couldn't find sampler \"" << samplerID << "\"\n";
-									break;
-								}
-							}
-						}
-
-						// We have a sampler now, right? We should have if samplerFound is true...
-						if (samplerFound)
-						{
-							// Let's take this guy apart and see where our arrays are
-							xml_node<>* currentInput = currentSampler->first_node("input");
-
-							string inputID = "", outputID = "";
-
-							while (true)
-							{
-								string semantic = currentInput->first_attribute("semantic")->value();
-
-								if ( semantic == "INPUT" )
-									inputID = currentInput->first_attribute("source")->value();
-								else if ( semantic == "OUTPUT" )
-									outputID = currentInput->first_attribute("source")->value();
-								else if (semantic != "INTERPOLATION")
-								{
-									// uhm, whoops. What does this do?
-									std::cout << "Unrecognized value for \"" << samplerID << "\"\n";
-								}
-
-								if (currentInput->next_sibling("input") != 0)
-									currentInput = currentInput->next_sibling("input");
-								else
-									break;
-							}
-
-							if (inputID != "" && outputID != "")
-							{
-								xml_node<>* currentArrayNode = currentAnimationJoint->first_node("source");
-
-								// Let's find and load our arrays
-								string inputString, outputString;
-								int inputCount = 0, outputCount = 0;
-								while (!inputCount || !outputCount)
-								{
-									string tempArrayID = currentArrayNode->first_attribute("id")->value();
-									if ( inputID.compare(1, inputID.size() - 1, tempArrayID) == 0 )
-									{
-										inputCount = atoi(currentArrayNode->first_node("float_array")->first_attribute("count")->value());
-										inputString = currentArrayNode->first_node("float_array")->value();
-									}
-									else if ( outputID.compare(1, outputID.size() - 1, tempArrayID) == 0 )
-									{
-										outputCount = atoi(currentArrayNode->first_node("float_array")->first_attribute("count")->value());
-										outputString = currentArrayNode->first_node("float_array")->value();
-									}
-
-									if (currentArrayNode->next_sibling("source") != 0)
-										currentArrayNode = currentArrayNode->next_sibling("source");
-									else
-										break;
-								}
-
-								// Get the largest count
-								int count = outputCount;
-								if (inputCount != outputCount)
-									std::cout << "Keyframe number mismatch!\n";
-
-								// Avast! Prepare to be parsed!
-								string token;
-
-								float * inputArray = (float *)malloc(count*sizeof(float));
-								float * outputArray = (float *)malloc(count*sizeof(float));
-
-
-								// parse the input array
-								std::istringstream inputStream(inputString);
-								int j = 0;
-								while ( getline(inputStream, token, ' ') )
-								{
-									inputArray[j] = atof(token.c_str());
-									j++;
-								}
-
-								// parse the output array
-								std::istringstream outputStream(outputString);
-								j = 0;
-								while ( getline(outputStream, token, ' ') )
-								{
-									outputArray[j] = atof(token.c_str());
-									j++;
-								}
-
-								JointArray[i].jChannel[row][col].jkKeyframes = count;
-								JointArray[i].jChannel[row][col].jkTime = inputArray;
-								JointArray[i].jChannel[row][col].jkValues = outputArray;
-
-								//std::cout << "Filled a channel!\n";
-								// Phew. And that was just one channel, for one joint!
-							}
-						}
-
-						if ( currentChannel->next_sibling("channel") != 0 )
-						{
-							currentChannel = currentChannel->next_sibling("channel");
-						}
-						else
-						{
-							channelsDone = true;
-						}
+						currentSource = currentSource->next_sibling("source")->next_sibling("source")->next_sibling("source");
 					}
-
-
-					//std::cout << "Loaded animation data for a joint\n";
-					JointArray[i].jAnimated = true;
 				}
 			}
 
-			// Animation data should be loaded now
-			isFinishedAnim = true;
+			// Animation Node has been loaded at this point
 		}
 
-		if(!isFinishedSkel || !isFinishedAnim)  {
-			// check if there are more libraries to search
-			if (tempNode->next_sibling() != 0)
-				tempNode = tempNode->next_sibling();
-			else
-				tempNode = rootNode->first_node();
-
-			tempNodeName = tempNode->name();
-		}
+		// All joints have had animations loaded at this point
+	}
+	else
+	{
+		std::cout << "colladaSkeleton - Could not find library_animations node!\n";
 	}
 
 	return true;
 }
 
-void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
+void ColladaSkeleton::loadSkelJoint(xml_node<>* currentNode, int parentIndex)
 {
 	// Make the joint
-	Joint currentJoint;
-	currentJoint.jAnimated = false;
-	currentJoint.jParentIndex = parentIndex;
-	currentJoint.jName = currentNode->first_attribute("id")->value();
+	skelJoint currentSkelJoint;
 
-	// get the bone ID, if any
+	// Save the name and ID, if applicable
+	currentSkelJoint.jName = currentNode->first_attribute("id")->value();
 	if ( currentNode->first_attribute("sid") != 0 )
-		currentJoint.jID = currentNode->first_attribute("sid")->value();
+		currentSkelJoint.jID = currentNode->first_attribute("sid")->value();
 	else
-		currentJoint.jID = "";
+		currentSkelJoint.jID = "";
 
-	// Temp string for storing float array in
-	string matrixArray;
-	// Get the matrix values
-	matrixArray = currentNode->first_node("matrix")->value();
-	// Token used for splitting matrixArray string
+	// Save the parent's index
+	currentSkelJoint.jParentIndex = parentIndex;
+
+	// Get the bind pose matrix
 	string token;
-	// Tokenize and convert the matrix string
+	string matrixArray = currentNode->first_node("matrix")->value();
+
 	std::istringstream isM(matrixArray);
-	// Parse tokens and insert value in matrix
 	for (int col = 0; col < 4; col++)
 	{
 		for (int row = 0; row < 4; row++)
 		{
 			if ( getline(isM, token, ' ') )
 			{
-				currentJoint.jBindPose.set(row, col, atof(token.c_str()) );
+				currentSkelJoint.jBindPose.set(row, col, atof(token.c_str()) );
 			}
 			else
 				break;
@@ -377,17 +263,17 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 	}
 
 	// Joint should be complete at this point, add it to the array
-	JointArray.push_back(currentJoint);
-	int currentIndex = JointArray.size() - 1;
+	skelJoints.push_back(currentSkelJoint);
 
 	// Search children of this node and call this function on them too
+	int currentIndex = skelJoints.size() - 1;
 	if (currentNode->first_node("node") != 0)
 	{
 		bool didChildren = false;
 		xml_node<>* childNode = currentNode->first_node("node");
 
 		do {
-			parseChildJoint(childNode, currentIndex);
+			loadSkelJoint(childNode, currentIndex);
 
 			if ( childNode->next_sibling("node") != 0)
 				childNode = childNode->next_sibling("node");
@@ -400,103 +286,85 @@ void ColladaSkeleton::parseChildJoint(xml_node<>* currentNode, int parentIndex)
 
 unsigned int ColladaSkeleton::getDataSize()
 {
-	// Uncomplete, obviously
+	// Incomplete, obviously
 	return static_cast<unsigned int> (0);
 }
 
-poseJoint * ColladaSkeleton::buildSkeleton()
+skelPose * ColladaSkeleton::buildSkeleton()
 {
-	poseJoint * rootJoint = new poseJoint;
+	skelPose * currentSkelPose = new skelPose;
 
-	rootJoint->jointTransform = JointArray[0].jBindPose;
-	rootJoint->jointID = JointArray[0].jID;
-	rootJoint->jointIndex = 0;
+	currentSkelPose->skelPoseJoints.reserve(skelJoints.size());
 
-	for (int i = 1; i<JointArray.size(); i++)
+	// Create a skelPoseJoint for each skelJoint
+	for (int i=0; i<skelJoints.size(); i++)
 	{
-		if (JointArray[i].jParentIndex == 0)
+		skelPoseJoint currentSkelPoseJoint;
+
+		currentSkelPoseJoint.pjID = skelJoints[i].jID;
+		currentSkelPoseJoint.pjJointTransform = skelJoints[i].jBindPose;
+		if (skelJoints[i].jParentIndex >= 0)
 		{
-			rootJoint->jointChildren.push_back(new poseJoint);
-			buildSkeletonJoint(rootJoint->jointChildren.back(), i);
+			currentSkelPoseJoint.pjJointTransform = currentSkelPoseJoint.pjJointTransform * currentSkelPose->skelPoseJoints[skelJoints[i].jParentIndex].pjJointTransform;
 		}
+
+		currentSkelPose->skelPoseJoints.push_back(currentSkelPoseJoint);
 	}
 
-	return rootJoint;
+	return currentSkelPose;
 }
 
-void ColladaSkeleton::buildSkeletonJoint(poseJoint * currentJoint, int currentIndex)
+void ColladaSkeleton::updateSkeleton(skelPose * currentPose, float currentTime)
 {
-	currentJoint->jointTransform = JointArray[currentIndex].jBindPose;
-	currentJoint->jointID = JointArray[currentIndex].jID;
-	currentJoint->jointIndex = currentIndex;
-
-	for (int i = currentIndex + 1; i<JointArray.size(); i++)
+	for (int i=0; i<currentPose->skelPoseJoints.size(); i++)
 	{
-		if (JointArray[i].jParentIndex == currentIndex)
+		if (skelJoints[i].jKeyframeTime.size() != 0)
 		{
-			currentJoint->jointChildren.push_back(new poseJoint);
-			buildSkeletonJoint(currentJoint->jointChildren.back(), i);
-		}
-	}
-}
+			int currentFrame = 0;
 
-void ColladaSkeleton::updateSkeleton(poseJoint * currentJoint, float timeCurrent)
-{
-	float animationTime;
-	int jointIndex = currentJoint->jointIndex;
-	int jkKeyframes;
-	int row, col;
-
-	if (JointArray[jointIndex].jAnimated)
-	{
-		for (int i = 0; i<15; i++) // This can probably be optimized with OpenMP
-		{
-			row = (int) (i % 4);
-			col = (int) (i / 4);
-
-			jkKeyframes = JointArray[jointIndex].jChannel[row][col].jkKeyframes;
-
-			animationTime = timeCurrent * JointArray[jointIndex].jChannel[row][col].jkTime[jkKeyframes-1];
-
-			int keyframe = 0;
-			while (animationTime > JointArray[jointIndex].jChannel[row][col].jkTime[keyframe] && keyframe < jkKeyframes)
+			for (int j=0; j<skelJoints[i].jKeyframeTime.size(); j++)
 			{
-				keyframe++;
+				if (currentTime < (skelJoints[i].jKeyframeTime[j]) )
+				{
+					currentFrame = j - 1;
+					break;
+				}
 			}
 
-			currentJoint->jointTransform.set(row,col,JointArray[jointIndex].jChannel[row][col].jkValues[keyframe]);
+			if (currentFrame < 0)
+				currentFrame = 0;
+
+			currentPose->skelPoseJoints[i].pjJointTransform = skelJoints[i].jKeyframeMatrix[currentFrame].InvMatrix;
+		}
+		else
+		{
+			currentPose->skelPoseJoints[i].pjJointTransform = skelJoints[i].jBindPose;
+		}
+
+		if (skelJoints[i].jParentIndex >= 0)
+		{
+			currentPose->skelPoseJoints[i].pjJointTransform = currentPose->skelPoseJoints[i].pjJointTransform * currentPose->skelPoseJoints[skelJoints[i].jParentIndex].pjJointTransform;
 		}
 	}
 
-	for (int i = 0; i<currentJoint->jointChildren.size(); i++)
-	{
-		updateSkeleton(currentJoint->jointChildren[i],timeCurrent);
-	}
 }
 
-void ColladaSkeleton::traceSkeletonJoint(poseJoint * currentJoint)
+void ColladaSkeleton::traceSkeleton(skelPose * currentPose)
 {
 	float tranM[16];
-	currentJoint->jointTransform.getMatrix(&tranM[0]);
 
-	glPushMatrix();
-	glMultMatrixf(&tranM[0]);
-
-	glColor3f(1.0f,1.0f,1.0f);
-	glPointSize(5.0f);
-	glBegin(GL_POINTS);
-		glVertex3f(0.0f,0.0f,0.0f);
-	glEnd();
-
-	for (int i = 0; i<currentJoint->jointChildren.size(); i++)
+	for (int i=0; i<currentPose->skelPoseJoints.size(); i++)
 	{
-		currentJoint->jointChildren[i]->jointTransform.getMatrix(&tranM[0]);
-		glBegin(GL_LINES);
-			glVertex3f(0.0f,0.0f,0.0f);
-			glVertex3f(tranM[12], tranM[13], tranM[14]);
-		glEnd();
-		traceSkeletonJoint(currentJoint->jointChildren[i]);
-	}
+		currentPose->skelPoseJoints[i].pjJointTransform.getMatrix(&tranM[0]);
 
-	glPopMatrix();
+		glPushMatrix();
+		glMultMatrixf(&tranM[0]);
+
+		glPointSize(5.0f);
+		glBegin(GL_POINTS);
+			glVertex3f(0.0f,0.0f,0.0f);
+		glEnd();
+
+		glPopMatrix();
+	}
 }

@@ -78,19 +78,23 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void)
 {
-	// Simon will expand this function to call a function on mesh that skins it to a pose instead, if a pose exists
-	if (mesh != NULL)
+	if (skeleton != NULL && mesh != NULL)
+	{
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture (GL_TEXTURE_2D, colladaTexture);
+		mesh->render(currentPose);
+		glDisable(GL_TEXTURE_2D);
+	}
+	else if (mesh != NULL)
 	{
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture (GL_TEXTURE_2D, colladaTexture);
 		mesh->render();
 		glDisable(GL_TEXTURE_2D);
 	}
-	
-	// This will trace the current pose of the skeleton on the screen. Later it will render mesh skinned to skeleton
-	else if (skeleton != NULL && currentPose != NULL)
+	else if (skeleton != NULL)
 	{
-		skeleton->traceSkeletonJoint(currentPose);
+		skeleton->traceSkeleton(currentPose);
 	}
 }
 
@@ -102,8 +106,6 @@ void  ColladaInterface::update(void)
 		animationProgress = animationProgress + (animationDelta * animationRate);
 		if (animationProgress > 1.0f)
 			animationProgress = animationProgress - 1.0f;
-
-		//std::cout << "Root matrix before " << animationProgress << " :\n" << currentPose->jointTransform << "\n\n";
 
 		skeleton->updateSkeleton(currentPose, animationProgress);
 	}

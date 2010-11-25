@@ -142,7 +142,7 @@ class sceneObject_D ColladaInterface : public SceneObject
 		ColladaSkeleton * skeleton;
 		ColladaFile * mesh;
 		int colladaTexture;
-		poseJoint * currentPose;
+		skelPose * currentPose;
 
 		float animationProgress;
 		float animationRate;

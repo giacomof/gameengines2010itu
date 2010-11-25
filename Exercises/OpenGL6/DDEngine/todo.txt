@@ -5,13 +5,10 @@
 GLOBAL TASKS:
 	  
 S- Skeletal Animation
-	1(S)- Load Collada Animation Data
-	1(S)- Draw Skeleton
-	1(S)- Draw Animated Skeleton
-	   S- Rig Character to the Skeleton
-	   S- better restart of the loop animation
-	   0- OpenMP integration
-	   	    
+	S- Debug mesh skinning
+	S- Find a way to handle normals
+	S- Do keyframe interpolation
+
 G- Shaders
 	1(G)- Load vert and frag
 	1(G)- Apply a shader to a whole scene
