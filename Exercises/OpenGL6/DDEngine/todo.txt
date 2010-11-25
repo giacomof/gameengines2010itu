@@ -25,7 +25,7 @@ V- V8 Javascript Scripting Integration
 	1(V)- Compile Scripts
 	1(V)- Run Scripts
 	1(V)- Return Values from scripts
-	0- ScriptHandler class imports V8 
+	1(V)- ScriptHandler class imports V8 
 	0- ScriptHandler Compiles Scripts
 	0- ScriptHandler Runs Scripts
 	0- ScriptHandler Return Values from scripts

@@ -486,6 +486,7 @@
     <None Include="..\Debug\ILU.dll" />
     <None Include="..\Debug\ILUT.dll" />
     <None Include="..\Debug\SDL.dll" />
+    <None Include="..\Debug\v8.dll" />
     <None Include="..\include\glew32.dll" />
     <None Include="..\include\glut.def" />
     <None Include="..\include\v8.dll" />
