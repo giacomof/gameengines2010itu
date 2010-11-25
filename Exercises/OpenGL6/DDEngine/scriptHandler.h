@@ -8,12 +8,27 @@
 #define scriptHandler__H__
 
 #include "v8.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+using namespace v8;
 
 class scriptHandler_D ScriptHandler
 {
+
 public:
-	ScriptHandler(void);
-	~ScriptHandler(void);
+
+	// Variables
+	Persistent<Context> g_context;
+
+	// Default Cons/Des
+	ScriptHandler::ScriptHandler(void);
+	ScriptHandler::~ScriptHandler(void);
+
+	// Methods
+	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
+
 };
 
 #endif

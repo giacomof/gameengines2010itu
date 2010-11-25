@@ -1231,6 +1231,9 @@
     <None Include="..\include\v8.dll">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Debug\v8.dll">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\glew32.lib">
