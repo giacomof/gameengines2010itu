@@ -60,7 +60,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\include</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glew32.lib;sdl.lib;sdlmain.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;glew32.lib;v8.lib;sdl.lib;sdlmain.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -333,8 +333,10 @@
     <ClInclude Include="mutexManager.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="sceneObject.h" />
+    <ClInclude Include="scriptHandler.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="transformation.h" />
+    <ClInclude Include="v8.h" />
     <ClInclude Include="windowManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -472,6 +474,7 @@
     <ClCompile Include="mutexManager.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="sceneObject.cpp" />
+    <ClCompile Include="scriptHandler.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="transformation.cpp" />
     <ClCompile Include="windowManager.cpp" />
@@ -485,6 +488,7 @@
     <None Include="..\Debug\SDL.dll" />
     <None Include="..\include\glew32.dll" />
     <None Include="..\include\glut.def" />
+    <None Include="..\include\v8.dll" />
     <None Include="TEAMDETAILS.txt" />
     <None Include="todo.txt" />
   </ItemGroup>
@@ -501,6 +505,7 @@
     <Library Include="..\include\LinearMath.lib" />
     <Library Include="..\include\SDL.lib" />
     <Library Include="..\include\SDLmain.lib" />
+    <Library Include="..\include\v8.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
