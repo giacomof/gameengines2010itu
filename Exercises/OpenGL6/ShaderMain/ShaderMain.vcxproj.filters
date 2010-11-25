@@ -74,6 +74,9 @@
     <None Include="assets\textureShader2.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="test.js">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h">

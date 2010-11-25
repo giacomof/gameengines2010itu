@@ -98,6 +98,7 @@
     <None Include="assets\textureShader2.vert" />
     <None Include="assets\toon.frag" />
     <None Include="assets\toon.vert" />
+    <None Include="test.js" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h" />
