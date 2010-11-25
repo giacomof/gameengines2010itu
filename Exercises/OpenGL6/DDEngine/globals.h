@@ -9,11 +9,11 @@
 
 // Debug Flags and Variables
 static bool drawDebug = true;
-static const int verbosityLevel = 2;
+static const int verbosityLevel = 1;
 
 // Logging System Variables and Flags
 	// Verbosity Level
-static const int verbosityLog	= 10;
+static const int verbosityLog	= 0;
 	
 	// Log Files
 static const char * MEMORYMANAGER_LOGFILE = "memorymanager.txt";
