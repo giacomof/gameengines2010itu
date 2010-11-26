@@ -1,5 +1,7 @@
 #include "assetManager.h"
 
+// static parameter for passing arguments to shaders
+int AssetManager::loc;
 std::map <char *, GLuint> AssetManager::shadingProgram_list;
 
 AssetManager AssetManager::_instance;
@@ -338,11 +340,18 @@ void AssetManager::activateShadingProgram(char * shadingProgramName)
 	GLuint p = shadingProgram_list[shadingProgramName];
 	glLinkProgram(p);
 	glUseProgram(p);
+
+	AssetManager::loc = glGetUniformLocation(p, "textureReference");
 }
 
 void AssetManager::deactivateShadingProgram()
 {
 	glUseProgram(0);
+}
+
+void AssetManager::shaderUsesTexture(int texture)
+{
+	glUniform1i(AssetManager::loc, texture);
 }
 
 	void AssetManager::printShaderInfoLog(GLuint obj)

@@ -36,6 +36,9 @@ md2Interface::~md2Interface(void)
 }
 
 void md2Interface::drawGeometry(void) {
+
+	AssetManager::shaderUsesTexture(md2Texture);
+
 	glEnable(GL_TEXTURE_2D);
 		glBindTexture (GL_TEXTURE_2D, md2Texture);
 		mesh->Render();
@@ -78,6 +81,7 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void)
 {
+	AssetManager::shaderUsesTexture(colladaTexture);
 	if (skeleton != NULL && mesh != NULL)
 	{
 		glEnable(GL_TEXTURE_2D);
@@ -115,12 +119,13 @@ void  ColladaInterface::update(void)
 // ************** Sphere *************** //
 // ************************************* //
 
-Sphere::Sphere(float rad, int sli, int sta, bool w) 
+Sphere::Sphere(float rad, int sli, int sta, bool w, unsigned int texture) 
 {
 	radius = rad;
 	slices = sli;
 	stacks = sta;
 	isWireframe = w;
+	textureReference = texture;
 }
 Sphere::~Sphere(void) 
 {
@@ -128,6 +133,7 @@ Sphere::~Sphere(void)
 
 void Sphere::drawGeometry() 
 {
+	AssetManager::shaderUsesTexture(textureReference);
 	if(isWireframe) {
 		glDisable(GL_TEXTURE_2D);	
 		glutWireSphere(radius, slices, stacks);
@@ -157,7 +163,7 @@ int Sphere::getSphereStacks(void)
 // ************** Plane **************** //
 // ************************************* //
 
-Plane::Plane(float w, float h, int sideSubdivisions) 
+Plane::Plane(float w, float h, int sideSubdivisions, unsigned int texture) 
 {
 	width = w;
 	height = h;
@@ -168,6 +174,8 @@ Plane::Plane(float w, float h, int sideSubdivisions)
 
 	halfWidth = width/2;
 	halfHeight = height/2;
+
+	textureReference = texture;
 }
 Plane::~Plane(void) 
 {
@@ -175,8 +183,8 @@ Plane::~Plane(void)
 
 void Plane::drawGeometry() 
 {
+	AssetManager::shaderUsesTexture(textureReference);
 	glDisable(GL_TEXTURE_2D);
-
 	if(subdivisions == 0) 
 	{
 		glBegin(GL_QUADS);
@@ -224,9 +232,11 @@ void Plane::setDimensions(float w, float h)
 // *************** Cube **************** //
 // ************************************* //
 
-Cube::Cube(float s) 
+Cube::Cube(float s, unsigned int texture) 
 {
 	side = s;
+
+	textureReference = texture;
 }
 Cube::~Cube(void) 
 {
@@ -235,7 +245,7 @@ Cube::~Cube(void)
 void Cube::drawGeometry() 
 {
 	float half = side/2;
-
+	AssetManager::shaderUsesTexture(textureReference);
 	glDisable(GL_TEXTURE_2D);	
 	glBegin(GL_QUADS);
 		glVertex3f( half, half,-half );			// Top Right Of The Quad (Top)
@@ -281,11 +291,13 @@ void Cube::setSide(float s)
 // *************** Line **************** //
 // ************************************* //
 
-Line::Line(Vector lStart, Vector lEnd) 
+Line::Line(Vector lStart, Vector lEnd, unsigned int texture) 
 {
 	lineStart = lStart;
 	lineEnd = lEnd;
 	lineVector = lStart - lEnd;
+
+	textureReference = texture;
 }
 
 void Line::setLine(Vector lStart, Vector lEnd) 
@@ -302,6 +314,7 @@ Vector Line::getLine(void)
 
 void Line::drawGeometry(void)
 {
+	AssetManager::shaderUsesTexture(textureReference);
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINES);
 		glVertex3f( lineStart.get(0), lineStart.get(1), lineStart.get(2) );		// origin of the line
@@ -400,10 +413,12 @@ void Light::setDirection(Vector position)
 // ************** Teapot *************** //
 // ************************************* //
 
-Teapot::Teapot(float size, bool wireframe)
+Teapot::Teapot(float size, bool wireframe, unsigned int texture)
 {
 	dimension = size;
 	wire = wireframe;
+
+	textureReference = texture;
 }
 
 void Teapot::setDimension(float size)
@@ -418,7 +433,7 @@ float Teapot::getSize(void)
 
 void Teapot::drawGeometry(void)
 {
-
+	AssetManager::shaderUsesTexture(textureReference);
 	glDisable(GL_TEXTURE_2D);	
 	glDisable(GL_CULL_FACE);
 	

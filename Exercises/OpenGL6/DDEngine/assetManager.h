@@ -81,6 +81,9 @@ public:
 	char * textFileRead(char * filePath);
 	static void activateShadingProgram(char * shadingProgramName);
 	static void deactivateShadingProgram();
+	static void shaderUsesTexture(int texture);
+	// static parameter for passing arguments to shaders
+	static int loc;
 
 	void printShaderInfoLog(GLuint obj);
 	void printProgramInfoLog(GLuint obj);

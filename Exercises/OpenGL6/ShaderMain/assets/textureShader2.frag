@@ -1,3 +1,5 @@
+uniform int textureReference;
+
 // Declaration of varying variables that will be received from the vertex shader
 varying vec3 surfaceNormal, lightDirirectionVector, HalfVectorLightEye;
 varying vec4 diffusiveComponent, globalAmbientalComponent, ambientalComponent;
@@ -42,17 +44,24 @@ void main()
 						pow(highlightsDotProduct, gl_FrontMaterial.shininess);
 	}
 		
-	// Extract components from OpenGL material to do the blending with the texture
-	fragColor =  gl_FrontMaterial.diffuse.rgb + gl_FrontMaterial.ambient.rgb;
-	fragAlpha = gl_FrontMaterial.diffuse.a;
+	if (textureReference == 0)
+	{
+		gl_FragColor = shadingColor;	
+	}
+	else
+	{
+		// Extract components from OpenGL material to do the blending with the texture
+		fragColor =  gl_FrontMaterial.diffuse.rgb + gl_FrontMaterial.ambient.rgb;
+		fragAlpha = gl_FrontMaterial.diffuse.a;
 		
-	// Extract the actual texel from the texture using the UV coordinates
-	texel = texture2D(texture, gl_TexCoord[0].st);
-	// Extract components from the texture to do the blending with OpenGL material
-	texColor = texel.rgb;
-	texAlpha = texel.a;
+		// Extract the actual texel from the texture using the UV coordinates
+		texel = texture2D(texture, gl_TexCoord[0].st);
+		// Extract components from the texture to do the blending with OpenGL material
+		texColor = texel.rgb;
+		texAlpha = texel.a;
 		
-	// Calculate the final color modulating the shading and the texture
-	gl_FragColor = vec4(texColor * fragColor, texAlpha * fragAlpha) * shadingColor;	
+		// Calculate the final color modulating the shading and the texture
+		gl_FragColor = vec4(texColor * fragColor, texAlpha * fragAlpha) * shadingColor;	
+	}
 }
 
