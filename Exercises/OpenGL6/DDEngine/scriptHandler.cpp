@@ -4,7 +4,7 @@ Persistent<Context> ScriptHandler::g_context;
 
 ScriptHandler::ScriptHandler(void)
 {
-
+	runScript();
 }
 
 
