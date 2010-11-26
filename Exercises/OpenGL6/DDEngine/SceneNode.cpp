@@ -339,33 +339,28 @@ unsigned int SceneNode::getNodeCount(void)
 
 void SceneNode::drawName(void)
 {
-	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+	AssetManager::shaderUsesTexture(-1);
 	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
 
-    glColor4f(0.1f, 1.0f, 0.1f, 0.2f);  // set text color
+    glColor4f(0.0f, 1.0f, 0.0f, 1.0f);  // set text color
 	float * pos = new float[3];
 	pos[1] = 0;
 	pos[2] = 0;
 
 	char * tempName = (char *)nodeNameString.c_str();
 	
-	int i = 0;
-	// proper starting position
-	if(nodeNameString=="boss cube")	i = 15;
-	//else i = 150;
-	
+	int i = 30;
 	// loop all characters in the string
 	while(*tempName)
     {
 		pos[0] = i;
 		glRasterPos3fv(pos);        // place text position
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *tempName);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *tempName);
         ++tempName;
-		i+=5;
+		i+=6;
     }
 	
     glEnable(GL_LIGHTING);
-    glPopAttrib();
 }
 
 void SceneNode::setShadingProgram(char * programName)

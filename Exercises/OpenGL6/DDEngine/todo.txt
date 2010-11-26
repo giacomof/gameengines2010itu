@@ -16,10 +16,11 @@ G- Shaders
 	1(G)- Diffuse Shader
 	1(G)- Diffuse Shader + Highlight
 	1(G)- Use Frag shaders
-	   G- make the highlight "follow" the camera
-	   G- Fix the color of the scenenodes names
+	1(G)- make the highlight "follow" the camera
+	1(G)- Fix the color of the scenenodes names
 	   G- Fix names in shader section of asset manager
-	   G- Improve Performance for a single object shader, if possible
+	   G- Skybox
+	   G- Environment Mapping
 	    
 V- V8 Javascript Scripting Integration
 	1(V)- Compile V8

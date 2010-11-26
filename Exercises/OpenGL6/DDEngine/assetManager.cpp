@@ -341,7 +341,7 @@ void AssetManager::activateShadingProgram(char * shadingProgramName)
 	glLinkProgram(p);
 	glUseProgram(p);
 
-	AssetManager::loc = glGetUniformLocation(p, "textureReference");
+	AssetManager::loc = glGetUniformLocation(p, "flag");
 }
 
 void AssetManager::deactivateShadingProgram()
