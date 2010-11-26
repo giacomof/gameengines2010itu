@@ -10,6 +10,8 @@
 #include "v8.h"
 #include <string>
 #include <iostream>
+#include "log.h"
+#include "globals.h"
 
 using namespace std;
 using namespace v8;
@@ -26,11 +28,14 @@ public:
 	ScriptHandler::ScriptHandler(void);
 	ScriptHandler::~ScriptHandler(void);
 
-	// Methods
+	// Scripting Methods
 	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
-	static Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
 	Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName);
 	void ScriptHandler::runScript(const char * filename, const char * function);
+
+	// Implemented Callbacks
+	static Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
+	static Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args);
 
 };
 
