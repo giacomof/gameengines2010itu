@@ -1,40 +1,58 @@
-varying vec4 diffuse,ambientGlobal, ambient;
-varying vec3 normal,lightDir,halfVector;
-varying float dist;
-uniform sampler2D tex;
+// Declaration of varying variables that will be received from the vertex shader
+varying vec3 surfaceNormal, lightDirirectionVector, HalfVectorLightEye;
+varying vec4 diffusiveComponent, globalAmbientalComponent, ambientalComponent;
+varying float lightDistanceFromVertex;
+
+// Uniform variable to access the texture shadingColor
+uniform sampler2D texture;
 	
 void main()
 {
-	vec3 ct,cf,n,halfV,viewV,ldir;
-	vec4 texel;
-	vec4 color = ambientGlobal;
-	float at,af,NdotL,NdotHV,att;
+	// Declariation of local variables
+	vec3 texColor,fragColor,pixelNormal,pixelHalfVector,viewV,ldir;
+	vec4 texel, shadingColor;
+	float texAlpha, fragAlpha, diffuseDotProduct, highlightsDotProduct, lightAttenuation;
 
-	n = normalize(normal);
+	// Put in the shader color the global ambiental component
+	shadingColor = globalAmbientalComponent;
+	// Used to disable global ambient light
+	//shadingColor = vec4(0.0, 0.0, 0.0, 0.0);
 
-	NdotL = max(dot(n,normalize(lightDir)),0.0);
+	// Normalize the vertex normal per pixel
+	pixelNormal = normalize(surfaceNormal);
 
-	if (NdotL > 0.0) 
+	// Calculate the dot product for the diffuse component
+	diffuseDotProduct = max(dot(pixelNormal, normalize(lightDirirectionVector)), 0.0);
+
+	if (diffuseDotProduct > 0.0) 
 	{
-	
-		att = 1.0 / (gl_LightSource[0].constantAttenuation +
-				gl_LightSource[0].linearAttenuation * dist +
-				gl_LightSource[0].quadraticAttenuation * dist * dist);
-		color += att * (diffuse * NdotL + ambient);
+		// Calculate the attenuation only considering the constant one (as dafault in OpenGL)
+		lightAttenuation = 1.0 / gl_LightSource[0].constantAttenuation;
+
+		// Add to the shading color the diffusive component without considering eventual highlights
+		shadingColor += lightAttenuation * ((diffusiveComponent * diffuseDotProduct) + ambientalComponent);
 		
-		halfV = normalize(halfVector);
-		NdotHV = max(dot(n,halfV),0.0);
-		color += att * gl_FrontMaterial.specular * gl_LightSource[0].specular * 
-						pow(NdotHV,gl_FrontMaterial.shininess);
+		// Normalize the half vector per pixel
+		pixelHalfVector = normalize(HalfVectorLightEye);
+		// Calcule the highlight
+		highlightsDotProduct = max(dot(pixelNormal, pixelHalfVector), 0.0);
+
+		// Add to the shading color the specular component
+		shadingColor +=	lightAttenuation * (gl_FrontMaterial.specular * gl_LightSource[0].specular) * 
+						pow(highlightsDotProduct, gl_FrontMaterial.shininess);
 	}
 		
-	cf =  gl_FrontMaterial.diffuse.rgb + gl_FrontMaterial.ambient.rgb;
-	af = gl_FrontMaterial.diffuse.a;
+	// Extract components from OpenGL material to do the blending with the texture
+	fragColor =  gl_FrontMaterial.diffuse.rgb + gl_FrontMaterial.ambient.rgb;
+	fragAlpha = gl_FrontMaterial.diffuse.a;
 		
-	texel = texture2D(tex,gl_TexCoord[0].st);
-	ct = texel.rgb;
-	at = texel.a;
+	// Extract the actual texel from the texture using the UV coordinates
+	texel = texture2D(texture, gl_TexCoord[0].st);
+	// Extract components from the texture to do the blending with OpenGL material
+	texColor = texel.rgb;
+	texAlpha = texel.a;
 		
-	gl_FragColor = vec4(ct * cf, at * af) * color;	
+	// Calculate the final color modulating the shading and the texture
+	gl_FragColor = vec4(texColor * fragColor, texAlpha * fragAlpha) * shadingColor;	
 }
 

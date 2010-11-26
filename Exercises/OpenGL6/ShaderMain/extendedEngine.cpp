@@ -13,7 +13,7 @@ void extendedEngine::setupScene()
 	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
 	assetManager.loadTexture("assets/duckCM.tga", "duckTx");
 
-	//assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
+	assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
 	assetManager.createShadingProgram("assets/shader1.vert", "assets/shader1.frag", "shader1");
 	assetManager.createShadingProgram("assets/phong1Point.vert", "assets/phong1Point.frag", "phong1Point");
 	assetManager.createShadingProgram("assets/textureShader1.vert", "assets/textureShader1.frag", "textureShader1");
@@ -28,7 +28,7 @@ void extendedEngine::setupScene()
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
 	// ******************************
-
+	
 	//// Create the plane with the collision shape
 	//SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 0);
 	//planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);
@@ -56,6 +56,9 @@ void extendedEngine::setupScene()
 
 	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"));
 	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(0.0f, 45.0f, 100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	SceneObject * sphere2 = this->createSphere(20, 30, 30, false);
+	SceneNode * sphereNode = this->addSceneNode(&rootNode, "Sphere Node 2", sphere2, Vector(0, 45, -100), Vector(0, 1, 0), 0);
 
 }
 void extendedEngine::frameStarted(int frameDelta)

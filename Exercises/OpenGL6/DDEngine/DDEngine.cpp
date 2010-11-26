@@ -289,7 +289,7 @@ void DDEngine::run(void)
 	GLfloat ambient[] = {1.0, 1.0, 1.0, 1};
 	GLfloat diffuse[] = {1.0, 1.0, 1.0, 1};
 	GLfloat specular[] = {1.0, 1.0, 1.0, 1};
-	GLfloat shine = 20.0;
+	GLfloat shine = 64.0;
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
