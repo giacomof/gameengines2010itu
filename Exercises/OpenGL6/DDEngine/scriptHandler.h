@@ -28,7 +28,7 @@ public:
 
 	// Methods
 	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
-	Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
+	static Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
 	Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName);
 	void ScriptHandler::runScript(void);
 

@@ -4,8 +4,7 @@ Persistent<Context> ScriptHandler::g_context;
 
 ScriptHandler::ScriptHandler(void)
 {
-	cout << "SCRIPT HANDLER CREATED" << endl;
-	//runScript();
+
 }
 
 
@@ -95,24 +94,17 @@ void ScriptHandler::runScript(void)
 	// Create a template for the global object and set the
 	// built-in global functions.
 	Local<ObjectTemplate> globals = ObjectTemplate::New();
-	//globals->Set(String::New("Log"), FunctionTemplate::New(LogCallback));
+	globals->Set( String::New("Log"), FunctionTemplate::New( LogCallback ) );
 
 	// Each processor gets its own context so different processors
 	// do not affect each other.
-	Handle<Context> context = Context::New(NULL, globals);
+	Handle<Context> context = Context::New( NULL, globals );
 
 	g_context = Persistent<Context>::New(context); // make the context global
 	Context::Scope scope(g_context);
 
-	/*
-	Handle<String> source = String::New("'Hello, World'");
-	Handle<Script> script = Script::Compile(source);
-	Handle<Value> result = script->Run();
-	*/
-
-	
 	Persistent<Function> updateFunction = GetFunctionHandle("test.js","Update");
-	printf("\n\n... Running Code ...\n\n");
+	
 	const int numArgs=0;
 	Handle<Value> * args = NULL;
 	Handle<Value> result = updateFunction->Call( g_context->Global(), numArgs, args);
