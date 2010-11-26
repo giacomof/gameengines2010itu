@@ -663,33 +663,33 @@ SceneObject * DDEngine::createCollada(ColladaFile * model, unsigned int texture,
 	return (SceneObject*) colladaModel;
 }
 
-SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe)
+SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe, unsigned int texture)
 {
-	Sphere * sphere = new(GEOMETRY, STACK_ALLOCATOR) Sphere(radius, slices, stacks, wireframe);
+	Sphere * sphere = new(GEOMETRY, STACK_ALLOCATOR) Sphere(radius, slices, stacks, wireframe, texture);
 	return (SceneObject*) sphere;
 }
 
-SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions)
+SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions, unsigned int texture)
 {
-	SceneObject * plane = new(GEOMETRY, STACK_ALLOCATOR) Plane(width, height, sideSubdivisions);
+	SceneObject * plane = new(GEOMETRY, STACK_ALLOCATOR) Plane(width, height, sideSubdivisions, texture);
 	return  plane;
 }
 
-SceneObject * DDEngine::createCube(float side)
+SceneObject * DDEngine::createCube(float side, unsigned int texture)
 {
-	Cube * cube = new(GEOMETRY, STACK_ALLOCATOR) Cube(side);
+	Cube * cube = new(GEOMETRY, STACK_ALLOCATOR) Cube(side, texture);
 	return (SceneObject*) cube;
 }
 
-SceneObject * DDEngine::createLine(Vector start, Vector end)
+SceneObject * DDEngine::createLine(Vector start, Vector end, unsigned int texture)
 {
-	Line * line = new(GEOMETRY, STACK_ALLOCATOR) Line(start, end);
+	Line * line = new(GEOMETRY, STACK_ALLOCATOR) Line(start, end, texture);
 	return (SceneObject*) line;
 }
 
-SceneObject * DDEngine::createTeapot(float size, bool wireframe)
+SceneObject * DDEngine::createTeapot(float size, bool wireframe, unsigned int texture)
 {
-	Teapot * teapot = new(GEOMETRY, STACK_ALLOCATOR) Teapot(size, wireframe);
+	Teapot * teapot = new(GEOMETRY, STACK_ALLOCATOR) Teapot(size, wireframe, texture);
 	return (SceneObject*) teapot;
 }
 

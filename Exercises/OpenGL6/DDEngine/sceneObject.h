@@ -7,6 +7,7 @@
 #ifndef sceneObject__H__
 #define sceneObject__H__
 
+#include "assetManager.h"						// Header File for our Asset Manager
 #include "colladaFile.h"
 #include "colladaSkeleton.h"
 #include "md2File.h"
@@ -38,7 +39,7 @@ class sceneObject_D SceneObject
 class sceneObject_D Sphere : public SceneObject
 {
 	public:
-		Sphere(float rad, int sli, int sta, bool w);
+		Sphere(float rad, int sli, int sta, bool w, unsigned int texture = 0);
 		~Sphere(void);
 
 		void drawGeometry(void);
@@ -51,13 +52,14 @@ class sceneObject_D Sphere : public SceneObject
 		float radius;
 		int slices, stacks;
 		bool isWireframe;
+		unsigned int textureReference;
 
 };
 
 class sceneObject_D Plane : public SceneObject 
 {
 	public:
-		Plane(float w, float h, int sideSubdivisions = 0);
+		Plane(float w, float h, int sideSubdivisions = 0, unsigned int texture = 0);
 		~Plane(void);
 
 		void drawGeometry(void);
@@ -72,12 +74,13 @@ class sceneObject_D Plane : public SceneObject
 		float halfHeight;
 
 		int subdivisions;
+		unsigned int textureReference; 
 };
 
 class sceneObject_D Cube : public SceneObject
 {
 	public:
-		Cube(float s);
+		Cube(float s, unsigned int texture = 0);
 		~Cube(void);
 
 		void drawGeometry(void);
@@ -86,12 +89,13 @@ class sceneObject_D Cube : public SceneObject
 		void setSide(float s);
 
 		float side;
+		unsigned int textureReference; 
 };
 
 class sceneObject_D Line : public SceneObject
 {
 	public:
-		Line(Vector lStart, Vector lEnd);
+		Line(Vector lStart, Vector lEnd, unsigned int texture = 0);
 		
 		void update(void) {};
 		void drawGeometry(void);
@@ -100,12 +104,13 @@ class sceneObject_D Line : public SceneObject
 		Vector getLine();
 
 		Vector lineStart, lineEnd, lineVector;
+		unsigned int textureReference; 
 };
 
 class sceneObject_D Teapot : public SceneObject
 {
 	public:
-		Teapot(float size, bool wireframe);
+		Teapot(float size, bool wireframe, unsigned int texture = 0);
 		
 		void update(void) {};
 		void drawGeometry(void);
@@ -115,12 +120,13 @@ class sceneObject_D Teapot : public SceneObject
 
 		float dimension;
 		bool wire;
+		unsigned int textureReference; 
 };
 
 class sceneObject_D md2Interface : public SceneObject 
 {
 	public:
-		md2Interface(md2File * m, unsigned int texture);
+		md2Interface(md2File * m, unsigned int texture = 0);
 		~md2Interface(void);
 
 		void update(void);
@@ -133,7 +139,7 @@ class sceneObject_D md2Interface : public SceneObject
 class sceneObject_D ColladaInterface : public SceneObject
 {
 	public:
-		ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s = 0);
+		ColladaInterface(ColladaFile * c, unsigned int texture = 0, ColladaSkeleton * s = 0);
 		~ColladaInterface(void);
 
 		void update(void);

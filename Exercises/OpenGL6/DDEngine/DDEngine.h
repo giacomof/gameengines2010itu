@@ -65,11 +65,11 @@ public:
 
 	SceneObject * createMD2(md2File * model, unsigned int texture);
 	SceneObject * createCollada(ColladaFile * model, unsigned int texture, ColladaSkeleton * skeleton = 0);
-	SceneObject * createSphere(float radius, int slices, int stacks, bool wireframe);
-	SceneObject * createPlane(float width, float height, int sideSubdivisions);
-	SceneObject * createCube(float side);
-	SceneObject * createLine(Vector start, Vector end);
-	SceneObject * createTeapot(float size, bool wireframe);
+	SceneObject * createSphere(float radius, int slices, int stacks, bool wireframe, unsigned int texture = 0);
+	SceneObject * createPlane(float width, float height, int sideSubdivisions, unsigned int texture = 0);
+	SceneObject * createCube(float side, unsigned int texture = 0);
+	SceneObject * createLine(Vector start, Vector end, unsigned int texture = 0);
+	SceneObject * createTeapot(float size, bool wireframe, unsigned int texture = 0);
 	SceneObject * createLight(	bool enabled, bool directional,
 								float ambientR, float ambientG, float ambientB,
 								float diffuseR, float diffuseG, float diffuseB,
