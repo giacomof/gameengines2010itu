@@ -18,6 +18,7 @@ static const int verbosityLog	= 0;
 	// Log Files
 static const char * MEMORYMANAGER_LOGFILE = "memorymanager.txt";
 static const char * MALLOC_LOGFILE		  = "malloc.txt";
+static const char * JAVASCRIPT_LOGFILE	  = "javaScriptLOG.txt";
 
 // MemoryManager Flags
 	// Type Flag

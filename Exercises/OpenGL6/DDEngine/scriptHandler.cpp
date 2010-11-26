@@ -56,9 +56,20 @@ Handle<Value> ScriptHandler::LogCallback(const Arguments &args)
 	int numArgs = args.Length();
 	Local<Value> value =  args[0];
 	String::AsciiValue ascii(value);
-	printf("The Result is %s\n", *ascii);
+
+	Log::addToLog(JAVASCRIPT_LOGFILE, *ascii);
+	
 	return value;
 
+}
+
+Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args) 
+{
+	HandleScope handleScope;
+	Local<Value> value =  args[0];
+	Log::clearLog(JAVASCRIPT_LOGFILE);
+	
+	return value;
 }
 
 
@@ -91,16 +102,16 @@ void ScriptHandler::runScript(const char * filename, const char * function)
 {
 	HandleScope handleScope;
 
-	// Create a template for the global object and set the
-	// built-in global functions.
+	// Create a template for the global object and set the built-in global functions.
 	Local<ObjectTemplate> globals = ObjectTemplate::New();
+	
 	globals->Set( String::New("Log"), FunctionTemplate::New( LogCallback ) );
+	globals->Set( String::New("ClearLog"), FunctionTemplate::New( clearLogCallback ) );
 
-	// Each processor gets its own context so different processors
-	// do not affect each other.
+	// Each processor gets its own context so different processors do not affect each other.
 	Handle<Context> context = Context::New( NULL, globals );
-
-	g_context = Persistent<Context>::New(context); // make the context global
+	// make the context global
+	g_context = Persistent<Context>::New(context); 
 	Context::Scope scope(g_context);
 
 	Persistent<Function> updateFunction = GetFunctionHandle(filename, function);
@@ -110,7 +121,7 @@ void ScriptHandler::runScript(const char * filename, const char * function)
 	Handle<Value> result = updateFunction->Call( g_context->Global(), numArgs, args);
 	
 
-	// Convert the result to an ASCII string and print it.
-	String::AsciiValue ascii(result);
-	printf("The Result is %s\n", *ascii);
+	//// Convert the result to an ASCII string and print it.
+	//String::AsciiValue ascii(result);
+	//printf("The Result is %s\n", *ascii);
 }
