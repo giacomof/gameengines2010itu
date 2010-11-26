@@ -27,10 +27,11 @@ V- V8 Javascript Scripting Integration
 	1(V)- Run Scripts
 	1(V)- Return Values from scripts
 	1(V)- ScriptHandler class imports V8 
-	0- ScriptHandler Compiles Scripts
-	0- ScriptHandler Runs Scripts
-	0- ScriptHandler Return Values from scripts
+	1(V)- ScriptHandler Compiles Scripts
+	1(V)- ScriptHandler Runs Scripts
+	1(V)- ScriptHandler Return Values from scripts
 	0- Call global engine functions like log methods from script
+	0- Implement the most used engine functions
 	0- startEngine mode
 	0- stopEngine mode
 	0- move logic into scripts as much as possible
