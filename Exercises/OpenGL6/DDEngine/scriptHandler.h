@@ -30,7 +30,7 @@ public:
 	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
 	static Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
 	Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName);
-	void ScriptHandler::runScript(void);
+	void ScriptHandler::runScript(const char * filename, const char * function);
 
 };
 

@@ -4,7 +4,7 @@ Persistent<Context> ScriptHandler::g_context;
 
 ScriptHandler::ScriptHandler(void)
 {
-	runScript();
+	runScript("test.js", "Update");
 }
 
 
@@ -87,7 +87,7 @@ Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, con
 
 }
 
-void ScriptHandler::runScript(void) 
+void ScriptHandler::runScript(const char * filename, const char * function) 
 {
 	HandleScope handleScope;
 
@@ -103,7 +103,7 @@ void ScriptHandler::runScript(void)
 	g_context = Persistent<Context>::New(context); // make the context global
 	Context::Scope scope(g_context);
 
-	Persistent<Function> updateFunction = GetFunctionHandle("test.js","Update");
+	Persistent<Function> updateFunction = GetFunctionHandle(filename, function);
 	
 	const int numArgs=0;
 	Handle<Value> * args = NULL;
