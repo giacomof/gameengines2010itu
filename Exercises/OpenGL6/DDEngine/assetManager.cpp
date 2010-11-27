@@ -352,6 +352,11 @@ void AssetManager::loadSkyBoxTexture()
 	}
 }
 
+unsigned int * AssetManager::getSkyBoxTextureList()
+{
+	return skyBoxTexture;
+}
+
 void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName)
 {
 		char *vs = NULL,*fs = NULL,*fs2 = NULL;
