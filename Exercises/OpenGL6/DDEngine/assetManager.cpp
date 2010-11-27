@@ -429,9 +429,9 @@ void AssetManager::deactivateShadingProgram()
 	glUseProgram(0);
 }
 
-void AssetManager::shaderUsesTexture(int texture)
+void AssetManager::setShaderFlag(int flag)
 {
-	glUniform1i(AssetManager::loc, texture);
+	glUniform1i(AssetManager::loc, flag);
 }
 
 	void AssetManager::printShaderInfoLog(GLuint obj)

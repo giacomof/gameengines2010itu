@@ -7,7 +7,13 @@ varying float lightDistanceFromVertex;
 	
 void main()
 {
-	if (flag != -1)
+	if (flag == -2)
+	{
+		// Set the vertex texture coordinate
+		gl_TexCoord[0] = gl_MultiTexCoord0;
+	} 
+
+	else if (flag == 0 || flag == 1)
 	{
 		// Declariation of local variables
 		vec3 subtractionVector;

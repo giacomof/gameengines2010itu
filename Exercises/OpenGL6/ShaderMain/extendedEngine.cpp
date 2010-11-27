@@ -38,7 +38,7 @@ void extendedEngine::setupScene()
 	//planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);
 
 	// Create character "rotation center" node
-	SceneObject * sphere = this->createSphere(5, 30, 30, true);
+	SceneObject * sphere = this->createSphere(5, 30, 30, true, NO_TEXTURE_PHONG);
 	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 	sphereNode->setVisible(true);
 
@@ -46,7 +46,7 @@ void extendedEngine::setupScene()
 	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
 	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -200), Vector(0, 0, 0), 0);
 
-	SceneObject * sphere2 = this->createSphere(5, 30, 30, false);
+	SceneObject * sphere2 = this->createSphere(5, 30, 30, false, NO_TEXTURE_PHONG);
 	SceneNode * sphereNode2 = this->addSceneNode(light1Node, "", sphere2, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 
 
@@ -59,11 +59,11 @@ void extendedEngine::setupScene()
 	//light2->setDirection(Vector(0, 1, 0));
 
 	// Create the teapot
-	SceneObject * teapot = this->createTeapot(50, false);
+	SceneObject * teapot = this->createTeapot(50, false, NO_TEXTURE_PHONG);
 	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 45.0f, -100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 	//teapotNode->setVisible(false);
 
-	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"));
+	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"), TEXTURE_PHONG);
 	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	

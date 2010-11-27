@@ -32,7 +32,17 @@ static const unsigned short SHADER		= 6;
 static const unsigned short SOUND		= 7;
 static const unsigned short TEXTURE		= 8;
 
-	// Allocator Flag
+
+static const int TEXTURE_NO_SHADING		= -2;
+static const int GREEN_TEXT				= -1;
+static const int NO_TEXTURE_PHONG		= 0;
+static const int TEXTURE_PHONG			= 1;
+static const int SPECULAR_MAP			= 2;
+
+
+
+
+// Allocator Flag
 static const unsigned short STACK_ALLOCATOR			= 0;
 static const unsigned short SINGLE_FRAME_ALLOCATOR	= 1;
 

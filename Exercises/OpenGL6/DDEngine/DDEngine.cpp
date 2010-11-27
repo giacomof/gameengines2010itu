@@ -517,7 +517,7 @@ float* DDEngine::getCamera()
 
 void DDEngine::addSkyBox(unsigned int * textureList)
 {
-	skyBox = new(TEXTURE, STACK_ALLOCATOR) SkyBox(textureList);
+	skyBox = new(TEXTURE, STACK_ALLOCATOR) SkyBox(textureList, TEXTURE_NO_SHADING);
 }
 
 btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep)
@@ -599,45 +599,45 @@ btCollisionShape * DDEngine::createCollisionSphere(float radius)
 	return sphereShape;
 }
 
-SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture)
+SceneObject * DDEngine::createMD2(md2File * model, int shaderFlag, unsigned int texture)
 {
 	md2Interface * md2Model = new(GEOMETRY, STACK_ALLOCATOR) md2Interface(model, texture);
 	return (SceneObject*) md2Model;
 }
 
-SceneObject * DDEngine::createCollada(ColladaFile * model, unsigned int texture, ColladaSkeleton * skeleton)
+SceneObject * DDEngine::createCollada(ColladaFile * model, unsigned int texture, int shaderFlag, ColladaSkeleton * skeleton)
 {
-	ColladaInterface * colladaModel = new(GEOMETRY, STACK_ALLOCATOR) ColladaInterface(model, texture, skeleton);
+	ColladaInterface * colladaModel = new(GEOMETRY, STACK_ALLOCATOR) ColladaInterface(model, shaderFlag, texture, skeleton);
 	return (SceneObject*) colladaModel;
 }
 
-SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe, unsigned int texture)
+SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe, int shaderFlag, unsigned int texture)
 {
-	Sphere * sphere = new(GEOMETRY, STACK_ALLOCATOR) Sphere(radius, slices, stacks, wireframe, texture);
+	Sphere * sphere = new(GEOMETRY, STACK_ALLOCATOR) Sphere(radius, slices, stacks, wireframe, shaderFlag, texture);
 	return (SceneObject*) sphere;
 }
 
-SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions, unsigned int texture)
+SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions, int shaderFlag, unsigned int texture)
 {
-	SceneObject * plane = new(GEOMETRY, STACK_ALLOCATOR) Plane(width, height, sideSubdivisions, texture);
+	SceneObject * plane = new(GEOMETRY, STACK_ALLOCATOR) Plane(width, height, sideSubdivisions, shaderFlag, texture);
 	return  plane;
 }
 
-SceneObject * DDEngine::createCube(float side, unsigned int texture)
+SceneObject * DDEngine::createCube(float side, int shaderFlag, unsigned int texture)
 {
-	Cube * cube = new(GEOMETRY, STACK_ALLOCATOR) Cube(side, texture);
+	Cube * cube = new(GEOMETRY, STACK_ALLOCATOR) Cube(side, shaderFlag, texture);
 	return (SceneObject*) cube;
 }
 
-SceneObject * DDEngine::createLine(Vector start, Vector end, unsigned int texture)
+SceneObject * DDEngine::createLine(Vector start, Vector end, int shaderFlag, unsigned int texture)
 {
-	Line * line = new(GEOMETRY, STACK_ALLOCATOR) Line(start, end, texture);
+	Line * line = new(GEOMETRY, STACK_ALLOCATOR) Line(start, end, shaderFlag, texture);
 	return (SceneObject*) line;
 }
 
-SceneObject * DDEngine::createTeapot(float size, bool wireframe, unsigned int texture)
+SceneObject * DDEngine::createTeapot(float size, bool wireframe, int shaderFlag, unsigned int texture)
 {
-	Teapot * teapot = new(GEOMETRY, STACK_ALLOCATOR) Teapot(size, wireframe, texture);
+	Teapot * teapot = new(GEOMETRY, STACK_ALLOCATOR) Teapot(size, wireframe, shaderFlag, texture);
 	return (SceneObject*) teapot;
 }
 
