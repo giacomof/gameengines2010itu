@@ -28,11 +28,13 @@ struct stringContainer
 struct matrixContainer
 {
 	Matrix InvMatrix;
+	Matrix tempMatrix;
 };
 
 struct skelPoseJoint
 {
 	string pjID;
+	int pjParentIndex;
 
 	Matrix pjJointTransform;
 	Matrix pjTempTransform;

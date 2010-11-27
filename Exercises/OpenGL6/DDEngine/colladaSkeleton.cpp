@@ -302,6 +302,7 @@ skelPose * ColladaSkeleton::buildSkeleton()
 		skelPoseJoint currentSkelPoseJoint;
 
 		currentSkelPoseJoint.pjID = skelJoints[i].jID;
+		currentSkelPoseJoint.pjParentIndex = skelJoints[i].jParentIndex;
 		currentSkelPoseJoint.pjJointTransform = skelJoints[i].jBindPose;
 		if (skelJoints[i].jParentIndex >= 0)
 		{
