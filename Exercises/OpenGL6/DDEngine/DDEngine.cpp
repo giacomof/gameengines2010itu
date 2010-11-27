@@ -511,67 +511,6 @@ float* DDEngine::getCamera()
 	return &tranM[0];
 }
 
-void DDEngine::setShaders() 
-{	
-		char *vs,*fs;
-	
-		GLuint v = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-		GLuint f = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);	
-	
-		vs = textFileRead("assets/toonf2.vert");
-		fs = textFileRead("assets/toonf2.frag");
-	
-		const char * vv = vs;
-		const char * ff = fs;
-	
-		glShaderSourceARB(v, 1, &vv,NULL);
-		glShaderSourceARB(f, 1, &ff,NULL);
-	
-		MemoryManager::newFree(vs);
-		MemoryManager::newFree(fs);
-	
-		glCompileShaderARB(v);
-		glCompileShaderARB(f);
-	
-		GLuint p = glCreateProgramObjectARB();
-		
-		glAttachObjectARB(p,v);
-		glAttachObjectARB(p,f);
-	
-		glLinkProgramARB(p);
-		glUseProgramObjectARB(p);
-
-}
-
-char * DDEngine::textFileRead(char *fn) {
-
-
-	FILE *fp;
-	char *content = NULL;
-
-	int count=0;
-
-	if (fn != NULL) {
-		fp = fopen(fn,"rt");
-
-		if (fp != NULL) {
-      
-      fseek(fp, 0, SEEK_END);
-      count = ftell(fp);
-      rewind(fp);
-
-			if (count > 0) {
-				content = (char *)MemoryManager::newMalloc(sizeof(char) * (count+1), SHADER );
-				count = fread(content,sizeof(char),count,fp);
-				content[count] = '\0';
-			}
-			fclose(fp);
-		}
-	}
-	return content;
-}
-
-
 btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep)
 {
 	btCollisionShape * cubeShape = new btBoxShape(btVector3(dimension.getX(), dimension.getY(), dimension.getZ()));

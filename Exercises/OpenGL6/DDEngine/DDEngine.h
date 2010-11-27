@@ -63,8 +63,8 @@ public:
 	btCollisionShape * createCollisionBox(Vector dimension);
 	btCollisionShape * createCollisionSphere(float radius);
 
-	SceneObject * createMD2(md2File * model, unsigned int texture);
-	SceneObject * createCollada(ColladaFile * model, unsigned int texture, ColladaSkeleton * skeleton = 0);
+	SceneObject * createMD2(md2File * model, unsigned int texture = 0);
+	SceneObject * createCollada(ColladaFile * model, unsigned int texture = 0, ColladaSkeleton * skeleton = 0);
 	SceneObject * createSphere(float radius, int slices, int stacks, bool wireframe, unsigned int texture = 0);
 	SceneObject * createPlane(float width, float height, int sideSubdivisions, unsigned int texture = 0);
 	SceneObject * createCube(float side, unsigned int texture = 0);
@@ -126,12 +126,6 @@ protected:
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
-	void setShaders();							// Set the shadeing program
-
-char * textFileRead(char *fn);
-
-
-
 
 };
 
