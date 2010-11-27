@@ -454,78 +454,68 @@ SkyBox::SkyBox(unsigned int * texture)
 
 void SkyBox::drawGeometry(void)
 {
-	// Begin DrawSkybox
-	glColor4f(1.0, 1.0, 1.0,1.0f);
- 
-	// Save Current Matrix
 	glPushMatrix();
  
 	//// Second Move the render space to the correct position (Translate)
 	//glTranslatef(position.x,position.y,position.z);
  
-	//// First apply scale matrix
-	//glScalef(size.x,size.y,size.z);
- 
-	float cz = 0.0f,cx = 1.0f;
-	float r = 500.0f; // If you have border issues change this to 1.005f
-	// Common Axis Z - TOP Side
+	float coord = 1000.0f;
+	// TOP Side
 	glDisable(GL_CULL_FACE);
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[0]);
 	glBegin(GL_QUADS);	
-		glTexCoord2f(cz, cx); glVertex3f(-r ,500.0f,-r);
-		glTexCoord2f(cz, cz); glVertex3f(-r,500.0f,r);
-		glTexCoord2f(cx, cz); glVertex3f( r,500.0f,r); 
-		glTexCoord2f(cx, cx); glVertex3f( r ,500.0f,-r);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-coord ,coord,-coord);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-coord,coord,coord);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( coord,coord,coord); 
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( coord ,coord,-coord);
 	glEnd();
  
-	// Common Axis Y - FRONT side
+	// FRONT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[1]);
 	glBegin(GL_QUADS);		
-		glTexCoord2f(cx, cx); glVertex3f( r, -r,-500.0f);
-		glTexCoord2f(cx, cz); glVertex3f( r,  r,-500.0f); 
-		glTexCoord2f(cz, cz); glVertex3f(-r,  r,-500.0f);
-		glTexCoord2f(cz, cx); glVertex3f(-r, -r,-500.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( coord, -coord,-coord);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( coord,  coord,-coord); 
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-coord,  coord,-coord);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-coord, -coord,-coord);
 	glEnd();
 
-	// Common Axis Z - BOTTOM side
+	// BOTTOM side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[2]);
 	glBegin(GL_QUADS);		
-		glTexCoord2f(cz,cz);  glVertex3f(-r,-500.0f,-r);
-		glTexCoord2f(cz,cx);  glVertex3f(-r,-500.0f, r);
-		glTexCoord2f(cx,cx);  glVertex3f( r,-500.0f, r); 
-		glTexCoord2f(cx,cz);  glVertex3f( r,-500.0f,-r);
+		glTexCoord2f(0.0f,0.0f);  glVertex3f(-coord,-coord,-coord);
+		glTexCoord2f(0.0f,1.0f);  glVertex3f(-coord,-coord, coord);
+		glTexCoord2f(1.0f,1.0f);  glVertex3f( coord,-coord, coord); 
+		glTexCoord2f(1.0f,0.0f);  glVertex3f( coord,-coord,-coord);
 	glEnd();
 
-	// Common Axis Y - BACK side
+	// BACK side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[3]);
 	glBegin(GL_QUADS);		
-		glTexCoord2f(cz, cx); glVertex3f( r, -r,500.0f);
-		glTexCoord2f(cz, cz); glVertex3f( r,  r,500.0f); 
-		glTexCoord2f(cx, cz); glVertex3f(-r,  r,500.0f);
-		glTexCoord2f(cx, cx); glVertex3f(-r, -r,500.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( coord, -coord,coord);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( coord,  coord,coord); 
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-coord,  coord,coord);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-coord, -coord,coord);
 	glEnd();
  
-	// Common Axis X - RIGHT side
+	// RIGHT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[4]);
 	glBegin(GL_QUADS);		
-		glTexCoord2f(cx, cx); glVertex3f(500.0f, -r, r);	
-		glTexCoord2f(cx, cz); glVertex3f(500.0f,  r, r); 
-		glTexCoord2f(cz, cz); glVertex3f(500.0f,  r,-r);
-		glTexCoord2f(cz, cx); glVertex3f(500.0f, -r,-r);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(coord, -coord, coord);	
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(coord,  coord, coord); 
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(coord,  coord,-coord);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(coord, -coord,-coord);
 	glEnd();
 
-	// Common Axis X - Left side
+	// LEFT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[5]);
 	glBegin(GL_QUADS);		
-		glTexCoord2f(cz,cx); glVertex3f(-500.0f, -r, r);	
-		glTexCoord2f(cz,cz); glVertex3f(-500.0f,  r, r); 
-		glTexCoord2f(cx,cz); glVertex3f(-500.0f,  r,-r);
-		glTexCoord2f(cx,cx); glVertex3f(-500.0f, -r,-r);		
+		glTexCoord2f(0.0f,1.0f); glVertex3f(-coord, -coord, coord);	
+		glTexCoord2f(0.0f,0.0f); glVertex3f(-coord,  coord, coord); 
+		glTexCoord2f(1.0f,0.0f); glVertex3f(-coord,  coord,-coord);
+		glTexCoord2f(1.0f,1.0f); glVertex3f(-coord, -coord,-coord);		
 	glEnd();
  	glEnable(GL_CULL_FACE);
-	// Load Saved Matrix
-	glPopMatrix();
- 
 
+	glPopMatrix();
 }
 
