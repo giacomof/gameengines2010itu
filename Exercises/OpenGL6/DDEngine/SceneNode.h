@@ -102,7 +102,6 @@ class sceneNode_D SceneNode
 		list<SceneNode*> childList;				// List of child Nodes
 		Transformation nodeTransformation;		// Transformation of the Node
 		SceneObject * geometry;					// Mesh to render
-//		AssetManager * assetManager;
 
 		char * shadingProgramName;
 		bool shadingIsActive;
