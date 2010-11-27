@@ -438,6 +438,7 @@ float Teapot::getSize(void)
 void Teapot::drawGeometry(void)
 {
 	AssetManager::setShaderFlag(shaderF);
+	glBindTexture(GL_TEXTURE_2D,textureReference);
 	glDisable(GL_TEXTURE_2D);	
 	glDisable(GL_CULL_FACE);
 	
