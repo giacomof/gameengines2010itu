@@ -1,5 +1,3 @@
-
-
 #include "sceneNode.h"
 
 static int nodeCount = 0;

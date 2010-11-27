@@ -76,6 +76,10 @@ public:
 	bool loadColladaSkeleton(char * filePath, char * colladaNameChar);
 	ColladaSkeleton * getColladaSkeleton(char * colladaNameChar);
 
+	// SkyBox methods
+	void loadSkyBoxTexture();
+
+
 	// Shaders methods
 	void createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName);
 	char * textFileRead(char * filePath);
@@ -93,7 +97,9 @@ private:
 	std::map <char *, md2InterfaceContainer> md2_list;
 	std::map <char *, colladaInterfaceContainer> collada_list;
 	std::map <char *, colladaSkelInterfaceContainer> colladaskel_list;
+	unsigned int * skyBoxTexture;
 	static std::map <char *, GLuint> shadingProgram_list;
+
 };
 
 #endif

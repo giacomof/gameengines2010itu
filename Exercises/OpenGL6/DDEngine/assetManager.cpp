@@ -277,6 +277,81 @@ ColladaSkeleton * AssetManager::getColladaSkeleton(char * colladaNameChar)
 	return colladaskel_list[colladaNameChar].colladaSkel;
 }
 
+void AssetManager::loadSkyBoxTexture()
+{
+	// Initialization of DevIL
+	ilInit(); 
+
+	skyBoxTexture = (unsigned int*)MemoryManager::newMalloc(sizeof(unsigned int)*6, TEXTURE);
+
+	char** textureNameList = (char**)MemoryManager::newMalloc(sizeof(char**)*6, TEXTURE);
+	textureNameList[0] = "assets/skyBoxBottom.png";
+	textureNameList[1] = "assets/skyBoxFront.png";
+	textureNameList[2] = "assets/skyBoxLeft.png";
+	textureNameList[3] = "assets/skyBoxRear.png";
+	textureNameList[4] = "assets/skyBoxRight.png";
+	textureNameList[5] = "assets/skyBoxTop.png";
+
+	ILuint texid;
+	ILboolean success;
+	GLuint imageT;
+	std::string hash;
+	ILubyte * lump;
+	ILuint size;
+	FILE * file;
+
+	for(int i = 0; i < 6; i++)
+	{
+		try {
+			file = fopen(textureNameList[i], "rb");
+			fseek(file, 0, SEEK_END);
+			size = ftell(file);
+
+			lump = (ILubyte*)MemoryManager::newMalloc(size, TEXTURE);
+			fseek(file, 0, SEEK_SET);
+			fread(lump, 1, size, file);
+			fclose(file);
+		} catch (exception&) {
+			MemoryManager::newFree(lump);
+			return;
+		}
+
+	
+		// Generation of one image name 
+		ilGenImages(1, &texid); 
+		// Binding of image name
+		ilBindImage(texid);
+		// Loading of image 
+		success = ilLoadL(IL_TYPE_UNKNOWN, lump, size);
+
+		if (success)
+		{
+			// Convert colour (for alpha channel images change to IL_RGBA)
+			success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE); 
+
+			if (!success)
+			{
+				std::cout << "ERROR LOADING/CONVERTING TEXTURE" << std::endl;
+			}
+		}
+
+		// Texture name generation
+		glGenTextures(1, &imageT); 
+		// Binding of texture name
+		glBindTexture(GL_TEXTURE_2D, imageT);
+		// Linear interpolation for magnification filter
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// Linear interpolation for minifying filter
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		// Texture settings
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+			ilGetData());
+
+		skyBoxTexture[i] = imageT;
+	}
+}
+
 void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName)
 {
 		char *vs = NULL,*fs = NULL,*fs2 = NULL;

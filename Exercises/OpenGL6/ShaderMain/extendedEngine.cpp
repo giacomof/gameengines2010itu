@@ -7,6 +7,8 @@ void extendedEngine::setupScene()
 	//// ******************************
 	//// ******** LOADING POINT *******
 	//// ******************************
+	assetManager.loadSkyBoxTexture();
+
 	assetManager.loadMd2("assets/bosscube.md2", "md2BossCube");
 	assetManager.loadCollada("assets/duck.dae", "duck");
 
@@ -24,9 +26,8 @@ void extendedEngine::setupScene()
 	//assetManager.activateShadingProgram("shader1");
 	//assetManager.activateShadingProgram("phong1Point");
 	//assetManager.activateShadingProgram("textureShader1");
-	assetManager.activateShadingProgram("textureShader2");
+	//assetManager.activateShadingProgram("textureShader2");
 	//assetManager.activateShadingProgram("reflect");
-
 
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
