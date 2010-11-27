@@ -8,11 +8,11 @@ void extendedEngine::setupScene()
 	//// ******** LOADING POINT *******
 	//// ******************************
 	assetManager.loadSkyBoxTexture();
+	this->addSkyBox(assetManager.getSkyBoxTextureList());
 
 	assetManager.loadMd2("assets/bosscube.md2", "md2BossCube");
 	assetManager.loadCollada("assets/duck.dae", "duck");
 
-	assetManager.loadTexture("assets/cyber.jpg", "bossCubeTx");
 	assetManager.loadTexture("assets/duckCM.tga", "duckTx");
 	//assetManager.loadTexture("assets/map.tga", "duckTx");
 
@@ -40,7 +40,7 @@ void extendedEngine::setupScene()
 	// Create character "rotation center" node
 	SceneObject * sphere = this->createSphere(5, 30, 30, true);
 	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
-	sphereNode->setVisible(false);
+	sphereNode->setVisible(true);
 
 	// Create Light connected to the battle droid
 	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
@@ -59,10 +59,11 @@ void extendedEngine::setupScene()
 	//teapotNode->setVisible(false);
 
 	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"));
-	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(0.0f, 45.0f, 100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	SceneObject * sphere2 = this->createSphere(20, 30, 30, false);
 	SceneNode * sphereNode = this->addSceneNode(&rootNode, "Sphere Node 2", sphere2, Vector(0, 45, -100), Vector(0, 1, 0), 0);
+	sphereNode->setVisible(false);
 
 	//SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), assetManager.getTexture("bossCubeTx"));
 	//SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);

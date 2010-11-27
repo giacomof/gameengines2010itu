@@ -285,12 +285,12 @@ void AssetManager::loadSkyBoxTexture()
 	skyBoxTexture = (unsigned int*)MemoryManager::newMalloc(sizeof(unsigned int)*6, TEXTURE);
 
 	char** textureNameList = (char**)MemoryManager::newMalloc(sizeof(char**)*6, TEXTURE);
-	textureNameList[0] = "assets/skyBoxBottom.png";
+	textureNameList[0] = "assets/skyBoxTop.png";
 	textureNameList[1] = "assets/skyBoxFront.png";
-	textureNameList[2] = "assets/skyBoxLeft.png";
+	textureNameList[2] = "assets/skyBoxBottom.png";
 	textureNameList[3] = "assets/skyBoxRear.png";
 	textureNameList[4] = "assets/skyBoxRight.png";
-	textureNameList[5] = "assets/skyBoxTop.png";
+	textureNameList[5] = "assets/skyBoxLeft.png";
 
 	ILuint texid;
 	ILboolean success;

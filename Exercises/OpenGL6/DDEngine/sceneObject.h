@@ -181,4 +181,20 @@ class sceneObject_D Light : public SceneObject
 	
 };
 
+class sceneObject_D SkyBox : public SceneObject
+{
+	public:
+		SkyBox(unsigned int * texture);
+		
+		//~SkyBox(void);
+
+		void update(void) {};
+		void drawGeometry(void);
+		bool isEnabled;
+
+	protected:
+		unsigned int * skyBoxTextureList;
+	
+};
+
 #endif

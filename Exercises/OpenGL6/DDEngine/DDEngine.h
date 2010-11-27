@@ -108,6 +108,8 @@ protected:
 	// Entity camera
 	entityCamera * playercamera;
 
+	SkyBox * skyBox;
+
 	// Physic world
 	btDiscreteDynamicsWorld * dynamicsWorld;
 	// Broadphase
@@ -126,6 +128,7 @@ protected:
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
+	void addSkyBox(unsigned int * textureList);	// Add a skybox to the engine
 
 };
 
