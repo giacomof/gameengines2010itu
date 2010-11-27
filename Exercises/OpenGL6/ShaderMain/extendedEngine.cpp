@@ -14,20 +14,18 @@ void extendedEngine::setupScene()
 	assetManager.loadCollada("assets/duck.dae", "duck");
 
 	assetManager.loadTexture("assets/duckCM.tga", "duckTx");
-	//assetManager.loadTexture("assets/map.tga", "duckTx");
+	assetManager.loadTexture("assets/map.tga", "environmentMapTx");
 
 	assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
 	assetManager.createShadingProgram("assets/shader1.vert", "assets/shader1.frag", "shader1");
 	assetManager.createShadingProgram("assets/phong1Point.vert", "assets/phong1Point.frag", "phong1Point");
 	assetManager.createShadingProgram("assets/textureShader1.vert", "assets/textureShader1.frag", "textureShader1");
 	assetManager.createShadingProgram("assets/textureShader2.vert", "assets/textureShader2.frag", "textureShader2");
-	assetManager.createShadingProgram("assets/reflect.vert", "assets/reflect.frag", "reflect");
 	//assetManager.activateShadingProgram("toonShader");
 	//assetManager.activateShadingProgram("shader1");
 	//assetManager.activateShadingProgram("phong1Point");
 	//assetManager.activateShadingProgram("textureShader1");
 	assetManager.activateShadingProgram("textureShader2");
-	//assetManager.activateShadingProgram("reflect");
 
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
@@ -50,21 +48,18 @@ void extendedEngine::setupScene()
 	SceneNode * sphereNode2 = this->addSceneNode(light1Node, "", sphere2, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 
 
-
-
-
-	//// Create Light connected to root
-	//Light * light2 = (Light*)this->createLight(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
-	//light2Node = this->addSceneNode(&rootNode, "Light2 Node", light2, Vector(0, 0, 0), Vector(0, 0, 0), 0);
-	//light2->setDirection(Vector(0, 1, 0));
-
 	// Create the teapot
-	SceneObject * teapot = this->createTeapot(50, false, NO_TEXTURE_PHONG);
+	SceneObject * teapot = this->createTeapot(50, false, GREEN);
 	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 45.0f, -100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	//teapotNode->setVisible(false);
+
+	SceneObject * specularTeapot = this->createTeapot(50, false, SPECULAR_MAP, assetManager.getTexture("environmentMapTx"));
+	SceneNode * specularTeapotNode = this->addSceneNode(&rootNode, "Specular Teapot Node", specularTeapot, Vector(0.0f, 45.0f, -200.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"), TEXTURE_PHONG);
-	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(150.0f, 45.0f,-100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+
+	SceneObject * specularDuck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("environmentMapTx"), SPECULAR_MAP);
+	SceneNode * specularDuckNode = this->addSceneNode(&rootNode, "Specular Duck Node", specularDuck, Vector(150.0f, 45.0f, -200.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	
 
