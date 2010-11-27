@@ -78,6 +78,7 @@ public:
 
 	// SkyBox methods
 	void loadSkyBoxTexture();
+	unsigned int * getSkyBoxTextureList();
 
 
 	// Shaders methods
