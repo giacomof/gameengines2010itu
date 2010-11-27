@@ -463,6 +463,7 @@ void SkyBox::drawGeometry(void)
 	// TOP Side
 	glDisable(GL_CULL_FACE);
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[0]);
+	AssetManager::shaderUsesTexture(skyBoxTextureList[0]);
 	glBegin(GL_QUADS);	
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(-coord ,coord,-coord);
 		glTexCoord2f(0.0f, 0.0f); glVertex3f(-coord,coord,coord);
@@ -472,6 +473,7 @@ void SkyBox::drawGeometry(void)
  
 	// FRONT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[1]);
+	AssetManager::shaderUsesTexture(skyBoxTextureList[1]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(1.0f, 1.0f); glVertex3f( coord, -coord,-coord);
 		glTexCoord2f(1.0f, 0.0f); glVertex3f( coord,  coord,-coord); 
@@ -481,6 +483,7 @@ void SkyBox::drawGeometry(void)
 
 	// BOTTOM side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[2]);
+	AssetManager::shaderUsesTexture(skyBoxTextureList[2]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(0.0f,0.0f);  glVertex3f(-coord,-coord,-coord);
 		glTexCoord2f(0.0f,1.0f);  glVertex3f(-coord,-coord, coord);
@@ -490,6 +493,7 @@ void SkyBox::drawGeometry(void)
 
 	// BACK side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[3]);
+	AssetManager::shaderUsesTexture(skyBoxTextureList[3]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(0.0f, 1.0f); glVertex3f( coord, -coord,coord);
 		glTexCoord2f(0.0f, 0.0f); glVertex3f( coord,  coord,coord); 
@@ -499,6 +503,7 @@ void SkyBox::drawGeometry(void)
  
 	// RIGHT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[4]);
+	AssetManager::shaderUsesTexture(skyBoxTextureList[4]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(1.0f, 1.0f); glVertex3f(coord, -coord, coord);	
 		glTexCoord2f(1.0f, 0.0f); glVertex3f(coord,  coord, coord); 
@@ -508,6 +513,7 @@ void SkyBox::drawGeometry(void)
 
 	// LEFT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[5]);
+	AssetManager::shaderUsesTexture(skyBoxTextureList[5]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(0.0f,1.0f); glVertex3f(-coord, -coord, coord);	
 		glTexCoord2f(0.0f,0.0f); glVertex3f(-coord,  coord, coord); 
