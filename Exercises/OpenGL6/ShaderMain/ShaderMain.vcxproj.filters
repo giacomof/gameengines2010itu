@@ -77,6 +77,24 @@
     <None Include="test.js">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\skyBoxBottom.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\skyBoxFront.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\skyBoxLeft.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\skyBoxRear.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\skyBoxRight.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\skyBoxTop.png">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h">

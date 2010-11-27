@@ -217,7 +217,7 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	if (!glewIsSupported("GL_VERSION_2_0"))
 		exit(1);
 	
-	//setShaders();
+	skyBox = NULL;
 	
 	if(verbosityLevel>=1) printDebugInfo();
 }
@@ -508,7 +508,16 @@ float* DDEngine::getCamera()
 	}
 
 	glMultMatrixf(&tranM[0]);
+
+	if(skyBox != NULL)
+		skyBox->drawGeometry();
+
 	return &tranM[0];
+}
+
+void DDEngine::addSkyBox(unsigned int * textureList)
+{
+	skyBox = new(TEXTURE, STACK_ALLOCATOR) SkyBox(textureList);
 }
 
 btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep)
