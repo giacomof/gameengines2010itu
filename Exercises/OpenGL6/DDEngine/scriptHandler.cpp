@@ -13,6 +13,43 @@ ScriptHandler::~ScriptHandler(void)
 
 }
 
+// ******************************************************************
+// ******************** IMPLEMENTED CALLBACKS ***********************
+// ******************************************************************
+
+// ************* CONSTRUCTORS ****************
+
+
+
+// ************* LOG CALLBACKS ***************
+
+Handle<Value> ScriptHandler::LogCallback(const Arguments &args)
+{
+	HandleScope handleScope;
+	int numArgs = args.Length();
+	Local<Value> value =  args[0];
+	String::AsciiValue ascii(value);
+
+	Log::addToLog(JAVASCRIPT_LOGFILE, *ascii);
+	
+	return value;
+
+}
+
+Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args) 
+{
+	HandleScope handleScope;
+	Local<Value> value =  args[0];
+	Log::clearLog(JAVASCRIPT_LOGFILE);
+	
+	return value;
+}
+
+
+// ******************************************************************
+// ********************** BASIC SCRIPT METHODS **********************
+// ******************************************************************
+
 Handle<Script> ScriptHandler::readAndCompileScript(const char * filename)
 {
 
@@ -50,29 +87,6 @@ Handle<Script> ScriptHandler::readAndCompileScript(const char * filename)
 	return script;
 }
 
-Handle<Value> ScriptHandler::LogCallback(const Arguments &args)
-{
-	HandleScope handleScope;
-	int numArgs = args.Length();
-	Local<Value> value =  args[0];
-	String::AsciiValue ascii(value);
-
-	Log::addToLog(JAVASCRIPT_LOGFILE, *ascii);
-	
-	return value;
-
-}
-
-Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args) 
-{
-	HandleScope handleScope;
-	Local<Value> value =  args[0];
-	Log::clearLog(JAVASCRIPT_LOGFILE);
-	
-	return value;
-}
-
-
 Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName)
 {
 
@@ -80,7 +94,6 @@ Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, con
 	Persistent<Function> function;
 	
 	Handle<ObjectTemplate> objectTemplate = ObjectTemplate::New();
-
 
 	Handle<Script> script = readAndCompileScript(filename);
 
@@ -107,6 +120,7 @@ void ScriptHandler::runScript(const char * filename, const char * function)
 	
 	globals->Set( String::New("Log"), FunctionTemplate::New( LogCallback ) );
 	globals->Set( String::New("ClearLog"), FunctionTemplate::New( clearLogCallback ) );
+	//globals->Set( String::New("String"), FunctionTemplate::New( constructString ) );
 
 	// Each processor gets its own context so different processors do not affect each other.
 	Handle<Context> context = Context::New( NULL, globals );
@@ -116,12 +130,8 @@ void ScriptHandler::runScript(const char * filename, const char * function)
 
 	Persistent<Function> updateFunction = GetFunctionHandle(filename, function);
 	
-	const int numArgs=0;
+	const int numArgs = 0;
 	Handle<Value> * args = NULL;
 	Handle<Value> result = updateFunction->Call( g_context->Global(), numArgs, args);
-	
 
-	//// Convert the result to an ASCII string and print it.
-	//String::AsciiValue ascii(result);
-	//printf("The Result is %s\n", *ascii);
 }

@@ -34,6 +34,7 @@ public:
 	void ScriptHandler::runScript(const char * filename, const char * function);
 
 	// Implemented Callbacks
+		// Log methods
 	static Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
 	static Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args);
 
