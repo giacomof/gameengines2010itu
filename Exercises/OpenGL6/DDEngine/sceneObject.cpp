@@ -111,7 +111,7 @@ void  ColladaInterface::update(void)
 		if (animationProgress > 1.0f)
 			animationProgress = animationProgress - 1.0f;
 
-		skeleton->updateSkeleton(currentPose, animationProgress);
+		//skeleton->updateSkeleton(currentPose, animationProgress);
 	}
 }
 
