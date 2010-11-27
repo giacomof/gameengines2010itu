@@ -10,7 +10,7 @@ void extendedEngine::setupScene()
 	assetManager.loadMd2("assets/bosscube.md2", "md2BossCube");
 	assetManager.loadCollada("assets/duck.dae", "duck");
 
-	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
+	assetManager.loadTexture("assets/cyber.jpg", "bossCubeTx");
 	assetManager.loadTexture("assets/duckCM.tga", "duckTx");
 	//assetManager.loadTexture("assets/map.tga", "duckTx");
 
@@ -55,13 +55,16 @@ void extendedEngine::setupScene()
 	// Create the teapot
 	SceneObject * teapot = this->createTeapot(50, false);
 	SceneNode * teapotNode = this->addSceneNode(&rootNode, "Teapot Node", teapot, Vector(0.0f, 45.0f, -100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-	teapotNode->setVisible(false);
+	//teapotNode->setVisible(false);
 
 	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"));
 	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(0.0f, 45.0f, 100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	SceneObject * sphere2 = this->createSphere(20, 30, 30, false);
 	SceneNode * sphereNode = this->addSceneNode(&rootNode, "Sphere Node 2", sphere2, Vector(0, 45, -100), Vector(0, 1, 0), 0);
+
+	//SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), assetManager.getTexture("bossCubeTx"));
+	//SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 }
 void extendedEngine::frameStarted(int frameDelta)

@@ -349,7 +349,7 @@ void SceneNode::drawName(void)
 
 	char * tempName = (char *)nodeNameString.c_str();
 	
-	int i = 30;
+	int i = 0;
 	// loop all characters in the string
 	while(*tempName)
     {
