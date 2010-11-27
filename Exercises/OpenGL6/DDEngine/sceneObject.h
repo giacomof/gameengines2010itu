@@ -39,7 +39,7 @@ class sceneObject_D SceneObject
 class sceneObject_D Sphere : public SceneObject
 {
 	public:
-		Sphere(float rad, int sli, int sta, bool w, unsigned int texture = 0);
+		Sphere(float rad, int sli, int sta, bool w, int shaderFlag, unsigned int texture = 0);
 		~Sphere(void);
 
 		void drawGeometry(void);
@@ -53,13 +53,14 @@ class sceneObject_D Sphere : public SceneObject
 		int slices, stacks;
 		bool isWireframe;
 		unsigned int textureReference;
+		int shaderF;
 
 };
 
 class sceneObject_D Plane : public SceneObject 
 {
 	public:
-		Plane(float w, float h, int sideSubdivisions = 0, unsigned int texture = 0);
+		Plane(float w, float h, int shaderFlag, int sideSubdivisions = 0, unsigned int texture = 0);
 		~Plane(void);
 
 		void drawGeometry(void);
@@ -75,12 +76,13 @@ class sceneObject_D Plane : public SceneObject
 
 		int subdivisions;
 		unsigned int textureReference; 
+		int shaderF;
 };
 
 class sceneObject_D Cube : public SceneObject
 {
 	public:
-		Cube(float s, unsigned int texture = 0);
+		Cube(float s, int shaderFlag, unsigned int texture = 0);
 		~Cube(void);
 
 		void drawGeometry(void);
@@ -90,12 +92,13 @@ class sceneObject_D Cube : public SceneObject
 
 		float side;
 		unsigned int textureReference; 
+		int shaderF;
 };
 
 class sceneObject_D Line : public SceneObject
 {
 	public:
-		Line(Vector lStart, Vector lEnd, unsigned int texture = 0);
+		Line(Vector lStart, Vector lEnd, int shaderFlag, unsigned int texture = 0);
 		
 		void update(void) {};
 		void drawGeometry(void);
@@ -105,12 +108,13 @@ class sceneObject_D Line : public SceneObject
 
 		Vector lineStart, lineEnd, lineVector;
 		unsigned int textureReference; 
+		int shaderF;
 };
 
 class sceneObject_D Teapot : public SceneObject
 {
 	public:
-		Teapot(float size, bool wireframe, unsigned int texture = 0);
+		Teapot(float size, bool wireframe, int shaderFlag, unsigned int texture = 0);
 		
 		void update(void) {};
 		void drawGeometry(void);
@@ -121,12 +125,13 @@ class sceneObject_D Teapot : public SceneObject
 		float dimension;
 		bool wire;
 		unsigned int textureReference; 
+		int shaderF;
 };
 
 class sceneObject_D md2Interface : public SceneObject 
 {
 	public:
-		md2Interface(md2File * m, unsigned int texture = 0);
+		md2Interface(md2File * m, int shaderFlag, unsigned int texture = 0);
 		~md2Interface(void);
 
 		void update(void);
@@ -134,12 +139,13 @@ class sceneObject_D md2Interface : public SceneObject
 
 		md2File * mesh;
 		int md2Texture; 
+		int shaderF;
 };
 
 class sceneObject_D ColladaInterface : public SceneObject
 {
 	public:
-		ColladaInterface(ColladaFile * c, unsigned int texture = 0, ColladaSkeleton * s = 0);
+		ColladaInterface(ColladaFile * c, int shaderFlag, unsigned int texture = 0, ColladaSkeleton * s = 0);
 		~ColladaInterface(void);
 
 		void update(void);
@@ -148,6 +154,7 @@ class sceneObject_D ColladaInterface : public SceneObject
 		ColladaSkeleton * skeleton;
 		ColladaFile * mesh;
 		int colladaTexture;
+		int shaderF;
 		skelPose * currentPose;
 
 		float animationProgress;
@@ -184,7 +191,7 @@ class sceneObject_D Light : public SceneObject
 class sceneObject_D SkyBox : public SceneObject
 {
 	public:
-		SkyBox(unsigned int * texture);
+		SkyBox(unsigned int * texture, int shaderFlag);
 		
 		//~SkyBox(void);
 
@@ -194,6 +201,7 @@ class sceneObject_D SkyBox : public SceneObject
 
 	protected:
 		unsigned int * skyBoxTextureList;
+		int shaderF;
 	
 };
 

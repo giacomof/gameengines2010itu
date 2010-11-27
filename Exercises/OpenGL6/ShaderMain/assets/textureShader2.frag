@@ -10,7 +10,16 @@ uniform sampler2D texture;
 	
 void main()
 {
-	if(flag != -1)
+	if (flag == -2)
+	{
+		vec4 color = texture2D(texture, gl_TexCoord[0].st);
+		gl_FragColor = color;
+	}
+	else if (flag == -1)
+	{
+		gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+	}
+	else if (flag == 0 || flag == 1)
 	{
 		// Declariation of local variables
 		vec3 texColor,fragColor,pixelNormal,pixelHalfVector,viewV,ldir;
@@ -50,7 +59,7 @@ void main()
 		{
 			gl_FragColor = shadingColor;	
 		}
-		else
+		else if (flag == 1)
 		{
 			// Extract components from OpenGL material to do the blending with the texture
 			fragColor =  gl_FrontMaterial.diffuse.rgb + gl_FrontMaterial.ambient.rgb;
@@ -66,7 +75,5 @@ void main()
 			gl_FragColor = vec4(texColor * fragColor, texAlpha * fragAlpha) * shadingColor;	
 		}
 	}
-	else
-		gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 }
 

@@ -25,10 +25,11 @@ SceneObject::~SceneObject(void)
 // ************** MD2 ****************** //
 // ************************************* //
 
-md2Interface::md2Interface(md2File * m, unsigned int texture)
+md2Interface::md2Interface(md2File * m, int shaderFlag, unsigned int texture)
 {
 	mesh = m;
 	md2Texture = texture;
+	shaderF = shaderFlag;
 }
 
 md2Interface::~md2Interface(void)
@@ -37,7 +38,7 @@ md2Interface::~md2Interface(void)
 
 void md2Interface::drawGeometry(void) {
 
-	AssetManager::shaderUsesTexture(md2Texture);
+	AssetManager::setShaderFlag(shaderF);
 
 	glEnable(GL_TEXTURE_2D);
 		glBindTexture (GL_TEXTURE_2D, md2Texture);
@@ -59,11 +60,12 @@ void  md2Interface::update(void) {
 // ******** COLLADA INTERFACE ********** //
 // ************************************* //
 
-ColladaInterface::ColladaInterface(ColladaFile * c, unsigned int texture, ColladaSkeleton * s)
+ColladaInterface::ColladaInterface(ColladaFile * c, int shaderFlag, unsigned int texture, ColladaSkeleton * s)
 {
 	skeleton = s;
 	mesh = c;
 	colladaTexture = texture;
+	shaderF = shaderFlag;
 	currentPose = NULL;
 
 	animationProgress = 0.0f;
@@ -81,7 +83,7 @@ ColladaInterface::~ColladaInterface(void)
 
 void ColladaInterface::drawGeometry(void)
 {
-	AssetManager::shaderUsesTexture(colladaTexture);
+	AssetManager::setShaderFlag(shaderF);
 	if (skeleton != NULL && mesh != NULL)
 	{
 		glEnable(GL_TEXTURE_2D);
@@ -119,13 +121,14 @@ void  ColladaInterface::update(void)
 // ************** Sphere *************** //
 // ************************************* //
 
-Sphere::Sphere(float rad, int sli, int sta, bool w, unsigned int texture) 
+Sphere::Sphere(float rad, int sli, int sta, bool w, int shaderFlag, unsigned int texture) 
 {
 	radius = rad;
 	slices = sli;
 	stacks = sta;
 	isWireframe = w;
 	textureReference = texture;
+	shaderF = shaderFlag;
 }
 Sphere::~Sphere(void) 
 {
@@ -133,7 +136,7 @@ Sphere::~Sphere(void)
 
 void Sphere::drawGeometry() 
 {
-	AssetManager::shaderUsesTexture(textureReference);
+	AssetManager::setShaderFlag(shaderF);
 	if(isWireframe) {
 		glDisable(GL_TEXTURE_2D);	
 		glutWireSphere(radius, slices, stacks);
@@ -163,7 +166,7 @@ int Sphere::getSphereStacks(void)
 // ************** Plane **************** //
 // ************************************* //
 
-Plane::Plane(float w, float h, int sideSubdivisions, unsigned int texture) 
+Plane::Plane(float w, float h, int shaderFlag, int sideSubdivisions, unsigned int texture) 
 {
 	width = w;
 	height = h;
@@ -176,6 +179,7 @@ Plane::Plane(float w, float h, int sideSubdivisions, unsigned int texture)
 	halfHeight = height/2;
 
 	textureReference = texture;
+	shaderF = shaderFlag;
 }
 Plane::~Plane(void) 
 {
@@ -183,7 +187,7 @@ Plane::~Plane(void)
 
 void Plane::drawGeometry() 
 {
-	AssetManager::shaderUsesTexture(textureReference);
+	AssetManager::setShaderFlag(shaderF);
 	glDisable(GL_TEXTURE_2D);
 	if(subdivisions == 0) 
 	{
@@ -232,11 +236,11 @@ void Plane::setDimensions(float w, float h)
 // *************** Cube **************** //
 // ************************************* //
 
-Cube::Cube(float s, unsigned int texture) 
+Cube::Cube(float s, int shaderFlag, unsigned int texture) 
 {
 	side = s;
-
 	textureReference = texture;
+	shaderF = shaderFlag;
 }
 Cube::~Cube(void) 
 {
@@ -245,7 +249,7 @@ Cube::~Cube(void)
 void Cube::drawGeometry() 
 {
 	float half = side/2;
-	AssetManager::shaderUsesTexture(textureReference);
+	AssetManager::setShaderFlag(shaderF);
 	glDisable(GL_TEXTURE_2D);	
 	glBegin(GL_QUADS);
 		glVertex3f( half, half,-half );			// Top Right Of The Quad (Top)
@@ -291,13 +295,13 @@ void Cube::setSide(float s)
 // *************** Line **************** //
 // ************************************* //
 
-Line::Line(Vector lStart, Vector lEnd, unsigned int texture) 
+Line::Line(Vector lStart, Vector lEnd, int shaderFlag, unsigned int texture) 
 {
 	lineStart = lStart;
 	lineEnd = lEnd;
 	lineVector = lStart - lEnd;
-
 	textureReference = texture;
+	shaderF = shaderFlag;
 }
 
 void Line::setLine(Vector lStart, Vector lEnd) 
@@ -314,7 +318,7 @@ Vector Line::getLine(void)
 
 void Line::drawGeometry(void)
 {
-	AssetManager::shaderUsesTexture(textureReference);
+	AssetManager::setShaderFlag(shaderF);
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINES);
 		glVertex3f( lineStart.get(0), lineStart.get(1), lineStart.get(2) );		// origin of the line
@@ -413,12 +417,12 @@ void Light::setDirection(Vector position)
 // ************** Teapot *************** //
 // ************************************* //
 
-Teapot::Teapot(float size, bool wireframe, unsigned int texture)
+Teapot::Teapot(float size, bool wireframe, int shaderFlag, unsigned int texture)
 {
 	dimension = size;
 	wire = wireframe;
-
 	textureReference = texture;
+	shaderF = shaderFlag;
 }
 
 void Teapot::setDimension(float size)
@@ -433,7 +437,7 @@ float Teapot::getSize(void)
 
 void Teapot::drawGeometry(void)
 {
-	AssetManager::shaderUsesTexture(textureReference);
+	AssetManager::setShaderFlag(shaderF);
 	glDisable(GL_TEXTURE_2D);	
 	glDisable(GL_CULL_FACE);
 	
@@ -447,9 +451,10 @@ void Teapot::drawGeometry(void)
 }
 
 
-SkyBox::SkyBox(unsigned int * texture)
+SkyBox::SkyBox(unsigned int * texture, int shaderFlag)
 {
 	skyBoxTextureList = texture;
+	shaderF = shaderFlag;
 }
 
 void SkyBox::drawGeometry(void)
@@ -459,11 +464,13 @@ void SkyBox::drawGeometry(void)
 	//// Second Move the render space to the correct position (Translate)
 	//glTranslatef(position.x,position.y,position.z);
  
-	float coord = 1000.0f;
+	float coord = 2500.0f;
+
+	AssetManager::setShaderFlag(shaderF);
+
 	// TOP Side
 	glDisable(GL_CULL_FACE);
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[0]);
-	AssetManager::shaderUsesTexture(skyBoxTextureList[0]);
 	glBegin(GL_QUADS);	
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(-coord ,coord,-coord);
 		glTexCoord2f(0.0f, 0.0f); glVertex3f(-coord,coord,coord);
@@ -473,7 +480,6 @@ void SkyBox::drawGeometry(void)
  
 	// FRONT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[1]);
-	AssetManager::shaderUsesTexture(skyBoxTextureList[1]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(1.0f, 1.0f); glVertex3f( coord, -coord,-coord);
 		glTexCoord2f(1.0f, 0.0f); glVertex3f( coord,  coord,-coord); 
@@ -483,7 +489,6 @@ void SkyBox::drawGeometry(void)
 
 	// BOTTOM side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[2]);
-	AssetManager::shaderUsesTexture(skyBoxTextureList[2]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(0.0f,0.0f);  glVertex3f(-coord,-coord,-coord);
 		glTexCoord2f(0.0f,1.0f);  glVertex3f(-coord,-coord, coord);
@@ -493,7 +498,6 @@ void SkyBox::drawGeometry(void)
 
 	// BACK side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[3]);
-	AssetManager::shaderUsesTexture(skyBoxTextureList[3]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(0.0f, 1.0f); glVertex3f( coord, -coord,coord);
 		glTexCoord2f(0.0f, 0.0f); glVertex3f( coord,  coord,coord); 
@@ -503,7 +507,6 @@ void SkyBox::drawGeometry(void)
  
 	// RIGHT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[4]);
-	AssetManager::shaderUsesTexture(skyBoxTextureList[4]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(1.0f, 1.0f); glVertex3f(coord, -coord, coord);	
 		glTexCoord2f(1.0f, 0.0f); glVertex3f(coord,  coord, coord); 
@@ -513,7 +516,6 @@ void SkyBox::drawGeometry(void)
 
 	// LEFT side
 	glBindTexture(GL_TEXTURE_2D,skyBoxTextureList[5]);
-	AssetManager::shaderUsesTexture(skyBoxTextureList[5]);
 	glBegin(GL_QUADS);		
 		glTexCoord2f(0.0f,1.0f); glVertex3f(-coord, -coord, coord);	
 		glTexCoord2f(0.0f,0.0f); glVertex3f(-coord,  coord, coord); 
