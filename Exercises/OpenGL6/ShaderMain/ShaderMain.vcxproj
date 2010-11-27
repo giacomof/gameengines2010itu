@@ -86,6 +86,7 @@
     <None Include="assets\boy_10.tga" />
     <None Include="assets\duck.dae" />
     <None Include="assets\duckCM.tga" />
+    <None Include="assets\map.tga" />
     <None Include="assets\MENULOOP.WAV" />
     <None Include="assets\nhe.ico" />
     <None Include="assets\phong1Point.frag" />
