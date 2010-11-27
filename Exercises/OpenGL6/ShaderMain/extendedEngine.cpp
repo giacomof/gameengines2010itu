@@ -46,6 +46,11 @@ void extendedEngine::setupScene()
 	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
 	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -200), Vector(0, 0, 0), 0);
 
+	SceneObject * sphere2 = this->createSphere(5, 30, 30, false);
+	SceneNode * sphereNode2 = this->addSceneNode(light1Node, "", sphere2, Vector(0, 0, 0), Vector(0, 1, 0), 0);
+
+
+
 
 
 	//// Create Light connected to root
@@ -61,9 +66,7 @@ void extendedEngine::setupScene()
 	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"));
 	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	SceneObject * sphere2 = this->createSphere(20, 30, 30, false);
-	SceneNode * sphereNode = this->addSceneNode(&rootNode, "Sphere Node 2", sphere2, Vector(0, 45, -100), Vector(0, 1, 0), 0);
-	sphereNode->setVisible(false);
+	
 
 	//SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), assetManager.getTexture("bossCubeTx"));
 	//SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
