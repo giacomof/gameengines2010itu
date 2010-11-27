@@ -95,6 +95,9 @@
     <None Include="assets\skyBoxTop.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\map.tga">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h">

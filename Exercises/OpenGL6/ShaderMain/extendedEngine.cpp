@@ -26,7 +26,7 @@ void extendedEngine::setupScene()
 	//assetManager.activateShadingProgram("shader1");
 	//assetManager.activateShadingProgram("phong1Point");
 	//assetManager.activateShadingProgram("textureShader1");
-	//assetManager.activateShadingProgram("textureShader2");
+	assetManager.activateShadingProgram("textureShader2");
 	//assetManager.activateShadingProgram("reflect");
 
 	// ******************************
