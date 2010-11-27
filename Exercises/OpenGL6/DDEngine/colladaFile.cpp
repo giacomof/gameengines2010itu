@@ -357,7 +357,29 @@ void ColladaFile::render(skelPose * currentPose)
 
 			skinBoneIndexArray[i] = j;
 
-			currentPose->skelPoseJoints[j].pjTempTransform =  skinInvMatrixArray[i].InvMatrix * currentPose->skelPoseJoints[j].pjJointTransform;
+			/*bool done = false;
+			int parent = currentPose->skelPoseJoints[j].pjParentIndex;
+			if (parent == -1)
+			{
+				skinInvMatrixArray[i].tempMatrix = Matrix::generateIdentityMatrix();
+				//std::cout << skinInvMatrixArray[i].tempMatrix << "\n";
+			}
+			while (parent >= 0 && !done)
+			{
+				for (int h = 0; h<i; h++)
+				{
+					if (skinBoneIndexArray[h] == parent)
+					{
+						skinInvMatrixArray[i].tempMatrix = skinInvMatrixArray[i].InvMatrix * skinInvMatrixArray[h].tempMatrix;
+						done = true;
+						break;
+					}
+				}
+
+				parent = currentPose->skelPoseJoints[parent].pjParentIndex;
+			}*/
+
+			currentPose->skelPoseJoints[j].pjTempTransform = skinInvMatrixArray[i].InvMatrix * currentPose->skelPoseJoints[j].pjJointTransform;
 
 			j++;
 		}
@@ -367,11 +389,8 @@ void ColladaFile::render(skelPose * currentPose)
 		{
 			Vector tempVertex;
 			Vector influenceVertex;
-			Vector tempNormal;
-			Vector tempNormalTransform;
 
 			Vector originalVertex(vertex[currentVertex*vertexStride],vertex[currentVertex*vertexStride+1],vertex[currentVertex*vertexStride+2]);
-			//Vector originalNormal(normal[currentVertex*normalStride],normal[currentVertex*normalStride+1],normal[currentVertex*normalStride+2]);
 
 			float finalWeight = 0;
 			float normalizedWeight = 0;
@@ -383,10 +402,6 @@ void ColladaFile::render(skelPose * currentPose)
 				influenceVertex = ( (currentPose->skelPoseJoints[skinBoneIndexArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2]]].pjTempTransform * originalVertex) * skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]] );
 				tempVertex = tempVertex + influenceVertex;
 
-				/*tempNormalTransform = currentPose->skelPoseJoints[skinBoneIndexArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2]]].pjTempTransform * tempNormal;
-
-				tempNormal = tempNormal + ( tempNormalTransform * skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]] );*/
-
 				finalWeight += skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]];
 			}
 
@@ -394,16 +409,11 @@ void ColladaFile::render(skelPose * currentPose)
 			{
 				normalizedWeight = 1.0f / finalWeight;
 				tempVertex = tempVertex * normalizedWeight;
-				//tempNormal = tempNormal * normalizedWeight;
 			}
 
 			vertexSkinned[currentVertex*vertexStride]	= tempVertex.getX();
 			vertexSkinned[currentVertex*vertexStride+1]	= tempVertex.getY();
 			vertexSkinned[currentVertex*vertexStride+2]	= tempVertex.getZ();
-
-			/*normalSkinned[currentVertex*normalStride]	= originalNormal.getX();
-			normalSkinned[currentVertex*normalStride+1]	= originalNormal.getY();
-			normalSkinned[currentVertex*normalStride+2]	= originalNormal.getZ();*/
 		}
 
 		unsigned long firstVertex=0;
@@ -438,13 +448,13 @@ void ColladaFile::render(skelPose * currentPose)
 
 			glBegin(GL_TRIANGLES);
 				glTexCoord2f( map[firstMap], map[firstMap+1] );
-				glNormal3f( normalSkinned[firstNormal], normalSkinned[firstNormal+1], normalSkinned[firstNormal+2]); 
+				glNormal3f( normal[firstNormal], normal[firstNormal+1], normal[firstNormal+2]); 
 				glVertex3f( vertexSkinned[firstVertex]*0.2f, vertexSkinned[firstVertex+1]*0.2f, vertexSkinned[firstVertex+2]*0.2f);
 				glTexCoord2f( map[secondMap], map[secondMap+1] );
-				glNormal3f( normalSkinned[secondNormal], normalSkinned[secondNormal+1], normalSkinned[secondNormal+2]);
+				glNormal3f( normal[secondNormal], normal[secondNormal+1], normal[secondNormal+2]);
 				glVertex3f( vertexSkinned[secondVertex]*0.2f, vertexSkinned[secondVertex+1]*0.2f, vertexSkinned[secondVertex+2]*0.2f);
 				glTexCoord2f( map[thirdMap], map[thirdMap+1] );
-				glNormal3f( normalSkinned[thirdNormal], normalSkinned[thirdNormal+1], normalSkinned[thirdNormal+2]);
+				glNormal3f( normal[thirdNormal], normal[thirdNormal+1], normal[thirdNormal+2]);
 				glVertex3f( vertexSkinned[thirdVertex]*0.2f, vertexSkinned[thirdVertex+1]*0.2f, vertexSkinned[thirdVertex+2]*0.2f);
 			glEnd();
 		}
