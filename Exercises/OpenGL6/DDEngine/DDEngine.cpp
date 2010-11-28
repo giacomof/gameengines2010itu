@@ -187,6 +187,8 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	// Create the script handler
 	scriptHandler = ScriptHandler();
 
+	scriptHandler.runScript("test.js");
+
 	// SDL initialization
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
 	{

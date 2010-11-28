@@ -1,19 +1,20 @@
 #include "scriptHandler.h"
 
+// Global Context
 Persistent<Context> ScriptHandler::g_context;
+
+// Object Template
+Handle<ObjectTemplate> ScriptHandler::lightTemplate;
+Handle<ObjectTemplate> ScriptHandler::teapotTemplate;
 
 ScriptHandler::ScriptHandler(void)
 {
-	//runScript("test.js", "Update");
-	//WindowManager window = WindowManager::getInstance();
-	//window.createWindow(320, 240, 32);
-	//window.resizeWindow(320, 240);
+	g_context = Context::New();
 }
-
 
 ScriptHandler::~ScriptHandler(void)
 {
-
+	g_context.Dispose();
 }
 
 // ******************************************************************
@@ -22,155 +23,176 @@ ScriptHandler::~ScriptHandler(void)
 
 // ************* CONSTRUCTORS ****************
 
+Handle<Value> ScriptHandler::constructLight(const Arguments &args)
+{
+	//start a handle scope
+	HandleScope handleScope;
+ 
+	//generate a new point
+	Light * light = new Light();
+ 
+	//return the wrapped point
+	return wrapLight(light);
+}
 
+Handle<Value> ScriptHandler::constructTeapot(const Arguments &args)
+{
+	//start a handle scope
+	HandleScope handleScope;
+ 
+	//generate a new point
+	Teapot * teapot = new Teapot(50, false, 0);
+
+	SceneNode * temp = new SceneNode( &Root::getInstance(), "temp Teapot", teapot, Vector(0, 0, 0), Vector(0, 0, 0), 0.0f ); 
+	Root::getInstance().addChild(temp);
+
+	//return the wrapped point
+	return wrapTeapot(teapot);
+}
 
 // ************* LOG CALLBACKS ***************
 
-Handle<Value> ScriptHandler::LogCallback(const Arguments &args)
+Handle<Value> ScriptHandler::logCallback(const Arguments &args)
 {
-	HandleScope handleScope;
-	int numArgs = args.Length();
-	Local<Value> value =  args[0];
-	String::AsciiValue ascii(value);
+        HandleScope handleScope;
+        int numArgs = args.Length();
+        Local<Value> value =  args[0];
+        String::AsciiValue ascii(value);
 
-	Log::addToLog(Globals::JAVASCRIPT_LOGFILE, *ascii);
-	
-	return value;
+        Log::addToLog(Globals::JAVASCRIPT_LOGFILE, *ascii);
+        
+        return value;
 
 }
 
 Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args) 
 {
-	HandleScope handleScope;
-	Local<Value> value =  args[0];
-	Log::clearLog(Globals::JAVASCRIPT_LOGFILE);
-	
-	return value;
+        HandleScope handleScope;
+        Local<Value> value =  args[0];
+        Log::clearLog(Globals::JAVASCRIPT_LOGFILE);
+        
+        return value;
 }
 
+// ************ OBJECT WRAPPERS **************
+
+Handle<Object> ScriptHandler::wrapLight(Light * lightToWrap) 
+{
+    HandleScope handleScope;
+ 
+    //create a new instance
+    Local<Object> instance = lightTemplate->NewInstance();
+ 
+    //set internal field on instance
+    instance->SetInternalField(0, External::New(lightToWrap));
+
+    return handleScope.Close(instance);
+}
+
+Handle<Object> ScriptHandler::wrapTeapot(Teapot * teapotToWrap) 
+{
+    HandleScope handleScope;
+ 
+    //create a new instance
+    Local<Object> instance = teapotTemplate->NewInstance();
+ 
+    //set internal field on instance
+    instance->SetInternalField(0, External::New(teapotToWrap));
+
+    return handleScope.Close(instance);
+}
 
 // ******************************************************************
-// ********************** BASIC SCRIPT METHODS **********************
+// ******************** BASIC SCRIPT METHODS ************************
 // ******************************************************************
 
 Handle<Script> ScriptHandler::readAndCompileScript(const char * filename)
 {
-
 	Handle<Script> script;
-	
-	FILE * sourceFile = fopen( filename, "rt" );
-	
+
+	FILE * sourceFile = fopen(filename,"rt");
 	if( sourceFile == NULL )
 	{
-		cout << "ERROR FINDING THE FILE" << endl;
+		Log::addToLog(Globals::JAVASCRIPT_LOGFILE, "Failed to open file\n");
 		return script;
 	}
 
 	char buffer[20480];
 	int bytesRead = fread( buffer, 1, 20480, sourceFile);
-	
 	if( bytesRead == -1 )
 	{
-		cout << "ERROR READING THE FILE" << endl;
+		Log::addToLog(Globals::JAVASCRIPT_LOGFILE, "Failed to read file\n");
 		fclose(sourceFile);
 		return script;
-
 	}
-	
 	buffer[bytesRead]='\0';
 
-	printf("Script, length=%d, source = \n%s\n", strlen(buffer), buffer);
-	
+	printf("Script, length=%d, source = \n%s\n",strlen(buffer),buffer);
 	Handle<String> source = String::New(buffer);
 	fclose(sourceFile);
 
-	// Compile the source code.
 	script = Script::Compile(source);
-	script->Run();
+	Handle<Value> result = script->Run();
+	
 	return script;
+
 }
 
-Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName)
+Persistent<Function> ScriptHandler::getFunctionHandle(const char * filename, const char * functionName)
 {
-
-	HandleScope handle_scope;
+	HandleScope handleScope;
 	Persistent<Function> function;
-	
-	Handle<ObjectTemplate> objectTemplate = ObjectTemplate::New();
 
 	Handle<Script> script = readAndCompileScript(filename);
 
 	Handle<String> processName = String::New(functionName);
-	Handle<Value> process_val = g_context->Global()->Get(processName);
+	Handle<Value> valueHandle = g_context->Global()->Get(processName);
 
 	// bail if we couldn't find the function
-	if( !process_val->IsFunction() ) 
+	if( !valueHandle->IsFunction()) 
 		return function;
 
-	Handle<Function> process_fun = Handle<Function>::Cast(process_val);
-	function = Persistent<Function>::New(process_fun);
+	Handle<Function> funcHandle = Handle<Function>::Cast(valueHandle);
+	function = Persistent<Function>::New(funcHandle);
 
 	return function;
 
 }
 
-void ScriptHandler::runScript(const char * filename, const char * function) 
+int ScriptHandler::runScript(const char *filename)
 {
 	HandleScope handleScope;
+	Handle<ObjectTemplate> global = ObjectTemplate::New();
 
-	// Create a template for the global object and set the built-in global functions.
-	Local<ObjectTemplate> globals = ObjectTemplate::New();
+	// *** Function Callbacks ***
+	global->Set(String::New("Log"), FunctionTemplate::New(logCallback));
+	global->Set(String::New("ClearLog"), FunctionTemplate::New(clearLogCallback));
 	
-	globals->Set( String::New("Log"), FunctionTemplate::New( LogCallback ) );
-	globals->Set( String::New("ClearLog"), FunctionTemplate::New( clearLogCallback ) );
-	//globals->Set( String::New("String"), FunctionTemplate::New( constructString ) );
+	// *** Constructor Callbacks ***
+	global->Set(String::New("Light"), FunctionTemplate::New(constructLight));
+	global->Set(String::New("Teapot"), FunctionTemplate::New(constructTeapot));
 
-	// Each processor gets its own context so different processors do not affect each other.
-	Handle<Context> context = Context::New( NULL, globals );
-	// make the context global
+	// *** Function Templates ***
+	Handle<FunctionTemplate> light_template = FunctionTemplate::New();
+	Handle<FunctionTemplate> teapot_template = FunctionTemplate::New();
+	
+	lightTemplate = light_template->InstanceTemplate();
+	lightTemplate->SetInternalFieldCount(1);
+
+	teapotTemplate = teapot_template->InstanceTemplate();
+	teapotTemplate->SetInternalFieldCount(1);
+
+	Handle<Context> context = Context::New(NULL,global);
 	g_context = Persistent<Context>::New(context); 
-	Context::Scope scope(g_context);
+	Context::Scope context_scope(g_context);
 
-	Persistent<Function> updateFunction = GetFunctionHandle(filename, function);
-	
-	const int numArgs = 0;
-	Handle<Value> * args = NULL;
-	Handle<Value> result = updateFunction->Call( g_context->Global(), numArgs, args);
+	Handle<Script> script = readAndCompileScript(filename);
 
+	return 0;
 }
 
-Handle<Context> ScriptHandler::getContext(void) 
+Handle<Value> ScriptHandler::getResult(Persistent<Function> function, Handle<Value> *args, const int numArgs)
 {
-	return g_context;
-}
-
-
-// this template method returns a scriptHandler pointer starting from an External
-template <typename T>
-    static T * externalToClassPtr(Local<Value> data)
-    {
-        if(data.IsEmpty())
-            cout<<"Data empty"<<endl;
-        else if(!data->IsExternal())
-            cout<<"Data not external"<<endl;
-        else
-            return static_cast<T *>(External::Unwrap(data));
-                
-        //If function gets here, one of the checks above failed
-        return NULL;
-    }
-
-// Wrap a callback function into a FunctionTemplate, providing the "this"
-// pointer to the callback when v8 calls the callback func
-Local<FunctionTemplate> ScriptHandler::makeStaticCallableFunc(InvocationCallback func)
-{
-    HandleScope scope;
-    Local<FunctionTemplate> funcTemplate = FunctionTemplate::New(func, classPtrToExternal());
-    return scope.Close(funcTemplate);
-}
-
-Local<External> ScriptHandler::classPtrToExternal()
-{
-    HandleScope scope;
-    return scope.Close(External::New(reinterpret_cast<void *>(this)));
+	Handle<Value> result = function->Call(g_context->Global(), numArgs, args);
+	return result;
 }
