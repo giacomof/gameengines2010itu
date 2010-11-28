@@ -1,4 +1,5 @@
 uniform int flag;
+varying vec4 shadingAmount;
 
 // Declaration of varying variables that will be received from the vertex shader
 varying vec3 surfaceNormal, lightDirirectionVector, HalfVectorLightEye;
@@ -10,10 +11,12 @@ uniform sampler2D texture;
 	
 void main()
 {
-	if (flag == -2 || flag == 2)
+	if (flag == -2 || flag == 2 || flag == -3)
 	{
 		vec4 color = texture2D(texture, gl_TexCoord[0].st);
 		gl_FragColor = color;
+		if (flag == -3)
+			gl_FragColor *= shadingAmount;
 	}
 	else if (flag == -1)
 	{
