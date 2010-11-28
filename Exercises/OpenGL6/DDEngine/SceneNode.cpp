@@ -409,3 +409,9 @@ void Root::update(float dt)
 	}
 }
 
+// Add a new child to the node	
+void Root::addChild( SceneNode * cNode ) 
+{
+	cNode->setParent(this);
+	childOfRootList.push_front(cNode);
+}

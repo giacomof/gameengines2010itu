@@ -9,22 +9,19 @@
 
 #include "assetManager.h"
 #include "globals.h"
-#include "linearAlgebra.h"			// Header File for our math library
+#include "linearAlgebra.h"			
 #include "transformation.h"
 #include "sceneObject.h"
 #include <string>
 #include <list>
 #include <stdlib.h>
-#include <SDL.h>						// Header File for the SDL library
-#include <SDL_opengl.h>					// Header File for OpenGL through SDL
+#include <SDL.h>						
+#include <SDL_opengl.h>					
 #include <SDL_thread.h>
 #include <SDL_mutex.h>
 #include "glut.h"
 
-
 #include <btBulletDynamicsCommon.h>
-
-
 
 using namespace std;
 
@@ -52,7 +49,6 @@ class sceneNode_D SceneNode
 
 		// add a child
 		void addChild( SceneNode * pNode );
-
 		// set parent node
 		void setParent ( SceneNode * pNode );
 		// get parent node
@@ -126,7 +122,7 @@ class sceneNode_D Root : public SceneNode
 		Root & operator=(Root &getInstance());
 		static Root &getInstance();
 		
-		
+		void addChild( SceneNode * pNode );
 		// set parent node
 		static void setParent( SceneNode * pNode );
 		// get parent node

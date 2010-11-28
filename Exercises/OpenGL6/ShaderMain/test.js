@@ -1,17 +1,10 @@
 function Update()
-{
-    
-   Window(320, 240, 32);
-
-   /*
-   var test = new SceneObject();
-   Log("BLAAAAAAAAAAAAAAA");
-   ClearLog();
-   Log("This is a log file");
-   Log("this is the initial log file..");
-   return 1; 
-   */
-
+{   
+    //ClearLog();
+    //Log("Starting Update Function\n");
+    //Log("Creating new Light...\n");
+    //new Light();
+    //new Teapot();
 }
 
-
+Update();

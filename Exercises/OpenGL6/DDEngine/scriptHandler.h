@@ -8,11 +8,16 @@
 #define scriptHandler__H__
 
 #include "v8.h"
-#include <string>
-#include <iostream>
+
 #include "log.h"
 #include "globals.h"
-#include "windowManager.h"
+#include "sceneObject.h"
+#include "SceneNode.h"
+
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 using namespace v8;
@@ -24,25 +29,34 @@ public:
 
 	// Variables
 	static Persistent<Context> g_context;
+	
+	// Object Templates
+	static Handle<ObjectTemplate> lightTemplate;
+	static Handle<ObjectTemplate> teapotTemplate;
+
+	// Implemented Callbacks
+		//Constructor callbacks
+	static Handle<Value> ScriptHandler::constructLight(const Arguments &args);
+	static Handle<Value> ScriptHandler::constructTeapot(const Arguments &args);
+
+		// Wrappers
+	static Handle<Object> ScriptHandler::wrapLight(Light * lightToWrap);
+	static Handle<Object> ScriptHandler::wrapTeapot(Teapot * teapotToWrap);
+
+		// Log methods
+	static Handle<Value> ScriptHandler::logCallback(const Arguments &args);
+	static Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args);
 
 	// Default Cons/Des
 	ScriptHandler::ScriptHandler(void);
 	ScriptHandler::~ScriptHandler(void);
 
-	// Scripting Methods
+	// Basic Script Methods 
+	int ScriptHandler::runScript(const char * filename);
 	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
-	Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName);
-	void ScriptHandler::runScript(const char * filename, const char * function);
-
-	Handle<Context> ScriptHandler::getContext(void);
-	Local<FunctionTemplate> ScriptHandler::makeStaticCallableFunc(InvocationCallback func);
-    Local<External> ScriptHandler::classPtrToExternal();
-
-	// Implemented Callbacks
-		// Log methods
-	static Handle<Value> ScriptHandler::LogCallback(const Arguments &args);
-	static Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args);
-
+	Persistent<Function> ScriptHandler::getFunctionHandle(const char * filename, const char * functionName);	
+	Handle<Value> ScriptHandler::getResult(Persistent<Function> function, Handle<Value> *args, const int numArgs);
+	
 };
 
 #endif
