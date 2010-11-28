@@ -58,7 +58,7 @@ void extendedEngine::setupScene()
 	// Create Light connected to root
 	Light * light2 = (Light*)this->createLight(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
 	light2Node = this->addSceneNode(&rootNode, "Light2 Node", light2, Vector(0, 0, 0), Vector(0, 0, 0), 0);
-	light2->setDirection(Vector(0, 1, 0));
+	//light2->setDirection(Vector(0, 1, 0));
 
 	// Rotation Center and physics for Skull	
 	//btRigidBody * skullRigidBody = this->createPhysicalSphere(35.0f, Vector(0.0f, 35.0f, 150.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
