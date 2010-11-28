@@ -4,9 +4,10 @@ static float const PI = 3.14159f;				// PI definition
 
 void extendedEngine::setupScene()
 {
-	//// ******************************
-	//// ******** LOADING POINT *******
-	//// ******************************
+	// ******************************
+	// ******** LOADING POINT *******
+	// ******************************
+
 	assetManager.loadSkyBoxTexture();
 	this->addSkyBox(2500.0f, assetManager.getSkyBoxTextureList());
 
