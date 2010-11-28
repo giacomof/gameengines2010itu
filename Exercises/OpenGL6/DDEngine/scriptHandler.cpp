@@ -127,7 +127,6 @@ Handle<Script> ScriptHandler::readAndCompileScript(const char * filename)
 	}
 	buffer[bytesRead]='\0';
 
-	printf("Script, length=%d, source = \n%s\n",strlen(buffer),buffer);
 	Handle<String> source = String::New(buffer);
 	fclose(sourceFile);
 
