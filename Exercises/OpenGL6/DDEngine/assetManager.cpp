@@ -365,8 +365,8 @@ void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragment
 		GLuint f = glCreateShader(GL_FRAGMENT_SHADER);
 
 
-		vs = textFileRead(vertexShaderPath);
-		fs = textFileRead(fragmentShaderPath);
+		vs = readShaderFile(vertexShaderPath);
+		fs = readShaderFile(fragmentShaderPath);
 
 		const char * ff = fs;
 		const char * vv = vs;
@@ -389,11 +389,11 @@ void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragment
 		shadingProgram_list[programName] = p;
 }
 
-char * AssetManager::textFileRead(char * filePath) {
+char * AssetManager::readShaderFile(char * filePath) {
 	FILE *filePtr;
 	char *content = NULL;
 
-	int count=0;
+	int fileLength = 0;
 
 	if (filePath != NULL) {
 		filePtr = fopen(filePath,"rt");
@@ -401,13 +401,13 @@ char * AssetManager::textFileRead(char * filePath) {
 		if (filePtr != NULL) {
       
       fseek(filePtr, 0, SEEK_END);
-      count = ftell(filePtr);
+      fileLength = ftell(filePtr);
       rewind(filePtr);
 
-			if (count > 0) {
-				content = (char *)MemoryManager::newMalloc(sizeof(char) * (count+1), Globals::SHADER);
-				count = fread(content,sizeof(char),count,filePtr);
-				content[count] = '\0';
+			if (fileLength > 0) {
+				content = (char *)MemoryManager::newMalloc(sizeof(char) * (fileLength + 1), Globals::SHADER);
+				fileLength = fread(content, sizeof(char), fileLength, filePtr);
+				content[fileLength] = '\0';
 			}
 			fclose(filePtr);
 		}
