@@ -5,7 +5,6 @@ ColladaSkeleton::ColladaSkeleton(void)
 
 }
 
-
 ColladaSkeleton::~ColladaSkeleton(void)
 {
 

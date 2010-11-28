@@ -10,6 +10,7 @@
 #include "assetManager.h"
 #include <SDL.h>
 #include "entitySpectator.h"
+#include "globals.h"
 
 class controller_D Controller
 {

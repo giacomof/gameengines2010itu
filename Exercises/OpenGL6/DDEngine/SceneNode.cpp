@@ -286,7 +286,7 @@ void SceneNode::drawGeometry()
 				geometry->drawGeometry();
 		}
 		// draw the name of the SceneNode
-		if(drawDebug) drawName();
+		if(Globals::drawDebug) drawName();
 	}
 
 	
@@ -337,7 +337,7 @@ unsigned int SceneNode::getNodeCount(void)
 
 void SceneNode::drawName(void)
 {
-	AssetManager::setShaderFlag(GREEN);
+	AssetManager::setShaderFlag(Globals::GREEN);
 	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
 
     glColor4f(0.0f, 1.0f, 0.0f, 1.0f);  // set text color

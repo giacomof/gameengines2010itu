@@ -9,6 +9,7 @@
 
 #include <deque>
 #include <SDL.h>
+#include "globals.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ private:
 	int fps;
 	float deltaSum;
 	float averageDelta;
+	int pausedTicks;
 };
 
 #endif

@@ -18,9 +18,13 @@ G- Shaders
 	1(G)- Use Frag shaders
 	1(G)- make the highlight "follow" the camera
 	1(G)- Fix the color of the scenenodes names
-	   G- Fix names in shader section of asset manager
-	   G- Skybox
-	   G- Environment Mapping
+	1(G)- Skybox
+		1(G)- Connect the skybox to the camera
+	1(G)- Environmental Mapping
+		1(G)- Fake Enviromental Mapping
+	   G- Fix names in shader section of asset manager (cleaning)
+	   G- Fixed pipeline shader
+
 	    
 V- V8 Javascript Scripting Integration
 	1(V)- Compile V8
@@ -36,8 +40,8 @@ V- V8 Javascript Scripting Integration
 	   V- Create an Object in a script
 	   V- Create a sceneObject and a sceneNode in a script
 	   V- Implement the most used engine functions
-	   V- startEngine mode
-	   V- stopEngine mode
+	1(V)- startEngine mode
+	1(V)- stopEngine mode
 	   V- move logic into scripts as much as possible
 
 1(V)- Logging system with verbosity levels
@@ -49,7 +53,6 @@ V- V8 Javascript Scripting Integration
 
 0- FrameClock Class as a Singleton
 0- better thread synch and use
-0- make everything framerate independent
 0- inputmanager interface to gameplay programmers?
 0- optimizations for the Transformation Class
 0- optimize debug cout and logs with "if define"
@@ -129,6 +132,11 @@ COMPLETED:
 	1(V)- Singleton
 	1(V)- thread Safe
 	1(V)- super bug fixed
+1(G)- make everything framerate independent
+
+
+
+
 
 Symbology Map:
 

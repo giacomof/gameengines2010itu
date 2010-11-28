@@ -464,6 +464,7 @@
     <ClCompile Include="entityCamera.cpp" />
     <ClCompile Include="entitySpectator.cpp" />
     <ClCompile Include="frameClock.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="md2File.cpp" />

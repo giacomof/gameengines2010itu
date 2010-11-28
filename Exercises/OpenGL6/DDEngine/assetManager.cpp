@@ -38,7 +38,7 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 		fseek(file, 0, SEEK_END);
 		size = ftell(file);
 
-		lump = (ILubyte*)MemoryManager::newMalloc(size, TEXTURE);
+		lump = (ILubyte*)MemoryManager::newMalloc(size, Globals::TEXTURE);
 		fseek(file, 0, SEEK_SET);
 		fread(lump, 1, size, file);
 		fclose(file);
@@ -282,9 +282,9 @@ void AssetManager::loadSkyBoxTexture()
 	// Initialization of DevIL
 	ilInit(); 
 
-	skyBoxTexture = (unsigned int*)MemoryManager::newMalloc(sizeof(unsigned int)*6, TEXTURE);
+	skyBoxTexture = (unsigned int*)MemoryManager::newMalloc(sizeof(unsigned int)*6, Globals::TEXTURE);
 
-	char** textureNameList = (char**)MemoryManager::newMalloc(sizeof(char**)*6, TEXTURE);
+	char** textureNameList = (char**)MemoryManager::newMalloc(sizeof(char**)*6, Globals::TEXTURE);
 	textureNameList[0] = "assets/skyBoxTop.png";
 	textureNameList[1] = "assets/skyBoxFront.png";
 	textureNameList[2] = "assets/skyBoxBottom.png";
@@ -307,7 +307,7 @@ void AssetManager::loadSkyBoxTexture()
 			fseek(file, 0, SEEK_END);
 			size = ftell(file);
 
-			lump = (ILubyte*)MemoryManager::newMalloc(size, TEXTURE);
+			lump = (ILubyte*)MemoryManager::newMalloc(size, Globals::TEXTURE);
 			fseek(file, 0, SEEK_SET);
 			fread(lump, 1, size, file);
 			fclose(file);
@@ -405,7 +405,7 @@ char * AssetManager::textFileRead(char * filePath) {
       rewind(filePtr);
 
 			if (count > 0) {
-				content = (char *)MemoryManager::newMalloc(sizeof(char) * (count+1), SHADER);
+				content = (char *)MemoryManager::newMalloc(sizeof(char) * (count+1), Globals::SHADER);
 				count = fread(content,sizeof(char),count,filePtr);
 				content[count] = '\0';
 			}

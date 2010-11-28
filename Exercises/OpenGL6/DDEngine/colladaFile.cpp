@@ -152,12 +152,12 @@ char * ColladaFile::load(std::string & str)
 	}
 
 	// Memory reservation for arrays of float that will contain the data
-	vertex = (float *)MemoryManager::newMalloc(vertexCount*sizeof(float), GEOMETRY);
-	normal = (float *)MemoryManager::newMalloc(normalCount*sizeof(float), GEOMETRY);
-	//vertexSkinned = (float *)MemoryManager::newMalloc(vertexCount*sizeof(float), GEOMETRY);
-	//normalSkinned = (float *)MemoryManager::newMalloc(normalCount*sizeof(float), GEOMETRY);
-	if(hasTexture) map = (float *)MemoryManager::newMalloc(mapCount*sizeof(float), TEXTURE);
-	index = (unsigned long *)MemoryManager::newMalloc(indexCount*offset*sizeof(unsigned long), UTILITY);
+	vertex = (float *)MemoryManager::newMalloc(vertexCount*sizeof(float), Globals::GEOMETRY);
+	normal = (float *)MemoryManager::newMalloc(normalCount*sizeof(float), Globals::GEOMETRY);
+	//vertexSkinned = (float *)MemoryManager::newMalloc(vertexCount*sizeof(float), Globals::GEOMETRY);
+	//normalSkinned = (float *)MemoryManager::newMalloc(normalCount*sizeof(float), Globals::GEOMETRY);
+	if(hasTexture) map = (float *)MemoryManager::newMalloc(mapCount*sizeof(float), Globals::TEXTURE);
+	index = (unsigned long *)MemoryManager::newMalloc(indexCount*offset*sizeof(unsigned long), Globals::UTILITY);
 
 	vertexSkinned.resize(vertexCount,0.0f);
 	normalSkinned.resize(normalCount,1.0f);

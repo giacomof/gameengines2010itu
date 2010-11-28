@@ -57,7 +57,7 @@ SDL_Event currentEvent;
 				mousePress(currentEvent);
 				break;
 			case SDL_MOUSEMOTION:
-				mouseMotion(currentEvent);
+				if(!Globals::isStopped) mouseMotion(currentEvent);
 				break;
 			default:
 				break;
@@ -110,6 +110,16 @@ void inputManager::keyPress(SDL_Event &currentEvent)
 	case SDLK_v:
 		if (currentEvent.type == SDL_KEYDOWN)
 			Controller::getInstance().changeCameraMode(true);
+		break;
+
+	case SDLK_p:
+		if (currentEvent.type == SDL_KEYDOWN) {
+			if(Globals::isStopped)
+				Globals::startEngine();
+			else
+				Globals::stopEngine();
+		}
+			
 		break;
 
 	default:

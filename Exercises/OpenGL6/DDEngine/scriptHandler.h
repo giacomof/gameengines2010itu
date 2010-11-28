@@ -33,6 +33,10 @@ public:
 	Persistent<Function> ScriptHandler::GetFunctionHandle(const char * filename, const char * functionName);
 	void ScriptHandler::runScript(const char * filename, const char * function);
 
+	Handle<Context> ScriptHandler::getContext(void);
+	Local<FunctionTemplate> ScriptHandler::makeStaticCallableFunc(InvocationCallback func);
+    Local<External> ScriptHandler::classPtrToExternal();
+
 	// Implemented Callbacks
 		// Log methods
 	static Handle<Value> ScriptHandler::LogCallback(const Arguments &args);

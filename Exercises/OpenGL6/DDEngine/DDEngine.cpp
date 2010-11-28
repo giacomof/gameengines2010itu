@@ -18,23 +18,23 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 
 	switch(allocatorFlag) {
 
-		case STACK_ALLOCATOR:
+		case Globals::STACK_ALLOCATOR:
 
 			MutexManager::lockMutex(mutex_StackAllocator);
 
-			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING STACK ALLOCATOR" << endl;
-			if(verbosityLog>=1) {
-				Log::addToLog(MEMORYMANAGER_LOGFILE, "STACK ALLOCATOR,");
+			if(Globals::verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING STACK ALLOCATOR" << endl;
+			if(Globals::verbosityLog>=1) {
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, "STACK ALLOCATOR,");
 		
 				char * sizeAllocated = new char();
 				char * flag			 = new char();
 				itoa(size, sizeAllocated, 10);
 				itoa(typeFlag, flag, 10);
 				
-				Log::addToLog(MEMORYMANAGER_LOGFILE, sizeAllocated);
-				Log::addToLog(MEMORYMANAGER_LOGFILE, ",");
-				Log::addToLog(MEMORYMANAGER_LOGFILE, flag);
-				Log::addToLog(MEMORYMANAGER_LOGFILE, "\n");
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, sizeAllocated);
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, ",");
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, flag);
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, "\n");
 			}
 
 			storage = memMgr.allocateOnStack(size);
@@ -45,24 +45,24 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 
 			break;
 
-		case SINGLE_FRAME_ALLOCATOR:
+		case Globals::SINGLE_FRAME_ALLOCATOR:
 
 			MutexManager::lockMutex(mutex_SingleFrameAllocator);
 			
-			if(verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING THE SINGLE FRAME ALLOCATOR" << endl;
+			if(Globals::verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING THE SINGLE FRAME ALLOCATOR" << endl;
 
-			if(verbosityLog>=1) {
-				Log::addToLog(MEMORYMANAGER_LOGFILE, "SINGLE FRAME ALLOCATOR,");
+			if(Globals::verbosityLog>=1) {
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, "SINGLE FRAME ALLOCATOR,");
 		
 				char * sizeAllocated = new char();
 				char * flag			 = new char();
 				itoa(size, sizeAllocated, 10);
 				itoa(typeFlag, flag, 10);
 
-				Log::addToLog(MEMORYMANAGER_LOGFILE, sizeAllocated);
-				Log::addToLog(MEMORYMANAGER_LOGFILE, ",");
-				Log::addToLog(MEMORYMANAGER_LOGFILE, flag);
-				Log::addToLog(MEMORYMANAGER_LOGFILE, "\n");
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, sizeAllocated);
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, ",");
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, flag);
+				Log::addToLog(Globals::MEMORYMANAGER_LOGFILE, "\n");
 			}
 
 			storage = memMgr.allocateOnSingleFrameAllocator(size);
@@ -80,7 +80,7 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 
 void operator delete(void * ptr, unsigned short flag) 
 {
-	if(verbosityLevel>=3) cout << "DELETE WITH FLAG: " << flag << endl;
+	if(Globals::verbosityLevel>=3) cout << "DELETE WITH FLAG: " << flag << endl;
 	memMgr.freeToLastStackMarker();
 }
 
@@ -126,13 +126,16 @@ int threadSound(void *data)
 	int testsoundint = 4000;
 	while ( !engine->getController()->quit )
 	{
-		testsoundint++;
-		if (testsoundint > 7000)
-		{
-			//soundPlayFile("assets/MENULOOP.WAV");
-			testsoundint = 0;
+		if(!Globals::isStopped) {
+		
+			testsoundint++;
+			if (testsoundint > 7000)
+			{
+				//soundPlayFile("assets/MENULOOP.WAV");
+				testsoundint = 0;
+			}
+			SDL_Delay(thread_delay);
 		}
-		SDL_Delay(thread_delay);
 	}
 
 	soundExit();
@@ -149,11 +152,13 @@ int threadPhysics(void *data)
 
 	while ( !engine->getController()->quit ) {
 
-		// physics simulation
-		dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 5);
+		if(!Globals::isStopped) {
+			// physics simulation
+			dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 5);
 
-		// Delay the thread to make room for others on the CPU
-		SDL_Delay(thread_delay);
+			// Delay the thread to make room for others on the CPU
+			SDL_Delay(thread_delay);
+		}
 	}
 
 	return 0;
@@ -161,7 +166,7 @@ int threadPhysics(void *data)
 
 DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physics)
 {
-	if(verbosityLog>=1) Log::clearLog(MEMORYMANAGER_LOGFILE);
+	if(Globals::verbosityLog>=1) Log::clearLog(Globals::MEMORYMANAGER_LOGFILE);
 
 	screenW  = screenWidth;							// Window Width
 	screenH  = screenHeight;						// Window Height
@@ -219,7 +224,7 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	
 	skyBox = NULL;
 	
-	if(verbosityLevel>=1) printDebugInfo();
+	if(Globals::verbosityLevel>=1) printDebugInfo();
 }
 
 DDEngine::~DDEngine(void)
@@ -262,8 +267,8 @@ void DDEngine::printDebugInfo(void)
 void DDEngine::run(void)
 {
 	// Set up camera and spectator
-	player = new(SCENEGRAPH, STACK_ALLOCATOR) entitySpectator();
-	playercamera = new(SCENEGRAPH, STACK_ALLOCATOR) entityCamera();
+	player = new(Globals::SCENEGRAPH, Globals::STACK_ALLOCATOR) entitySpectator();
+	playercamera = new(Globals::SCENEGRAPH, Globals::STACK_ALLOCATOR) entityCamera();
 	player->setCamera(playercamera);
 	controller.setPlayerObject(player);
 
@@ -302,6 +307,7 @@ void DDEngine::run(void)
 	{
 		
 		frameDelta = renderClock.getFrameDelta();
+		
 
 		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
@@ -312,6 +318,7 @@ void DDEngine::run(void)
 		{
 			switch(currentEvent.type)
 			{
+
 			// Some general events to handle immediately
 			case SDL_ACTIVEEVENT:
 				InputPump.sendMessage(currentEvent);
@@ -348,11 +355,12 @@ void DDEngine::run(void)
 			}
 		}
 
-		controller.playerObject->update();
+		if(!Globals::isStopped) controller.playerObject->update();
 		
 		// Actual frame rendering happens here
 		if (window.getActive() )
 		{
+
 			renderClock.frameUpdate();
 
 			memMgr.clearSingleFrameAllocator();
@@ -455,7 +463,7 @@ void DDEngine::drawGL(int frameDelta)
 	float * CamTransform = getCamera();
 
 	if(hasPhysics)
-		if(drawDebug) 
+		if(Globals::drawDebug) 
 			dynamicsWorld->debugDrawWorld();
 
 	// update the animation
@@ -473,7 +481,7 @@ float* DDEngine::getCamera()
 
 	entityCamera * currentCamera = controller.playerObject->getCamera();
 
-	float * tranM = new(SCENEGRAPH, SINGLE_FRAME_ALLOCATOR) float[16];
+	float * tranM = new(Globals::SCENEGRAPH, Globals::SINGLE_FRAME_ALLOCATOR) float[16];
 	//float * tranM = new float[16];
 
 	Matrix::generateIdentityMatrix().getMatrix(&tranM[0]);
@@ -520,7 +528,9 @@ float* DDEngine::getCamera()
 
 void DDEngine::addSkyBox(float halfSide, unsigned int * textureList)
 {
-	skyBox = new(TEXTURE, STACK_ALLOCATOR) SkyBox(halfSide, textureList, TEXTURE_NO_SHADING);
+
+	skyBox = new(Globals::TEXTURE, Globals::STACK_ALLOCATOR) SkyBox(halfSide, textureList, Globals::TEXTURE_NO_SHADING);
+
 }
 
 btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep)
@@ -604,43 +614,44 @@ btCollisionShape * DDEngine::createCollisionSphere(float radius)
 
 SceneObject * DDEngine::createMD2(md2File * model, int shaderFlag, unsigned int texture)
 {
-	md2Interface * md2Model = new(GEOMETRY, STACK_ALLOCATOR) md2Interface(model, shaderFlag, texture);
+
+	md2Interface * md2Model = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) md2Interface(model, shaderFlag, texture);
 	return (SceneObject*) md2Model;
 }
 
 SceneObject * DDEngine::createCollada(ColladaFile * model, unsigned int texture, int shaderFlag, ColladaSkeleton * skeleton)
 {
-	ColladaInterface * colladaModel = new(GEOMETRY, STACK_ALLOCATOR) ColladaInterface(model, shaderFlag, texture, skeleton);
+	ColladaInterface * colladaModel = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) ColladaInterface(model, shaderFlag, texture, skeleton);
 	return (SceneObject*) colladaModel;
 }
 
 SceneObject * DDEngine::createSphere(float radius, int slices, int stacks, bool wireframe, int shaderFlag, unsigned int texture)
 {
-	Sphere * sphere = new(GEOMETRY, STACK_ALLOCATOR) Sphere(radius, slices, stacks, wireframe, shaderFlag, texture);
+	Sphere * sphere = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) Sphere(radius, slices, stacks, wireframe, shaderFlag, texture);
 	return (SceneObject*) sphere;
 }
 
 SceneObject * DDEngine::createPlane(float width, float height, int sideSubdivisions, int shaderFlag, unsigned int texture)
 {
-	SceneObject * plane = new(GEOMETRY, STACK_ALLOCATOR) Plane(width, height, sideSubdivisions, shaderFlag, texture);
+	SceneObject * plane = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) Plane(width, height, sideSubdivisions, shaderFlag, texture);
 	return  plane;
 }
 
 SceneObject * DDEngine::createCube(float side, int shaderFlag, unsigned int texture)
 {
-	Cube * cube = new(GEOMETRY, STACK_ALLOCATOR) Cube(side, shaderFlag, texture);
+	Cube * cube = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) Cube(side, shaderFlag, texture);
 	return (SceneObject*) cube;
 }
 
 SceneObject * DDEngine::createLine(Vector start, Vector end, int shaderFlag, unsigned int texture)
 {
-	Line * line = new(GEOMETRY, STACK_ALLOCATOR) Line(start, end, shaderFlag, texture);
+	Line * line = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) Line(start, end, shaderFlag, texture);
 	return (SceneObject*) line;
 }
 
 SceneObject * DDEngine::createTeapot(float size, bool wireframe, int shaderFlag, unsigned int texture)
 {
-	Teapot * teapot = new(GEOMETRY, STACK_ALLOCATOR) Teapot(size, wireframe, shaderFlag, texture);
+	Teapot * teapot = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) Teapot(size, wireframe, shaderFlag, texture);
 	return (SceneObject*) teapot;
 }
 
@@ -649,7 +660,7 @@ SceneObject * DDEngine::createLight(	bool enabled, bool directional,
 										float diffuseR, float diffuseG, float diffuseB,
 										float specularR, float specularG, float specularB)
 {
-	Light * light = new(GEOMETRY, STACK_ALLOCATOR) Light(	enabled, directional, 
+	Light * light = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) Light(	enabled, directional, 
 															ambientR, ambientG, ambientB,
 															diffuseR, diffuseG, diffuseB,
 															specularR, specularG, specularB);
@@ -658,6 +669,6 @@ SceneObject * DDEngine::createLight(	bool enabled, bool directional,
 
 SceneNode * DDEngine::addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry)
 {
-	SceneNode * sceneNode = new(SCENEGRAPH, STACK_ALLOCATOR) SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
+	SceneNode * sceneNode = new(Globals::SCENEGRAPH, Globals::STACK_ALLOCATOR) SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
 	return sceneNode;
 }
