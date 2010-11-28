@@ -1,9 +1,9 @@
+// Flag received from the engine
 uniform int flag;
-varying vec4 shadingAmount;
 
 // Declaration of varying variables that will be received from the vertex shader
 varying vec3 surfaceNormal, lightDirirectionVector, HalfVectorLightEye;
-varying vec4 diffusiveComponent, globalAmbientalComponent, ambientalComponent;
+varying vec4 diffusiveComponent, globalAmbientalComponent, ambientalComponent, shadingAmount;
 varying float lightDistanceFromVertex;
 
 // Uniform variable to access the texture shadingColor
@@ -13,13 +13,18 @@ void main()
 {
 	if (flag == -2 || flag == 2 || flag == -3)
 	{
+		// Extract the color from the texture
 		vec4 color = texture2D(texture, gl_TexCoord[0].st);
+		// Apply the color
 		gl_FragColor = color;
+
 		if (flag == -3)
+			// Add to the color the shading component
 			gl_FragColor *= shadingAmount;
 	}
 	else if (flag == -1)
 	{
+		// Define a fixed color for the pixel
 		gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 	}
 	else if (flag == 0 || flag == 1)
@@ -60,6 +65,7 @@ void main()
 		
 		if (flag == 0)
 		{
+			// Define the color of the pixel only with the shading component
 			gl_FragColor = shadingColor;	
 		}
 		else if (flag == 1)
