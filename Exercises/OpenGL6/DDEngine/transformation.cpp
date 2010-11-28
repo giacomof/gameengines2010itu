@@ -19,39 +19,21 @@ Transformation::Transformation(	Vector p_translation,
 	translation = p_translation;
 	sX = sY = sZ = 1;
 	shXY = shXZ = shYX = shYZ = shZX = shZY = 0;
+
+	calculateMatrix();
 	
 }
 
 // Returns the transpose of the actual transformation matrix
 Matrix Transformation::getTransformation(void)
 {
-	Matrix tempMatrix = Matrix();
-
-	float tranM[16];
-
-	tempMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
-	tempMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * tempMatrix;
-	tempMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(2)) * tempMatrix;
-	tempMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * tempMatrix;
-
-	tempMatrix.getMatrix(&tranM[0]);
-	return tempMatrix.getTranspose();
+	return transformationMatrix.getTranspose();
 }
 
 // Return the inverse of the transposed actual transformation matrix
 Matrix Transformation::getInverseTransformation(void)
 {
-	float tranM[16];
-	
-	transformationMatrix = Matrix();
-
-	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getInverse();
-	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(1)).getInverse() * transformationMatrix;
-	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
-	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation).getInverse() * transformationMatrix;
-
-	transformationMatrix.getMatrix(&tranM[0]);
-	return transformationMatrix.getTranspose();
+	return transformationMatrix.getInverse().getTranspose();
 }
 
 
@@ -59,12 +41,16 @@ Matrix Transformation::getInverseTransformation(void)
 void Transformation::addQuaternionRotation(Quaternion q) 
 {
 	rotation = q * rotation;
+
+	calculateMatrix();
 }
 
 // Apply a translation
 void Transformation::addTranslation(Vector v)
 {
 	translation = translation + v;
+
+	calculateMatrix();
 }
 
 // Apply a scale
@@ -73,6 +59,8 @@ void Transformation::addScaling(float p_sX, float p_sY, float p_sZ)
 	sX *= p_sX;
 	sY *= p_sY;
 	sZ *= p_sZ;
+
+	calculateMatrix();
 }
 
 // Apply a shear
@@ -84,6 +72,8 @@ void Transformation::addShearing(float p_shXY, float p_shXZ, float p_shYX, float
 	shYZ += p_shYZ;
 	shZX += p_shZX;
 	shZY += p_shZY;
+
+	calculateMatrix();
 }
 
 
@@ -131,11 +121,15 @@ Quaternion Transformation::getBBOrientation(void)
 void Transformation::setTranslation(Vector t)
 {
 	translation = t;
+
+	calculateMatrix();
 }
 
 void Transformation::setOrientation(Quaternion q)
 {
 	rotation = q;
+
+	calculateMatrix();
 }
 
 void Transformation::setBBTranslation(Vector t)
@@ -146,4 +140,12 @@ void Transformation::setBBTranslation(Vector t)
 void Transformation::setBBOrientation(Quaternion q)
 {
 	bbRotation = q;
+}
+
+void Transformation::calculateMatrix()
+{
+	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
+	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * transformationMatrix;
+	transformationMatrix = Matrix::generateTranslationMatrix(translation.getX(), translation.getY(), translation.getZ()) * transformationMatrix;
+	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * transformationMatrix;
 }

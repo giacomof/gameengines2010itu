@@ -63,7 +63,7 @@ public:
 	btCollisionShape * createCollisionBox(Vector dimension);
 	btCollisionShape * createCollisionSphere(float radius);
 
-	SceneObject * createMD2(md2File * model, int shaderFlag = 0, unsigned int texture = 0);
+	SceneObject * createMD2(md2File * model, unsigned int texture = 0, int shaderFlag = 0);
 	SceneObject * createCollada(ColladaFile * model, unsigned int texture = 0, int shaderFlag = 0, ColladaSkeleton * skeleton = 0);
 	SceneObject * createSphere(float radius, int slices, int stacks, bool wireframe, int shaderFlag = 0, unsigned int texture = 0);
 	SceneObject * createPlane(float width, float height, int sideSubdivisions, int shaderFlag = 0, unsigned int texture = 0);
