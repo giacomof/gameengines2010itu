@@ -76,8 +76,8 @@ void extendedEngine::setupScene()
 
 	
 
-	/*SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), Globals::TEXTURE_NO_SHADING, assetManager.getTexture("bossCubeTx"));
-	SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);*/
+	SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), Globals::TEXTURE_NO_SHADING, assetManager.getTexture("bossCubeTx"));
+	SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 }
 void extendedEngine::frameStarted(int frameDelta)
