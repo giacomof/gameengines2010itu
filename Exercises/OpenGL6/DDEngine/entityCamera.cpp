@@ -11,7 +11,7 @@ entityCamera::~entityCamera(void)
 {
 }
 
-void entityCamera::update(void) 
+void entityCamera::update(float dt) 
 { 
 }
 

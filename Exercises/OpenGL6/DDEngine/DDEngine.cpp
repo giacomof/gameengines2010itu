@@ -355,7 +355,8 @@ void DDEngine::run(void)
 			}
 		}
 
-		if(!Globals::isStopped) controller.playerObject->update();
+		float dt = (float) frameDelta / 1000.0f;
+		if(!Globals::isStopped) controller.playerObject->update(dt);
 		
 		// Actual frame rendering happens here
 		if (window.getActive())
