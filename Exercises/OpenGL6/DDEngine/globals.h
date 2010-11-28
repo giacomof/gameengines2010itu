@@ -31,7 +31,7 @@ public:
 		// Verbosity Level
 	static const int verbosityLog	= 0;
 	
-		// Log Files
+	// Log Files
 	static const char * MEMORYMANAGER_LOGFILE;
 	static const char * MALLOC_LOGFILE;
 	static const char * JAVASCRIPT_LOGFILE;
@@ -48,7 +48,7 @@ public:
 	static const unsigned short SOUND		= 7;
 	static const unsigned short TEXTURE		= 8;
 
-		// Allocator Flag
+	// Allocator Flag
 	static const unsigned short STACK_ALLOCATOR			= 0;
 	static const unsigned short SINGLE_FRAME_ALLOCATOR	= 1;
 

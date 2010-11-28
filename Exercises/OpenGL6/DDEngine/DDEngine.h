@@ -21,7 +21,7 @@
 
 #include "mutexManager.h"						// Header File for our Mutex Manager
 #include "memoryManager.h"						// Header File for our Memory Manager
-#include "linearAlgebra.h"					// Header File for our math library
+#include "linearAlgebra.h"						// Header File for our math library
 #include "sceneNode.h"							// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"						// Header File for the SceneObject container
 #include "md2File.h"							// Header File for our md2 loader
@@ -126,10 +126,10 @@ protected:
 	// Script Handler
 	ScriptHandler scriptHandler;
 	
-	int initGL(void);							// Initialise the rendering window
-	int initPhysics(void);						// Initialise the physic engine
-	void drawGL(int frameDelta);				// Draw the world
-	float * getCamera(void);					// Move the camera
+	int initGL(void);											// Initialise the rendering window
+	int initPhysics(void);										// Initialise the physic engine
+	void drawGL(int frameDelta);								// Draw the world
+	float * getCamera(void);									// Move the camera
 	void addSkyBox(float halfSide, unsigned int * textureList);	// Add a skybox to the engine
 
 };

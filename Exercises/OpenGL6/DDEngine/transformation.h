@@ -50,7 +50,8 @@ class transformation_D Transformation
 		
 
 	private:
-		Matrix transformationMatrix;					// Cointains the actual transformation matrix
+		// Cointains the actual transformation matrix
+		Matrix transformationMatrix;					
 
 		// Values of the transformation used to calculate the transformation matrix
 		Quaternion rotation;

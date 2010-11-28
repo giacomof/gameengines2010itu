@@ -68,8 +68,6 @@ public:
 	vector<matrixContainer> skinInvMatrixArray;
 	vector<stringContainer> skinBoneIDArray;
 	vector<vertexInfluence> skinVertexInfluence;
-	//float * skinWeightsArray, * vertexSkinned, *normalSkinned;
-	//int * skinBoneIndexArray;
 	vector<float> skinWeightsArray;
 	vector<float> vertexSkinned;
 	vector<float> normalSkinned;

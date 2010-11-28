@@ -42,7 +42,7 @@ class sceneNode_D SceneNode
 		// destructor
 		virtual ~SceneNode() { destroy(); }
 		// delete object
-		void release() { /*SDL_DestroyMutex ( mutex_node );*/ }
+		void release() {}
 
 		void update(float dt);
 		void destroy(void);

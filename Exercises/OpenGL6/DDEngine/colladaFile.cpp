@@ -12,15 +12,8 @@ ColladaFile::~ColladaFile(void)
 {
 	MemoryManager::newFree(vertex);
 	MemoryManager::newFree(normal);
-	//MemoryManager::newFree(vertexSkinned);
-	//MemoryManager::newFree(normalSkinned);
 	if(hasTexture) MemoryManager::newFree(map);
 	MemoryManager::newFree(index);
-	/*if(hasSkeletonWeights)
-	{
-		MemoryManager::newFree(skinWeightsArray);
-		MemoryManager::newFree(skinBoneIndexArray);
-	}*/
 }
 
 char * ColladaFile::load(std::string & str)
@@ -208,7 +201,6 @@ char * ColladaFile::load(std::string & str)
 	{
 		// Prepare for data
 		skinWeightsArray.resize(countSkinWeightsArray, 0.0f);
-		//(float *)MemoryManager::newMalloc(countSkinWeightsArray*sizeof(float), UTILITY);
 
 		// Parse Bind Shape Matrix
 		string token;
@@ -225,7 +217,6 @@ char * ColladaFile::load(std::string & str)
 		// Parse Bone ID array
 		skinBoneIDArray.reserve(countBoneIDArray);
 		skinBoneIndexArray.resize(countBoneIDArray);
-		//skinBoneIndexArray = (int *)MemoryManager::newMalloc(countBoneIDArray*sizeof(int), UTILITY);
 		std::istringstream streamBoneIDArray(stringBoneIDArray);
 		while ( getline(streamBoneIDArray, token, ' ') )
 		{
@@ -272,7 +263,6 @@ char * ColladaFile::load(std::string & str)
 
 			// Size the index array
 			currentInfluence.vInfluenceIndex.resize(currentInfluence.vInfluenceCount*2,0);
-			//(unsigned long *)MemoryManager::newMalloc(currentInfluence.vInfluenceCount*2*sizeof(unsigned long), UTILITY);
 
 			// Parse the indices
 			for (int j=0; j<currentInfluence.vInfluenceCount*2; j++)

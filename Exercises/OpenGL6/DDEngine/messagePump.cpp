@@ -10,9 +10,7 @@ MessagePump & MessagePump::getInstance()
 {
 	if(MessagePump::count==0) { 
 		MessagePump::mutex_event = SDL_CreateMutex();
-		//std::cout << "CREATING LIST ";
 		messageList = new list<SDL_Event>();
-		//std::cout << "ADDRESS: " << &messageList << endl;
 	}
 	MessagePump::count++;
 	return _instance;
