@@ -24,11 +24,6 @@ void extendedEngine::setupScene()
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
 	// ******************************
-	
-	//// Create the plane with the collision shape
-	//SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 0);
-	//planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);
-
 	// Create character "rotation center" node
 	SceneObject * sphere = this->createSphere(5, 30, 30, true, Globals::NO_TEXTURE_PHONG);
 	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
