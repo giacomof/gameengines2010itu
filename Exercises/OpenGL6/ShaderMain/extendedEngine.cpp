@@ -54,10 +54,10 @@ void extendedEngine::setupScene()
 
 	
 	SceneObject * noShadingDuck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"), Globals::TEXTURE_NO_SHADING);
-	SceneNode * noShadingDuckNode = this->addSceneNode(&rootNode, "No Shading Duck Node", noShadingDuck, Vector(150.0f, 45.0f,100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * noShadingDuckNode = this->addSceneNode(&rootNode, "No Shading Duck Node", noShadingDuck, Vector(150.0f, 45.0f,0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	SceneObject * fixedPipelineShadingDuck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"), Globals::TEXTURE_FIXED_PIPELINE);
-	SceneNode * fixedPipelineShadingDuckNode = this->addSceneNode(&rootNode, "Fixed Pipeline Shading Duck Node", fixedPipelineShadingDuck, Vector(150.0f, 45.0f,0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	SceneNode * fixedPipelineShadingDuckNode = this->addSceneNode(&rootNode, "Fixed Pipeline Shading Duck Node", fixedPipelineShadingDuck, Vector(250.0f, 45.0f,-100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	SceneObject * duck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"), Globals::TEXTURE_PHONG);
 	SceneNode * duckNode = this->addSceneNode(&rootNode, "Duck Node", duck, Vector(150.0f, 45.0f,-100.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
@@ -67,8 +67,8 @@ void extendedEngine::setupScene()
 
 	
 
-	SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), Globals::TEXTURE_NO_SHADING, assetManager.getTexture("bossCubeTx"));
-	SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
+	//SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), Globals::TEXTURE_NO_SHADING, assetManager.getTexture("bossCubeTx"));
+	//SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 }
 void extendedEngine::frameStarted(int frameDelta)

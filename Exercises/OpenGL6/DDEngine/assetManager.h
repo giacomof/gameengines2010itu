@@ -83,7 +83,7 @@ public:
 
 	// Shaders methods
 	void createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName);
-	char * textFileRead(char * filePath);
+	char * readShaderFile(char * filePath);
 	static void activateShadingProgram(char * shadingProgramName);
 	static void deactivateShadingProgram();
 	static void setShaderFlag(int flag);
