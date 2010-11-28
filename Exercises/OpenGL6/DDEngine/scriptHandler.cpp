@@ -4,7 +4,10 @@ Persistent<Context> ScriptHandler::g_context;
 
 ScriptHandler::ScriptHandler(void)
 {
-	runScript("test.js", "Update");
+	//runScript("test.js", "Update");
+	//WindowManager window = WindowManager::getInstance();
+	//window.createWindow(320, 240, 32);
+	//window.resizeWindow(320, 240);
 }
 
 

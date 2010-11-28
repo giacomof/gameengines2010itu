@@ -1,7 +1,7 @@
 function Update()
 {
     
-    var test = new String("AAAAAAAAAAAAAAAAAAAAA");
+   Window(320, 240, 32);
 
    /*
    var test = new SceneObject();
