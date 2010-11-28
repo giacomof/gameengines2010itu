@@ -91,5 +91,14 @@
     <None Include="assets\finalShader.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="defaultAssets\defaultCollada.dae">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="defaultAssets\defaultMd2.md2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="defaultAssets\defaultTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

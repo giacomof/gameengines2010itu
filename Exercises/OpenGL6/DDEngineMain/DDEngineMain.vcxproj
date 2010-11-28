@@ -105,6 +105,9 @@
     <None Include="assets\toon3.frag" />
     <None Include="assets\toonf2.frag" />
     <None Include="assets\toonf2.vert" />
+    <None Include="defaultAssets\defaultCollada.dae" />
+    <None Include="defaultAssets\defaultMd2.md2" />
+    <None Include="defaultAssets\defaultTexture.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
