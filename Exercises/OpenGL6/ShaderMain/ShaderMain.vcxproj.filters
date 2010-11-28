@@ -44,36 +44,6 @@
     <None Include="assets\nhe.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="assets\toon.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\shader1.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\shader1.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\toon.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\phong1Point.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\phong1Point.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\textureShader1.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\textureShader1.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\textureShader2.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\textureShader2.vert">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="test.js">
       <Filter>Resource Files</Filter>
     </None>
@@ -96,6 +66,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="assets\map.tga">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\finalShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\finalShader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

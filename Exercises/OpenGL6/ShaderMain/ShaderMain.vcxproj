@@ -86,25 +86,17 @@
     <None Include="assets\boy_10.tga" />
     <None Include="assets\duck.dae" />
     <None Include="assets\duckCM.tga" />
+    <None Include="assets\finalShader.frag" />
+    <None Include="assets\finalShader.vert" />
     <None Include="assets\map.tga" />
     <None Include="assets\MENULOOP.WAV" />
     <None Include="assets\nhe.ico" />
-    <None Include="assets\phong1Point.frag" />
-    <None Include="assets\phong1Point.vert" />
-    <None Include="assets\shader1.frag" />
-    <None Include="assets\shader1.vert" />
     <None Include="assets\skyBoxBottom.png" />
     <None Include="assets\skyBoxFront.png" />
     <None Include="assets\skyBoxLeft.png" />
     <None Include="assets\skyBoxRear.png" />
     <None Include="assets\skyBoxRight.png" />
     <None Include="assets\skyBoxTop.png" />
-    <None Include="assets\textureShader1.frag" />
-    <None Include="assets\textureShader1.vert" />
-    <None Include="assets\textureShader2.frag" />
-    <None Include="assets\textureShader2.vert" />
-    <None Include="assets\toon.frag" />
-    <None Include="assets\toon.vert" />
     <None Include="test.js" />
   </ItemGroup>
   <ItemGroup>

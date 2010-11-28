@@ -18,17 +18,8 @@ void extendedEngine::setupScene()
 	assetManager.loadTexture("assets/duckCM.tga", "duckTx");
 	assetManager.loadTexture("assets/map.tga", "environmentMapTx");
 
-
-	assetManager.createShadingProgram("assets/toon.vert", "assets/toon.frag", "toonShader");
-	assetManager.createShadingProgram("assets/shader1.vert", "assets/shader1.frag", "shader1");
-	assetManager.createShadingProgram("assets/phong1Point.vert", "assets/phong1Point.frag", "phong1Point");
-	assetManager.createShadingProgram("assets/textureShader1.vert", "assets/textureShader1.frag", "textureShader1");
-	assetManager.createShadingProgram("assets/textureShader2.vert", "assets/textureShader2.frag", "textureShader2");
-	//assetManager.activateShadingProgram("toonShader");
-	//assetManager.activateShadingProgram("shader1");
-	//assetManager.activateShadingProgram("phong1Point");
-	//assetManager.activateShadingProgram("textureShader1");
-	assetManager.activateShadingProgram("textureShader2");
+	assetManager.createShadingProgram("assets/finalShader.vert", "assets/finalShader.frag", "finalShader");
+	assetManager.activateShadingProgram("finalShader");
 
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
