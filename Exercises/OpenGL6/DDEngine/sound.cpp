@@ -56,7 +56,7 @@ void soundPlayFile(char *file)
     }
     SDL_BuildAudioCVT(&cvt, wave.format, wave.channels, wave.freq,
                             AUDIO_S16,   2,             22050);
-    cvt.buf = (Uint8 *)MemoryManager::newMalloc(dlen*cvt.len_mult, SOUND);
+    cvt.buf = (Uint8 *)MemoryManager::newMalloc(dlen*cvt.len_mult, Globals::SOUND);
     memcpy(cvt.buf, data, dlen);
     cvt.len = dlen;
     SDL_ConvertAudio(&cvt);

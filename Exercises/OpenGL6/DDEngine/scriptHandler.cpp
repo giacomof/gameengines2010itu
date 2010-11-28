@@ -30,7 +30,7 @@ Handle<Value> ScriptHandler::LogCallback(const Arguments &args)
 	Local<Value> value =  args[0];
 	String::AsciiValue ascii(value);
 
-	Log::addToLog(JAVASCRIPT_LOGFILE, *ascii);
+	Log::addToLog(Globals::JAVASCRIPT_LOGFILE, *ascii);
 	
 	return value;
 
@@ -40,7 +40,7 @@ Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args)
 {
 	HandleScope handleScope;
 	Local<Value> value =  args[0];
-	Log::clearLog(JAVASCRIPT_LOGFILE);
+	Log::clearLog(Globals::JAVASCRIPT_LOGFILE);
 	
 	return value;
 }
@@ -134,4 +134,40 @@ void ScriptHandler::runScript(const char * filename, const char * function)
 	Handle<Value> * args = NULL;
 	Handle<Value> result = updateFunction->Call( g_context->Global(), numArgs, args);
 
+}
+
+Handle<Context> ScriptHandler::getContext(void) 
+{
+	return g_context;
+}
+
+
+// this template method returns a scriptHandler pointer starting from an External
+template <typename T>
+    static T * externalToClassPtr(Local<Value> data)
+    {
+        if(data.IsEmpty())
+            cout<<"Data empty"<<endl;
+        else if(!data->IsExternal())
+            cout<<"Data not external"<<endl;
+        else
+            return static_cast<T *>(External::Unwrap(data));
+                
+        //If function gets here, one of the checks above failed
+        return NULL;
+    }
+
+// Wrap a callback function into a FunctionTemplate, providing the "this"
+// pointer to the callback when v8 calls the callback func
+Local<FunctionTemplate> ScriptHandler::makeStaticCallableFunc(InvocationCallback func)
+{
+    HandleScope scope;
+    Local<FunctionTemplate> funcTemplate = FunctionTemplate::New(func, classPtrToExternal());
+    return scope.Close(funcTemplate);
+}
+
+Local<External> ScriptHandler::classPtrToExternal()
+{
+    HandleScope scope;
+    return scope.Close(External::New(reinterpret_cast<void *>(this)));
 }
