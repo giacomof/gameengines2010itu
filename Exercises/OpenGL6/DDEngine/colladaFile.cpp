@@ -411,6 +411,14 @@ void ColladaFile::render(skelPose * currentPose)
 			VertexIndex[1]	= index[i+indexStride		]*vertexStride;
 			VertexIndex[2]	= index[i+indexStride*2		]*vertexStride;
 
+			// Hidden surface removal test here
+			// Just kidding. I didn't have time to implement it
+			// Here's how it would work though
+			// 1) Get the surfance normal of th plane described by the 3 vertices above
+			// 2) Take the dot product of the surface normal and the forward camera vector
+			// 3) if the angle is less than 90 degrees, assume surface is pointing away from camera and go to next triangle immediately
+			// 4) if not, continue as usual.
+
 			NormalIndex[0]	= index[i				+1	]*normalStride;
 			NormalIndex[1]	= index[i+indexStride	+1	]*normalStride;
 			NormalIndex[2]	= index[i+indexStride*2	+1	]*normalStride;
