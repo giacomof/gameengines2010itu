@@ -14,7 +14,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <glut.h>
-#include <linearAlgebraDLL.h>
+#include "linearAlgebra.h"
 
 #pragma warning(disable: 4251)
 

@@ -9,7 +9,7 @@
 
 #include "assetManager.h"
 #include "sceneObject.h"
-#include "linearAlgebraDLL.h"
+#include "linearAlgebra.h"
 #include "mutexManager.h"
 #include "entityCamera.h"
 

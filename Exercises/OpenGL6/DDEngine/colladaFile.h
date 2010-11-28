@@ -10,7 +10,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-
+#include "linearAlgebra.h"
 #include "rapidxml.hpp"
 #include "memoryManager.h"
 #include "globals.h"

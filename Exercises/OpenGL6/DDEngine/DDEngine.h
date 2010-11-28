@@ -21,7 +21,7 @@
 
 #include "mutexManager.h"						// Header File for our Mutex Manager
 #include "memoryManager.h"						// Header File for our Memory Manager
-#include "linearAlgebraDLL.h"					// Header File for our math library
+#include "linearAlgebra.h"					// Header File for our math library
 #include "sceneNode.h"							// Header File for the SceneNode/Scenegraph
 #include "sceneObject.h"						// Header File for the SceneObject container
 #include "md2File.h"							// Header File for our md2 loader
@@ -35,7 +35,7 @@
 #include "scriptHandler.h"						// Header File for our Script Handler
 
 using namespace std;
-using namespace linearAlgebraDLL;
+
 
 class DDEngine_D DDEngine
 {

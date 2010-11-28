@@ -8,11 +8,11 @@
 #define transformation__H
 
 #include <list>
-#include "linearAlgebraDLL.h"			// Header File for our math library
+#include "linearAlgebra.h"
 
 #pragma warning(disable: 4251)
 
-using namespace linearAlgebraDLL;
+
 using namespace std;
 
 class transformation_D Transformation 
