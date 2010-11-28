@@ -24,20 +24,20 @@ void extendedEngine::setupScene()
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
 	// ******************************
+
 	// Create character "rotation center" node
 	SceneObject * sphere = this->createSphere(5, 30, 30, true, Globals::NO_TEXTURE_PHONG);
 	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 	sphereNode->setVisible(true);
 
-	// Create Light connected to the battle droid
+	// Create Light connected it to the battle droid
 	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
 	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -200), Vector(0, 0, 0), 0);
 
 	SceneObject * sphere2 = this->createSphere(5, 30, 30, false, Globals::NO_TEXTURE_PHONG);
 	SceneNode * sphereNode2 = this->addSceneNode(light1Node, "", sphere2, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 
-
-	// Create the teapot
+	// Create teapots
 	SceneObject * greenTeapot = this->createTeapot(50, false, Globals::GREEN);
 	SceneNode * greenTeapotNode = this->addSceneNode(&rootNode, "Green Teapot Node", greenTeapot, Vector(0.0f, 45.0f, -0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
@@ -47,7 +47,7 @@ void extendedEngine::setupScene()
 	SceneObject * specularTeapot = this->createTeapot(50, false, Globals::SPECULAR_MAP, assetManager.getTexture("environmentMapTx"));
 	SceneNode * specularTeapotNode = this->addSceneNode(&rootNode, "Specular Teapot Node", specularTeapot, Vector(0.0f, 45.0f, -200.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	
+	// Create Ducks
 	SceneObject * noShadingDuck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("duckTx"), Globals::TEXTURE_NO_SHADING);
 	SceneNode * noShadingDuckNode = this->addSceneNode(&rootNode, "No Shading Duck Node", noShadingDuck, Vector(150.0f, 45.0f,0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
@@ -60,15 +60,16 @@ void extendedEngine::setupScene()
 	SceneObject * specularDuck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("environmentMapTx"), Globals::SPECULAR_MAP);
 	SceneNode * specularDuckNode = this->addSceneNode(&rootNode, "Specular Duck Node", specularDuck, Vector(150.0f, 45.0f, -200.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	
-
 	SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), Globals::TEXTURE_NO_SHADING, assetManager.getTexture("bossCubeTx"));
 	SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
+	// Run a script
+	this->runJSScript("create.js");
 }
 void extendedEngine::frameStarted(int frameDelta)
 {
 	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.01f * frameDelta);
+
 }
 void extendedEngine::frameEnded(int frameDelta)
 {

@@ -174,9 +174,6 @@ DDEngine::DDEngine(int screenWidth, int screenHeight, int colorDepth, bool physi
 	controller = Controller();
 	// Create the script handler
 	scriptHandler = ScriptHandler();
-
-	scriptHandler.runScript("test.js");
-
 	// SDL initialization
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
 	{
@@ -665,4 +662,9 @@ SceneNode * DDEngine::addSceneNode(SceneNode * father, char * name, SceneObject 
 {
 	SceneNode * sceneNode = new(Globals::SCENEGRAPH, Globals::STACK_ALLOCATOR) SceneNode(father, name, geometry, position, quaternionVector, quaternionRotation, physicGeometry);
 	return sceneNode;
+}
+
+void DDEngine::runJSScript(const char * filePath)
+{
+	scriptHandler.runScript(filePath);
 }

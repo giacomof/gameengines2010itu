@@ -40,10 +40,18 @@ Handle<Value> ScriptHandler::constructTeapot(const Arguments &args)
 	//start a handle scope
 	HandleScope handleScope;
  
-	//generate a new point
-	Teapot * teapot = new Teapot(50, false, 0);
+	int size = args[0]->Int32Value();
+	bool isWireframe = args[1]->BooleanValue();
 
-	SceneNode * temp = new SceneNode( &Root::getInstance(), "temp Teapot", teapot, Vector(0, 0, 0), Vector(0, 0, 0), 0.0f ); 
+	float posX = args[2]->Int32Value();
+	float posY = args[3]->Int32Value();
+	float posZ = args[4]->Int32Value();
+
+
+	//generate a new point
+	Teapot * teapot = new Teapot(size, isWireframe, 0);
+
+	SceneNode * temp = new SceneNode( &Root::getInstance(), "JAVASCRIPT Teapot", teapot, Vector(posX, posY, posZ), Vector(0, 0, 0), 0.0f ); 
 	Root::getInstance().addChild(temp);
 
 	//return the wrapped point

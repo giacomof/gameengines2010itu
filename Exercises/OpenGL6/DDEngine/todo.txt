@@ -3,37 +3,14 @@
 // ******************************************************************************************************* //
 
 GLOBAL TASKS:
-	  
-V- V8 Javascript Scripting Integration
-	1(V)- Compile V8
-	1(V)- Compile Scripts
-	1(V)- Run Scripts
-	1(V)- Return Values from scripts
-	1(V)- ScriptHandler class imports V8 
-	1(V)- ScriptHandler Compiles Scripts
-	1(V)- ScriptHandler Runs Scripts
-	1(V)- ScriptHandler Return Values from scripts
-	1(V)- runScript accepts filename and function name
-	1(V)- Call Log and ClearLog from javaScript
-	1(V)- Create an Object in a script
-	1(V)- Create a sceneObject and a sceneNode in a script
-	   V- Use parameters to instantiate objects
-	   V- Implement the most used engine functions
-	1(V)- startEngine mode
-	1(V)- stopEngine mode
-	   V- move logic into scripts as much as possible
 
-1(V)- Logging system with verbosity levels
-	1(V)- addToLog()
-	1(V)- clearLog()
-	1(V)- VerbosityLevel variable in globals.h
-	1(V)- Logging Files names in globals.h
-	   0- Put log methods in the Engine
+V- V8 Javascript Scripting Integration	  
+	  V- Implement the most used engine functions
+	  V- move logic into scripts as much as possible
 
-0- FrameClock Class as a Singleton
 G- the engine should not crash if it can't find a file
-0- better thread synch and use
-0- optimizations for the Transformation Class
+S- better thread synch and use
+G- optimizations for the Transformation Class
 0- optimize debug cout and logs with "if define"
 	
 
@@ -135,8 +112,27 @@ COMPLETED:
 	1(S)- Debug mesh skinning
 	1(S)- Find a way to handle normals
 	1(S)- Do keyframe interpolation	   
-
-
+1(V)- Logging system with verbosity levels
+	1(V)- addToLog()
+	1(V)- clearLog()
+	1(V)- VerbosityLevel variable in globals.h
+	1(V)- Logging Files names in globals.h
+1(V)- V8 Javascript Scripting Integration
+	1(V)- Compile V8
+	1(V)- Compile Scripts
+	1(V)- Run Scripts
+	1(V)- Return Values from scripts
+	1(V)- ScriptHandler class imports V8 
+	1(V)- ScriptHandler Compiles Scripts
+	1(V)- ScriptHandler Runs Scripts
+	1(V)- ScriptHandler Return Values from scripts
+	1(V)- runScript accepts filename and function name
+	1(V)- Call Log and ClearLog from javaScript
+	1(V)- Create an Object in a script
+	1(V)- Create a sceneObject and a sceneNode in a script
+	1(V)- Use parameters to instantiate objects  
+	1(V)- startEngine mode
+	1(V)- stopEngine mode
 
 Symbology Map:
 

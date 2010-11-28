@@ -44,9 +44,6 @@
     <None Include="assets\nhe.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="test.js">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="assets\skyBoxBottom.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -81,6 +78,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="defaultAssets\defaultCollada.dae">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="create.js">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
