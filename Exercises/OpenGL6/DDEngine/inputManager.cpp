@@ -118,7 +118,8 @@ void inputManager::keyPress(SDL_Event &currentEvent)
 				// recompile the create script
 				// and unpause the engine
 
-
+				scriptHandler = ScriptHandler::getInstance();
+				scriptHandler.runScript("scripts/update.js");
 
 				Globals::startEngine();
 			} else

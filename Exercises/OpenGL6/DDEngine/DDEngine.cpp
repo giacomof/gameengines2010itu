@@ -655,5 +655,5 @@ SceneNode * DDEngine::addSceneNode(SceneNode * father, char * name, SceneObject 
 
 void DDEngine::runJSScript(const char * filePath)
 {
-	scriptHandler.runScript(filePath);
+	if(!Globals::isStopped) scriptHandler.runScript(filePath);
 }

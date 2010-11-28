@@ -11,6 +11,7 @@
 #include "messagePump.h"
 #include "controller.h"
 #include "mutexManager.h"
+#include "scriptHandler.h"
 
 class inputManager_D inputManager
 {
@@ -32,6 +33,8 @@ public:
 	int update(void);
 
 private:
+
+	ScriptHandler scriptHandler;
 
 	void keyPress(SDL_Event & currentEvent);
 	void mousePress(SDL_Event & currentEvent);
