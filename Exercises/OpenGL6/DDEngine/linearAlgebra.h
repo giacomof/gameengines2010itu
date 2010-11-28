@@ -52,6 +52,7 @@ class linearAlgebra_D Vector
 		void setX(float val) { data[0] = val; }
 		void setY(float val) { data[1] = val; }
 		void setZ(float val) { data[2] = val; }
+		void reset(void) { data[0] = 0; data[1] = 0; data[2] = 0; data[3] = 0; }
 
 		// Print to stream operator
         // This operator needs to return the original stream
@@ -71,6 +72,7 @@ class linearAlgebra_D Point: public Vector
 		Point operator*(float s);
 		// Points sum operators
         Point operator+(Point &other);
+		void reset(void) { data[0] = 0; data[1] = 0; data[2] = 0; data[3] = 1; }
 };
 
 class linearAlgebra_D Quaternion
@@ -183,6 +185,7 @@ class linearAlgebra_D Matrix
         float get(unsigned short row, unsigned short col) const { return data[4*row + col]; }
 		float get(unsigned short index) const { return data[index]; }
         void set(unsigned short row, unsigned short col, float val) { data[4*row + col] = val; }
+		void set(unsigned short index, float val) { data[index] = val; }
 		void getMatrix(float* matrix);
 
 		//Function to get Vector from matrix

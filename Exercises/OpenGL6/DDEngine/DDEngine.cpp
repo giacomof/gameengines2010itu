@@ -466,8 +466,9 @@ void DDEngine::drawGL(int frameDelta)
 		if(Globals::drawDebug) 
 			dynamicsWorld->debugDrawWorld();
 
-	// update the animation
-	rootNode.update(frameDelta);
+	// update the animation after changing time delta scale
+	float dt = (frameDelta / 1000.0f);
+	rootNode.update(dt);
 	// draw everything
 	rootNode.drawGeometry();
 

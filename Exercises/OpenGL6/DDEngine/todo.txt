@@ -5,8 +5,8 @@
 GLOBAL TASKS:
 	  
 S- Skeletal Animation
-	S- Debug mesh skinning
-	S- Find a way to handle normals
+	1(S)- Debug mesh skinning
+	1(S)- Find a way to handle normals
 	S- Do keyframe interpolation
 
 G- Shaders

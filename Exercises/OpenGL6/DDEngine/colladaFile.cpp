@@ -154,13 +154,10 @@ char * ColladaFile::load(std::string & str)
 	// Memory reservation for arrays of float that will contain the data
 	vertex = (float *)MemoryManager::newMalloc(vertexCount*sizeof(float), Globals::GEOMETRY);
 	normal = (float *)MemoryManager::newMalloc(normalCount*sizeof(float), Globals::GEOMETRY);
-	//vertexSkinned = (float *)MemoryManager::newMalloc(vertexCount*sizeof(float), Globals::GEOMETRY);
-	//normalSkinned = (float *)MemoryManager::newMalloc(normalCount*sizeof(float), Globals::GEOMETRY);
 	if(hasTexture) map = (float *)MemoryManager::newMalloc(mapCount*sizeof(float), Globals::TEXTURE);
 	index = (unsigned long *)MemoryManager::newMalloc(indexCount*offset*sizeof(unsigned long), Globals::UTILITY);
 
 	vertexSkinned.resize(vertexCount,0.0f);
-	normalSkinned.resize(normalCount,1.0f);
 
 	// Token used for splitting strings
 	string token;
@@ -341,6 +338,11 @@ void ColladaFile::render(void)
 
 void ColladaFile::render(skelPose * currentPose)
 {
+	Point tempVertex = Point();
+	Point originalVertex = Point();
+	Vector tempNormal = Vector();
+	Vector originalNormal = Vector();
+
 	if (currentPose != NULL && (skinBoneIDArray.size() <= currentPose->skelPoseJoints.size()) && hasSkeletonWeights)
 	{
 		// Multiply inverse bind-pose matrix and joint transformation matrix for each joint
@@ -357,71 +359,45 @@ void ColladaFile::render(skelPose * currentPose)
 
 			skinBoneIndexArray[i] = j;
 
-			/*bool done = false;
-			int parent = currentPose->skelPoseJoints[j].pjParentIndex;
-			if (parent == -1)
-			{
-				skinInvMatrixArray[i].tempMatrix = Matrix::generateIdentityMatrix();
-				//std::cout << skinInvMatrixArray[i].tempMatrix << "\n";
-			}
-			while (parent >= 0 && !done)
-			{
-				for (int h = 0; h<i; h++)
-				{
-					if (skinBoneIndexArray[h] == parent)
-					{
-						skinInvMatrixArray[i].tempMatrix = skinInvMatrixArray[i].InvMatrix * skinInvMatrixArray[h].tempMatrix;
-						done = true;
-						break;
-					}
-				}
-
-				parent = currentPose->skelPoseJoints[parent].pjParentIndex;
-			}*/
-
 			currentPose->skelPoseJoints[j].pjTempTransform = skinInvMatrixArray[i].InvMatrix * currentPose->skelPoseJoints[j].pjJointTransform;
+			currentPose->skelPoseJoints[j].pjTempTransform = currentPose->skelPoseJoints[j].pjTempTransform.getTranspose();
 
 			j++;
 		}
 
 		// Based on tutorial at http://www.wazim.com/Collada_Tutorial_2.htm
-		for (int currentVertex=0; currentVertex<(vertexCount/3); currentVertex++)
-		{
-			Point tempVertex;
-			Point influenceVertex;
-			Point originalVertex(vertex[currentVertex*vertexStride],vertex[currentVertex*vertexStride+1],vertex[currentVertex*vertexStride+2]);
+		omp_set_num_threads(2);
+		#pragma omp parallel for
+			for (int currentVertex=0; currentVertex<(vertexCount/3); currentVertex++)
+			{
+				tempVertex.reset();
+				originalVertex = Point(vertex[currentVertex*vertexStride],vertex[currentVertex*vertexStride+1],vertex[currentVertex*vertexStride+2]);
 			
-			float finalWeight = 0;
-			float normalizedWeight = 0;
+				float finalWeight = 0;
+				float normalizedWeight = 0;
 
-			originalVertex = skinBindShapeMatrix * originalVertex;
+				originalVertex = skinBindShapeMatrix * originalVertex;
 
-			for (int currentInfluence=0; currentInfluence<skinVertexInfluence[currentVertex].vInfluenceCount; currentInfluence++)
-			{
-				influenceVertex = ( (currentPose->skelPoseJoints[skinBoneIndexArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2]]].pjTempTransform * originalVertex) * skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]] );
-				tempVertex = influenceVertex + tempVertex;
+				for (int currentInfluence=0; currentInfluence<skinVertexInfluence[currentVertex].vInfluenceCount; currentInfluence++)
+				{
+					tempVertex = tempVertex +  ( (currentPose->skelPoseJoints[skinBoneIndexArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2]]].pjTempTransform * originalVertex) * skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]] );
 
-				finalWeight += skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]];
+					finalWeight += skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]];
+				}
+
+				if (finalWeight != 1.0f)
+				{
+					normalizedWeight = 1.0f / finalWeight;
+					tempVertex = tempVertex * normalizedWeight;
+				}
+
+				vertexSkinned[currentVertex*vertexStride]	= tempVertex[0];
+				vertexSkinned[currentVertex*vertexStride+1]	= tempVertex[1];
+				vertexSkinned[currentVertex*vertexStride+2]	= tempVertex[2];
 			}
 
-			if (finalWeight != 1.0f)
-			{
-				normalizedWeight = 1.0f / finalWeight;
-				tempVertex = tempVertex * normalizedWeight;
-			}
-
-			vertexSkinned[currentVertex*vertexStride]	= tempVertex.getX();
-			vertexSkinned[currentVertex*vertexStride+1]	= tempVertex.getY();
-			vertexSkinned[currentVertex*vertexStride+2]	= tempVertex.getZ();
-		}
-
-		unsigned long firstVertex=0;
-		unsigned long secondVertex=0;
-		unsigned long thirdVertex=0;
-
-		unsigned long firstNormal=0;
-		unsigned long secondNormal=0;
-		unsigned long thirdNormal=0;
+		unsigned long VertexIndex[3];
+		unsigned long NormalIndex[3];
 
 		unsigned long firstMap=0;
 		unsigned long secondMap=0;
@@ -429,14 +405,52 @@ void ColladaFile::render(skelPose * currentPose)
 
 		for(unsigned int i=0; i<indexCount*offset; i+=offset) 
 		{
+			unsigned long Vertex[3];
 
-			firstVertex		= index[i					]*vertexStride;
-			secondVertex	= index[i+indexStride		]*vertexStride;
-			thirdVertex		= index[i+indexStride*2		]*vertexStride;
-		
-			firstNormal		= index[i+1					]*normalStride;
-			secondNormal	= index[i+indexStride	+1	]*normalStride;
-			thirdNormal		= index[i+indexStride*2	+1	]*normalStride;
+			VertexIndex[0]	= index[i					]*vertexStride;
+			VertexIndex[1]	= index[i+indexStride		]*vertexStride;
+			VertexIndex[2]	= index[i+indexStride*2		]*vertexStride;
+
+			NormalIndex[0]	= index[i				+1	]*normalStride;
+			NormalIndex[1]	= index[i+indexStride	+1	]*normalStride;
+			NormalIndex[2]	= index[i+indexStride*2	+1	]*normalStride;
+
+			float normalSkinned[9];
+
+			// Do skinning transform of the normal now. Big performance hit unfortunately
+			omp_set_num_threads(3);
+			#pragma omp parallel for
+				for (int j = 0; j<3; j++)
+				{
+					tempNormal.reset();
+					originalNormal = Vector(normal[NormalIndex[j]], normal[NormalIndex[j]+1], normal[NormalIndex[j]+2]);
+
+					unsigned long CurrentIndex = VertexIndex[j] / vertexStride;
+
+					float finalWeight = 0;
+					float normalizedWeight = 0;
+
+					originalNormal = skinBindShapeMatrix * originalNormal;
+
+					for (int currentInfluence=0; currentInfluence<skinVertexInfluence[CurrentIndex].vInfluenceCount; currentInfluence++)
+					{
+						tempNormal = tempNormal + ( (currentPose->skelPoseJoints[skinBoneIndexArray[skinVertexInfluence[CurrentIndex].vInfluenceIndex[currentInfluence*2]]].pjTempTransform * originalNormal) * skinWeightsArray[skinVertexInfluence[CurrentIndex].vInfluenceIndex[currentInfluence*2+1]] );
+
+						finalWeight += skinWeightsArray[skinVertexInfluence[CurrentIndex].vInfluenceIndex[currentInfluence*2+1]];
+					}
+
+					if (finalWeight != 1.0f)
+					{
+						normalizedWeight = 1.0f / finalWeight;
+						tempNormal = tempNormal * normalizedWeight;
+					}
+
+					tempNormal.normalize();
+
+					normalSkinned[(j*3)]		= tempNormal.getX();
+					normalSkinned[(j*3)+1]	= tempNormal.getY();
+					normalSkinned[(j*3)+2]	= tempNormal.getZ();
+				}
 		
 			if (hasTexture)
 			{
@@ -447,14 +461,14 @@ void ColladaFile::render(skelPose * currentPose)
 
 			glBegin(GL_TRIANGLES);
 				glTexCoord2f( map[firstMap], map[firstMap+1] );
-				glNormal3f( normal[firstNormal], normal[firstNormal+1], normal[firstNormal+2]); 
-				glVertex3f( vertexSkinned[firstVertex]*0.2f, vertexSkinned[firstVertex+1]*0.2f, vertexSkinned[firstVertex+2]*0.2f);
+				glNormal3f( normalSkinned[0], normalSkinned[1], normalSkinned[2]); 
+				glVertex3f( vertexSkinned[VertexIndex[0]]*0.2f, vertexSkinned[VertexIndex[0]+1]*0.2f, vertexSkinned[VertexIndex[0]+2]*0.2f);
 				glTexCoord2f( map[secondMap], map[secondMap+1] );
-				glNormal3f( normal[secondNormal], normal[secondNormal+1], normal[secondNormal+2]);
-				glVertex3f( vertexSkinned[secondVertex]*0.2f, vertexSkinned[secondVertex+1]*0.2f, vertexSkinned[secondVertex+2]*0.2f);
+				glNormal3f( normalSkinned[3], normalSkinned[4], normalSkinned[5]);
+				glVertex3f( vertexSkinned[VertexIndex[1]]*0.2f, vertexSkinned[VertexIndex[1]+1]*0.2f, vertexSkinned[VertexIndex[1]+2]*0.2f);
 				glTexCoord2f( map[thirdMap], map[thirdMap+1] );
-				glNormal3f( normal[thirdNormal], normal[thirdNormal+1], normal[thirdNormal+2]);
-				glVertex3f( vertexSkinned[thirdVertex]*0.2f, vertexSkinned[thirdVertex+1]*0.2f, vertexSkinned[thirdVertex+2]*0.2f);
+				glNormal3f( normalSkinned[6], normalSkinned[7], normalSkinned[8]);
+				glVertex3f( vertexSkinned[VertexIndex[2]]*0.2f, vertexSkinned[VertexIndex[2]+1]*0.2f, vertexSkinned[VertexIndex[2]+2]*0.2f);
 			glEnd();
 		}
 	}
