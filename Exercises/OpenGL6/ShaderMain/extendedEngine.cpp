@@ -15,7 +15,7 @@ void extendedEngine::setupScene()
 	assetManager.loadCollada("assets/duck.dae", "duck");
 
 	assetManager.loadTexture("assets/bosscube.jpg", "bossCubeTx");
-	assetManager.loadTexture("assets/duckCM3.tga", "duckTx");
+	assetManager.loadTexture("assets/duckCM.tga", "duckTx");
 	assetManager.loadTexture("assets/map.tga", "environmentMapTx");
 
 	assetManager.createShadingProgram("assets/finalShader.vert", "assets/finalShader.frag", "finalShader");
