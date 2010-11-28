@@ -20,7 +20,6 @@
 #include <sstream>
 
 using namespace std;
-using namespace v8;
 
 class scriptHandler_D ScriptHandler
 {
@@ -28,32 +27,32 @@ class scriptHandler_D ScriptHandler
 public:
 
 	// Variables
-	static Persistent<Context> g_context;
+	static v8::Persistent<v8::Context> g_context;
 	
 	// Object Templates
-	static Handle<ObjectTemplate> lightTemplate;
-	static Handle<ObjectTemplate> teapotTemplate;
+	static v8::Handle<v8::ObjectTemplate> lightTemplate;
+	static v8::Handle<v8::ObjectTemplate> teapotTemplate;
 
 	// Implemented Callbacks
 		//Constructor callbacks
-	static Handle<Value> ScriptHandler::constructLight(const Arguments &args);
-	static Handle<Value> ScriptHandler::constructTeapot(const Arguments &args);
+	static v8::Handle<v8::Value> ScriptHandler::constructLight(const v8::Arguments &args);
+	static v8::Handle<v8::Value> ScriptHandler::constructTeapot(const v8::Arguments &args);
 
 		// Wrappers
-	static Handle<Object> ScriptHandler::wrapLight(Light * lightToWrap);
-	static Handle<Object> ScriptHandler::wrapTeapot(Teapot * teapotToWrap);
+	static v8::Handle<v8::Object> ScriptHandler::wrapLight(Light * lightToWrap);
+	static v8::Handle<v8::Object> ScriptHandler::wrapTeapot(Teapot * teapotToWrap);
 
 		// Log methods
-	static Handle<Value> ScriptHandler::logCallback(const Arguments &args);
-	static Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args);
-	static Handle<Value> ScriptHandler::rotateSceneNode(const Arguments &args);
-	static Handle<Value> ScriptHandler::translateSceneNode(const Arguments &args);
+	static v8::Handle<v8::Value> ScriptHandler::logCallback(const v8::Arguments &args);
+	static v8::Handle<v8::Value> ScriptHandler::clearLogCallback(const v8::Arguments &args);
+	static v8::Handle<v8::Value> ScriptHandler::rotateSceneNode(const v8::Arguments &args);
+	static v8::Handle<v8::Value> ScriptHandler::translateSceneNode(const v8::Arguments &args);
 
 	// Basic Script Methods 
 	int ScriptHandler::runScript(const char * filename);
-	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
-	Persistent<Function> ScriptHandler::getFunctionHandle(const char * filename, const char * functionName);	
-	Handle<Value> ScriptHandler::getResult(Persistent<Function> function, Handle<Value> *args, const int numArgs);
+	v8::Handle<v8::Script> ScriptHandler::readAndCompileScript(const char * filename);
+	v8::Persistent<v8::Function> ScriptHandler::getFunctionHandle(const char * filename, const char * functionName);	
+	v8::Handle<v8::Value> ScriptHandler::getResult(v8::Persistent<v8::Function> function, v8::Handle<v8::Value> *args, const int numArgs);
 	
 	// Singleton Definitions
 	static ScriptHandler _instance;
