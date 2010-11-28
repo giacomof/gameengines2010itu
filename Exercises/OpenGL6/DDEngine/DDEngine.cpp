@@ -358,7 +358,7 @@ void DDEngine::run(void)
 		if(!Globals::isStopped) controller.playerObject->update();
 		
 		// Actual frame rendering happens here
-		if (window.getActive() )
+		if (window.getActive())
 		{
 
 			renderClock.frameUpdate();
