@@ -74,6 +74,9 @@
     <None Include="assets\finalShader.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="defaultAssets\missingTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h">
