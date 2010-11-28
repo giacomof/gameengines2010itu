@@ -1,6 +1,7 @@
 #include "DDEngine.h"
-					
-static int const thread_delay = 1;								// Minimum time between loops
+
+int physics_sync = 2;
+static int const thread_delay = 2;								// Minimum time between loops
 static float const PI = 3.14159f;								// PI definition
 SDL_mutex * mutex_StackAllocator = SDL_CreateMutex();			// Mutex for Stack Thread Synchronization
 SDL_mutex * mutex_SingleFrameAllocator = SDL_CreateMutex();		// Mutex for Single Frame Thread Synchronization
@@ -152,12 +153,16 @@ int threadPhysics(void *data)
 
 	while ( !engine->getController()->quit ) {
 
-		if(!Globals::isStopped) {
-			// physics simulation
-			dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 5);
+		if (!Globals::isStopped) {
+			if ( physics_sync > 0) {
+				// physics simulation
+				dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 5);
 
-			// Delay the thread to make room for others on the CPU
-			SDL_Delay(thread_delay);
+				// Delay the thread to make room for others on the CPU
+				SDL_Delay(thread_delay);
+
+				physics_sync--;
+			}
 		}
 	}
 
@@ -361,9 +366,8 @@ void DDEngine::run(void)
 		if(!Globals::isStopped) controller.playerObject->update(dt);
 		
 		// Actual frame rendering happens here
-		if (window.getActive())
+		if (window.getActive() )
 		{
-
 			renderClock.frameUpdate();
 
 			memMgr.clearSingleFrameAllocator();
@@ -392,7 +396,10 @@ void DDEngine::run(void)
 			// the Single Frame Allocator
 			//SceneNode * temp = new(UTILITY, SINGLE_FRAME_ALLOCATOR) SceneNode();
 
-		}		
+			physics_sync--;
+		}
+
+		SDL_Delay(thread_delay);
 	}
 
 	//wait for the threads to exit
