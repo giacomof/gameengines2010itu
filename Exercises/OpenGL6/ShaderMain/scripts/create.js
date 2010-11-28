@@ -4,6 +4,7 @@
     //new Light();
     //new Teapot(INT SIZE, BOOLEAN WIREFRAME, INT POSITION_X, INT POSITION_Y, INT POSITION_Z);
     //Rotate("NODENAME", VECTOR_X, VECTOR_Y, VECTOR_Z, ANGLE);
+    //Translate("NODENAME", VECTOR_X, VECTOR_Y, VECTOR_Z);
 
 function Create()
 {   

@@ -2,6 +2,9 @@
 
 // Global Context
 Persistent<Context> ScriptHandler::g_context;
+// Singleton External Definitions
+ScriptHandler ScriptHandler::_instance;
+short ScriptHandler::count = 0;
 
 // Object Template
 Handle<ObjectTemplate> ScriptHandler::lightTemplate;
@@ -9,12 +12,24 @@ Handle<ObjectTemplate> ScriptHandler::teapotTemplate;
 
 ScriptHandler::ScriptHandler(void)
 {
-	g_context = Context::New();
+	if(count==0)
+		g_context = Context::New();
+	count++;
+	&getInstance(); 
 }
 
 ScriptHandler::~ScriptHandler(void)
 {
-	g_context.Dispose();
+	if(count==0)
+		g_context.Dispose();
+	else
+		count--;
+	
+}
+
+ScriptHandler & ScriptHandler::getInstance(void)
+{
+	return _instance;
 }
 
 // ******************************************************************
