@@ -128,7 +128,7 @@ protected:
 	int initPhysics(void);						// Initialise the physic engine
 	void drawGL(int frameDelta);				// Draw the world
 	float * getCamera(void);					// Move the camera
-	void addSkyBox(unsigned int * textureList);	// Add a skybox to the engine
+	void addSkyBox(float halfSide, unsigned int * textureList);	// Add a skybox to the engine
 
 };
 
