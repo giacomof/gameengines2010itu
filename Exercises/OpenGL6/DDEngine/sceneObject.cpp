@@ -44,13 +44,8 @@ void md2Interface::drawGeometry(void) {
 	glDisable(GL_TEXTURE_2D);	
 }
 
-void  md2Interface::update(float dt) {
-
-	// *************************************************************** //
-	// TEMP METHOD, WE HAVE TO CHANGE THIS  WHEN WE MAKE THE FPS CLASS //
-	// *************************************************************** //
-
-	//if(dt==NULL) dt = 0.03f;
+void  md2Interface::update(float dt) 
+{
 	mesh->Update(dt);
 }
 
@@ -106,7 +101,7 @@ void  ColladaInterface::update(float dt)
 {
 	if (skeleton != NULL && currentPose != NULL)
 	{
-		// Hardcode since it is unspecified in the file
+		// Hardcoded since it is unspecified in the file
 		float animationLength = 1.16667;
 
 		animationProgress = animationProgress + (dt * animationRate);
@@ -389,7 +384,6 @@ Light::Light(	bool enabled, bool directional,
 
 void Light::drawGeometry(void)
 {
-	// enable light0
 	if (isEnabled) 
 	{
 		glEnable(lightReference);
@@ -527,7 +521,6 @@ void SkyBox::drawGeometry(Vector position)
  	glEnable(GL_CULL_FACE);
 
 	glPopMatrix();
-
 
 	delete tranM;
 }

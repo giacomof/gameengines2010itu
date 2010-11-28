@@ -11,7 +11,6 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 						btRigidBody * rigidBody )
 {
 	// variables inizialization
-//	assetManager = new AssetManager();
 	nodeNameString = str;
 	parentNode = parentNode;
 	parentNode->addChild(this);
@@ -269,11 +268,9 @@ void SceneNode::drawGeometry()
 		}
 	}
 	
-	//std::cout << "APPLY TRANSFORMATION: " << nodeNameString << endl;
 	applyTransformation();
 
 	if(isVisible()) {
-		//std::cout << "RENDERING: " << nodeNameString << endl;
 		if(nodeNameString != "Camera Node") 
 		{
 			if(shadingIsActive)
@@ -338,9 +335,9 @@ unsigned int SceneNode::getNodeCount(void)
 void SceneNode::drawName(void)
 {
 	AssetManager::setShaderFlag(Globals::GREEN);
-	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
+	glDisable(GL_LIGHTING);						// need to disable lighting for proper text color
 
-    glColor4f(0.0f, 1.0f, 0.0f, 1.0f);  // set text color
+    glColor4f(0.0f, 1.0f, 0.0f, 1.0f);			// set text color
 	float * pos = new float[3];
 	pos[1] = 0;
 	pos[2] = 0;

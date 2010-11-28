@@ -2,7 +2,6 @@
 
 entitySpectator::entitySpectator(void)
 {
-	//mutex_object = SDL_CreateMutex();
 	camera = NULL;
 	yaw = 0.0f;
 	pitch = 0.0f;
@@ -25,7 +24,7 @@ void entitySpectator::update(float dt)
 {
 	MutexManager::lockMutex( SceneObject::mutex_object );
 
-	// hardcode speed constant for debug reasons
+	// high speed constant for debug reasons
 	float camSpeed = 100.0f * dt;
 
 	// Update pitch and yaw

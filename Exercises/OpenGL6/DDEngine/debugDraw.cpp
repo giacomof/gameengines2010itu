@@ -15,7 +15,7 @@ void DebugDraw::drawLine(const btVector3& from, const btVector3& to, const btVec
 { 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
-		glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT);	// lighting and color mask
+		glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT);			// lighting and color mask
 																// need to disable lighting for proper text color
 																// not sure about lines
 			glColor3f(0.0f, 1.0f, 0.0f); 
@@ -49,7 +49,6 @@ void DebugDraw::reportErrorWarning(const char* text)
 
 void DebugDraw::draw3dText(const btVector3& location, const char* text) 
 { 
-	// do nothing for now 
 } 
 
 void DebugDraw::setDebugMode(int mode) 

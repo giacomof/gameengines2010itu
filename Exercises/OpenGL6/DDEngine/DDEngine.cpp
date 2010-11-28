@@ -115,7 +115,7 @@ int threadInput(void *data)
 	return 0;
 }
 
-///* This thread handles audio */
+/* This thread handles audio */
 int threadSound(void *data)
 {
 	DDEngine * engine;
@@ -403,10 +403,6 @@ int DDEngine::initGL(void)
 	glEnable(GL_CULL_FACE);
 	// enables lighting
 	glEnable(GL_LIGHTING);
-	// Define material properties
-	//glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	//glColorMaterial(GL_FRONT, GL_SPECULAR);
-	//glEnable(GL_COLOR_MATERIAL);
 
 	return 1;
 }
@@ -462,7 +458,6 @@ float* DDEngine::getCamera()
 	entityCamera * currentCamera = controller.playerObject->getCamera();
 
 	float * tranM = new(Globals::SCENEGRAPH, Globals::SINGLE_FRAME_ALLOCATOR) float[16];
-	//float * tranM = new float[16];
 
 	Matrix::generateIdentityMatrix().getMatrix(&tranM[0]);
 

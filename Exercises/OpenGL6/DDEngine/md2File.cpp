@@ -8,15 +8,6 @@ vec3 md2File::anorms[] = {
 	#include "anorms.h"
 };
 
-// LERP Interpolation
-template< typename InType >
-inline void LERP(float out[], const InType a[], const InType b[], const float interp_t) {
-	float inv_interp_t = 1.0f - interp_t;
-	out[0] = a[0]*inv_interp_t + b[0]*interp_t;
-	out[1] = a[1]*inv_interp_t + b[1]*interp_t;
-	out[2] = a[2]*inv_interp_t + b[2]*interp_t;
-}
-
 // constructor
 md2File::md2File() 
 {

@@ -84,7 +84,6 @@ void AssetManager::loadTexture(char * filePath, char * textureName)
 			if (!success)
 			{
 				// Error occured 
-				//SDL_Quit();
 				std::cout << "ERROR LOADING/CONVERTING TEXTURE" << std::endl;
 			}
 		}
@@ -134,7 +133,6 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 		fseek(file,0,SEEK_END);
 		data_size = ftell(file);
 		m_data = new unsigned char[data_size];
-		//assert(m_data);
 
 		rewind(file);
 
@@ -226,8 +224,6 @@ char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 	
 		if(tempName!="") {
 			string path = "include/" + (string) tempName;
-			// Had to comment this out so that program doesnt crash if file doesnt exist
-			//loadTexture( (char*) path.c_str(), tempName );
 			return tempName;
 	
 		} else return "";

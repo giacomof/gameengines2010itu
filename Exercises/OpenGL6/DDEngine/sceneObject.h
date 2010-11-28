@@ -169,7 +169,6 @@ class sceneObject_D Light : public SceneObject
 				float ambientR = 0, float ambientG = 0, float ambientB = 0,
 				float diffuseR = 1, float diffuseG = 1, float diffuseB = 1,
 				float specularR = 1, float specularG = 1, float specularB = 1);
-		//~Light(void);
 
 		void update(float dt) {};
 		void drawGeometry(void);
@@ -192,8 +191,6 @@ class sceneObject_D SkyBox : public SceneObject
 {
 	public:
 		SkyBox(float halfSide, unsigned int * texture, int shaderFlag);
-		
-		//~SkyBox(void);
 
 		void update(float dt) {};
 		void drawGeometry(Vector position);
