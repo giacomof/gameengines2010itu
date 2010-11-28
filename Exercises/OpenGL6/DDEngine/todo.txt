@@ -52,6 +52,7 @@ V- V8 Javascript Scripting Integration
 	   0- Put log methods in the Engine
 
 0- FrameClock Class as a Singleton
+0- the engine should not crash if it can't find a file
 0- better thread synch and use
 0- optimizations for the Transformation Class
 0- optimize debug cout and logs with "if define"
