@@ -21,12 +21,12 @@ entitySpectator::~entitySpectator(void)
 {
 }
 
-void entitySpectator::update()
+void entitySpectator::update(float dt)
 {
 	MutexManager::lockMutex( SceneObject::mutex_object );
 
 	// hardcode speed constant for debug reasons
-	float camSpeed = 2;
+	float camSpeed = 100.0f * dt;
 
 	// Update pitch and yaw
 	yaw = yaw + lookDeltaXAmount;

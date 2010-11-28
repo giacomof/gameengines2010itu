@@ -35,7 +35,7 @@ public:
 	entitySpectator(void);
 	~entitySpectator(void);
 	
-	virtual void update();
+	virtual void update(float dt);
 	virtual void setCamera(entityCamera *newCamera);
 
 	
