@@ -4,23 +4,6 @@
 
 GLOBAL TASKS:
 	  
-G- Shaders
-	1(G)- Load vert and frag
-	1(G)- Apply a shader to a whole scene
-	1(G)- Apply a shader to a single object
-	1(G)- Diffuse Shader
-	1(G)- Diffuse Shader + Highlight
-	1(G)- Use Frag shaders
-	1(G)- make the highlight "follow" the camera
-	1(G)- Fix the color of the scenenodes names
-	1(G)- Skybox
-		1(G)- Connect the skybox to the camera
-	1(G)- Environmental Mapping
-		1(G)- Fake Enviromental Mapping
-	   G- Fix names in shader section of asset manager (cleaning)
-	   G- Fixed pipeline shader
-
-	    
 V- V8 Javascript Scripting Integration
 	1(V)- Compile V8
 	1(V)- Compile Scripts
@@ -32,8 +15,9 @@ V- V8 Javascript Scripting Integration
 	1(V)- ScriptHandler Return Values from scripts
 	1(V)- runScript accepts filename and function name
 	1(V)- Call Log and ClearLog from javaScript
-	   V- Create an Object in a script
-	   V- Create a sceneObject and a sceneNode in a script
+	1(V)- Create an Object in a script
+	1(V)- Create a sceneObject and a sceneNode in a script
+	   V- Use parameters to instantiate objects
 	   V- Implement the most used engine functions
 	1(V)- startEngine mode
 	1(V)- stopEngine mode
@@ -47,7 +31,7 @@ V- V8 Javascript Scripting Integration
 	   0- Put log methods in the Engine
 
 0- FrameClock Class as a Singleton
-0- the engine should not crash if it can't find a file
+G- the engine should not crash if it can't find a file
 0- better thread synch and use
 0- optimizations for the Transformation Class
 0- optimize debug cout and logs with "if define"
@@ -132,8 +116,25 @@ COMPLETED:
 	1(V)- thread Safe
 	1(V)- super bug fixed
 1(G)- make everything framerate independent
-
-
+1(G)- Shaders
+	1(G)- Load vert and frag
+	1(G)- Apply a shader to a whole scene
+	1(G)- Apply a shader to a single object
+	1(G)- Diffuse Shader
+	1(G)- Diffuse Shader + Highlight
+	1(G)- Use Frag shaders
+	1(G)- make the highlight "follow" the camera
+	1(G)- Fix the color of the scenenodes names
+	1(G)- Skybox
+		1(G)- Connect the skybox to the camera
+	1(G)- Environmental Mapping
+		1(G)- Fake Enviromental Mapping
+	   1(G)- Fix names in shader section of asset manager (cleaning)
+	   1(G)- Fixed pipeline shader
+1(S)- Skeletal Animation
+	1(S)- Debug mesh skinning
+	1(S)- Find a way to handle normals
+	1(S)- Do keyframe interpolation	   
 
 
 
