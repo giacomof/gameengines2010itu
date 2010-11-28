@@ -20,6 +20,7 @@ public:
 	static const int verbosityLevel = 1;
 
 	// Shaders Flags
+	static const int TEXTURE_FIXED_PIPELINE	= -3;
 	static const int TEXTURE_NO_SHADING		= -2;
 	static const int GREEN					= -1;
 	static const int NO_TEXTURE_PHONG		= 0;
