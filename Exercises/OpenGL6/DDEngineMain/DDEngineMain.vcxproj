@@ -95,6 +95,8 @@
     <None Include="assets\duck.dae" />
     <None Include="assets\duckCM.tga" />
     <None Include="assets\evil_laugh.wav" />
+    <None Include="assets\finalShader.frag" />
+    <None Include="assets\finalShader.vert" />
     <None Include="assets\lostsoul.jpg" />
     <None Include="assets\Lostsoul.md2" />
     <None Include="assets\MENULOOP.WAV" />
