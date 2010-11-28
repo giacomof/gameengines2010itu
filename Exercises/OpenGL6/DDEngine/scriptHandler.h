@@ -12,6 +12,7 @@
 #include <iostream>
 #include "log.h"
 #include "globals.h"
+#include "windowManager.h"
 
 using namespace std;
 using namespace v8;
