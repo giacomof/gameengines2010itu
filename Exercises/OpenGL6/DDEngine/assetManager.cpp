@@ -36,6 +36,8 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 
 	try {
 		file = fopen(fileDirectory, "rb");
+		if(file == NULL)
+			file = fopen("defaultAssets/missingTexture.jpg", "rb");
 		fseek(file, 0, SEEK_END);
 		size = ftell(file);
 
