@@ -11,7 +11,7 @@
 #include "colladaFile.h"
 #include "colladaSkeleton.h"
 #include "md2File.h"
-#include "linearAlgebraDLL.h"
+#include "linearAlgebra.h"
 #include "mutexManager.h"
 
 #include <SDL.h>
@@ -21,7 +21,7 @@
 #include <vector>
 
 using namespace std;
-using namespace linearAlgebraDLL;
+
 
 // father class
 class sceneObject_D SceneObject

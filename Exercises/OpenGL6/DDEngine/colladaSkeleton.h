@@ -8,7 +8,7 @@
 #define colladaSkeleton__H
 
 #include "rapidxml.hpp"
-#include "linearAlgebraDLL.h"
+#include "linearAlgebra.h"
 
 #include <vector>
 #include <iostream>
@@ -18,7 +18,7 @@
 
 using namespace std;
 using namespace rapidxml;
-using namespace linearAlgebraDLL;
+
 
 struct stringContainer
 {

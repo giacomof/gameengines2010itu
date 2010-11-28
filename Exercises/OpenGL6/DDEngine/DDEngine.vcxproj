@@ -53,14 +53,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>__DDEngine;WIN32;_DEBUG;_WINDOWS;_USRDLL;DDENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;$(SolutionDir)\LinearAlgebraDLL</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\bullet_include;</AdditionalIncludeDirectories>
       <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\include</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glew32.lib;v8.lib;sdl.lib;sdlmain.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;glew32.lib;v8.lib;sdl.lib;sdlmain.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -80,7 +80,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\include</AdditionalLibraryDirectories>
-      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;linearAlgebraDLL.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;DevIL.lib;glut32.lib;sdl.lib;sdlmain.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -324,6 +324,7 @@
     <ClInclude Include="frameClock.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="inputManager.h" />
+    <ClInclude Include="linearAlgebra.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="md2File.h" />
     <ClInclude Include="md5.h" />
@@ -466,6 +467,7 @@
     <ClCompile Include="frameClock.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="inputManager.cpp" />
+    <ClCompile Include="linearAlgebra.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="md2File.cpp" />
     <ClCompile Include="md5.cpp" />
@@ -504,7 +506,6 @@
     <Library Include="..\include\glut32.lib" />
     <Library Include="..\include\ILU.lib" />
     <Library Include="..\include\ILUT.lib" />
-    <Library Include="..\include\LinearAlgebraDLL.lib" />
     <Library Include="..\include\LinearMath.lib" />
     <Library Include="..\include\SDL.lib" />
     <Library Include="..\include\SDLmain.lib" />

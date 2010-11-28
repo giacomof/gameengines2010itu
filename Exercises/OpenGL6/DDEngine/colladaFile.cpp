@@ -387,11 +387,10 @@ void ColladaFile::render(skelPose * currentPose)
 		// Based on tutorial at http://www.wazim.com/Collada_Tutorial_2.htm
 		for (int currentVertex=0; currentVertex<(vertexCount/3); currentVertex++)
 		{
-			Vector tempVertex;
-			Vector influenceVertex;
-
-			Vector originalVertex(vertex[currentVertex*vertexStride],vertex[currentVertex*vertexStride+1],vertex[currentVertex*vertexStride+2]);
-
+			Point tempVertex;
+			Point influenceVertex;
+			Point originalVertex(vertex[currentVertex*vertexStride],vertex[currentVertex*vertexStride+1],vertex[currentVertex*vertexStride+2]);
+			
 			float finalWeight = 0;
 			float normalizedWeight = 0;
 
@@ -400,7 +399,7 @@ void ColladaFile::render(skelPose * currentPose)
 			for (int currentInfluence=0; currentInfluence<skinVertexInfluence[currentVertex].vInfluenceCount; currentInfluence++)
 			{
 				influenceVertex = ( (currentPose->skelPoseJoints[skinBoneIndexArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2]]].pjTempTransform * originalVertex) * skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]] );
-				tempVertex = tempVertex + influenceVertex;
+				tempVertex = influenceVertex + tempVertex;
 
 				finalWeight += skinWeightsArray[skinVertexInfluence[currentVertex].vInfluenceIndex[currentInfluence*2+1]];
 			}

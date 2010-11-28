@@ -9,7 +9,7 @@
 
 #include "assetManager.h"
 #include "globals.h"
-#include "linearAlgebraDLL.h"			// Header File for our math library
+#include "linearAlgebra.h"			// Header File for our math library
 #include "transformation.h"
 #include "sceneObject.h"
 #include <string>
@@ -25,7 +25,7 @@
 #include <btBulletDynamicsCommon.h>
 
 
-using namespace linearAlgebraDLL;
+
 using namespace std;
 
 

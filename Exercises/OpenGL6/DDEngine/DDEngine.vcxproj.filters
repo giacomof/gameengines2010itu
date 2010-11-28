@@ -780,6 +780,9 @@
     <ClInclude Include="v8.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="linearAlgebra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assetManager.cpp">
@@ -1199,6 +1202,9 @@
     <ClCompile Include="globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="linearAlgebra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\glut.def">
@@ -1261,9 +1267,6 @@
       <Filter>Resource Files</Filter>
     </Library>
     <Library Include="..\include\ILUT.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="..\include\LinearAlgebraDLL.lib">
       <Filter>Resource Files</Filter>
     </Library>
     <Library Include="..\include\LinearMath.lib">

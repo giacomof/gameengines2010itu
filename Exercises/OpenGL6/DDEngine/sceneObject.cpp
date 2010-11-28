@@ -1,7 +1,5 @@
 #include "sceneObject.h"
 
-using namespace linearAlgebraDLL;
-
 ILuint texid;
 ILboolean success;
 GLuint imageT;

@@ -1,23 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LinearAlgebraDLL", "LinearAlgebraDLL\LinearAlgebraDLL.vcxproj", "{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DDEngine", "DDEngine\DDEngine.vcxproj", "{61DF5915-7482-48C6-BA48-594F602C511C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA} = {48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DDEngineMain", "DDEngineMain\DDEngineMain.vcxproj", "{F89214A9-3127-42B2-9290-7B9AB1191FAE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{61DF5915-7482-48C6-BA48-594F602C511C} = {61DF5915-7482-48C6-BA48-594F602C511C}
-		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA} = {48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderMain", "ShaderMain\ShaderMain.vcxproj", "{D4D99EEE-707E-43E8-B382-B4D204EA8469}"
 	ProjectSection(ProjectDependencies) = postProject
 		{61DF5915-7482-48C6-BA48-594F602C511C} = {61DF5915-7482-48C6-BA48-594F602C511C}
-		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA} = {48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}
 	EndProjectSection
 EndProject
 Global
@@ -30,10 +23,6 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}.Debug|Win32.ActiveCfg = Debug|Win32
-		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}.Debug|Win32.Build.0 = Debug|Win32
-		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}.Release|Win32.ActiveCfg = Release|Win32
-		{48AC0339-CCF2-4CF0-8B2E-1DEBF9BE1EBA}.Release|Win32.Build.0 = Release|Win32
 		{61DF5915-7482-48C6-BA48-594F602C511C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{61DF5915-7482-48C6-BA48-594F602C511C}.Debug|Win32.Build.0 = Debug|Win32
 		{61DF5915-7482-48C6-BA48-594F602C511C}.Release|Win32.ActiveCfg = Release|Win32
