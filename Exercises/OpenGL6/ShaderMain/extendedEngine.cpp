@@ -60,9 +60,6 @@ void extendedEngine::setupScene()
 	SceneObject * specularDuck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("environmentMapTx"), Globals::SPECULAR_MAP);
 	SceneNode * specularDuckNode = this->addSceneNode(&rootNode, "Specular Duck Node", specularDuck, Vector(150.0f, 45.0f, -200.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	SceneObject * bossCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), Globals::TEXTURE_NO_SHADING, assetManager.getTexture("bossCubeTx"));
-	SceneNode * bossCubeNode = this->addSceneNode(&rootNode, "Boss Cube Node", bossCube, Vector(100.0f, 45.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
-
 	// Run a script
 	this->runJSScript("create.js");
 }

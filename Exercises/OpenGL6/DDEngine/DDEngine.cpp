@@ -354,18 +354,7 @@ void DDEngine::run(void)
 
 			frameStarted( frameDelta );
 
-			//glEnable(GL_LIGHT0);
-			//// Create light components
-			//GLfloat ambientLight[] = { 1, 1, 1, 1 };
-			//GLfloat diffuseLight[] = { 1, 1, 1, 1 };
-			//GLfloat specularLight[] = { 1, 1, 1, 1 };
-			//GLfloat position[] = { -1.5f, 100.0f, -100.0f, 1.0f };
 
-			//// Assign created components to GL_LIGHT0
-			//glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-			//glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-			//glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
-			//glLightfv(GL_LIGHT0, GL_POSITION, position);
 
 
 			drawGL( frameDelta );
@@ -376,7 +365,7 @@ void DDEngine::run(void)
 			// the Single Frame Allocator
 			//SceneNode * temp = new(UTILITY, SINGLE_FRAME_ALLOCATOR) SceneNode();
 
-			physics_sync--;
+			physics_sync+=2;
 		}
 
 		SDL_Delay(thread_delay);
@@ -603,7 +592,7 @@ btCollisionShape * DDEngine::createCollisionSphere(float radius)
 	return sphereShape;
 }
 
-SceneObject * DDEngine::createMD2(md2File * model, int shaderFlag, unsigned int texture)
+SceneObject * DDEngine::createMD2(md2File * model, unsigned int texture, int shaderFlag)
 {
 
 	md2Interface * md2Model = new(Globals::GEOMETRY, Globals::STACK_ALLOCATOR) md2Interface(model, shaderFlag, texture);

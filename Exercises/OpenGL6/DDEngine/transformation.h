@@ -60,6 +60,8 @@ class transformation_D Transformation
 
 		Vector bbTranslation;
 		Quaternion bbRotation;
+
+		void calculateMatrix();
 };
 
 #endif

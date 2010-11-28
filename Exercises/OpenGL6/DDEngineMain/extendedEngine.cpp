@@ -10,10 +10,10 @@ void extendedEngine::setupScene()
 	assetManager.createShadingProgram("assets/finalShader.vert", "assets/finalShader.frag", "finalShader");
 	assetManager.activateShadingProgram("finalShader");
 
-	//assetManager.loadMd2("assets/battledroid.md2", "battleDroid");
-	//assetManager.loadMd2("assets/Lostsoul.md2", "md2LostSoul");
-	//assetManager.loadMd2("assets/bosscube.md2", "md2BossCube");
-	//assetManager.loadCollada("assets/duck.dae", "duck");
+	/*assetManager.loadMd2("assets/battledroid.md2", "battleDroid");
+	assetManager.loadMd2("assets/Lostsoul.md2", "md2LostSoul");
+	assetManager.loadMd2("assets/bosscube.md2", "md2BossCube");
+	assetManager.loadCollada("assets/duck.dae", "duck");*/
 	assetManager.loadCollada("assets/astroboy.dae", "astroboy");
 
 	assetManager.loadColladaSkeleton("assets/astroboy.dae", "astroboy_skeleton");
@@ -24,27 +24,24 @@ void extendedEngine::setupScene()
 	//assetManager.loadTexture("assets/duckCM.tga", "duckCM.tga");
 	assetManager.loadTexture("assets/boy_10.tga", "boy_10.tga");
 
-	//assetManager.createShadingProgram("assets/toonf2.vert", "assets/toonf2.frag", "flatGreenShader");
-	//assetManager.activateShadingProgram("flatGreenShader");
-
 	// ******************************
 	// **** CREATE OBJECTS POINT ****
 	// ******************************
 
-	// Create the plane with the collision shape
+	//// Create the plane with the collision shape
 	//btRigidBody * planeRigidBody = this->createPhysicalBox(Vector(1000.0f, 10.0f, 1000.0f), Vector(0.0f, -10.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
-	/*SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 100, 0);
-	planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);*/
-	// Change BB Translation
+	//SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 100, 0);
+	//planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);
+	//// Change BB Translation
 	//planeNode->getTransformation()->setBBTranslation(Vector(0, 10, 0));
 
 
-	// Create character "rotation center" node
-	SceneObject * sphere = this->createSphere(5, 30, 30, true);
-	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
+	//// Create character "rotation center" node
+	//SceneObject * sphere = this->createSphere(5, 30, 30, true);
+	//sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 
 
-	// Create battle droid + bounding box
+	//// Create battle droid + bounding box
 	//btRigidBody * battleDroidRigidBody = this->createPhysicalBox(Vector(20.0f, 25.0f, 20.0f), Vector(0.0f, 25.0f, 500.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
 	//SceneObject * battleDroid = this->createMD2(assetManager.getMd2Mesh("battleDroid"), assetManager.getTexture("battleDroidTx"));
 	//battleDroidNode = this->addSceneNode(sphereNode, "Battle Droid", battleDroid, Vector(0, 0, 0), Vector(0, 1, 0), 0, battleDroidRigidBody);
@@ -52,32 +49,32 @@ void extendedEngine::setupScene()
 
 
 	// Create Light connected to the battle droid
-	//Light * light1 = (Light*)this->createLight(true, false, 0, 0, 0, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
-	//light1Node = this->addSceneNode(battleDroidNode, "Light1 Node", light1, Vector(0, 50, 0), Vector(0, 0, 0), 0);
+	/*Light * light1 = (Light*)this->createLight(true, false, 0, 0, 0, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
+	light1Node = this->addSceneNode(battleDroidNode, "Light1 Node", light1, Vector(0, 50, 0), Vector(0, 0, 0), 0);*/
 
 	// Create Light connected to root
 	Light * light2 = (Light*)this->createLight(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
 	light2Node = this->addSceneNode(&rootNode, "Light2 Node", light2, Vector(0, 0, 0), Vector(0, 0, 0), 0);
 	//light2->setDirection(Vector(0, 1, 0));
 
-	// Rotation Center and physics for Skull	
+	//// Rotation Center and physics for Skull	
 	//btRigidBody * skullRigidBody = this->createPhysicalSphere(35.0f, Vector(0.0f, 35.0f, 150.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
 	//SceneObject * skull = this->createMD2(assetManager.getMd2Mesh("md2LostSoul"), assetManager.getTexture("lostSoulTx"));
 	//skullNode = this->addSceneNode(sphereNode, "Skull Node", skull, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, skullRigidBody);
 
-	// Horns shape and physic
-	/*btCollisionShape * hornBox = this->createCollisionBox(Vector(5.0f, 5.0f, 5.0f));
-	btRigidBody * hornBox1 = this->createRigidBody(hornBox, Vector(3.0f, 5.0f, 35.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
-	SceneObject * hornSphere = this->createSphere(5, 3, 3, true);
-	hornNode1 = this->addSceneNode(skullNode, "Horn Node 1", hornSphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, hornBox1);
-	hornNode1->setVisible(false);*/
+	//// Horns shape and physic
+	//btCollisionShape * hornBox = this->createCollisionBox(Vector(5.0f, 5.0f, 5.0f));
+	//btRigidBody * hornBox1 = this->createRigidBody(hornBox, Vector(3.0f, 5.0f, 35.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
+	//SceneObject * hornSphere = this->createSphere(5, 3, 3, true);
+	//hornNode1 = this->addSceneNode(skullNode, "Horn Node 1", hornSphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, hornBox1);
+	//hornNode1->setVisible(false);
 
 	//btRigidBody * hornBox2 = this->createRigidBody(hornBox, Vector(3.0f, 5.0f, -35.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
 	//hornNode2 = this->addSceneNode(skullNode, "Horn Node 2", hornSphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, hornBox2);
 	//hornNode2->setVisible(false);
 
 
-	// Droid Cube and physic + rotation center
+	//// Droid Cube and physic + rotation center
 	//btCollisionShape * cubeBox = this->createCollisionBox(Vector(10.0f, 10.0f, 10.0f));
 	//btRigidBody * droidCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, -15.0f, 60.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
 	//SceneObject * droidCube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), assetManager.getTexture("bossCubeTx"));
