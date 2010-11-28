@@ -2,6 +2,7 @@
 
 // static parameter for passing arguments to shaders
 int AssetManager::loc;
+bool AssetManager::firstTimeDebugShader = true;
 std::map <char *, GLuint> AssetManager::shadingProgram_list;
 
 AssetManager AssetManager::_instance;
@@ -359,34 +360,32 @@ unsigned int * AssetManager::getSkyBoxTextureList()
 
 void AssetManager::createShadingProgram(char * vertexShaderPath, char * fragmentShaderPath, char * programName)
 {
-		char *vs = NULL,*fs = NULL,*fs2 = NULL;
 
-		GLuint v = glCreateShader(GL_VERTEX_SHADER);
-		GLuint f = glCreateShader(GL_FRAGMENT_SHADER);
+		GLuint vertexShaderReference = glCreateShader(GL_VERTEX_SHADER);
+		GLuint fragmentShaderReference = glCreateShader(GL_FRAGMENT_SHADER);
 
+		char * vertexShaderFile = readShaderFile(vertexShaderPath);
+		char * fragmentShaderFile = readShaderFile(fragmentShaderPath);
 
-		vs = readShaderFile(vertexShaderPath);
-		fs = readShaderFile(fragmentShaderPath);
+		const char * vv = vertexShaderFile;
+		const char * ff = fragmentShaderFile;
 
-		const char * ff = fs;
-		const char * vv = vs;
+		glShaderSource(vertexShaderReference, 1, &vv,NULL);
+		glShaderSource(fragmentShaderReference, 1, &ff,NULL);
 
-		glShaderSource(v, 1, &vv,NULL);
-		glShaderSource(f, 1, &ff,NULL);
+		free(vertexShaderFile);
+		free(fragmentShaderFile);
 
-		free(vs);free(fs);
+		glCompileShader(vertexShaderReference);
+		glCompileShader(fragmentShaderReference);
+		printShaderInfoLog(vertexShaderReference);
+		printShaderInfoLog(fragmentShaderReference);
 
-		glCompileShader(v);
-		glCompileShader(f);
-		printShaderInfoLog(v);
-		printShaderInfoLog(f);
-
-
-		GLuint p = glCreateProgram();
-		glAttachShader(p,f);
-		glAttachShader(p,v);
-	
-		shadingProgram_list[programName] = p;
+		GLuint programReference = glCreateProgram();
+		glAttachShader(programReference, vertexShaderReference);
+		glAttachShader(programReference, fragmentShaderReference);
+		
+		shadingProgram_list[programName] = programReference;
 }
 
 char * AssetManager::readShaderFile(char * filePath) {
@@ -444,26 +443,18 @@ void AssetManager::setShaderFlag(int flag)
 
 	    if (infologLength > 0)
 	    {
-	        infoLog = (char *)malloc(infologLength);
+			if(firstTimeDebugShader)
+			{
+				cout << "*************************************" << endl;
+				cout << "********** SHADER INFO **************" << endl;
+				cout << "*************************************" << endl << endl;
+				firstTimeDebugShader = false;
+			}
+
+	        infoLog = (char *)MemoryManager::newMalloc(infologLength, Globals::SHADER);
 	        glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
-			printf("%s\n",infoLog);
-	        free(infoLog);
-	    }
-	}
-
-	void AssetManager::printProgramInfoLog(GLuint obj)
-	{
-	    int infologLength = 0;
-	    int charsWritten  = 0;
-	    char *infoLog;
-
-		glGetProgramiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
-
-	    if (infologLength > 0)
-	    {
-	        infoLog = (char *)malloc(infologLength);
-	        glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
-			printf("%s\n",infoLog);
-	        free(infoLog);
+			
+			cout << infoLog << endl;
+	        MemoryManager::newFree(infoLog);
 	    }
 	}

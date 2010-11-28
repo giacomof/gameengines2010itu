@@ -91,7 +91,7 @@ public:
 	static int loc;
 
 	void printShaderInfoLog(GLuint obj);
-	void printProgramInfoLog(GLuint obj);
+	static bool firstTimeDebugShader;
 
 private:
 	std::map <char *, textureContainer> texture_list;
