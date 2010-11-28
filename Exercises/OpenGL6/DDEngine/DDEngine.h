@@ -77,6 +77,8 @@ public:
 
 	SceneNode * addSceneNode(SceneNode * father, char * name, SceneObject * geometry, Vector position, Vector quaternionVector, float quaternionRotation, btRigidBody * physicGeometry = 0);
 
+	void runJSScript(const char * filePath);
+
 	// FPS Clock
 	frameClock renderClock;
 
@@ -107,7 +109,7 @@ protected:
 	entitySpectator * player;
 	// Entity camera
 	entityCamera * playercamera;
-
+	// Skybox
 	SkyBox * skyBox;
 
 	// Physic world
