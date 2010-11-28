@@ -191,15 +191,16 @@ class sceneObject_D Light : public SceneObject
 class sceneObject_D SkyBox : public SceneObject
 {
 	public:
-		SkyBox(unsigned int * texture, int shaderFlag);
+		SkyBox(float halfSide, unsigned int * texture, int shaderFlag);
 		
 		//~SkyBox(void);
 
 		void update(void) {};
-		void drawGeometry(void);
+		void drawGeometry(Vector position);
 		bool isEnabled;
 
 	protected:
+		float hSide;
 		unsigned int * skyBoxTextureList;
 		int shaderF;
 	

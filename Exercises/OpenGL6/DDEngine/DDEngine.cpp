@@ -473,7 +473,8 @@ float* DDEngine::getCamera()
 
 	entityCamera * currentCamera = controller.playerObject->getCamera();
 
-	float * tranM = new float[16];
+	float * tranM = new(SCENEGRAPH, SINGLE_FRAME_ALLOCATOR) float[16];
+	//float * tranM = new float[16];
 
 	Matrix::generateIdentityMatrix().getMatrix(&tranM[0]);
 
@@ -507,17 +508,19 @@ float* DDEngine::getCamera()
 		MutexManager::unlockMutex( currentCamera->mutex_object );
 	}
 
+	
+
 	glMultMatrixf(&tranM[0]);
 
 	if(skyBox != NULL)
-		skyBox->drawGeometry();
+		skyBox->drawGeometry(Vector(currentCamera->vPosition[0], currentCamera->vPosition[1], currentCamera->vPosition[2]));
 
 	return &tranM[0];
 }
 
-void DDEngine::addSkyBox(unsigned int * textureList)
+void DDEngine::addSkyBox(float halfSide, unsigned int * textureList)
 {
-	skyBox = new(TEXTURE, STACK_ALLOCATOR) SkyBox(textureList, TEXTURE_NO_SHADING);
+	skyBox = new(TEXTURE, STACK_ALLOCATOR) SkyBox(halfSide, textureList, TEXTURE_NO_SHADING);
 }
 
 btRigidBody * DDEngine::createPhysicalBox(Vector dimension, Vector position, Quaternion orientation, float mass, bool neverSleep)
@@ -601,7 +604,7 @@ btCollisionShape * DDEngine::createCollisionSphere(float radius)
 
 SceneObject * DDEngine::createMD2(md2File * model, int shaderFlag, unsigned int texture)
 {
-	md2Interface * md2Model = new(GEOMETRY, STACK_ALLOCATOR) md2Interface(model, texture);
+	md2Interface * md2Model = new(GEOMETRY, STACK_ALLOCATOR) md2Interface(model, shaderFlag, texture);
 	return (SceneObject*) md2Model;
 }
 
