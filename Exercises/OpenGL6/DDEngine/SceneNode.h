@@ -89,7 +89,7 @@ class sceneNode_D SceneNode
 		btTransform trans;
 		string nodeNameString;
 		static unsigned int getNodeCount(void);
-		
+		SceneNode * findSceneNodeByName(string name);
 
 	protected:
 		bool visible;							// The node should be drawn or not
@@ -105,14 +105,17 @@ class sceneNode_D SceneNode
 		btRigidBody * physicsGeometry;		
 		void updateRigidBody(void);
 
-
-		
 };
 
 
 class sceneNode_D Root : public SceneNode
 {
 	public: 
+
+
+		static list<SceneNode*> childOfRootList;
+		static unsigned int id;
+		static string nodeName;
 
 		// Singleton Definitions
 		static Root _instance;
@@ -122,21 +125,13 @@ class sceneNode_D Root : public SceneNode
 		Root & operator=(Root &getInstance());
 		static Root &getInstance();
 		
+		// Root methods
+		SceneNode * findSceneNodeByName(string name);
 		void addChild( SceneNode * pNode );
-		// set parent node
 		static void setParent( SceneNode * pNode );
-		// get parent node
 		static SceneNode * getParent(void);
-
-		// Update all the children
 		static void update(float dt);
-		// Draw the geometry of all the children
 		static void drawGeometry(void);
-
-		static list<SceneNode*> childOfRootList;
-
-		static unsigned int id;
-		static string nodeName;
 
 };
 

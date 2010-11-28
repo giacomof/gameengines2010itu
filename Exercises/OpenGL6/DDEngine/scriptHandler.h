@@ -46,6 +46,8 @@ public:
 		// Log methods
 	static Handle<Value> ScriptHandler::logCallback(const Arguments &args);
 	static Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args);
+	static Handle<Value> ScriptHandler::rotateSceneNode(const Arguments &args);
+	static Handle<Value> ScriptHandler::translateSceneNode(const Arguments &args);
 
 	// Default Cons/Des
 	ScriptHandler::ScriptHandler(void);
