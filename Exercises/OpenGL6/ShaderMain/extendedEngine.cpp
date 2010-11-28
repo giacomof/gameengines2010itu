@@ -61,11 +61,12 @@ void extendedEngine::setupScene()
 	SceneNode * specularDuckNode = this->addSceneNode(&rootNode, "Specular Duck Node", specularDuck, Vector(150.0f, 45.0f, -200.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
 	// Run a script
-	this->runJSScript("create.js");
+	this->runJSScript("scripts/create.js");
 }
 void extendedEngine::frameStarted(int frameDelta)
 {
 	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.01f * frameDelta);
+	this->runJSScript("scripts/update.js");
 
 }
 void extendedEngine::frameEnded(int frameDelta)

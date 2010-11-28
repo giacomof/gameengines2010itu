@@ -100,7 +100,8 @@
     <None Include="defaultAssets\defaultCollada.dae" />
     <None Include="defaultAssets\defaultMd2.md2" />
     <None Include="defaultAssets\defaultTexture.jpg" />
-    <None Include="create.js" />
+    <None Include="scripts\create.js" />
+    <None Include="scripts\update.js" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extendedEngine.h" />

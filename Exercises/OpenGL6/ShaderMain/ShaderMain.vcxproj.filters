@@ -80,7 +80,10 @@
     <None Include="defaultAssets\defaultCollada.dae">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="create.js">
+    <None Include="scripts\create.js">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="scripts\update.js">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

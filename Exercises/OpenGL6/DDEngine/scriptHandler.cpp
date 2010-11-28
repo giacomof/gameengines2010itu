@@ -63,7 +63,6 @@ Handle<Value> ScriptHandler::constructTeapot(const Arguments &args)
 Handle<Value> ScriptHandler::logCallback(const Arguments &args)
 {
         HandleScope handleScope;
-        int numArgs = args.Length();
         Local<Value> value =  args[0];
         String::AsciiValue ascii(value);
 
@@ -80,6 +79,53 @@ Handle<Value> ScriptHandler::clearLogCallback(const Arguments &args)
         Log::clearLog(Globals::JAVASCRIPT_LOGFILE);
         
         return value;
+}
+
+// ************ OBJECT CALLBACKS *************
+
+Handle<Value> ScriptHandler::rotateSceneNode(const Arguments &args)
+{
+	HandleScope handleScope;
+
+	Local<String> value = args[0]->ToString();
+
+	int vectorX = args[1]->Int32Value();
+	int vectorY = args[2]->Int32Value();
+	int vectorZ = args[3]->Int32Value();
+	int angle   = args[4]->Int32Value();
+
+	String::AsciiValue ascii(value);
+
+	string nodeName = *ascii;
+	
+	SceneNode * tempNode = Root::getInstance().findSceneNodeByName(nodeName);
+
+	if(tempNode != NULL)
+		tempNode->rotateAboutAxis(Vector(vectorX, vectorY, vectorZ), angle);
+	
+	return value;
+}
+
+Handle<Value> ScriptHandler::translateSceneNode(const Arguments &args)
+{
+	HandleScope handleScope;
+
+	Local<String> value = args[0]->ToString();
+
+	int vectorX = args[1]->Int32Value();
+	int vectorY = args[2]->Int32Value();
+	int vectorZ = args[3]->Int32Value();
+
+	String::AsciiValue ascii(value);
+
+	string nodeName = *ascii;
+	
+	SceneNode * tempNode = Root::getInstance().findSceneNodeByName(nodeName);
+
+	if(tempNode != NULL)
+		tempNode->translate(Vector(vectorX, vectorY, vectorZ));
+	
+	return value;
 }
 
 // ************ OBJECT WRAPPERS **************
@@ -174,6 +220,8 @@ int ScriptHandler::runScript(const char *filename)
 	// *** Function Callbacks ***
 	global->Set(String::New("Log"), FunctionTemplate::New(logCallback));
 	global->Set(String::New("ClearLog"), FunctionTemplate::New(clearLogCallback));
+	global->Set(String::New("Rotate"), FunctionTemplate::New(rotateSceneNode));
+	global->Set(String::New("Translate"), FunctionTemplate::New(translateSceneNode));
 	
 	// *** Constructor Callbacks ***
 	global->Set(String::New("Light"), FunctionTemplate::New(constructLight));

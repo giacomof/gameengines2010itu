@@ -36,8 +36,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 // and do so for all his childs
 void SceneNode::update(float dt) 
 {
-	//std::cout << "UPDATING: " << nodeNameString << endl;
-	if(nodeNameString != "Camera Node") geometry->update(dt);
+	geometry->update(dt);
 
 	if (childList.size() != 0) {
 
@@ -112,6 +111,7 @@ SceneObject * SceneNode::getSceneObject()
 // Apply a rotation about an arbitrary axis to the node
 void SceneNode::rotateAboutAxis(Vector p_Axis, float p_Degree)
 {
+
 	if (physicsGeometry != 0) 
 	{
 		if (this->getParent()->getName() == "root")
@@ -372,6 +372,29 @@ void SceneNode::activateShadingProgram(bool active)
 	shadingIsActive = active;
 }
 
+SceneNode * SceneNode::findSceneNodeByName(string name)
+{
+	if( name == nodeNameString )
+		return this;
+
+	list<SceneNode*>::iterator itS(childList.begin());
+
+	for(itS = childList.begin(); itS != childList.end(); itS++) {
+		 	
+		string tempName = (*itS)->getName();
+		if(tempName == name)
+			return (*itS);
+	
+		SceneNode * child = (*itS)->findSceneNodeByName(name);
+		if(child != NULL)
+			return child;
+
+	}
+
+	return NULL;
+
+}
+
 // Static member initialization. 
 Root Root::_instance;
 list<SceneNode*> Root::childOfRootList;
@@ -415,3 +438,29 @@ void Root::addChild( SceneNode * cNode )
 	cNode->setParent(this);
 	childOfRootList.push_front(cNode);
 }
+
+SceneNode * Root::findSceneNodeByName(string name)
+{
+	if( name == "root" )
+		return this;
+
+	list<SceneNode*>::iterator itS(childOfRootList.begin());
+
+	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
+		 	
+		string tempName = (*itS)->getName();
+		if(tempName == name)
+			return (*itS);
+		
+		
+		SceneNode * child = (*itS)->findSceneNodeByName(name);
+		if(child != NULL)
+			return child;
+
+	}
+
+	cout << "I cannot find a sceneNode with that name" << endl;
+	return NULL;
+
+}
+
