@@ -19,7 +19,7 @@ AssetManager & AssetManager::getInstance()
   return _instance;
 }
 
-void AssetManager::loadTexture(char * fileDirectory, char * textureName)
+void AssetManager::loadTexture(char * filePath, char * textureName)
 {
 	// Initialization of DevIL
 	ilInit(); 
@@ -35,9 +35,9 @@ void AssetManager::loadTexture(char * fileDirectory, char * textureName)
 	FILE * file;
 
 	try {
-		file = fopen(fileDirectory, "rb");
+		file = fopen(filePath, "rb");
 		if(file == NULL)
-			file = fopen("defaultAssets/missingTexture.jpg", "rb");
+			file = fopen("defaultAssets/defaultTexture.jpg", "rb");
 		fseek(file, 0, SEEK_END);
 		size = ftell(file);
 
@@ -123,24 +123,27 @@ void AssetManager::loadMd2(char * filePath, char * md2NameChar)
 	unsigned int data_size;
 	std::string hash;
 	md5wrapper md5;
+	FILE * file;
 
-	FILE* fp = fopen(filePath,"rb");
-	if(!fp) {
-		std::cout << "[ERROR] \"" 
-				  << filePath 
-				  << "\" could not be opened"
-				  << std::cout;
+	try {
+		file = fopen(filePath,"rb");
+		if(file == NULL) 
+		{
+			file = fopen("defaultAssets/defaultMd2.md2","rb");
+		}
+		fseek(file,0,SEEK_END);
+		data_size = ftell(file);
+		m_data = new unsigned char[data_size];
+		//assert(m_data);
+
+		rewind(file);
+
+		fread(m_data,sizeof(unsigned char),data_size,file);
+		fclose(file);
+	} catch (exception&) {
 		return;
 	}
-	fseek(fp,0,SEEK_END);
-	data_size = ftell(fp);
-	m_data = new unsigned char[data_size];
-	//assert(m_data);
 
-	rewind(fp);
-
-	fread(m_data,sizeof(unsigned char),data_size,fp);
-	fclose(fp);
 	
 	// This will store the md5 hash of a file called test.txt in a string hash1
 	hash = md5.getHashFromFilePtr((FILE *)m_data, (int) data_size);
@@ -182,7 +185,17 @@ char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 	unsigned char * m_data;
 	std::string hash;
 	md5wrapper md5;
+	FILE * file;
 
+	try {
+		file = fopen(filePath,"rb");
+		if(file == NULL) 
+			filePath = "defaultAssets/defaultCollada.dae";
+		else
+			fclose(file);
+	} catch (exception&) {
+		return "";
+	}
 	std::ifstream ifs(filePath);
 	std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
 

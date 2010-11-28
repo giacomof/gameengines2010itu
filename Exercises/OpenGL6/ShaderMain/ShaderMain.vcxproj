@@ -97,7 +97,9 @@
     <None Include="assets\skyBoxRear.png" />
     <None Include="assets\skyBoxRight.png" />
     <None Include="assets\skyBoxTop.png" />
-    <None Include="defaultAssets\missingTexture.jpg" />
+    <None Include="defaultAssets\defaultCollada.dae" />
+    <None Include="defaultAssets\defaultMd2.md2" />
+    <None Include="defaultAssets\defaultTexture.jpg" />
     <None Include="test.js" />
   </ItemGroup>
   <ItemGroup>
