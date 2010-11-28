@@ -85,5 +85,11 @@
     <None Include="assets\toonf2.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\finalShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\finalShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

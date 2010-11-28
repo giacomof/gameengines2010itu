@@ -4,11 +4,6 @@
 
 GLOBAL TASKS:
 	  
-S- Skeletal Animation
-	1(S)- Debug mesh skinning
-	1(S)- Find a way to handle normals
-	S- Do keyframe interpolation
-
 G- Shaders
 	1(G)- Load vert and frag
 	1(G)- Apply a shader to a whole scene
@@ -72,6 +67,10 @@ OPTIONALS:
 
 COMPLETED:
 
+1(S)- Skeletal Animation
+	1(S)- Debug mesh skinning
+	1(S)- Find a way to handle normals
+	1(S)- Do keyframe interpolation
 1(S)- Camera as child of sceneObject
 1(V)- Childs of sceneObject
 1(V)- Root as Singleton

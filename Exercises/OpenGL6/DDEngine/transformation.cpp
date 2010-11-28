@@ -30,8 +30,8 @@ Matrix Transformation::getTransformation(void)
 	float tranM[16];
 
 	tempMatrix = Matrix::generateQuaternionRotationMatrix(rotation);
-	tempMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(2)) * tempMatrix;
 	tempMatrix = Matrix::generateScalingMatrix(sX, sY, sZ) * tempMatrix;
+	tempMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(2)) * tempMatrix;
 	tempMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY) * tempMatrix;
 
 	tempMatrix.getMatrix(&tranM[0]);
@@ -46,8 +46,8 @@ Matrix Transformation::getInverseTransformation(void)
 	transformationMatrix = Matrix();
 
 	transformationMatrix = Matrix::generateShearingMatrix(shXY, shXZ, shYX, shYZ, shZX, shZY).getInverse();
-	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
 	transformationMatrix = Matrix::generateTranslationMatrix(translation.get(0), translation.get(1), translation.get(1)).getInverse() * transformationMatrix;
+	transformationMatrix = Matrix::generateScalingMatrix(sX, sY, sZ).getInverse() * transformationMatrix;
 	transformationMatrix = Matrix::generateQuaternionRotationMatrix(rotation).getInverse() * transformationMatrix;
 
 	transformationMatrix.getMatrix(&tranM[0]);
