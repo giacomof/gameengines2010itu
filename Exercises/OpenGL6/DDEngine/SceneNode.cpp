@@ -386,6 +386,7 @@ Root &Root::getInstance()
 // Method for drawing the entire world moving along the scene graph
 void Root::drawGeometry()
 {
+	
 	list<SceneNode*>::iterator itS(childOfRootList.begin());
 
 	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
@@ -398,11 +399,13 @@ void Root::drawGeometry()
 // Update the transformation status of all the child nodes of root
 void Root::update(float dt)
 {
-	list<SceneNode*>::iterator itS(childOfRootList.begin());
+	if(!Globals::isStopped) {
+		list<SceneNode*>::iterator itS(childOfRootList.begin());
 
-	for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
-			(*itS)->update(dt);
+		for(itS = childOfRootList.begin(); itS != childOfRootList.end(); itS++) {
+				(*itS)->update(dt);
 			
+		}
 	}
 }
 

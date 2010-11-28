@@ -53,7 +53,6 @@ V- V8 Javascript Scripting Integration
 
 0- FrameClock Class as a Singleton
 0- better thread synch and use
-0- inputmanager interface to gameplay programmers?
 0- optimizations for the Transformation Class
 0- optimize debug cout and logs with "if define"
 	
