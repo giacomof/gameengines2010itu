@@ -194,7 +194,7 @@ bool ColladaSkeleton::load(std::string & str)
 						float value = atof(token.c_str());
 						for (int j=0;j<skelJoints[i].jKeyframeTime.size();j++)
 						{
-							skelJoints[i].jKeyframeMatrix[j].InvMatrix.set( row, col, value );
+							skelJoints[i].jKeyframeMatrix[j].InvMatrix.set( row, col, value);
 						}
 					}
 					else
@@ -213,6 +213,8 @@ bool ColladaSkeleton::load(std::string & str)
 						currentSource = currentSource->next_sibling("source")->next_sibling("source")->next_sibling("source");
 					}
 				}
+
+
 			}
 
 			// Animation Node has been loaded at this point
@@ -333,8 +335,31 @@ void ColladaSkeleton::updateSkeleton(skelPose * currentPose, float currentTime)
 
 			if (currentFrame < 0)
 				currentFrame = 0;
+			
+			// Interpolate
+			if (true)
+			{
+				Matrix tempMatrix;
 
-			currentPose->skelPoseJoints[i].pjJointTransform = skelJoints[i].jKeyframeMatrix[currentFrame].InvMatrix;
+				int nextFrame = (currentFrame  + 1);
+				if (nextFrame >= skelJoints[i].jKeyframeTime.size())
+					nextFrame = 1;
+
+				float between = currentTime - (skelJoints[i].jKeyframeTime[currentFrame]);
+				between = between / ( (skelJoints[i].jKeyframeTime[nextFrame]) - (skelJoints[i].jKeyframeTime[currentFrame]) );
+
+				for (int h = 0; h<15; h++)
+				{
+					tempMatrix.set(h, ( skelJoints[i].jKeyframeMatrix[currentFrame].InvMatrix.get(h) + between * (skelJoints[i].jKeyframeMatrix[nextFrame].InvMatrix.get(h) - skelJoints[i].jKeyframeMatrix[currentFrame].InvMatrix.get(h))) );
+				}
+				tempMatrix.set(15, 1);
+			
+				currentPose->skelPoseJoints[i].pjJointTransform = tempMatrix;
+			}
+			else
+			{
+				currentPose->skelPoseJoints[i].pjJointTransform = skelJoints[i].jKeyframeMatrix[currentFrame].InvMatrix;
+			}
 		}
 		else
 		{

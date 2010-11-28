@@ -44,14 +44,14 @@ void md2Interface::drawGeometry(void) {
 	glDisable(GL_TEXTURE_2D);	
 }
 
-void  md2Interface::update(void) {
+void  md2Interface::update(float dt) {
 
 	// *************************************************************** //
 	// TEMP METHOD, WE HAVE TO CHANGE THIS  WHEN WE MAKE THE FPS CLASS //
 	// *************************************************************** //
 
 	//if(dt==NULL) dt = 0.03f;
-	mesh->Update(0.03f);
+	mesh->Update(dt);
 }
 
 // ************************************* //
@@ -102,14 +102,16 @@ void ColladaInterface::drawGeometry(void)
 	}
 }
 
-void  ColladaInterface::update(void)
+void  ColladaInterface::update(float dt)
 {
 	if (skeleton != NULL && currentPose != NULL)
 	{
-		float animationDelta = 0.03f;
-		animationProgress = animationProgress + (animationDelta * animationRate);
-		if (animationProgress > 1.0f)
-			animationProgress = animationProgress - 1.0f;
+		// Hardcode since it is unspecified in the file
+		float animationLength = 1.16667;
+
+		animationProgress = animationProgress + (dt * animationRate);
+		if (animationProgress > animationLength)
+			animationProgress = animationProgress - animationLength;
 
 		skeleton->updateSkeleton(currentPose, animationProgress);
 	}

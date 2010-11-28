@@ -10,6 +10,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <omp.h>
+
 #include "linearAlgebra.h"
 #include "rapidxml.hpp"
 #include "memoryManager.h"

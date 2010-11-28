@@ -32,7 +32,7 @@ class sceneObject_D SceneObject
 		SceneObject(void);
 		virtual ~SceneObject(void);
 		virtual void drawGeometry() {};
-		virtual void update(void) {};
+		virtual void update(float dt) {};
 
 };
 
@@ -43,7 +43,7 @@ class sceneObject_D Sphere : public SceneObject
 		~Sphere(void);
 
 		void drawGeometry(void);
-		void update(void) {};
+		void update(float dt) {};
 
 		float getSphereRadius(void);
 		int getSphereSlices(void);
@@ -64,7 +64,7 @@ class sceneObject_D Plane : public SceneObject
 		~Plane(void);
 
 		void drawGeometry(void);
-		void update(void) {};
+		void update(float dt) {};
 
 		void setDimensions(float w, float h);
 
@@ -86,7 +86,7 @@ class sceneObject_D Cube : public SceneObject
 		~Cube(void);
 
 		void drawGeometry(void);
-		void update(void) {};
+		void update(float dt) {};
 
 		void setSide(float s);
 
@@ -100,7 +100,7 @@ class sceneObject_D Line : public SceneObject
 	public:
 		Line(Vector lStart, Vector lEnd, int shaderFlag, unsigned int texture = 0);
 		
-		void update(void) {};
+		void update(float dt) {};
 		void drawGeometry(void);
 		
 		void setLine(Vector lStart, Vector lEnd); 
@@ -116,7 +116,7 @@ class sceneObject_D Teapot : public SceneObject
 	public:
 		Teapot(float size, bool wireframe, int shaderFlag, unsigned int texture = 0);
 		
-		void update(void) {};
+		void update(float dt) {};
 		void drawGeometry(void);
 		
 		void setDimension(float size); 
@@ -134,7 +134,7 @@ class sceneObject_D md2Interface : public SceneObject
 		md2Interface(md2File * m, int shaderFlag, unsigned int texture = 0);
 		~md2Interface(void);
 
-		void update(void);
+		void update(float dt);
 		void drawGeometry(void);
 
 		md2File * mesh;
@@ -148,7 +148,7 @@ class sceneObject_D ColladaInterface : public SceneObject
 		ColladaInterface(ColladaFile * c, int shaderFlag, unsigned int texture = 0, ColladaSkeleton * s = 0);
 		~ColladaInterface(void);
 
-		void update(void);
+		void update(float dt);
 		void drawGeometry(void);
 
 		ColladaSkeleton * skeleton;
@@ -171,7 +171,7 @@ class sceneObject_D Light : public SceneObject
 				float specularR = 1, float specularG = 1, float specularB = 1);
 		//~Light(void);
 
-		void update(void) {};
+		void update(float dt) {};
 		void drawGeometry(void);
 		void setDirection(Vector position);		
 		bool isEnabled;
@@ -195,7 +195,7 @@ class sceneObject_D SkyBox : public SceneObject
 		
 		//~SkyBox(void);
 
-		void update(void) {};
+		void update(float dt) {};
 		void drawGeometry(Vector position);
 		bool isEnabled;
 

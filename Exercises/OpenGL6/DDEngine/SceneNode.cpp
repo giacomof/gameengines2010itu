@@ -37,7 +37,7 @@ SceneNode::SceneNode(	SceneNode * parentNode, char * str, SceneObject * g,
 void SceneNode::update(float dt) 
 {
 	//std::cout << "UPDATING: " << nodeNameString << endl;
-	if(nodeNameString != "Camera Node") geometry->update();
+	if(nodeNameString != "Camera Node") geometry->update(dt);
 
 	if (childList.size() != 0) {
 

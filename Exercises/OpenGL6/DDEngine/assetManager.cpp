@@ -186,20 +186,20 @@ char * AssetManager::loadCollada(char * filePath, char * colladaNameChar)
 	hash = md5.getHashFromFilePtr((FILE *)str.c_str(), (int) str.length());
 
 	// use const_iterator to walk through elements of pairs
-	//for ( std::map<char *, colladaInterfaceContainer>::const_iterator iter = collada_list.begin(); iter != collada_list.end(); ++iter ) {
+	for ( std::map<char *, colladaInterfaceContainer>::const_iterator iter = collada_list.begin(); iter != collada_list.end(); ++iter ) {
 
-	//	if (iter->second.meshMD5 == hash) {
-	//		if (iter->first == colladaNameChar) {
-	//			exist = true;
-	//			break;
-	//		} else {
-	//			collada_list[colladaNameChar].colladaMesh = iter->second.colladaMesh;
-	//			collada_list[colladaNameChar].meshMD5 = iter->second.meshMD5;
-	//			exist = true;
-	//			break;
-	//		}
-	//	}
-	//}
+		if (iter->second.meshMD5 == hash) {
+			if (iter->first == colladaNameChar) {
+				exist = true;
+				break;
+			} else {
+				collada_list[colladaNameChar].colladaMesh = iter->second.colladaMesh;
+				collada_list[colladaNameChar].meshMD5 = iter->second.meshMD5;
+				exist = true;
+				break;
+			}
+		}
+	}
 
 	if (exist == false) {
 		ColladaFile * tempCollada;
@@ -231,20 +231,20 @@ bool AssetManager::loadColladaSkeleton(char * filePath, char * colladaNameChar)
 	hash = md5.getHashFromFilePtr((FILE *)str.c_str(), (int) str.length());
 
 	// use const_iterator to walk through elements of pairs
-	//for ( std::map<char *, colladaSkelInterfaceContainer>::const_iterator iter = colladaskel_list.begin(); iter != colladaskel_list.end(); ++iter ) {
-
-	//	if (iter->second.meshMD5 == hash) {
-	//		if (iter->first == colladaNameChar) {
-	//			exist = true;
-	//			break;
-	//		} else {
-	//			colladaskel_list[colladaNameChar].colladaSkel = iter->second.colladaSkel;
-	//			colladaskel_list[colladaNameChar].skelMD5 = iter->second.meshMD5;
-	//			exist = true;
-	//			break;
-	//		}
-	//	}
-	//}
+	for ( std::map<char *, colladaSkelInterfaceContainer>::const_iterator iter = colladaskel_list.begin(); iter != colladaskel_list.end(); ++iter )
+	{
+		if (iter->second.skelMD5 == hash) {
+			if (iter->first == colladaNameChar) {
+				exist = true;
+				break;
+			} else {
+				colladaskel_list[colladaNameChar].colladaSkel = iter->second.colladaSkel;
+				colladaskel_list[colladaNameChar].skelMD5 = iter->second.skelMD5;
+				exist = true;
+				break;
+			}
+		}
+	}
 
 	if (exist == false) {
 		ColladaSkeleton * tempCollada;

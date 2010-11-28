@@ -29,9 +29,9 @@ void extendedEngine::setupScene()
 	// ******************************
 
 	// Create the plane with the collision shape
-	btRigidBody * planeRigidBody = this->createPhysicalBox(Vector(1000.0f, 10.0f, 1000.0f), Vector(0.0f, -10.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
+	//btRigidBody * planeRigidBody = this->createPhysicalBox(Vector(1000.0f, 10.0f, 1000.0f), Vector(0.0f, -10.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
 	SceneObject * plane = this->createPlane(2000.0f, 2000.0f, 100);
-	planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, planeRigidBody);
+	planeNode = this->addSceneNode(&rootNode, "Plane Node", plane, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f);
 	// Change BB Translation
 	planeNode->getTransformation()->setBBTranslation(Vector(0, 10, 0));
 
@@ -107,9 +107,9 @@ void extendedEngine::setupScene()
 	astroboySkeletonNode->scale(15.0, 15.0, 15.0);
 
 	// Skeletal animated astroboy with mesh and texture
-	SceneObject * astroboyMesh = this->createCollada(assetManager.getColladaMesh("astroboy"), assetManager.getTexture("boy_10.tga"), 0, assetManager.getColladaSkeleton("astroboy_skeleton"));
-	SceneNode * astroboyMeshNode = this->addSceneNode(&rootNode, "Astroboy Node", astroboyMesh,  Vector(30.0f, 0.0f, 0.0f), Vector(1.0f,0.0f,0.0f), -90.0f);
-	astroboyMeshNode->scale(15.0, 15.0, 15.0);
+	//SceneObject * astroboyMesh = this->createCollada(assetManager.getColladaMesh("astroboy"), assetManager.getTexture("boy_10.tga"), 1, assetManager.getColladaSkeleton("astroboy_skeleton"));
+	//SceneNode * astroboyMeshNode = this->addSceneNode(&rootNode, "Astroboy Node", astroboyMesh,  Vector(30.0f, 0.0f, 0.0f), Vector(1.0f,0.0f,0.0f), -90.0f);
+	//astroboyMeshNode->scale(15.0, 15.0, 15.0);
 
 }
 void extendedEngine::frameStarted(int frameDelta)
