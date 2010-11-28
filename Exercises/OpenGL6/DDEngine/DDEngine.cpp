@@ -123,24 +123,7 @@ int threadSound(void *data)
 	inputManager * input = engine->getInputManager();
 
 	soundInit();
-
-	int testsoundint = 4000;
-	while ( !engine->getController()->quit )
-	{
-		if(!Globals::isStopped) {
-		
-			testsoundint++;
-			if (testsoundint > 7000)
-			{
-				//soundPlayFile("assets/MENULOOP.WAV");
-				testsoundint = 0;
-			}
-			SDL_Delay(thread_delay);
-		}
-	}
-
-	soundExit();
-
+	soundPlayFile("assets/MENULOOP.WAV");
 	return 0;
 }
 
