@@ -114,9 +114,14 @@ void inputManager::keyPress(SDL_Event &currentEvent)
 
 	case SDLK_p:
 		if (currentEvent.type == SDL_KEYDOWN) {
-			if(Globals::isStopped)
+			if(Globals::isStopped) {
+				// recompile the create script
+				// and unpause the engine
+
+
+
 				Globals::startEngine();
-			else
+			} else
 				Globals::stopEngine();
 		}
 			

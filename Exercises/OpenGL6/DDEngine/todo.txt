@@ -133,6 +133,7 @@ COMPLETED:
 	1(V)- Use parameters to instantiate objects  
 	1(V)- startEngine mode
 	1(V)- stopEngine mode
+	1(V)- Singleton
 
 Symbology Map:
 

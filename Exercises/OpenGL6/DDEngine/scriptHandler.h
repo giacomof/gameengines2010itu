@@ -49,16 +49,21 @@ public:
 	static Handle<Value> ScriptHandler::rotateSceneNode(const Arguments &args);
 	static Handle<Value> ScriptHandler::translateSceneNode(const Arguments &args);
 
-	// Default Cons/Des
-	ScriptHandler::ScriptHandler(void);
-	ScriptHandler::~ScriptHandler(void);
-
 	// Basic Script Methods 
 	int ScriptHandler::runScript(const char * filename);
 	Handle<Script> ScriptHandler::readAndCompileScript(const char * filename);
 	Persistent<Function> ScriptHandler::getFunctionHandle(const char * filename, const char * functionName);	
 	Handle<Value> ScriptHandler::getResult(Persistent<Function> function, Handle<Value> *args, const int numArgs);
 	
+	// Singleton Definitions
+	static ScriptHandler _instance;
+	ScriptHandler();
+	~ScriptHandler();
+	ScriptHandler(const ScriptHandler & getInstance());   
+	ScriptHandler & operator=(ScriptHandler & getInstance());
+	static ScriptHandler & getInstance();
+	static short count;
+
 };
 
 #endif
