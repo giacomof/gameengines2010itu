@@ -84,6 +84,10 @@
     <ClInclude Include="extendedEngine.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\bosscube.jpg" />
+    <None Include="assets\bosscube.md2" />
+    <None Include="assets\MENULOOP.WAV" />
+    <None Include="assets\nhe.ico" />
     <None Include="defaultAssets\defaultCollada.dae" />
     <None Include="defaultAssets\defaultMd2.md2" />
     <None Include="defaultAssets\defaultTexture.jpg" />
