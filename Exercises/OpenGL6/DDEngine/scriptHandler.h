@@ -13,6 +13,7 @@
 #include "globals.h"
 #include "sceneObject.h"
 #include "SceneNode.h"
+#include "assetManager.h"
 
 #include <iostream>
 #include <string>
@@ -32,15 +33,18 @@ public:
 	// Object Templates
 	static v8::Handle<v8::ObjectTemplate> lightTemplate;
 	static v8::Handle<v8::ObjectTemplate> teapotTemplate;
+	static v8::Handle<v8::ObjectTemplate> colladaTemplate;
 
 	// Implemented Callbacks
 		//Constructor callbacks
 	static v8::Handle<v8::Value> ScriptHandler::constructLight(const v8::Arguments &args);
 	static v8::Handle<v8::Value> ScriptHandler::constructTeapot(const v8::Arguments &args);
+	static v8::Handle<v8::Value> ScriptHandler::constructCollada(const v8::Arguments &args);
 
 		// Wrappers
 	static v8::Handle<v8::Object> ScriptHandler::wrapLight(Light * lightToWrap);
 	static v8::Handle<v8::Object> ScriptHandler::wrapTeapot(Teapot * teapotToWrap);
+	static v8::Handle<v8::Object> ScriptHandler::wrapCollada(ColladaInterface * colladaToWrap);
 
 		// Log methods
 	static v8::Handle<v8::Value> ScriptHandler::logCallback(const v8::Arguments &args);
@@ -63,6 +67,8 @@ public:
 	static ScriptHandler & getInstance();
 	static short count;
 
+	// AssetManager
+	static AssetManager * assetManager;
 };
 
 #endif

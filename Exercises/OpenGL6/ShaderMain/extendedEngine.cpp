@@ -60,12 +60,14 @@ void extendedEngine::setupScene()
 	SceneObject * specularDuck = this->createCollada(assetManager.getColladaMesh("duck"), assetManager.getTexture("environmentMapTx"), Globals::SPECULAR_MAP);
 	SceneNode * specularDuckNode = this->addSceneNode(&rootNode, "Specular Duck Node", specularDuck, Vector(150.0f, 45.0f, -200.0f), Vector(0.0f,0.0f,0.0f), 0.0f);
 
-	// Run a script
+	// Run the create script
 	this->runJSScript("scripts/create.js");
 }
 void extendedEngine::frameStarted(int frameDelta)
 {
 	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.01f * frameDelta);
+
+	// run the update script
 	this->runJSScript("scripts/update.js");
 
 }
