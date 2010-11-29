@@ -32,9 +32,9 @@ void extendedEngine::setupScene()
 
 	// Create Light connected it to the battle droid
 	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
-	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -200), Vector(0, 0, 0), 0);
+	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -400), Vector(0, 0, 0), 0);
 
-	SceneObject * sphere2 = this->createSphere(5, 30, 30, false, Globals::NO_TEXTURE_PHONG);
+	SceneObject * sphere2 = this->createSphere(5, 30, 30, false, Globals::GREEN);
 	SceneNode * sphereNode2 = this->addSceneNode(light1Node, "", sphere2, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 
 	// Create teapots
