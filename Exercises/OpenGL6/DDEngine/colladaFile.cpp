@@ -445,7 +445,7 @@ void ColladaFile::render(skelPose * currentPose)
 
 					tempNormal.normalize();
 
-					normalSkinned[(j*3)]		= tempNormal.getX();
+					normalSkinned[(j*3)]	= tempNormal.getX();
 					normalSkinned[(j*3)+1]	= tempNormal.getY();
 					normalSkinned[(j*3)+2]	= tempNormal.getZ();
 				}
