@@ -4,15 +4,7 @@
 
 GLOBAL TASKS:
 
-V- V8 Javascript Scripting Integration	  
-	  V- Implement the most used engine functions
-	  V- move logic into scripts as much as possible
 
-G- the engine should not crash if it can't find a file
-S- better thread synch and use
-G- optimizations for the Transformation Class
-0- optimize debug cout and logs with "if define"
-	
 
 OPTIONALS:
 
@@ -28,10 +20,6 @@ OPTIONALS:
 
 COMPLETED:
 
-1(S)- Skeletal Animation
-	1(S)- Debug mesh skinning
-	1(S)- Find a way to handle normals
-	1(S)- Do keyframe interpolation
 1(S)- Camera as child of sceneObject
 1(V)- Childs of sceneObject
 1(V)- Root as Singleton
@@ -135,6 +123,10 @@ COMPLETED:
 	1(V)- stopEngine mode
 	1(V)- Singleton
 	1(V)- Recompile scripts at runtime while in pause
+1(V)- Implement the most used engine functions
+1(G)- the engine should not crash if it can't find a file
+1(S)- better thread synch and use
+1(G)- optimizations for the Transformation Class
 
 Symbology Map:
 
