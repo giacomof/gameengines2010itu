@@ -138,8 +138,13 @@ int threadPhysics(void *data)
 
 		if (!Globals::isStopped) {
 			if ( physics_sync > 0) {
+				
+				MutexManager::lockMutex(engine->renderClock.clockMutex);
+				Uint32 frameD = engine->renderClock.getFrameDelta();
+				MutexManager::unlockMutex(engine->renderClock.clockMutex);
+
 				// physics simulation
-				dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 0);
+				dynamicsWorld->stepSimulation( frameD, 0);
 
 				// Delay the thread to make room for others on the CPU
 				SDL_Delay(thread_delay);
@@ -293,8 +298,10 @@ void DDEngine::run(void)
 	while(!controller.quit)
 	{
 		
+
+		MutexManager::lockMutex(renderClock.clockMutex);
 		frameDelta = renderClock.getFrameDelta();
-		
+		MutexManager::unlockMutex(renderClock.clockMutex);
 
 		sprintf_s(title, "DD Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
@@ -353,9 +360,6 @@ void DDEngine::run(void)
 			memMgr.clearSingleFrameAllocator();
 
 			frameStarted( frameDelta );
-
-
-
 
 			drawGL( frameDelta );
 
