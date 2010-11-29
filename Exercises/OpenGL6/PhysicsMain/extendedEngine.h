@@ -12,14 +12,8 @@ public:
 
 	SceneNode * planeNode;
 	SceneNode * sphereNode;
-	SceneNode * battleDroidNode;
+	SceneNode * fatherSphereSceneNode;
 	SceneNode * light1Node;
-	SceneNode * light2Node;
-	SceneNode * skullNode;
-	SceneNode * hornNode1;
-	SceneNode * hornNode2;
-	SceneNode * droidCubeRotationCenter;
-	SceneNode * droidCubeNode;
 	SceneNode * fallingCubeNode;
 };
 

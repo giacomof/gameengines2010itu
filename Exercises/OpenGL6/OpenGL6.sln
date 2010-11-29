@@ -14,6 +14,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderMain", "ShaderMain\Sh
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsMain", "PhysicsMain\PhysicsMain.vcxproj", "{54383B4D-BE05-46CC-829F-9E3A0BBE259B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61DF5915-7482-48C6-BA48-594F602C511C} = {61DF5915-7482-48C6-BA48-594F602C511C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

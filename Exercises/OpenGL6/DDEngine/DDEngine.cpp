@@ -144,7 +144,7 @@ int threadPhysics(void *data)
 				MutexManager::unlockMutex(engine->renderClock.clockMutex);
 
 				// physics simulation
-				dynamicsWorld->stepSimulation( frameD, 0);
+				dynamicsWorld->stepSimulation( frameD, 10);
 
 				// Delay the thread to make room for others on the CPU
 				SDL_Delay(thread_delay);
