@@ -37,5 +37,15 @@
     <None Include="defaultAssets\defaultTexture.jpg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\bosscube.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\bosscube.md2" />
+    <None Include="assets\MENULOOP.WAV">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\nhe.ico">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
