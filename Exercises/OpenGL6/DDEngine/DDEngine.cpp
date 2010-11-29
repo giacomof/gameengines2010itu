@@ -139,7 +139,7 @@ int threadPhysics(void *data)
 		if (!Globals::isStopped) {
 			if ( physics_sync > 0) {
 				// physics simulation
-				dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 5);
+				dynamicsWorld->stepSimulation(	engine->renderClock.getFrameDelta(), 0);
 
 				// Delay the thread to make room for others on the CPU
 				SDL_Delay(thread_delay);
@@ -296,7 +296,7 @@ void DDEngine::run(void)
 		frameDelta = renderClock.getFrameDelta();
 		
 
-		sprintf_s(title, "Name Here Engine | %i FPS", renderClock.getFPS() );
+		sprintf_s(title, "DD Engine | %i FPS", renderClock.getFPS() );
 		window.setTitle( title, "include/nhe.ico" );
 		
 

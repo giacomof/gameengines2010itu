@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderMain", "ShaderMain\Sh
 		{61DF5915-7482-48C6-BA48-594F602C511C} = {61DF5915-7482-48C6-BA48-594F602C511C}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsMain", "PhysicsMain\PhysicsMain.vcxproj", "{54383B4D-BE05-46CC-829F-9E3A0BBE259B}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -35,6 +37,10 @@ Global
 		{D4D99EEE-707E-43E8-B382-B4D204EA8469}.Debug|Win32.Build.0 = Debug|Win32
 		{D4D99EEE-707E-43E8-B382-B4D204EA8469}.Release|Win32.ActiveCfg = Release|Win32
 		{D4D99EEE-707E-43E8-B382-B4D204EA8469}.Release|Win32.Build.0 = Release|Win32
+		{54383B4D-BE05-46CC-829F-9E3A0BBE259B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{54383B4D-BE05-46CC-829F-9E3A0BBE259B}.Debug|Win32.Build.0 = Debug|Win32
+		{54383B4D-BE05-46CC-829F-9E3A0BBE259B}.Release|Win32.ActiveCfg = Release|Win32
+		{54383B4D-BE05-46CC-829F-9E3A0BBE259B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
