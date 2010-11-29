@@ -28,7 +28,7 @@ void extendedEngine::setupScene()
 	// Create character "rotation center" node
 	SceneObject * sphere = this->createSphere(5, 30, 30, true, Globals::NO_TEXTURE_PHONG);
 	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
-	sphereNode->setVisible(true);
+	sphereNode->setVisible(false);
 
 	// Create Light connected it to the battle droid
 	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);

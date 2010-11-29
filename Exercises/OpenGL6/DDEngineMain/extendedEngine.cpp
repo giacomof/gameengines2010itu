@@ -52,10 +52,17 @@ void extendedEngine::setupScene()
 	/*Light * light1 = (Light*)this->createLight(true, false, 0, 0, 0, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
 	light1Node = this->addSceneNode(battleDroidNode, "Light1 Node", light1, Vector(0, 50, 0), Vector(0, 0, 0), 0);*/
 
-	// Create Light connected to root
-	Light * light2 = (Light*)this->createLight(true, true, 0.2f,0.2f,0.2f,0.5f,0.5f,0.5f,0.3f,0.3f,0.3f);
-	light2Node = this->addSceneNode(&rootNode, "Light2 Node", light2, Vector(0, 0, 0), Vector(0, 0, 0), 0);
-	//light2->setDirection(Vector(0, 1, 0));
+	// Create character "rotation center" node
+	SceneObject * sphere = this->createSphere(5, 30, 30, true, Globals::NO_TEXTURE_PHONG);
+	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
+	sphereNode->setVisible(false);
+
+	// Create Light connected it to the battle droid
+	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
+	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -100), Vector(0, 0, 0), 0);
+
+	SceneObject * sphere2 = this->createSphere(5, 30, 30, false, Globals::GREEN);
+	SceneNode * sphereNode2 = this->addSceneNode(light1Node, "", sphere2, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 
 	//// Rotation Center and physics for Skull	
 	//btRigidBody * skullRigidBody = this->createPhysicalSphere(35.0f, Vector(0.0f, 35.0f, 150.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 0, false);
@@ -117,6 +124,8 @@ void extendedEngine::frameStarted(int frameDelta)
 	//sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.01f * frameDelta);
 	//droidCubeRotationCenter->rotateAboutAxis(Vector(0,1,0),-0.1f * frameDelta);
 	//droidCubeNode->rotateAboutAxis(Vector(0,1,0),0.205f * frameDelta);
+
+	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.1f * frameDelta);
 }
 void extendedEngine::frameEnded(int frameDelta)
 {
