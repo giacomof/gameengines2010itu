@@ -24,55 +24,59 @@ void extendedEngine::setupScene()
 	planeNode->getTransformation()->setBBTranslation(Vector(0, 10, 0));
 
 
-
-	// Create character "rotation center" node
 	SceneObject * sphere = this->createSphere(5, 30, 30, true, Globals::NO_TEXTURE_PHONG);
 	sphereNode = this->addSceneNode(&rootNode, "Rotation Center", sphere, Vector(0, 0, 0), Vector(0, 1, 0), 0);
 	sphereNode->setVisible(false);
 
-	// Create Light connected it to the battle droid
+
+	// Sphere
+	btRigidBody * fatherSphereRigidBody = this->createPhysicalSphere(25, Vector(-200,40, 0), Quaternion( 0, 1, 0, 0), 0);
+	SceneObject * fatherSphere = this->createSphere(25, 30, 30, false);
+	fatherSphereSceneNode = this->addSceneNode(sphereNode, "Father Sphere Node", fatherSphere, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, 0.0f), 1.0f, fatherSphereRigidBody);
+
+	// Create Light
 	Light * light1 = (Light*)this->createLight(true, false, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2);
-	light1Node = this->addSceneNode(sphereNode, "Light1 Node", light1, Vector(0, 50, -100), Vector(0, 0, 0), 0);
+	light1Node = this->addSceneNode(&rootNode, "Light1 Node", light1, Vector(0, 50, -100), Vector(0, 0, 0), 0);
+
+	
 
 
+	btCollisionShape * cubeBox = this->createCollisionBox(Vector(10.0f, 10.0f, 10.0f));
+	SceneObject * cube = this->createMD2(assetManager.getMd2Mesh("md2BossCube"), assetManager.getTexture("bossCubeTx"));
 
+	// Falling Cube
+	btRigidBody * fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 15.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	SceneNode * fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 15.0f, 30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 15.0f, 30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 15.0f, -30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 15.0f, -30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 50.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 30.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 50.0f, 30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 30.0f, 30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 50.0f, -30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 30.0f, -30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 75.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 45.0f, 0.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 75.0f, 30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 45.0f, 30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
-
-	//fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 45.0f, -30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
-	//fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
-
-
+	fallingCubeRigidBody = this->createRigidBody(cubeBox, Vector(0.0f, 75.0f, -30.0f), Quaternion(0.0f, 1.0f, 0.0f, 0.0f), 10);
+	fallingCubeNode = this->addSceneNode(&rootNode, "Falling Cube Node", cube, Vector(0.0f, 0.0f, 0.0f), Vector(0.0f,0.0f,0.0f), 0.0f, fallingCubeRigidBody);	
 
 
 }
 void extendedEngine::frameStarted(int frameDelta)
 {
-	//sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.01f * frameDelta);
-	//droidCubeRotationCenter->rotateAboutAxis(Vector(0,1,0),-0.1f * frameDelta);
-	//droidCubeNode->rotateAboutAxis(Vector(0,1,0),0.205f * frameDelta);
-
-	sphereNode->rotateAboutAxis(Vector(0, 1, 0), 0.1f * frameDelta);
+	sphereNode->translate(Vector(0.1f, 0, 0) * frameDelta);
 }
 void extendedEngine::frameEnded(int frameDelta)
 {
