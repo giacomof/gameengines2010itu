@@ -67,15 +67,13 @@ v8::Handle<v8::Value> ScriptHandler::constructTeapot(const v8::Arguments &args)
 	float posY = args[3]->Int32Value();
 	float posZ = args[4]->Int32Value();
 
-
-
 	Teapot * teapot = new Teapot(size, isWireframe, 0);
 
 	SceneNode * temp = new SceneNode( &Root::getInstance(), "JAVASCRIPT Teapot", teapot, Vector(posX, posY, posZ), Vector(0, 0, 0), 0.0f ); 
 	Root::getInstance().addChild(temp);
 
-
 	return wrapTeapot(teapot);
+
 }
 
 v8::Handle<v8::Value> ScriptHandler::constructCollada(const v8::Arguments &args)

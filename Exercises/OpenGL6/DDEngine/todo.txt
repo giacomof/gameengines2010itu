@@ -93,7 +93,7 @@ COMPLETED:
 	1(G)- Skybox
 		1(G)- Connect the skybox to the camera
 	1(G)- Environmental Mapping
-		1(G)- Fake Enviromental Mapping
+	   1(G)- Fake Enviromental Mapping
 	   1(G)- Fix names in shader section of asset manager (cleaning)
 	   1(G)- Fixed pipeline shader
 1(S)- Skeletal Animation
