@@ -29,7 +29,7 @@ public:
 
 	// Logging System Variables and Flags
 		// Verbosity Level
-	static const int verbosityLog	= 0;
+	static const int verbosityLog	= 1;
 	
 	// Log Files
 	static const char * MEMORYMANAGER_LOGFILE;
