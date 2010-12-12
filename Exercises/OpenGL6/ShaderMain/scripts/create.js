@@ -9,7 +9,9 @@
 
 function Create()
 {   
+
     //new Collada("assets/duck.dae", "duck", "assets/duckCM.tga", "duckTx", 0, 100, 0);
+
 }
 
 Create();

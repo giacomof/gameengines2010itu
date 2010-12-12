@@ -47,7 +47,7 @@ void * operator new(size_t size, unsigned short typeFlag, unsigned short allocat
 			break;
 
 		case Globals::SINGLE_FRAME_ALLOCATOR:
-
+			
 			MutexManager::lockMutex(mutex_SingleFrameAllocator);
 			
 			if(Globals::verbosityLevel>=3) cout << "NEW WITH FLAG: " << typeFlag <<  " AND USING THE SINGLE FRAME ALLOCATOR" << endl;
@@ -461,7 +461,7 @@ float* DDEngine::getCamera()
 
 	entityCamera * currentCamera = controller.playerObject->getCamera();
 
-	float * tranM = new(Globals::SCENEGRAPH, Globals::SINGLE_FRAME_ALLOCATOR) float[16];
+	float * tranM = new float[16];
 
 	Matrix::generateIdentityMatrix().getMatrix(&tranM[0]);
 
