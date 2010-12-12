@@ -49,6 +49,8 @@ public:
 		// Log methods
 	static v8::Handle<v8::Value> ScriptHandler::logCallback(const v8::Arguments &args);
 	static v8::Handle<v8::Value> ScriptHandler::clearLogCallback(const v8::Arguments &args);
+		
+		// SceneNodes methods
 	static v8::Handle<v8::Value> ScriptHandler::rotateSceneNode(const v8::Arguments &args);
 	static v8::Handle<v8::Value> ScriptHandler::translateSceneNode(const v8::Arguments &args);
 
